@@ -106,7 +106,7 @@ module.exports = {
       '@docusaurus/preset-classic',
       {
         docs: {
-          path: '../docs',
+          path: 'docs',
           editUrl:
             'https://github.com/finos/open-developer-platform/edit/master/website/',
           sidebarPath: require.resolve('./sidebars.js')
