@@ -30,29 +30,3 @@ Alternatively, a full set of static files are available in the `build` folder. L
 ## Application Definition
 
 A basic FDC3 application definition, as defined in the [application directory specification](https://fdc3.finos.org/schemas/1.2/app-directory#tag/Application), is supplied in the [file](./src/appDefinition.json) `appDefinition.json`. This may be useful when adding the conformance tests to an application directory. This file may need to be updated with additional manifest information, depending on the desktop agent. Consult the host environment documentation for information on configuring new applications.
-
-## Integration with automated testing
-
-The test suite can be run independently without interaction - for example as part of a CI build, or from the command line. See TypeScript and JavaScript examples [here](./testRunner/examples/). The test runner can be used as a module to run the compliance test suite.
-Perform the following steps to include the module in your code:
-- Import the fdc3-compliance module: ```yarn add [path to testRunner folder]```
-- Import/require the ```fdc3-compliance``` module in your code
-- Call the ```runSilentTests``` function, passing in the fdc3 implementation to be tested
-
-Example:
-```javascript
-const { runSilentTests } = require("fdc3-compliance");
-
-// Pass in the fdc3 global object to be tested
-// Results are returned via callback
-runSilentTests(fdc3, (results) => {
-  // results.stats contains the summary results
-  // For more details, see the passed and failed arrays
-  console.log(results.stats);
-});
-```
-
-The included example code can be run with the following command line:
-```bash
-node testRunner/examples/ci-test.js
-```

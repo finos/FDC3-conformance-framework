@@ -39,7 +39,7 @@ To use the documentation, navigate to the `/documentation` folder. Then run:
 yarn start
 ```
 
-The doucmentation can be accessed at: `http://localhost:3000`
+The documentation can be accessed at: `http://localhost:3000`
 
 
 ## Roadmap
