@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Box, LinearProgress } from "@mui/material";
-import LoadingButton from '@mui/lab/LoadingButton';
+import LoadingButton from "@mui/lab/LoadingButton";
 import { TestSummary } from "./TestSummary";
 import { PlayArrowRounded } from "@mui/icons-material";
 import { Stats, Test } from "mocha";
@@ -8,24 +8,24 @@ import { initAllTests, runTests } from "@fdc3-conformance-framework/tests";
 import { TestsStatus } from "./TestRunner";
 
 const statuses = {
-	idle: 'Run Tests',
-	running: 'Running Tests',
-}
+	idle: "Run Tests",
+	running: "Running Tests",
+};
 
 interface IProps {
-  addTestHandler: (test: Test) => void;
-  resetTestsHandler: () => void;
+	addTestHandler: (test: Test) => void;
+	resetTestsHandler: () => void;
 }
 
 export const TestRunnerHeader = ({ addTestHandler, resetTestsHandler }: IProps) => {
-  const [status, setStatus] = useState<TestsStatus>('idle');
+	const [status, setStatus] = useState<TestsStatus>("idle");
 	const [successfulTests, setSuccessfulTests] = useState<number>(0);
 	const [failedTests, setFailedTests] = useState<number>(0);
 	const [total, setTotal] = useState<number>(1);
 	const [testStats, setTestStats] = useState<Stats | null>(null);
 	const [testsInitialised, setTestInitialised] = useState<boolean>(false);
-  const [showProgress, setShowProgress] = useState<boolean>(false);
-  const completion = Math.floor(((successfulTests + failedTests) / total) * 100);
+	const [showProgress, setShowProgress] = useState<boolean>(false);
+	const completion = Math.floor(((successfulTests + failedTests) / total) * 100);
 
 	const reset = () => {
 		resetTestsHandler();
@@ -41,23 +41,23 @@ export const TestRunnerHeader = ({ addTestHandler, resetTestsHandler }: IProps) 
 		}
 	}, []);
 
-  useEffect(() => {
-    if (completion !== 100) return
+	useEffect(() => {
+		if (completion !== 100) return;
 
-    const hideProgressAfterDelay = setTimeout(() => {
-      setShowProgress(false)
-    }, 500)
+		const hideProgressAfterDelay = setTimeout(() => {
+			setShowProgress(false);
+		}, 500);
 
-    return () => {
-      clearTimeout(hideProgressAfterDelay)
-    }
-  }, [completion])
+		return () => {
+			clearTimeout(hideProgressAfterDelay);
+		};
+	}, [completion]);
 
 	const reportStart = (runner: any): void => {
 		reset();
-		setStatus('running');
+		setStatus("running");
 		setTotal(runner.total);
-    setShowProgress(true);
+		setShowProgress(true);
 	};
 
 	const reportFailure = (test: any): void => {
@@ -71,7 +71,7 @@ export const TestRunnerHeader = ({ addTestHandler, resetTestsHandler }: IProps) 
 	};
 
 	const reportComplete = (stats: any): void => {
-		setStatus('idle');
+		setStatus("idle");
 		setTestStats(stats.stats);
 	};
 
@@ -85,48 +85,53 @@ export const TestRunnerHeader = ({ addTestHandler, resetTestsHandler }: IProps) 
 	};
 
 	return (
-    <Box
+		<Box
 			sx={{
-        position: 'sticky',
-        top: 0,
+				position: "sticky",
+				top: 0,
 			}}
 		>
-      <Box
-        sx={{
-          display: 'flex',
-          gap: 2,
-          justifyContent: 'space-between',
-          alignItems: 'center',
+			<Box
+				sx={{
+					display: "flex",
+					gap: 2,
+					justifyContent: "space-between",
+					alignItems: "center",
 					py: 2,
-					backgroundColor: 'white',
-					boxShadow: '0 0 0.5rem 1rem white',
-        }}
-      >
-        <LoadingButton
-          color="primary"
-          onClick={handRunTests}
-          endIcon={<PlayArrowRounded/>}
-          loading={status === 'running'}
-          loadingPosition="end"
-          variant="contained"
-        >
-          {statuses[status]}
-        </LoadingButton>
+					backgroundColor: "white",
+					boxShadow: "0 0 0.5rem 1rem white",
+				}}
+			>
+				<LoadingButton
+					color="primary"
+					onClick={handRunTests}
+					endIcon={<PlayArrowRounded />}
+					loading={status === "running"}
+					loadingPosition="end"
+					variant="contained"
+				>
+					{statuses[status]}
+				</LoadingButton>
 
-        <TestSummary status={status} successfulTests={successfulTests} failedTests={failedTests} testStats={testStats}/>
-      </Box>
-      
-      {showProgress &&
-        <LinearProgress
-          variant="determinate"
-          value={completion}
-          sx={{
-            position: 'absolute',
-            bottom: 0,
-            width: '100%',
-          }}
-        />
-      }
-    </Box>
+				<TestSummary
+					status={status}
+					successfulTests={successfulTests}
+					failedTests={failedTests}
+					testStats={testStats}
+				/>
+			</Box>
+
+			{showProgress && (
+				<LinearProgress
+					variant="determinate"
+					value={completion}
+					sx={{
+						position: "absolute",
+						bottom: 0,
+						width: "100%",
+					}}
+				/>
+			)}
+		</Box>
 	);
 };

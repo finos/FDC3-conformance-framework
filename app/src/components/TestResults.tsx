@@ -10,10 +10,10 @@ interface IProps {
 export const TestResults = ({ tests }: IProps) => (
 	<Box
 		sx={{
-			display: 'grid',
+			display: "grid",
 			gap: 2,
-			minHeight: '0',
-			overflow: 'auto',
+			minHeight: "0",
+			overflow: "auto",
 		}}
 	>
 		{tests.map((test, index) => (

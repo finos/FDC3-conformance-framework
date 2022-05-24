@@ -34,26 +34,26 @@ export const TestSummary = ({ status, successfulTests, failedTests, testStats }:
 				alignItems: "center",
 			}}
 		>
-			<Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
-				<CheckRounded color="success" fontSize="small"/>
-				<Typography variant="overline" sx={{ fontSize: 'x-small', fontWeight: 'bold', color: '#acb2c0' }}>
+			<Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+				<CheckRounded color="success" fontSize="small" />
+				<Typography variant="overline" sx={{ fontSize: "x-small", fontWeight: "bold", color: "#acb2c0" }}>
 					Passed:
 				</Typography>
 				<Typography sx={{ margin: 0 }}>{successfulTests}</Typography>
 			</Box>
 
-			<Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
-			<CloseRounded color="error" fontSize="small" />
-				<Typography variant="overline" sx={{ fontSize: 'x-small', fontWeight: 'bold', color: '#acb2c0' }}>
-				Failed:
+			<Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+				<CloseRounded color="error" fontSize="small" />
+				<Typography variant="overline" sx={{ fontSize: "x-small", fontWeight: "bold", color: "#acb2c0" }}>
+					Failed:
 				</Typography>
 				<Typography sx={{ margin: 0 }}>{failedTests}</Typography>
 			</Box>
 
-			<Box sx={{ display: 'flex', gap: 0.5, alignItems: 'center' }}>
-			<AccessTimeRounded color="primary" fontSize="small" />
-				<Typography variant="overline" sx={{ fontSize: 'x-small', fontWeight: 'bold', color: '#acb2c0' }}>
-				Duration:
+			<Box sx={{ display: "flex", gap: 0.5, alignItems: "center" }}>
+				<AccessTimeRounded color="primary" fontSize="small" />
+				<Typography variant="overline" sx={{ fontSize: "x-small", fontWeight: "bold", color: "#acb2c0" }}>
+					Duration:
 				</Typography>
 				<Typography sx={{ margin: 0 }}>{testStats ? testStats.duration : timer}ms</Typography>
 			</Box>
