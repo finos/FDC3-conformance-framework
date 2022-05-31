@@ -7,10 +7,14 @@ export default () =>
     it("Method is callable", async () => {
       try {
         await window.fdc3.open("ThisAppDoesNotExist");
-        throw ExpectedErrorNotThrownError;
+        throw new Error(ExpectedErrorNotThrownError);
       } catch (ex) {
-        if (ex !== OpenError.AppNotFound) {
-          throw ex;
+        if ((ex.message ?? ex) !== OpenError.AppNotFound) {
+          throw new Error(
+            ExpectedErrorNotThrownError +
+              "\nException thrown: " +
+              (ex.message ?? ex)
+          );
         }
       }
     });
