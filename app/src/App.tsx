@@ -1,13 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Alert, Box, Paper, Snackbar, Tabs, Tab, Typography, Link, SnackbarCloseReason } from "@mui/material";
+import { Box, Paper, Tabs, Tab, Typography, Link } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
-import { observer } from "mobx-react";
 import "normalize.css";
 import "@fontsource/roboto";
 import "@fontsource/source-code-pro";
 import { TabPanel } from "./components/common/TabPanel";
 import { Header } from "./components/Header";
-import snackbarStore from "./store/SnackbarStore";
 import "./App.css";
 import { fdc3Ready } from "@finos/fdc3";
 import { AgentTests } from "./components/AgentTests";
@@ -79,29 +77,12 @@ const openAPIDocs = (event: React.MouseEvent<HTMLElement>) => {
 	return false;
 };
 
-export const App = observer(() => {
+export const App = () => {
 	const [fdc3Available, setFdc3Available] = useState(false);
-	const [openSnackbar, setOpenSnackbar] = useState(false);
 	const [tabIndex, setTabIndex] = useState(0);
 
 	const handleTabChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
 		setTabIndex(newIndex);
-	};
-
-	const handleClose = (event: Event | React.SyntheticEvent<any>, reason: SnackbarCloseReason) => {
-		if (reason === "clickaway") {
-			return;
-		}
-
-		setOpenSnackbar(false);
-		// Need to show close animation
-		setTimeout(() => snackbarStore.clearSnackbarData(), 500);
-	};
-
-	const handleAlertClose = () => {
-		setOpenSnackbar(false);
-		// Need to show close animation
-		setTimeout(() => snackbarStore.clearSnackbarData(), 500);
 	};
 
 	//check if the FDC3 API is available so we know whether to render
@@ -113,10 +94,6 @@ export const App = observer(() => {
 			} catch (e) {}
 		})();
 	}, []);
-
-	useEffect(() => {
-		setOpenSnackbar(!!snackbarStore.snackbarData);
-	}, [snackbarStore.snackbarData]);
 
 	return (
 		<ThemeProvider theme={mainTheme}>
@@ -177,14 +154,8 @@ export const App = observer(() => {
 					</Typography>
 				</Box>
 			</Box>
-
-			<Snackbar key={snackbarStore.snackbarData?.id} open={openSnackbar} autoHideDuration={4000} onClose={handleClose}>
-				<Alert elevation={6} variant="filled" onClose={handleAlertClose} severity={snackbarStore.snackbarData?.type}>
-					{snackbarStore.snackbarData?.message}
-				</Alert>
-			</Snackbar>
 		</ThemeProvider>
 	);
-});
+};
 
 export default App;
