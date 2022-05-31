@@ -1,0 +1,11 @@
+{
+  "private": true,
+  "workspaces": [
+    "tests",
+    "app",
+    "documentation"
+  ],
+  "scripts": {
+    "build": "yarn workspaces run build"
+  }
+}

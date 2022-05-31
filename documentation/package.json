@@ -1,4 +1,6 @@
 {
+  "name": "@fdc3-conformance-framework/documentation",
+  "version": "1.0.0",
   "scripts": {
     "start": "docusaurus start",
     "swizzle": "docusaurus swizzle",
@@ -15,6 +17,6 @@
     "react-dom": "^16.10.2"
   },
   "dependencies": {
-    "is-promise": "2.1.0"
+    "is-promise": "4.0.0"
   }
 }

@@ -7,40 +7,48 @@ Short blurb about what your project does.
 
 ## Installation
 
-OS X & Linux:
+Install all the dependencies with:
 
 ```sh
-npm install my-crazy-module --save
+yarn
 ```
 
-Windows:
+Then build all the components with:
 
 ```sh
-edit autoexec.bat
+yarn build
 ```
 
-## Usage example
+## Run tests in React framework
 
-A few motivating and useful examples of how your project can be used. Spice this up with code blocks and potentially screenshots / videos ([LiceCap](https://www.cockos.com/licecap/) is great for this kind of thing).
-
-_For more examples and usage, please refer to the [Wiki][wiki]._
-
-## Development setup
-
-Describe how to install all development dependencies and how to run an automated test-suite of some kind. Potentially do this for multiple platforms.
+Navigate to `/app`, then run:
 
 ```sh
-make install
-npm test
+yarn
+yarn build
+yarn start
 ```
+
+The framework will be available on `http://localhost:3000`
+
+## Documentation
+
+To use the documentation, navigate to the `/documentation` folder. Then run:
+
+```sh
+yarn start
+```
+
+The documentation can be accessed at: `http://localhost:3000`
+
 
 ## Roadmap
 
 List the roadmap steps; alternatively link the Confluence Wiki page where the project roadmap is published.
 
-1. Item 1
-2. Item 2
-3. ....
+1. Add tests for Intents
+2. Update documentation
+3. Add more tests to improve on the current happy path tests
 
 ## Contributing
 

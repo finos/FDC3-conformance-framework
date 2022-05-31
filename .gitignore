@@ -1,16 +1,5 @@
 .DS_Store
+# See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# Docusaurus generated folders
-website/translated_docs/
-website/build/
-website/i18n/
-website/.docusaurus/
-
-# Yarn build
-website/node_modules/
-
-# Generated docs
-docs/contributing.md
-
-# We use YARN
-website/package-lock.json
+# dependencies
+/node_modules
