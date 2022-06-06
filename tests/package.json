@@ -2,9 +2,9 @@
   "name": "@fdc3-conformance-framework/tests",
   "version": "1.0.0",
   "description": "FDC3 Compliance Testing",
-  "main": "lib/fdc3-compliance.js",
+  "main": "src/index.ts",
   "typings": "lib/index.d.ts",
-  "module": "lib/fdc3-compliance.js",
+  "module": "src/index.ts",
   "scripts": {
     "build": "yarn run build:prettier && yarn run build:webpack && yarn run build:copy",
     "build:copy": "npx copyfiles --exclude **/*.ts --flat src/*.* lib/",
