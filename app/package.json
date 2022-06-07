@@ -4,6 +4,7 @@
   "homepage": ".",
   "dependencies": {
     "@apidevtools/json-schema-ref-parser": "^9.0.9",
+    "@craco/craco": "^6.4.3",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@fdc3-conformance-framework/tests": "1.0.0",
@@ -21,14 +22,14 @@
     "normalize.css": "^8.0.1",
     "react": "^18.1.0",
     "react-dom": "^18.1.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "4.0.3",
     "typescript": "^4.7.2",
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
-    "test": "react-scripts test",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "eject": "react-scripts eject",
     "lint": "eslint --cache --quiet **/*.{ts,tsx,js,jsx} && prettier --check **/*.{ts,tsx,js,jsx,json,yml,css,html,md}",
     "lint:fix": "eslint --cache --quiet --fix **/*.{ts,tsx,js,jsx} && prettier --write **/*.{ts,tsx,js,jsx} && prettier --write **/*.{json,yml,css,html,md}"
