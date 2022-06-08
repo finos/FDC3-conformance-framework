@@ -1,13 +1,20 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
-![website build](https://github.com/finos/FDC3-conformance-framework/workflows/Docusaurus-website-build/badge.svg)
 
 # FDC3 Conformance Framework
 
-Short blurb about what your project does.
+A framework for testing whether desktop containers implement the [FDC3 standard](https://fdc3.finos.org/).
+
+This project currently targets FDC3 v1.2.
 
 ## Installation
 
-Install all the dependencies with:
+This repository currently contains:
+
+ - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
+ - `app` - A React application that hosts the tests, allowing them to be executed from within a desktop container.
+ - `cli` - Documentation and an example that demosntrates how these tests can be run within a CI environment.
+
+In order to get started, install all the dependencies with:
 
 ```sh
 yarn
@@ -31,28 +38,9 @@ yarn start
 
 The framework will be available on `http://localhost:3000`
 
-## Documentation
-
-To use the documentation, navigate to the `/documentation` folder. Then run:
-
-```sh
-yarn start
-```
-
-The documentation can be accessed at: `http://localhost:3000`
-
-
-## Roadmap
-
-List the roadmap steps; alternatively link the Confluence Wiki page where the project roadmap is published.
-
-1. Add tests for Intents
-2. Update documentation
-3. Add more tests to improve on the current happy path tests
-
 ## Contributing
 
-1. Fork it (<https://github.com/finos/FDC3-conformance-framework/fork>)
+1. Fork this repository
 2. Create your feature branch (`git checkout -b feature/fooBar`)
 3. Read our [contribution guidelines](.github/CONTRIBUTING.md) and [Community Code of Conduct](https://www.finos.org/code-of-conduct)
 4. Commit your changes (`git commit -am 'Add some fooBar'`)

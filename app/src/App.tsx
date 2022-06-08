@@ -150,7 +150,7 @@ export const App = () => {
 							FDC3 Standard and APIs
 						</StyledLink>{" "}
 						| Proud member of the <StyledLink href="https://www.finos.org/">Fintech Open Source Foundation</StyledLink>{" "}
-						| Copyright © 2021 Cosaic, inc. &amp; Contributors to the FDC3 standards project
+						| Copyright © 2021 Cosaic inc., 2022 Scott Logic Ltd. &amp; Contributors to the FDC3 standards project
 					</Typography>
 				</Box>
 			</Box>
