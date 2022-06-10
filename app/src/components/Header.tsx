@@ -71,7 +71,7 @@ export const Header = (props: { fdc3Available: boolean }) => {
 								color: "inherit",
 							}}
 						>
-							<img src="./fdc3-logo.svg" width={150} height={50} />
+							<img src="./scott-logic-logo.svg" width={450} height={30} />
 						</Typography>
 					</div>
 
