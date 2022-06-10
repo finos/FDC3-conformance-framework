@@ -26,17 +26,97 @@ Then build all the components with:
 yarn build
 ```
 
-## Run tests in React framework
-
-Navigate to `/app`, then run:
+The server can be started as follows:
 
 ```sh
-yarn
-yarn build
+cd app
 yarn start
 ```
 
-The framework will be available on `http://localhost:3000`
+The application will start and will open a webbrowser tab, this tab will have an error. The reason is that the app does not have a Window.FDC3 object and should be ran through the desktop agent.
+
+Here is the setup steps for the following desktop agents:
+
+
+### Finsemble setup
+
+Clone and setup the Finsemble seed project with:
+
+```sh
+git clone https://github.com/ChartIQ/finsemble-seed.git
+cd finsemble-seed
+yarn install
+```
+
+After the installation, add the following entry into `/public/configs/application/appd.json` under `appd`:
+
+```sh
+"Conformance": {
+    "appId": "Conformance",
+    "name": "FDC3 Conformance Framework",
+    "description": "Testing spec conformance",
+    "manifest": {
+        "window": {
+            "url": "http://localhost:3000",
+            "affinity": "workspaceComponents",
+            "options": {
+                "resizable": true,
+                "autoShow": true,
+                "alwaysOnTop": false,
+                "addToWorkspace": true
+            },
+            "top": "center",
+            "left": "center",
+            "width": 800,
+            "height": 600
+        },
+        "component": {
+            "displayName": "FDC3 Conformance Framework",
+            "preload": "$applicationRoot/preloads/zoom.js"
+        },
+        "foreign": {
+            "services": {
+                "windowService": {
+                    "allowSnapping": true,
+                    "allowGrouping": true,
+                    "allowTabbing": true,
+                    "allowAutoArrange": true,
+                    "allowMinimize": true
+                }
+            },
+            "components": {
+                "App Launcher": {
+                    "launchableByUser": true
+                },
+                "Window Manager": {
+                    "alwaysOnTopIcon": false,
+                    "FSBLHeader": {
+                        "hideMaximize": false
+                    },
+                    "persistWindowState": true,
+                    "title": "FDC3 Conformance Framework"
+                }
+            }
+        }
+    },
+    "version": "1.0.0",
+    "publisher": "Scott Logic",
+    "icons": [
+        {
+            "src": "http://localhost:3000/scott-logic-icon-256.png"
+        }
+    ]
+}
+```
+
+The desktop agent can be started with:
+
+```sh
+yarn start
+```
+
+The testing framework can be found under the Apps menu.
+
 
 ## Contributing
 
