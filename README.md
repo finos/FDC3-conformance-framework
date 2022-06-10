@@ -42,7 +42,7 @@ The framework will be available on `http://localhost:3000`
 
 1. Fork this repository
 2. Create your feature branch (`git checkout -b feature/fooBar`)
-3. Read our [contribution guidelines](.github/CONTRIBUTING.md) and [Community Code of Conduct](https://www.finos.org/code-of-conduct)
+3. Read our [contribution guidelines](CONTRIBUTING.md) and [Community Code of Conduct](https://www.finos.org/code-of-conduct)
 4. Commit your changes (`git commit -am 'Add some fooBar'`)
 5. Push to the branch (`git push origin feature/fooBar`)
 6. Create a new Pull Request
@@ -54,8 +54,8 @@ _NOTE:_ Commits and pull requests to FINOS repositories will only be accepted fr
 
 ## License
 
-Copyright 2022 Scott Logic
+Copyright 2022 FINOS
 
-Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
+Distributed under the Apache License, Version 2.0.
 
-SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0)
+SPDX-License-Identifier: Apache-2.0
