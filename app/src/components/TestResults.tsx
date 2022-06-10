@@ -19,5 +19,10 @@ export const TestResults = ({ tests }: IProps) => (
 		{tests.map((test, index) => (
 			<TestResult key={index} test={test} />
 		))}
+		<pre>
+		{tests.map((test, index) => (
+			<React.Fragment key={index}>{test.parent?.title} - {test.title} ({test.state}){"\n"}{test.err?.message}{"\n"}{"\n"}</React.Fragment>
+		))}
+		</pre>
 	</Box>
 );
