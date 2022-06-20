@@ -1,5 +1,5 @@
 {
-  "name": "@fdc3-conformance-framework/app",
+  "name": "@finos/fdc3-conformance-app",
   "version": "1.0.0",
   "homepage": ".",
   "dependencies": {
