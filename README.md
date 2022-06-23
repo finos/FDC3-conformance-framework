@@ -118,6 +118,15 @@ yarn start
 The testing framework can be found under the Apps menu.
 
 
+### Openfin setup
+
+Ensure you have the OpenFin Runtime cli tool installed, that can be done with: `npm install -g openfin-cli`.
+
+Once the Testing Framework server has been started, it can be opened with:
+
+`openfin --launch --config http://localhost:3000/openfin_app.json`.
+
+
 ## Contributing
 
 1. Fork this repository
