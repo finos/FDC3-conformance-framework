@@ -1,4 +1,4 @@
-const { runSilentTests } = require("@fdc3-conformance-framework/tests");
+const { runSilentTests } = require("@finos/fdc3-conformance-tests");
 
 // Dummy implementation of FDC3
 const fdc3 = {

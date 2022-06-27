@@ -7,7 +7,7 @@
     "@craco/craco": "^6.4.3",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
-    "@fdc3-conformance-framework/tests": "1.0.0",
+    "@finos/fdc3-conformance-tests": "1.0.0",
     "@finos/fdc3": "^1.2.0",
     "@fontsource/roboto": "^4.4.5",
     "@fontsource/source-code-pro": "^4.5.0",
