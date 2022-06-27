@@ -1,5 +1,5 @@
 {
-  "name": "@fdc3-conformance-framework/tests",
+  "name": "@finos/fdc3-conformance-tests",
   "version": "1.0.0",
   "description": "FDC3 Compliance Testing",
   "main": "src/index.ts",
