@@ -4,7 +4,7 @@ import LoadingButton from "@mui/lab/LoadingButton";
 import { TestSummary } from "./TestSummary";
 import { PlayArrowRounded } from "@mui/icons-material";
 import { Stats, Test } from "mocha";
-import { initAllTests, runTests } from "@fdc3-conformance-framework/tests";
+import { initAllTests, runTests } from "@finos/fdc3-conformance-tests";
 import { TestsStatus } from "./TestRunner";
 
 const statuses = {

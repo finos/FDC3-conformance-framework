@@ -10,7 +10,7 @@ Perform the following steps to include the module in your code:
 
 Example:
 ```javascript
-const { runSilentTests } = require("@fdc3-conformance-framework/tests");
+const { runSilentTests } = require("@finos/fdc3-conformance-tests");
 
 // Pass in the fdc3 global object to be tested
 // Results are returned via callback
