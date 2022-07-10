@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { Box, Paper, Tabs, Tab, Typography, Link } from "@mui/material";
+import { Box, Paper, Typography, Link } from "@mui/material";
 import { createTheme, ThemeProvider, styled } from "@mui/material/styles";
 import "normalize.css";
 import "@fontsource/roboto";
 import "@fontsource/source-code-pro";
-import { TabPanel } from "./components/common/TabPanel";
 import { Header } from "./components/Header";
 import "./App.css";
 import { fdc3Ready } from "@finos/fdc3";
@@ -50,22 +49,6 @@ const mainTheme = createTheme({
 	},
 });
 
-const StyledTabs = styled(Tabs)({
-	borderBottomColor: "#acb2c0",
-	borderBottomStyle: "solid",
-	borderBottomWidth: "1px",
-	minHeight: "28px",
-	'& [aria-selected="true"]': {
-		backgroundColor: "rgba(0, 134, 191, 0.21)",
-	},
-	"& .MuiTabs-indicatorSpan": {
-		backgroundColor: "rgba(0, 134, 191, 0.21)",
-	},
-	"& .MuiTabs-indicator": {
-		backgroundColor: "#00bbe1",
-	},
-});
-
 const StyledLink = styled(Link)({
 	color: "#5b606f",
 	fontWeight: "bold",
@@ -79,12 +62,7 @@ const openAPIDocs = (event: React.MouseEvent<HTMLElement>) => {
 
 export const App = () => {
 	const [fdc3Available, setFdc3Available] = useState(false);
-	const [tabIndex, setTabIndex] = useState(0);
-
-	const handleTabChange = (event: React.ChangeEvent<{}>, newIndex: number) => {
-		setTabIndex(newIndex);
-	};
-
+	
 	//check if the FDC3 API is available so we know whether to render
 	useEffect(() => {
 		(async () => {
@@ -122,18 +100,7 @@ export const App = () => {
 							}}
 						>
 							<Typography variant="h4">{`{compliance}`}</Typography>
-							<StyledTabs
-								value={tabIndex}
-								indicatorColor="primary"
-								onChange={handleTabChange}
-								variant="scrollable"
-								scrollButtons="auto"
-							>
-								<Tab label="Agent Compliance" />
-							</StyledTabs>
-							<TabPanel value={tabIndex} index={0}>
-								<AgentTests />
-							</TabPanel>
+							<AgentTests />
 						</Paper>
 					</Box>
 				) : (
