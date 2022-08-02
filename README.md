@@ -12,7 +12,7 @@ This repository currently contains:
 
  - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
  - `app` - A React application that hosts the tests, allowing them to be executed from within a desktop container.
- - `cli` - Documentation and an example that demosntrates how these tests can be run within a CI environment.
+ - `cli` - Documentation and an example that demonstrates how these tests can be run within a CI environment.
 
 In order to get started, install all the dependencies with:
 
