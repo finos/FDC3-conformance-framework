@@ -2,7 +2,8 @@
   "name": "@finos/fdc3-conformance-app",
   "version": "1.0.0",
   "scripts": {
-    "build": "npx copyfiles --flat ../tests/lib/fdc3-compliance.js lib"
+    "build": "npx copyfiles --flat ../tests/lib/fdc3-compliance.js lib",
+    "start": "npx http-server -p 3000"
   },
   "license": "Apache-2.0"
 }
