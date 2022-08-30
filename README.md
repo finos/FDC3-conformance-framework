@@ -33,8 +33,8 @@ The server(s) can be started as follows:
 cd app
 yarn start
 
-// Start the mock app which the tests will make use of
-cd mock-app
+// Start all the mock apps which the tests will make use of
+cd mock
 yarn start
 ```
 
@@ -53,121 +53,7 @@ cd finsemble-seed
 yarn install
 ```
 
-After the installation, add the following entry into `/public/configs/application/appd.json` under `appd`. This will add 2 apps into the desktop container application under test, required for conformance testing.
-
-```sh
-"Conformance": {
-    "appId": "Conformance",
-    "name": "FDC3 Conformance Framework",
-    "description": "Testing spec conformance",
-    "manifest": {
-        "window": {
-            "url": "http://localhost:3000",
-            "affinity": "workspaceComponents",
-            "options": {
-                "resizable": true,
-                "autoShow": true,
-                "alwaysOnTop": false,
-                "addToWorkspace": true
-            },
-            "top": "center",
-            "left": "center",
-            "width": 800,
-            "height": 600
-        },
-        "component": {
-            "displayName": "FDC3 Conformance Framework",
-            "preload": "$applicationRoot/preloads/zoom.js"
-        },
-        "foreign": {
-            "services": {
-                "windowService": {
-                    "allowSnapping": true,
-                    "allowGrouping": true,
-                    "allowTabbing": true,
-                    "allowAutoArrange": true,
-                    "allowMinimize": true
-                }
-            },
-            "components": {
-                "App Launcher": {
-                    "launchableByUser": true
-                },
-                "Window Manager": {
-                    "alwaysOnTopIcon": false,
-                    "FSBLHeader": {
-                        "hideMaximize": false
-                    },
-                    "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework"
-                }
-            }
-        }
-    },
-    "version": "1.0.0",
-    "publisher": "Scott Logic",
-    "icons": [
-        {
-            "src": "http://localhost:3000/scott-logic-icon-256.png"
-        }
-    ]
-},
-"MockApp": {
-    "appId": "MockAppId",
-    "name": "MockApp",
-    "description": "Testing spec conformance",
-    "manifest": {
-        "window": {
-            "url": "http://localhost:3001",
-            "affinity": "workspaceComponents",
-            "options": {
-                "resizable": true,
-                "autoShow": true,
-                "alwaysOnTop": false,
-                "addToWorkspace": true
-            },
-            "top": "center",
-            "left": "center",
-            "width": 800,
-            "height": 600
-        },
-        "component": {
-            "displayName": "FDC3 Conformance Framework Mock App"
-        },
-        "foreign": {
-            "services": {
-                "windowService": {
-                    "allowSnapping": true,
-                    "allowGrouping": true,
-                    "allowTabbing": true,
-                    "allowAutoArrange": true,
-                    "allowMinimize": true
-                }
-            },
-            "components": {
-                "App Launcher": {
-                    "launchableByUser": true
-                },
-                "Window Manager": {
-                    "alwaysOnTopIcon": false,
-                    "FSBLHeader": {
-                        "hideMaximize": false
-                    },
-                    "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework Mock App"
-                }
-            }
-        }
-    },
-    "version": "1.0.0",
-    "publisher": "Scott Logic",
-    "icons": [
-        {
-            "src": "http://localhost:3000/scott-logic-icon-256.png"
-        }
-    ]
-},
-```
+After the installation, copy the json snippet from [app-d-snippet.txt](./tests/app-d-snippet.txt) into `/public/configs/application/appd.json` under `appd`. This will add 5 apps into the desktop container application under test, required for conformance testing.
 
 The desktop agent can be started with:
 
