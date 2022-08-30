@@ -2,7 +2,8 @@
   "private": true,
   "workspaces": [
     "tests",
-    "app"
+    "app",
+    "mock"
   ],
   "scripts": {
     "build": "yarn workspaces run build"

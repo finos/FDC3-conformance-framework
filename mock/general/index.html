@@ -9,6 +9,7 @@
     <p>This app is only used by the conformance framework for test purposes.</p>
     <p></p>
     <p id="context"></p>
+    <script src="lib/mock-functions.js"></script>
     <script>
       const stats = document.getElementById("context");
 
@@ -31,6 +32,7 @@
 
         window.fdc3.addContextListener("fdc3.instrument");
       });
+      setupCloseListener(window.fdc3);
     </script>
   </body>
 </html>

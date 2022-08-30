@@ -3,3 +3,10 @@
 
 # dependencies
 /node_modules
+app/build
+app/node_modules
+mock/node_modules/
+mock/general/lib/
+mock/intent-a/lib/
+mock/intent-b/lib/
+mock/intent-c/lib/
