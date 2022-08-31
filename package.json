@@ -8,3 +8,4 @@
     "build": "yarn workspaces run build"
   }
 }
+
