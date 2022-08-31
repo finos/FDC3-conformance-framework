@@ -1,3 +1,6 @@
+import mocha from "mocha";
+import { TestResultHandlers } from "../complianceTypes";
+import constants from "../constants";
 import fdc3AddContextListener from "./fdc3.addContextListener";
 import fdc3AddIntentListener from "./fdc3.addIntentListener";
 import fdc3Broadcast from "./fdc3.broadcast";
@@ -12,9 +15,6 @@ import fdc3LeaveCurrentChannel from "./fdc3.leaveCurrentChannel";
 import fdc3Open from "./fdc3.open";
 import fdc3RaiseIntent from "./fdc3.raiseIntent";
 import fdc3RaiseIntentForContext from "./fdc3.raiseIntentForContext";
-import mocha, { Stats } from "mocha";
-import { TestResultHandlers } from "../complianceTypes";
-import constants from "../constants";
 
 const nonInteractiveTestSuites = [
   fdc3AddContextListener,
@@ -116,4 +116,17 @@ export const runTests = (resultHandlers?: TestResultHandlers): void => {
       });
     }
   }
+};
+
+/**
+ * Intended for running tests in container with results shown
+ * in HTML page
+ */
+export const executeTestsInBrowser = () => {
+  (mocha as any).timeout(constants.TestTimeout);
+  nonInteractiveTestSuites
+    .concat(potentiallyInteractiveTestSuites)
+    .sort((s1, s2) => s1.name.localeCompare(s2.name))
+    .forEach((suite) => suite());
+  mocha.run();
 };
