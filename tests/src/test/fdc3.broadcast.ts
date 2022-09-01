@@ -235,7 +235,7 @@ export default () =>
       let wait = new Promise((resolve) => {
         setTimeout(async function () {
           resolve(true);
-        }, 4000);
+        }, 3000);
       });
       //Give listeners time to receive context
       await wait;
@@ -270,7 +270,7 @@ export default () =>
       let wait = new Promise((resolve) => {
         setTimeout(async function () {
           resolve(true);
-        }, 4000);
+        }, 3000);
       });
 
       //Give listeners time to receive context
@@ -294,7 +294,7 @@ export default () =>
       let wait = new Promise((resolve) => {
         setTimeout(async function () {
           resolve(true);
-        }, 4000);
+        }, 3000);
       });
 
       //Give listeners time to receive context
@@ -321,7 +321,7 @@ export default () =>
       let wait = new Promise((resolve) => {
         setTimeout(async function () {
           resolve(true);
-        }, 4000);
+        }, 3000);
       });
 
       //Give listeners time to receive context
