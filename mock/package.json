@@ -11,7 +11,8 @@
     "start:intent:a": "npx http-server ./intent-a -p 3100",
     "start:intent:b": "npx http-server ./intent-b -p 3101",
     "start:intent:c": "npx http-server ./intent-c -p 3102",
-    "start": "npm-run-all -p start:general start:intent:a start:intent:b start:intent:c"
+    "start:channels": "npx http-server ./channels -p 3103",
+    "start": "npm-run-all -p start:general start:intent:a start:intent:b start:intent:c start:channels"
   },
   "license": "Apache-2.0",
   "devDependencies": {
