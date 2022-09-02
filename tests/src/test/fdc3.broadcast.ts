@@ -39,14 +39,13 @@ export default () =>
     });
 
     it("App A adds context listener then joins channel 1 => App B joins channel 1 then broadcasts context => App A receives context from B", async () => {
-      const asyncWrapper = () => {
         return new Promise(async (resolve) => {
           //Add context listener to app A
           listener = await window.fdc3.addContextListener(
             "fdc3.instrument",
             (context) => {
               expect(context.type).to.be.equals("fdc3.instrument");
-              resolve(true);
+              resolve();
             }
           );
 
@@ -59,13 +58,9 @@ export default () =>
           //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts context
           window.fdc3.open("ChannelsApp", channelsAppContext);
         });
-      };
-
-      await asyncWrapper();
     });
 
     it("App A joins channel 1 then adds context listener => App B joins channel 1 then broadcasts context => App A receives context", async () => {
-      const asyncWrapper = () => {
         return new Promise(async (resolve) => {
           const channels = await window.fdc3.getSystemChannels();
 
@@ -77,7 +72,7 @@ export default () =>
             "fdc3.instrument",
             (context) => {
               expect(context.type).to.be.equals("fdc3.instrument");
-              resolve(true);
+              resolve();
             }
           );
 
@@ -87,13 +82,9 @@ export default () =>
           //Open ChannelsApp app. channels app joins channel 1, then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
         });
-      };
-
-      await asyncWrapper();
     });
 
     it("App B joins channel 1 then broadcasts context => App A joins channel 1 => App A adds context listener then receives context from B", async () => {
-      const asyncWrapper = () => {
         return new Promise(async (resolve) => {
           //Open ChannelsApp app. channels app joins channel 1, then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -106,20 +97,16 @@ export default () =>
             "fdc3.instrument",
             (context) => {
               expect(context.type).to.be.equals("fdc3.instrument");
-              resolve(true);
+              resolve();
             }
           );
 
           assert.isObject(listener);
           expect(typeof listener.unsubscribe).to.be.equals("function");
         });
-      };
-
-      await asyncWrapper();
     });
 
     it("App B broadcasts context then joins channel 1 => App A joins channel 1 => App A adds context listener then receives context from B", async () => {
-      const asyncWrapper = () => {
         channelsAppContext.reverseFunctionCallOrder = true;
         return new Promise(async (resolve) => {
           //Open ChannelsApp app. ChannelsApp broadcasts context, then joins channel 1
@@ -133,20 +120,16 @@ export default () =>
             "fdc3.instrument",
             (context) => {
               expect(context.type).to.be.equals("fdc3.instrument");
-              resolve(true);
+              resolve();
             }
           );
 
           assert.isObject(listener);
           expect(typeof listener.unsubscribe).to.be.equals("function");
         });
-      };
-
-      await asyncWrapper();
     });
 
     it("App A adds instrument context listener => App A and B join channel 1 => App B broadcasts two contexts => App A receives the instrument context from B", async () => {
-      const asyncWrapper = async () => {
         return new Promise(async (resolve) => {
           channelsAppContext.contextBroadcasts.contact = true;
 
@@ -155,7 +138,7 @@ export default () =>
             "fdc3.instrument",
             (context) => {
               expect(context.type).to.be.equals("fdc3.instrument");
-              resolve(true);
+              resolve();
             }
           );
 
@@ -168,14 +151,10 @@ export default () =>
           //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts both contexts
           window.fdc3.open("ChannelsApp", channelsAppContext);
         });
-      };
-
-      await asyncWrapper();
     });
 
     it("App A adds two context listeners => App A and B join channel 1 => App B broadcasts two contexts => App A receives both contexts from B", async () => {
       let contextsReceived = 0;
-      const asyncWrapper = async () => {
         return new Promise(async (resolve) => {
           channelsAppContext.contextBroadcasts.contact = true;
 
@@ -212,13 +191,10 @@ export default () =>
           function checkIfBothContextsReceived() {
             contextsReceived++;
             if (contextsReceived > 1) {
-              resolve(true);
+              resolve();
             }
           }
         });
-      };
-
-      await asyncWrapper();
     });
 
     it("App A adds two context listeners => App A and B join different channels => App B broadcasts two contexts => App A doesn't receive any context", async () => {
