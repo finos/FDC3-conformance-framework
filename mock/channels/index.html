@@ -55,7 +55,7 @@
       window.fdc3.addContextListener(
         "channelsAppContext",
         (context) => {
-          if (context.type === "channelsAppContext" && firedOnce == false) {
+          if (firedOnce == false) {
             firedOnce = true;
             fdc3ApiCalls(context.reverseFunctionCallOrder, context.contextBroadcasts);
           }
