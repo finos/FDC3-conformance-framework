@@ -1,0 +1,65 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Title</title>
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <p>Conformance Framework Mock App</p>
+    <p>This app is only used by the conformance framework for test purposes</p>
+    <p></p>
+    <p id="context"></p>
+    <script>
+      let firedOnce = false;
+
+      const fdc3ApiCalls = async (reverseFunctionCallOrder, contextBroadcasts) => {
+        await window.fdc3.leaveCurrentChannel();
+        switch (reverseFunctionCallOrder) {
+          case false:
+            await joinChannel();
+            broadcast(contextBroadcasts);
+            break;
+          case true:
+            await broadcast(contextBroadcasts);
+            joinChannel();
+            break;
+        }
+      }
+
+      //Channels app joins channel 1
+      const joinChannel = async () => {
+        const channels = await window.fdc3.getSystemChannels();
+        if (channels.length > 0) {
+          try {
+            await window.fdc3.joinChannel(channels[0].id);
+          } catch (ex) {
+            throw new Error("Error while calling joinChannel in app B: " + (ex.message ?? ex))
+          }
+        } else {
+          throw new Error("No system channels available for app B");
+        }
+      }
+
+      //Broadcast from channels app
+        const broadcast = async (contextBroadcasts) => {
+          for (const systemBroadcast in contextBroadcasts) {
+            if (contextBroadcasts[systemBroadcast]) {
+              await window.fdc3.broadcast({
+                "type": `fdc3.${systemBroadcast}`
+              });
+            }
+          };
+        }
+
+      //Retrieve context
+      window.fdc3.addContextListener(
+        "channelsAppContext",
+        (context) => {
+          if (firedOnce == false) {
+            firedOnce = true;
+            fdc3ApiCalls(context.reverseFunctionCallOrder, context.contextBroadcasts);
+          }
+        });
+    </script>
+  </body>
+</html>
