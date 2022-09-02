@@ -208,13 +208,8 @@ export default () =>
       //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts both contexts
       await window.fdc3.open("ChannelsApp", channelsAppContext);
 
-      let wait = new Promise((resolve) => {
-        setTimeout(async function () {
-          resolve(true);
-        }, 3000);
-      });
       //Give listeners time to receive context
-      await wait;
+      await wait();
     });
 
     it("App A adds two context listeners => App A and B join the same channel => App A unsubscribes listeners => App B broadcasts two contexts => App A doesn't receive any context", async () => {
@@ -243,14 +238,9 @@ export default () =>
 
       //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts both contexts
       window.fdc3.open("ChannelsApp", channelsAppContext);
-      let wait = new Promise((resolve) => {
-        setTimeout(async function () {
-          resolve(true);
-        }, 3000);
-      });
 
       //Give listeners time to receive context
-      await wait;
+      await wait();
     });
 
     it("App A adds two context listeners => App A joins channel 1 then joins channel 2 => App B joins channel 1 then broadcasts two contexts => App A doesn't receive any context", async () => {
@@ -267,14 +257,8 @@ export default () =>
       //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts both contexts
       await window.fdc3.open("ChannelsApp", channelsAppContext);
 
-      let wait = new Promise((resolve) => {
-        setTimeout(async function () {
-          resolve(true);
-        }, 3000);
-      });
-
       //Give listeners time to receive context
-      await wait;
+      await wait();
     });
 
     it("App A adds two context listeners => App A joins and then leaves channel 1 => App B joins channel 1 and broadcasts two contexts => App A doesn't receive any context", async () => {
@@ -294,14 +278,7 @@ export default () =>
       await window.fdc3.open("ChannelsApp", channelsAppContext);
 
       //Give listeners time to receive context
-      let wait = new Promise((resolve) => {
-        setTimeout(async function () {
-          resolve(true);
-        }, 3000);
-      });
-
-      //Give listeners time to receive context
-      await wait;
+      await wait();
     });
 
     const joinChannel = async (channel: number) => {
@@ -331,4 +308,16 @@ export default () =>
 
       return listenerObject;
     };
+
+    async function wait() {
+      let wait = new Promise((resolve) => {
+        setTimeout(async function () {
+          resolve(true);
+        }, 3000);
+      });
+
+      await wait;
+    }
   });
+
+
