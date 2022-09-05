@@ -1,44 +1,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <title>Title</title>
+    <title>FDC3 Conformance Tests</title>
+    <link rel="stylesheet" href="lib/mocha.css">
     <link rel="stylesheet" href="index.css" />
   </head>
   <body>
-    <pre id="stats"></pre>
-    <pre id="results"></pre>
-
+    <div id="mocha"></div>
+    <script src="lib/mocha.js"></script>
     <script src="lib/fdc3-compliance.js"></script>
-    <script>
-      const results = document.getElementById("results");
-      const stats = document.getElementById("stats");
-      let passCount = 0;
-      let failCount = 0;
-      let totalCount = 0;
-
-      const updateStats = () => {
-        stats.innerHTML = `Test results ${passCount}/${totalCount}`;
-      };
-
-      fdc3Compliance.initAllTests();
-
-      fdc3Compliance.runTests({
-        onStart: (runner) => {
-          totalCount = runner.total;
-          updateStats();
-        },
-        onPass: (test) => {
-          results.innerHTML += `<br/>✅ Test passed: ${test.parent.title} / ${test.title}<br/>`;
-          passCount++;
-          updateStats();
-        },
-        onFail: (test) => {
-          results.innerHTML += `<br />❌ Test failed: ${test.parent.title} / ${test.title}`;
-          results.innerHTML += `<br />  ${test.err.message}<br/>`;
-          failCount++;
-          updateStats();
-        },
-      });
+    <script class="mocha-init">
+      mocha.setup('bdd');
+    </script>
+    <script class="mocha-exec">
+      fdc3Compliance.executeTestsInBrowser();
     </script>
   </body>
 </html>
