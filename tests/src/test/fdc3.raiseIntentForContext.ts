@@ -1,4 +1,5 @@
 import { ResolveError } from "@finos/fdc3";
+import { expect } from "chai";
 
 const ExpectedErrorNotThrownError = "Expected error NoAppsFound not thrown";
 
@@ -20,13 +21,7 @@ export default () =>
         await window.fdc3.raiseIntentForContext(context);
         throw new Error(ExpectedErrorNotThrownError);
       } catch (ex) {
-        if ((ex.message ?? ex) !== ResolveError.NoAppsFound) {
-          throw new Error(
-            ExpectedErrorNotThrownError +
-              "\nException thrown: " +
-              (ex.message ?? ex)
-          );
-        }
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
   });

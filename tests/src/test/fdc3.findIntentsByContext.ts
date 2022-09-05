@@ -45,7 +45,7 @@ export default () =>
           type: "testContextNonExistent",
         });
       } catch (ex) {
-        expect(ex.message).to.eq(ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
   });
