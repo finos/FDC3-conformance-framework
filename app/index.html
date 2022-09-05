@@ -13,7 +13,12 @@
       mocha.setup('bdd');
     </script>
     <script class="mocha-exec">
-      fdc3Compliance.executeTestsInBrowser();
+      const action = () => fdc3Compliance.executeTestsInBrowser();
+      if (window.fdc3) {
+        action();
+      } else {
+        window.addEventListener('fdc3Ready', action);
+      }
     </script>
   </body>
 </html>

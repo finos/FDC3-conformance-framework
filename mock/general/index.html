@@ -11,28 +11,30 @@
     <p id="context"></p>
     <script src="lib/mock-functions.js"></script>
     <script>
-      const stats = document.getElementById("context");
-
-      window.fdc3.joinChannel("FDC3-Conformance-Channel").then(() => {
-        // broadcast that this app has opened
-        window.fdc3.broadcast({
-          type: "fdc3-conformance-opened",
-        });
-
-        // Context listeners used by tests.
-        window.fdc3.addContextListener("fdc3.testReceiver", (context) => {
-          stats.innerHTML = `Received Data: ${JSON.stringify(context)}`;
-
-          // broadcast that this app has received context
+      onFdc3Ready().then(() => {
+        const stats = document.getElementById("context");
+  
+        window.fdc3.joinChannel("FDC3-Conformance-Channel").then(() => {
+          // broadcast that this app has opened
           window.fdc3.broadcast({
-            type: "fdc3-conformance-context-received",
-            context: context,
+            type: "fdc3-conformance-opened",
           });
+  
+          // Context listeners used by tests.
+          window.fdc3.addContextListener("fdc3.testReceiver", (context) => {
+            stats.innerHTML = `Received Data: ${JSON.stringify(context)}`;
+  
+            // broadcast that this app has received context
+            window.fdc3.broadcast({
+              type: "fdc3-conformance-context-received",
+              context: context,
+            });
+          });
+  
+          window.fdc3.addContextListener("fdc3.instrument");
         });
-
-        window.fdc3.addContextListener("fdc3.instrument");
+        setupCloseListener(window.fdc3);
       });
-      setupCloseListener(window.fdc3);
     </script>
   </body>
 </html>
