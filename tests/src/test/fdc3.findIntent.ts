@@ -18,7 +18,7 @@ export default () =>
         await window.fdc3.findIntent("nonExistentIntent");
         assert.fail("No error was thrown");
       } catch (ex) {
-        expect(ex.message).to.eq(ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
@@ -41,7 +41,7 @@ export default () =>
         });
         assert.fail("No error was thrown");
       } catch (ex) {
-        expect(ex.message).to.eq(ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
