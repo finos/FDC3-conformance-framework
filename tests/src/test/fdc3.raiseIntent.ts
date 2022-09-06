@@ -17,6 +17,12 @@ const createReceiver = (contextType: string) => {
   return messageReceived;
 };
 
+const raiseIntentDocs =
+  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintent\r\nCause";
+
+/**
+ * Details on the mock apps used in these tests can be found in /mock/README.md
+ */
 export default () =>
   describe("fdc3.raiseIntent", () => {
     before(async () => {
@@ -37,7 +43,7 @@ export default () =>
       await broadcastCloseWindow();
     });
 
-    it("Should start app B when raising intent 'sharedTestingIntent1' with context 'testContextY'", async () => {
+    it("Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextY'", async () => {
       const result = createReceiver("fdc3-intent-b-opened");
       const intentResolution = await window.fdc3.raiseIntent(
         "sharedTestingIntent1",
@@ -46,11 +52,11 @@ export default () =>
         }
       );
 
-      expect(intentResolution.source).to.eq("IntentAppBId");
+      expect(intentResolution.source).to.eq("IntentAppBId", raiseIntentDocs);
       await result;
     });
 
-    it("Should start app A when targeted by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
+    it("Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await window.fdc3.raiseIntent(
         "aTestingIntent",
@@ -59,11 +65,11 @@ export default () =>
         },
         "IntentAppA"
       );
-      expect(intentResolution.source).to.eq("IntentAppAId");
+      expect(intentResolution.source).to.eq("IntentAppAId", raiseIntentDocs);
       await result;
     });
 
-    it("Should start app A when targeted (name and appId) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
+    it("Should start app intent-a when targeted (name and appId) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await window.fdc3.raiseIntent(
         "aTestingIntent",
@@ -72,11 +78,11 @@ export default () =>
         },
         { name: "IntentAppA", appId: "IntentAppAId" }
       );
-      expect(intentResolution.source).to.eq("IntentAppAId");
+      expect(intentResolution.source).to.eq("IntentAppAId", raiseIntentDocs);
       await result;
     });
 
-    it("Should start app A when targeted (name) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
+    it("Should start app intent-a when targeted (name) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await window.fdc3.raiseIntent(
         "aTestingIntent",
@@ -85,11 +91,11 @@ export default () =>
         },
         { name: "IntentAppA" }
       );
-      expect(intentResolution.source).to.eq("IntentAppAId");
+      expect(intentResolution.source).to.eq("IntentAppAId", raiseIntentDocs);
       await result;
     });
 
-    it("Should fail to raise intent when targeted app 'IntentAppA', context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
+    it("Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
       try {
         await window.fdc3.raiseIntent(
           "aTestingIntent",
@@ -104,7 +110,7 @@ export default () =>
       }
     });
 
-    it("Should fail to raise intent when targeted app 'IntentAppA' (name and appId), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
+    it("Should fail to raise intent when targeted app intent-a (name and appId), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
       try {
         await window.fdc3.raiseIntent(
           "aTestingIntent",
@@ -113,13 +119,17 @@ export default () =>
           },
           { name: "IntentAppA", appId: "IntentAppAId" }
         );
-        assert.fail("Error was not thrown");
+        assert.fail("Error was not thrown", raiseIntentDocs);
       } catch (ex) {
-        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
+        expect(ex).to.have.property(
+          "message",
+          ResolveError.NoAppsFound,
+          raiseIntentDocs
+        );
       }
     });
 
-    it("Should fail to raise intent when targeted app 'IntentAppA' (name), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
+    it("Should fail to raise intent when targeted app intent-a (name), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
       try {
         await window.fdc3.raiseIntent(
           "aTestingIntent",
@@ -128,13 +138,17 @@ export default () =>
           },
           { name: "IntentAppA" }
         );
-        assert.fail("Error was not thrown");
+        assert.fail("Error was not thrown", raiseIntentDocs);
       } catch (ex) {
-        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
+        expect(ex).to.have.property(
+          "message",
+          ResolveError.NoAppsFound,
+          raiseIntentDocs
+        );
       }
     });
 
-    it("Should fail to raise intent when targeted app 'IntentAppC', context 'testContextX' and intent 'aTestingIntent' do not correlate", async () => {
+    it("Should fail to raise intent when targeted app intent-c, context 'testContextX' and intent 'aTestingIntent' do not correlate", async () => {
       try {
         await window.fdc3.raiseIntent(
           "aTestingIntent",
@@ -143,9 +157,13 @@ export default () =>
           },
           "IntentAppC"
         );
-        assert.fail("Error was not thrown");
+        assert.fail("Error was not thrown", raiseIntentDocs);
       } catch (ex) {
-        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
+        expect(ex).to.have.property(
+          "message",
+          ResolveError.NoAppsFound,
+          raiseIntentDocs
+        );
       }
     });
   });

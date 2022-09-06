@@ -2,13 +2,13 @@
 
 The following are all mock apps used within the FDC3 conformance framework tests.
 
-| Mock App Name | Used By                                                     |
-| ------------- | ----------------------------------------------------------- |
-| Channels      | fdc3.broadcast                                              |
-| General       | fdc3.open                                                   |
-| Intent-A      | fdc3.findIntent, fdc3.findIntentByContext, fdc3.raiseIntent |
-| Intent-B      | fdc3.findIntent, fdc3.findIntentByContext, fdc3.raiseIntent |
-| Intent-C      | fdc3.findIntent, fdc3.findIntentByContext, fdc3.raiseIntent |
+| Mock App Name | Used By                                                     | Intents (Contexts)                                                               |
+| ------------- | ----------------------------------------------------------- | -------------------------------------------------------------------------------- |
+| Channels      | fdc3.broadcast                                              |                                                                                  |
+| General       | fdc3.open                                                   |                                                                                  |
+| Intent-A      | fdc3.findIntent, fdc3.findIntentByContext, fdc3.raiseIntent | aTestingIntent (testContextX, testContextZ), sharedTestingIntent1 (testContextX) |
+| Intent-B      | fdc3.findIntent, fdc3.findIntentByContext, fdc3.raiseIntent | bTestingIntent (testContextY), sharedTestingIntent1 (testContextX, testContextY) |
+| Intent-C      | fdc3.findIntent, fdc3.findIntentByContext, fdc3.raiseIntent | cTestingIntent (testContextX)                                                    |
 
 The apps can be started in parallel via:
 

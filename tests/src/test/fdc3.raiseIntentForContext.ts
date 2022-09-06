@@ -1,7 +1,8 @@
 import { ResolveError } from "@finos/fdc3";
-import { expect } from "chai";
+import { assert, expect } from "chai";
 
-const ExpectedErrorNotThrownError = "Expected error NoAppsFound not thrown";
+const docs =
+  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintentforcontext\r\nCause";
 
 export default () =>
   describe("fdc3.raiseIntentForContext", async () => {
@@ -19,9 +20,9 @@ export default () =>
 
       try {
         await window.fdc3.raiseIntentForContext(context);
-        throw new Error(ExpectedErrorNotThrownError);
+        assert.fail("Expected error NoAppsFound not thrown", docs);
       } catch (ex) {
-        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound, docs);
       }
     });
   });

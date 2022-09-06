@@ -23,6 +23,12 @@ const createReceiver = (contextType: string) => {
   return messageReceived;
 };
 
+const openDocs =
+  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent#open\r\nCause";
+
+/**
+ * Details on the mock apps used in these tests can be found in /mock/README.md
+ */
 export default () =>
   describe("fdc3.open", () => {
     it("Can open app B from app A with no context and string as target", async () => {
@@ -52,18 +58,18 @@ export default () =>
     it("Receive AppNotFound error when targeting non-existent app name as target", async () => {
       try {
         await window.fdc3.open("ThisAppDoesNotExist");
-        assert.fail("No error was not thrown");
+        assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
-        expect(ex).to.have.property("message", OpenError.AppNotFound);
+        expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
 
     it("Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target", async () => {
       try {
         await window.fdc3.open({ name: "ThisAppDoesNotExist" });
-        assert.fail("No error was not thrown");
+        assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
-        expect(ex).to.have.property("message", OpenError.AppNotFound);
+        expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
 
@@ -73,9 +79,9 @@ export default () =>
           name: "ThisAppDoesNotExist",
           appId: "ThisAppDoesNotExist",
         });
-        assert.fail("No error was not thrown");
+        assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
-        expect(ex).to.have.property("message", OpenError.AppNotFound);
+        expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
 
@@ -88,8 +94,8 @@ export default () =>
       );
 
       const receivedValue = (await receiver) as any;
-      expect(receivedValue.context.name).to.eq("context");
-      expect(receivedValue.context.type).to.eq("fdc3.testReceiver");
+      expect(receivedValue.context.name).to.eq("context", openDocs);
+      expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
     });
 
     it("Can open app B from app A with invalid context and AppMetadata (name) as target", async () => {
