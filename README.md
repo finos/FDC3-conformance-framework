@@ -12,7 +12,7 @@ This repository currently contains:
 
  - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
  - `app` - A simple application that hosts the tests, allowing them to be executed from within a desktop container.
- - `mock` - Multiple mock applications that are used to verify conformance
+ - `mock` - Multiple mock applications that are used to verify conformance - [details](./mock/README.md)
 
 In order to get started, install all the dependencies with:
 
@@ -41,37 +41,6 @@ yarn start
 The application will start and will open a webbrowser tab, this tab will have an error. The reason is that the app does not have a Window.FDC3 object and should be ran through the desktop agent.
 
 Here is the setup steps for the following desktop agents:
-
-
-### Finsemble setup
-
-Clone and setup the Finsemble seed project with:
-
-```sh
-git clone https://github.com/ChartIQ/finsemble-seed.git
-cd finsemble-seed
-yarn install
-```
-
-After the installation, copy the json snippet from [app-d-snippet.txt](./tests/app-d-snippet.txt) into `/public/configs/application/appd.json` under `appd`. This will add 5 apps into the desktop container application under test, required for conformance testing.
-
-The desktop agent can be started with:
-
-```sh
-yarn start
-```
-
-The testing framework can be found under the Apps menu.
-
-
-### Openfin setup
-
-Ensure you have the OpenFin Runtime cli tool installed, that can be done with: `npm install -g openfin-cli`.
-
-Once the Testing Framework server has been started, it can be opened with:
-
-`openfin --launch --config http://localhost:3000/openfin_app.json`.
-
 
 ## Contributing
 
