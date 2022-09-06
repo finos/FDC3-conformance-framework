@@ -319,5 +319,3 @@ export default () =>
       await wait;
     }
   });
-
-
