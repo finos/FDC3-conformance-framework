@@ -54,8 +54,7 @@ export default () =>
         await window.fdc3.open("ThisAppDoesNotExist");
         assert.fail("No error was not thrown");
       } catch (ex) {
-        const exception = ex.message ?? ex;
-        expect(exception).to.eq(OpenError.AppNotFound);
+        expect(ex).to.have.property("message", OpenError.AppNotFound);
       }
     });
 
@@ -64,8 +63,7 @@ export default () =>
         await window.fdc3.open({ name: "ThisAppDoesNotExist" });
         assert.fail("No error was not thrown");
       } catch (ex) {
-        const exception = ex.message ?? ex;
-        expect(exception).to.eq(OpenError.AppNotFound);
+        expect(ex).to.have.property("message", OpenError.AppNotFound);
       }
     });
 
@@ -77,8 +75,7 @@ export default () =>
         });
         assert.fail("No error was not thrown");
       } catch (ex) {
-        const exception = ex.message ?? ex;
-        expect(exception).to.eq(OpenError.AppNotFound);
+        expect(ex).to.have.property("message", OpenError.AppNotFound);
       }
     });
 

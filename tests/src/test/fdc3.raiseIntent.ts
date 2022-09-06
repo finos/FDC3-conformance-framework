@@ -100,7 +100,7 @@ export default () =>
         );
         assert.fail("Error was not thrown");
       } catch (ex) {
-        expect(ex.message).to.eq(ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
@@ -115,7 +115,7 @@ export default () =>
         );
         assert.fail("Error was not thrown");
       } catch (ex) {
-        expect(ex.message).to.eq(ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
@@ -130,7 +130,7 @@ export default () =>
         );
         assert.fail("Error was not thrown");
       } catch (ex) {
-        expect(ex.message).to.eq(ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
@@ -145,7 +145,7 @@ export default () =>
         );
         assert.fail("Error was not thrown");
       } catch (ex) {
-        expect(ex.message).to.eq(ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
   });
