@@ -1,4 +1,4 @@
-import { ResolveError, Listener } from "@finos/fdc3";
+import { Listener } from "@finos/fdc3";
 import { assert, expect } from "chai";
 
 export default () =>
@@ -319,5 +319,3 @@ export default () =>
       await wait;
     }
   });
-
-
