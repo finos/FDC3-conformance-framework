@@ -29,8 +29,6 @@ export default () =>
     });
 
     it("Returns listener object", async () => {
-      const contextType = "fdc3.contact";
-
       try {
         listener = await window.fdc3.addContextListener(null, () => {});
         assert.isObject(listener);
