@@ -23,9 +23,9 @@ export default () =>
     };
 
     afterEach(async () => {
-      await window.fdc3.getOrCreateChannel("fdc3.raiseIntent");
-      await window.fdc3.joinChannel("fdc3.raiseIntent");
-      await broadcastCloseWindow();
+      // await window.fdc3.getOrCreateChannel("fdc3.raiseIntent");
+      // await window.fdc3.joinChannel("fdc3.raiseIntent");
+      // await broadcastCloseWindow();
 
       if (listener !== undefined) {
         await listener.unsubscribe();
@@ -275,17 +275,9 @@ export default () =>
         await wait();
       });
 
-      it("Should not receive context when joining and then leaving a user channel before app B broadcasts the listened type to the same channel", async (done) => {
+      it("Should not receive context when joining and then leaving a user channel before app B broadcasts the listened type to the same channel", async () => {
         //Add two context listeners to app A
-        //listener = await addContextListener("fdc3.instrument");
-
-        listener = await window.fdc3.addContextListener(
-          "fdc3.instrument",
-          () => {
-            done();
-            assert.fail(`"fdc3.instrument" context received`);
-          }
-        );
+        listener = await addContextListener("fdc3.instrument");
 
         //App A joins channel 1
         await joinChannel(1);
@@ -298,7 +290,6 @@ export default () =>
 
         //Give listeners time to receive context
         await wait();
-        done();
       });
     });
 
