@@ -268,8 +268,6 @@ export default () =>
         await joinChannel(1);
         await joinChannel(2);
 
-        
-
         //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts both contexts
         await window.fdc3.open("ChannelsApp", channelsAppContext);
 
@@ -279,7 +277,15 @@ export default () =>
 
       it("Should not receive context when joining and then leaving a user channel before app B broadcasts the listened type to the same channel", async (done) => {
         //Add two context listeners to app A
-        listener = await addContextListener("fdc3.instrument");
+        //listener = await addContextListener("fdc3.instrument");
+
+        listener = await window.fdc3.addContextListener(
+          "fdc3.instrument",
+          () => {
+            done();
+            assert.fail(`"fdc3.instrument" context received`);
+          }
+        );
 
         //App A joins channel 1
         await joinChannel(1);
@@ -292,6 +298,7 @@ export default () =>
 
         //Give listeners time to receive context
         await wait();
+        done();
       });
     });
 
@@ -434,10 +441,7 @@ export default () =>
         );
 
         //Add context listener to app A
-        listener = await addContextListener(
-          "fdc3.instrument",
-          testChannel
-        );
+        listener = await addContextListener("fdc3.instrument", testChannel);
 
         assert.isObject(listener);
         expect(typeof listener.unsubscribe).to.be.equals("function");
@@ -461,10 +465,7 @@ export default () =>
         );
 
         //Add context listener to app A
-        listener = await addContextListener(
-          "fdc3.instrument",
-          testChannel
-        );
+        listener = await addContextListener("fdc3.instrument", testChannel);
 
         assert.isObject(listener);
         expect(typeof listener.unsubscribe).to.be.equals("function");
@@ -488,10 +489,7 @@ export default () =>
         );
 
         //Add context listener to app A
-        listener = await addContextListener(
-          "fdc3.instrument",
-          testChannel
-        );
+        listener = await addContextListener("fdc3.instrument", testChannel);
 
         assert.isObject(listener);
         expect(typeof listener.unsubscribe).to.be.equals("function");
@@ -510,10 +508,7 @@ export default () =>
         let testChannel = await window.fdc3.getOrCreateChannel("test-channel");
 
         //Add context listener to app A
-        listener = await addContextListener(
-          "fdc3.instrument",
-          testChannel
-        );
+        listener = await addContextListener("fdc3.instrument", testChannel);
 
         window.fdc3.leaveCurrentChannel();
 
@@ -610,10 +605,8 @@ export default () =>
       if (channel !== undefined) {
         listenerObject = await channel.addContextListener(
           contextType === null ? null : contextType,
-          (context) => {
-            if (context.type === contextType) {
-              assert.fail(`${contextType} context received`);
-            }
+          () => {
+            assert.fail(`${contextType} context received`);
           }
         );
       } else {
