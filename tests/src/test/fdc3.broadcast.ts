@@ -17,53 +17,27 @@ export default () =>
       broadcastMultipleItems: false,
     };
 
-    const broadcastCloseWindow = async () => {
-      await window.fdc3.broadcast({ type: "closeWindow" });
-      return new Promise<void>((resolve) => setTimeout(() => resolve(), 1000)); // Wait until close window event is handled
-    };
-
-    afterEach(async () => {
-      // await window.fdc3.getOrCreateChannel("fdc3.raiseIntent");
-      // await window.fdc3.joinChannel("fdc3.raiseIntent");
-      // await broadcastCloseWindow();
-
-      if (listener !== undefined) {
-        await listener.unsubscribe();
-        listener = undefined;
+    beforeEach(async () => {
+      await unsubscribeListeners();
+      if (channelsAppContext.joinAppChannel === false) {
+        window.fdc3.leaveCurrentChannel();
       }
-
-      if (listener2 !== undefined) {
-        await listener2.unsubscribe();
-        listener2 = undefined;
-      }
-
       await window.fdc3.leaveCurrentChannel();
-      channelsAppContext.broadcastMultipleItems,
-        channelsAppContext.joinAppChannel,
-        channelsAppContext.contextBroadcasts.contact,
-        (channelsAppContext.reverseFunctionCallOrder = false);
+      resetChannelsAppContext();
     });
 
-    it("Method is callable", async () => {
+    it("Broadcast method is callable", async () => {
       await window.fdc3.broadcast({
         type: "fdc3.instrument",
         id: { ticker: "AAPL" },
       });
     });
 
-    it("Should throw NOT DELIVERED error when broadcast is sent with an invalid Context object structure", async () => {
-      try {
-        // @ts-ignore
-        await window.fdc3.broadcast({
-          id: { ticker: "AAPL" },
-        });
-        assert.fail("No error thrown");
-      } catch (ex) {
-        expect(ex).to.have.property("message", "NOT DELIVERED");
-      }
-    });
-
     describe("User channels", () => {
+      afterEach(async () => {
+        await broadcastSystemChannelCloseWindow();
+      });
+
       it("Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel", async () => {
         return new Promise(async (resolve) => {
           //Add context listener to app A
@@ -291,9 +265,42 @@ export default () =>
         //Give listeners time to receive context
         await wait();
       });
+
+      it("Should throw NOT DELIVERED error when system broadcast is sent with an invalid Context object structure", async () => {
+        try {
+          // @ts-ignore
+          await window.fdc3.broadcast({
+            id: { ticker: "AAPL" },
+          });
+          assert.fail("No error thrown");
+        } catch (ex) {
+          expect(ex).to.have.property("message", "NOT DELIVERED");
+        }
+      });
     });
 
     describe("App channels", () => {
+      afterEach(async () => {
+        await broadcastAppChannelCloseWindow();
+      });
+
+      it("Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context", async () => {
+        channelsAppContext.joinAppChannel = true;
+        channelsAppContext.contextBroadcasts.contact = true;
+
+        //App A joins app channel
+        const testChannel = await window.fdc3.getOrCreateChannel(
+          "test-channel"
+        );
+
+        //App B joins the same app channel as A then broadcasts context
+        await window.fdc3.open("ChannelsApp", channelsAppContext);
+
+        //get current context
+        const context = await testChannel.getCurrentContext();
+        expect(context.type).to.be.equals("fdc3.contact");
+      });
+
       it("Should receive context when app B broadcasts the listened type to the same app channel", async () => {
         return new Promise(async (resolve) => {
           channelsAppContext.joinAppChannel = true;
@@ -492,25 +499,20 @@ export default () =>
         await wait();
       });
 
-      it("Should not receive context when joining and then leaving an app channel before app B broadcasts the listened type to the same channel", async () => {
-        channelsAppContext.joinAppChannel = true;
+      it("Should throw NOT DELIVERED error when an app channel broadcast is sent with an invalid Context object structure", async () => {
+        try {
+          const testChannel = await window.fdc3.getOrCreateChannel(
+            "test-channel"
+          );
 
-        //App A joins app channel
-        let testChannel = await window.fdc3.getOrCreateChannel("test-channel");
-
-        //Add context listener to app A
-        listener = await addContextListener("fdc3.instrument", testChannel);
-
-        window.fdc3.leaveCurrentChannel();
-
-        assert.isObject(listener);
-        expect(typeof listener.unsubscribe).to.be.equals("function");
-
-        //App B joins the same app channel as A then broadcasts context
-        await window.fdc3.open("ChannelsApp", channelsAppContext);
-
-        //give listener time to receive context
-        await wait();
+          // @ts-ignore
+          await testChannel.broadcast({
+            id: { ticker: "AAPL" },
+          });
+          assert.fail("No error thrown");
+        } catch (ex) {
+          expect(ex).to.have.property("message", "NOT DELIVERED");
+        }
       });
 
       it("Should receive both contexts when app B broadcasts both contexts to the same app channel and A gets current context for each type", async () => {
@@ -526,11 +528,9 @@ export default () =>
         await window.fdc3.open("ChannelsApp", channelsAppContext);
 
         //get contexts from app B
-        const instrumentContext = await testChannel.getCurrentContext(
-          "fdc3.instrument"
-        );
+        const context = await testChannel.getCurrentContext("fdc3.instrument");
 
-        expect(instrumentContext.type).to.be.equals("fdc3.instrument");
+        expect(context.type).to.be.equals("fdc3.instrument");
 
         const contactContext = await testChannel.getCurrentContext(
           "fdc3.contact"
@@ -552,30 +552,10 @@ export default () =>
         await window.fdc3.open("ChannelsApp", channelsAppContext);
 
         //get contexts from app B
-        const instrumentContext = await testChannel.getCurrentContext(
-          "fdc3.instrument"
-        );
+        const context = await testChannel.getCurrentContext("fdc3.instrument");
 
-        expect(instrumentContext.type).to.be.equals("fdc3.instrument");
-        expect(instrumentContext.name).to.be.equals("History-item-2");
-      });
-
-      it("Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context", async () => {
-        channelsAppContext.joinAppChannel = true;
-        channelsAppContext.contextBroadcasts.contact = true;
-
-        //App A joins app channel
-        const testChannel = await window.fdc3.getOrCreateChannel(
-          "test-channel"
-        );
-
-        //App B joins the same app channel as A then broadcasts context
-        await window.fdc3.open("ChannelsApp", channelsAppContext);
-
-        //get current context
-        const instrumentContext = await testChannel.getCurrentContext();
-
-        expect(instrumentContext.type).to.be.equals("fdc3.contact");
+        expect(context.type).to.be.equals("fdc3.instrument");
+        expect(context.name).to.be.equals("History-item-2");
       });
     });
 
@@ -616,12 +596,40 @@ export default () =>
     };
 
     async function wait() {
-      let wait = new Promise((resolve) => {
+      return new Promise((resolve) => {
         setTimeout(async function () {
           resolve(true);
         }, 3000);
       });
+    }
 
-      await wait;
+    const broadcastSystemChannelCloseWindow = async () => {
+      await window.fdc3.broadcast({ type: "closeWindow" });
+      return new Promise<void>((resolve) => setTimeout(() => resolve(), 3000)); // Wait until close window event is handled
+    };
+
+    const broadcastAppChannelCloseWindow = async () => {
+      const testChannel = await window.fdc3.getOrCreateChannel("test-channel");
+      await testChannel.broadcast({ type: "closeWindow" });
+      return new Promise<void>((resolve) => setTimeout(() => resolve(), 3000)); // Wait until close window event is handled
+    };
+
+    async function unsubscribeListeners() {
+      if (listener !== undefined) {
+        await listener.unsubscribe();
+        listener = undefined;
+      }
+
+      if (listener2 !== undefined) {
+        await listener2.unsubscribe();
+        listener2 = undefined;
+      }
+    }
+
+    function resetChannelsAppContext() {
+      channelsAppContext.broadcastMultipleItems = false;
+      channelsAppContext.joinAppChannel = false;
+      channelsAppContext.contextBroadcasts.contact = false;
+      channelsAppContext.reverseFunctionCallOrder = false;
     }
   });

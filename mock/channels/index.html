@@ -1,4 +1,5 @@
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <title>Title</title>
@@ -16,26 +17,41 @@
       let firedOnce = false;
 
       const fdc3ApiCalls = async (context) => {
-        await window.fdc3.leaveCurrentChannel();
         switch (context.reverseFunctionCallOrder) {
           case false:
             const testChannel = await joinChannel(context.joinAppChannel);
-            broadcast(context, testChannel);
+            await broadcast(context, testChannel);
+            await addCloseWindowListener(testChannel);
             break;
           case true:
-            await broadcast(context.contextBroadcasts);
-            joinChannel(context.joinAppChannel);
+            await broadcast(context);
+            await joinChannel(context.joinAppChannel);
+            await addCloseWindowListener();
             break;
+        }
+      }
+
+      const addCloseWindowListener = async (testChannel) => {
+        if (testChannel === undefined) {
+          await window.fdc3.addContextListener(
+            "closeWindow",
+            () => {
+              closeFinsembleWindow();
+            });
+        } else {
+          await testChannel.addContextListener(
+            "closeWindow",
+            () => {
+              closeFinsembleWindow();
+            });
         }
       }
 
       const joinChannel = async (useAppChannel) => {
         if (useAppChannel) {
           return await joinAppChannel();
-          document.getElementById("context").innerHTML += "Joined app channel/ ";
         } else {
           await joinSystemChannel();
-          document.getElementById("context").innerHTML += "Joined user channel/ ";
         }
       }
 
@@ -53,6 +69,7 @@
         if (channels.length > 0) {
           try {
             await window.fdc3.joinChannel(channels[0].id);
+            document.getElementById("context").innerHTML += `Joined user channel ${channels[0].id}/ `;
           } catch (ex) {
             throw new Error("Error while calling joinChannel in app B: " + (ex.message ?? ex))
           }
@@ -64,13 +81,14 @@
       //Channels app joins test-channel
       const joinAppChannel = async () => {
         try {
-          return await fdc3.getOrCreateChannel("test-channel");
+          var appChannel = await fdc3.getOrCreateChannel("test-channel");
+          document.getElementById("context").innerHTML += "Joined app channel/ ";
+          return appChannel;
         } catch (ex) {
           throw new Error("Error while joining test-channel in channels app: " + (ex.message ?? ex))
         }
       }
 
-      //Broadcast from channels app
       const systemBroadcast = async (contextBroadcasts) => {
         for (const context in contextBroadcasts) {
           if (contextBroadcasts[context]) {
@@ -113,8 +131,8 @@
             fdc3ApiCalls(context);
           }
         });
-      setupCloseListener(window.fdc3);
     });
   </script>
 </body>
+
 </html>
