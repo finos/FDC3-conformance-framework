@@ -81,7 +81,7 @@
       //Channels app joins test-channel
       const joinAppChannel = async () => {
         try {
-          var appChannel = await fdc3.getOrCreateChannel("test-channel");
+          const appChannel = await fdc3.getOrCreateChannel("test-channel");
           document.getElementById("context").innerHTML += "Joined app channel/ ";
           return appChannel;
         } catch (ex) {
