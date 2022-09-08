@@ -20,9 +20,8 @@ export default () =>
     beforeEach(async () => {
       await unsubscribeListeners();
       if (channelsAppContext.joinAppChannel === false) {
-        window.fdc3.leaveCurrentChannel();
+        await window.fdc3.leaveCurrentChannel();
       }
-      await window.fdc3.leaveCurrentChannel();
       resetChannelsAppContext();
     });
 
