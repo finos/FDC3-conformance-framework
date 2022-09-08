@@ -19,9 +19,7 @@ export default () =>
 
     beforeEach(async () => {
       await unsubscribeListeners();
-      if (channelsAppContext.joinAppChannel === false) {
-        await window.fdc3.leaveCurrentChannel();
-      }
+      await window.fdc3.leaveCurrentChannel();
       resetChannelsAppContext();
     });
 
@@ -283,28 +281,6 @@ export default () =>
         await broadcastAppChannelCloseWindow();
       });
 
-      it("Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context", async () => {
-        channelsAppContext.joinAppChannel = true;
-        channelsAppContext.contextBroadcasts.contact = true;
-
-        //App A joins app channel
-        const testChannel = await window.fdc3.getOrCreateChannel(
-          "test-channel"
-        );
-
-        //App B joins the same app channel as A then broadcasts context
-        await window.fdc3.open("ChannelsApp", channelsAppContext);
-
-        //get current context
-        const context = await testChannel.getCurrentContext();
-
-        if (context === null) {
-          assert.fail("No Context retrieved");
-        } else {
-          expect(context.type).to.be.equals("fdc3.contact");
-        }
-      });
-
       it("Should receive context when app B broadcasts the listened type to the same app channel", async () => {
         return new Promise(async (resolve) => {
           channelsAppContext.joinAppChannel = true;
@@ -560,6 +536,28 @@ export default () =>
 
         expect(context.type).to.be.equals("fdc3.instrument");
         expect(context.name).to.be.equals("History-item-2");
+      });
+
+      it("Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context", async () => {
+        channelsAppContext.joinAppChannel = true;
+        channelsAppContext.contextBroadcasts.contact = true;
+
+        //App A joins app channel
+        const testChannel = await window.fdc3.getOrCreateChannel(
+          "test-channel"
+        );
+
+        //App B joins the same app channel as A then broadcasts context
+        await window.fdc3.open("ChannelsApp", channelsAppContext);
+
+        //get current context
+        const context = await testChannel.getCurrentContext();
+
+        if (context === null) {
+          assert.fail("No Context retrieved");
+        } else {
+          expect(context.type).to.be.equals("fdc3.contact");
+        }
       });
     });
 
