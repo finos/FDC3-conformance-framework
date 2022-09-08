@@ -300,9 +300,9 @@ export default () =>
 
         if(context === null){
           assert.fail("No Context retrieved")
+        }else{
+          expect(context.type).to.be.equals("fdc3.contact");
         }
-
-        expect(context.type).to.be.equals("fdc3.contact");
       });
 
       it("Should receive context when app B broadcasts the listened type to the same app channel", async () => {
