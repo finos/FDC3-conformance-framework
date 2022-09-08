@@ -21,12 +21,12 @@
           case false:
             const testChannel = await joinChannel(context.joinAppChannel);
             await broadcast(context, testChannel);
-            await addCloseWindowListener(testChannel);
+            addCloseWindowListener(testChannel);
             break;
           case true:
             await broadcast(context);
             await joinChannel(context.joinAppChannel);
-            await addCloseWindowListener();
+            addCloseWindowListener();
             break;
         }
       }

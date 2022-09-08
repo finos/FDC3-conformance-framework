@@ -298,9 +298,9 @@ export default () =>
         //get current context
         const context = await testChannel.getCurrentContext();
 
-        if(context === null){
-          assert.fail("No Context retrieved")
-        }else{
+        if (context === null) {
+          assert.fail("No Context retrieved");
+        } else {
           expect(context.type).to.be.equals("fdc3.contact");
         }
       });
