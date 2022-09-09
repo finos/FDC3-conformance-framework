@@ -187,7 +187,7 @@ export default () =>
 
           function checkIfBothContextsReceived() {
             contextsReceived++;
-            if (contextsReceived > 1) {
+            if (contextsReceived === 2) {
               resolve();
             }
           }
@@ -376,7 +376,6 @@ export default () =>
             "fdc3.instrument",
             (context) => {
               expect(context.type).to.be.equals("fdc3.instrument");
-              contextsReceived++;
               checkIfBothContextsReceived();
             }
           );
@@ -389,7 +388,6 @@ export default () =>
             "fdc3.contact",
             (context) => {
               expect(context.type).to.be.equals("fdc3.contact");
-              contextsReceived++;
               checkIfBothContextsReceived();
             }
           );
@@ -402,7 +400,7 @@ export default () =>
 
           function checkIfBothContextsReceived() {
             contextsReceived++;
-            if (contextsReceived > 1) {
+            if (contextsReceived === 2) {
               resolve();
             }
           }
