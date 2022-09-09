@@ -15,7 +15,7 @@ export default () =>
       },
       joinAppChannel: false,
       broadcastMultipleItems: false,
-      executionComplete: false
+      executionComplete: false,
     };
 
     beforeEach(async () => {
@@ -107,7 +107,7 @@ export default () =>
       it("Should receive context when app B broadcasts then joins a user channel before A joins and listens on the same channel", async () => {
         channelsAppContext.reverseFunctionCallOrder = true;
         channelsAppContext.executionComplete = true;
-        
+
         return new Promise(async (resolve) => {
           //listens for when app B execution is complete
           const executionCompleteContext =
@@ -253,6 +253,8 @@ export default () =>
       });
 
       it("Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined", async () => {
+        channelsAppContext.executionComplete = true;
+        
         //listens for when app B execution is complete
         const executionCompleteContext =
           executionCompleteListener("executionComplete");
