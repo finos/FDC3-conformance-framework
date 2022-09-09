@@ -15,6 +15,7 @@ export default () =>
       },
       joinAppChannel: false,
       broadcastMultipleItems: false,
+      executionComplete: false
     };
 
     beforeEach(async () => {
@@ -105,6 +106,8 @@ export default () =>
 
       it("Should receive context when app B broadcasts then joins a user channel before A joins and listens on the same channel", async () => {
         channelsAppContext.reverseFunctionCallOrder = true;
+        channelsAppContext.executionComplete = true;
+        
         return new Promise(async (resolve) => {
           //listens for when app B execution is complete
           const executionCompleteContext =
@@ -223,6 +226,8 @@ export default () =>
       });
 
       it("Should not receive context when unsubscribing a user channel before app B broadcasts the listened type to that channel", async () => {
+        channelsAppContext.executionComplete = true;
+
         //listens for when app B execution is complete
         const executionCompleteContext =
           executionCompleteListener("executionComplete");
@@ -437,6 +442,7 @@ export default () =>
       it("Should not receive context when unsubscribing an app channel before app B broadcasts the listened type to that channel", async () => {
         channelsAppContext.joinAppChannel = true;
         channelsAppContext.contextBroadcasts.contact = true;
+        channelsAppContext.executionComplete = true;
 
         //App A joins app channel
         const testChannel = await window.fdc3.getOrCreateChannel(
@@ -570,6 +576,7 @@ export default () =>
 
       it("Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context", async () => {
         channelsAppContext.joinAppChannel = true;
+        channelsAppContext.executionComplete = true;
 
         //App A joins app channel
         const testChannel = await window.fdc3.getOrCreateChannel(
@@ -672,6 +679,7 @@ export default () =>
       channelsAppContext.joinAppChannel = false;
       channelsAppContext.contextBroadcasts.contact = false;
       channelsAppContext.reverseFunctionCallOrder = false;
+      channelsAppContext.executionComplete = false;
     }
 
     const executionCompleteListener = (
