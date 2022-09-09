@@ -222,7 +222,7 @@ export default () =>
         await window.fdc3.open("ChannelsApp", channelsAppContext);
 
         //give listener time to receive context
-        wait();
+        await wait();
       });
 
       it("Should not receive context when unsubscribing a user channel before app B broadcasts the listened type to that channel", async () => {
@@ -254,7 +254,7 @@ export default () =>
 
       it("Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined", async () => {
         channelsAppContext.executionComplete = true;
-        
+
         //listens for when app B execution is complete
         const executionCompleteContext =
           executionCompleteListener("executionComplete");
@@ -283,10 +283,10 @@ export default () =>
         await window.fdc3.leaveCurrentChannel();
 
         //App B joins channel 1, then broadcasts both contexts
-        window.fdc3.open("ChannelsApp", channelsAppContext);
+        await window.fdc3.open("ChannelsApp", channelsAppContext);
 
         //give listener time to receive context
-        wait();
+        await wait();
       });
 
       it("Should throw NOT DELIVERED error when system broadcast is sent with an invalid Context object structure", async () => {
@@ -340,7 +340,7 @@ export default () =>
           //App B creates/joins an app channel then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
-          wait();
+          await wait();
 
           //App A joins app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
@@ -514,7 +514,7 @@ export default () =>
         window.fdc3.open("ChannelsApp", channelsAppContext);
 
         //give listener time to receive context
-        wait();
+        await wait();
       });
 
       it("Should throw NOT DELIVERED error when an app channel broadcast is sent with an invalid Context object structure", async () => {
