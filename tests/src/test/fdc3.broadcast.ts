@@ -340,6 +340,7 @@ export default () =>
           //App B creates/joins an app channel then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
+          //give app B time to fully execute
           await wait();
 
           //App A joins app channel
