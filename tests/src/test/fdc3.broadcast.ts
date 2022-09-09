@@ -442,6 +442,37 @@ export default () =>
         });
       });
 
+      it("Should not receive context when listening for all context types then unsubscribing an app channel before app B broadcasts to that channel", async () => {
+        channelsAppContext.joinAppChannel = true;
+        channelsAppContext.contextBroadcasts.contact = true;
+        channelsAppContext.executionComplete = true;
+
+        //App A joins app channel
+        const testChannel = await window.fdc3.getOrCreateChannel(
+          "test-channel"
+        );
+
+        //listens for when app B execution is complete
+        const executionCompleteContext = executionCompleteListener(
+          "executionComplete",
+          testChannel
+        );
+
+        //Add context listener to app A
+        listener = await addContextListener(null, testChannel);
+
+        assert.isObject(listener);
+        expect(typeof listener.unsubscribe).to.be.equals("function");
+
+        //Unsubscribe from app channel
+        listener.unsubscribe();
+
+        //App B joins the same app channel as A then broadcasts context
+        window.fdc3.open("ChannelsApp", channelsAppContext);
+
+        await executionCompleteContext;
+      });
+
       it("Should not receive context when unsubscribing an app channel before app B broadcasts the listened type to that channel", async () => {
         channelsAppContext.joinAppChannel = true;
         channelsAppContext.contextBroadcasts.contact = true;

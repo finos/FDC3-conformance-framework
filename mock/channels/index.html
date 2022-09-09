@@ -29,7 +29,10 @@
             break;
         }
         addCloseWindowListener(testChannel);
-        executionCompleteBroadcast(testChannel);
+
+        if(context.executionComplete){
+          executionCompleteBroadcast(testChannel);
+        }
       }
 
       const addCloseWindowListener = async (testChannel) => {
