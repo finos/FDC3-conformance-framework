@@ -1,4 +1,4 @@
-import { Listener, Channel } from "@finos/fdc3";
+import { Listener, Channel, Context } from "@finos/fdc3";
 import { assert, expect } from "chai";
 
 export default () =>
@@ -106,8 +106,14 @@ export default () =>
       it("Should receive context when app B broadcasts then joins a user channel before A joins and listens on the same channel", async () => {
         channelsAppContext.reverseFunctionCallOrder = true;
         return new Promise(async (resolve) => {
+          //listens for when app B execution is complete
+          const executionCompleteContext =
+            executionCompleteListener("executionComplete");
+
           //Open ChannelsApp app. ChannelsApp broadcasts context, then joins channel 1
-          await window.fdc3.open("ChannelsApp", channelsAppContext);
+          window.fdc3.open("ChannelsApp", channelsAppContext);
+
+          await executionCompleteContext;
 
           //App A joins channel 1
           await joinChannel(1);
@@ -196,20 +202,25 @@ export default () =>
 
       it("Should not receive context when A & B join different user channels and app B broadcasts a listened type", async () => {
         channelsAppContext.contextBroadcasts.contact = true;
-
         //Add two context listeners to app A
         listener = await addContextListener("fdc3.instrument");
         listener2 = await addContextListener("fdc3.contact");
+
         //App A joins channel 2
         await joinChannel(2);
+
         //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts both contexts
         await window.fdc3.open("ChannelsApp", channelsAppContext);
 
-        //Give listeners time to receive context
-        await wait();
+        //give listener time to receive context
+        wait();
       });
 
       it("Should not receive context when unsubscribing a user channel before app B broadcasts the listened type to that channel", async () => {
+        //listens for when app B execution is complete
+        const executionCompleteContext =
+          executionCompleteListener("executionComplete");
+
         //Add two context listeners
         listener = await addContextListener("fdc3.intrument");
 
@@ -227,11 +238,14 @@ export default () =>
         //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts both contexts
         window.fdc3.open("ChannelsApp", channelsAppContext);
 
-        //Give listeners time to receive context
-        await wait();
+        await executionCompleteContext;
       });
 
       it("Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined", async () => {
+        //listens for when app B execution is complete
+        const executionCompleteContext =
+          executionCompleteListener("executionComplete");
+
         //Add two context listeners to app A
         listener = await addContextListener("fdc3.instrument");
 
@@ -240,10 +254,9 @@ export default () =>
         await joinChannel(2);
 
         //Open ChannelsApp app. ChannelsApp joins channel 1, then broadcasts both contexts
-        await window.fdc3.open("ChannelsApp", channelsAppContext);
+        window.fdc3.open("ChannelsApp", channelsAppContext);
 
-        //Give listeners time to receive context
-        await wait();
+        await executionCompleteContext;
       });
 
       it("Should not receive context when joining and then leaving a user channel before app B broadcasts the listened type to the same channel", async () => {
@@ -257,10 +270,10 @@ export default () =>
         await window.fdc3.leaveCurrentChannel();
 
         //App B joins channel 1, then broadcasts both contexts
-        await window.fdc3.open("ChannelsApp", channelsAppContext);
+        window.fdc3.open("ChannelsApp", channelsAppContext);
 
-        //Give listeners time to receive context
-        await wait();
+        //give listener time to receive context
+        wait();
       });
 
       it("Should throw NOT DELIVERED error when system broadcast is sent with an invalid Context object structure", async () => {
@@ -416,6 +429,12 @@ export default () =>
           "test-channel"
         );
 
+        //listens for when app B execution is complete
+        const executionCompleteContext = executionCompleteListener(
+          "executionComplete",
+          testChannel
+        );
+
         //Add context listener to app A
         listener = await addContextListener("fdc3.instrument", testChannel);
 
@@ -426,10 +445,9 @@ export default () =>
         listener.unsubscribe();
 
         //App B joins the same app channel as A then broadcasts context
-        await window.fdc3.open("ChannelsApp", channelsAppContext);
+        window.fdc3.open("ChannelsApp", channelsAppContext);
 
-        //Give listener time to receive context
-        await wait();
+        await executionCompleteContext;
       });
 
       it("Should not receive context when app B broadcasts context to a different app channel", async () => {
@@ -471,10 +489,10 @@ export default () =>
         expect(typeof listener.unsubscribe).to.be.equals("function");
 
         //App B joins the same app channel as A then broadcasts context
-        await window.fdc3.open("ChannelsApp", channelsAppContext);
+        window.fdc3.open("ChannelsApp", channelsAppContext);
 
         //give listener time to receive context
-        await wait();
+        wait();
       });
 
       it("Should throw NOT DELIVERED error when an app channel broadcast is sent with an invalid Context object structure", async () => {
@@ -538,26 +556,32 @@ export default () =>
 
       it("Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context", async () => {
         channelsAppContext.joinAppChannel = true;
-        channelsAppContext.contextBroadcasts.contact = true;
 
         //App A joins app channel
         const testChannel = await window.fdc3.getOrCreateChannel(
           "test-channel"
         );
 
+        //listens for when app B execution is complete
+        const executionCompleteContext = executionCompleteListener(
+          "executionComplete",
+          testChannel
+        );
+
         //App B joins the same app channel as A then broadcasts context
         await window.fdc3.open("ChannelsApp", channelsAppContext);
+
+        await executionCompleteContext;
 
         //get current context
         const context = await testChannel.getCurrentContext();
 
         if (context === null) {
           assert.fail("No Context retrieved");
-        } else if (context.type === "close window") {
+        } else if (context.type === "closeWindow") {
           assert.fail("Did not retrieve last broadcast context from app B");
-        }
-        else {
-          expect(context.type).to.be.equals("fdc3.contact");
+        } else {
+          expect(context.type).to.be.equals("executionComplete");
         }
       });
     });
@@ -635,4 +659,30 @@ export default () =>
       channelsAppContext.contextBroadcasts.contact = false;
       channelsAppContext.reverseFunctionCallOrder = false;
     }
+
+    const executionCompleteListener = (
+      contextType: string,
+      channel?: Channel
+    ) => {
+      const context = new Promise<Context>(async (resolve) => {
+        if (channel === undefined) {
+          const listener = await window.fdc3.addContextListener(
+            contextType,
+            (context) => {
+              resolve(context);
+              listener.unsubscribe();
+            }
+          );
+        } else {
+          const listener = await channel.addContextListener(
+            contextType,
+            (context) => {
+              resolve(context);
+              listener.unsubscribe();
+            }
+          );
+        }
+      });
+      return context;
+    };
   });

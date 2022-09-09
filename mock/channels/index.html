@@ -17,18 +17,19 @@
       let firedOnce = false;
 
       const fdc3ApiCalls = async (context) => {
+        let testChannel;
         switch (context.reverseFunctionCallOrder) {
           case false:
-            const testChannel = await joinChannel(context.joinAppChannel);
+            testChannel = await joinChannel(context.joinAppChannel);
             await broadcast(context, testChannel);
-            addCloseWindowListener(testChannel);
             break;
           case true:
             await broadcast(context);
-            await joinChannel(context.joinAppChannel);
-            addCloseWindowListener();
+            testChannel = await joinChannel(context.joinAppChannel);
             break;
         }
+        addCloseWindowListener(testChannel);
+        executionCompleteBroadcast(testChannel);
       }
 
       const addCloseWindowListener = async (testChannel) => {
@@ -67,7 +68,7 @@
             await window.fdc3.joinChannel(channels[0].id);
             document.getElementById("context").innerHTML += `Joined user channel ${channels[0].id}/ `;
           } catch (ex) {
-            document.getElementById("context").innerHTML += `Error while attempting to join user channel: ${ex.message ?? ex}/ ` 
+            document.getElementById("context").innerHTML += `Error while attempting to join user channel: ${ex.message ?? ex}/ `
           }
         } else {
           document.getElementById("context").innerHTML += "Error: No system channels available for app B/ ";
@@ -113,8 +114,25 @@
               }
             }
           };
-        } catch {
-          document.getElementById("context").innerHTML += "Error attempting to broadcast to app channel";
+        } catch (ex) {
+          document.getElementById("context").innerHTML += `Error while attempting to broadcast to app channel. ${ex.message ?? ex}`;
+        }
+      }
+
+      //Let app A know that execution in app B is complete
+      const executionCompleteBroadcast = async (testChannel) => {
+        try {
+          if (testChannel === undefined) {
+            await window.fdc3.broadcast({
+              "type": "executionComplete"
+            });
+          } else {
+            await testChannel.broadcast({
+              "type": "executionComplete"
+            });
+          }
+        } catch (ex) {
+          document.getElementById("context").innerHTML += `Error while attempting to broadcast executionComplete type. ${ex.message ?? ex}`;
         }
       }
 
