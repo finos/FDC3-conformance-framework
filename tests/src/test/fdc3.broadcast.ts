@@ -157,15 +157,16 @@ export default () =>
       });
 
       it("Should receive multiple contexts when app B broadcasts the listened types to the same user channel", async () => {
-        let contextsReceived = 0;
         return new Promise(async (resolve) => {
+          let contextsReceived = 0;
+          let contextTypes: [string];
           channelsAppContext.contextBroadcasts.contact = true;
 
           //Add context listener to app A
           listener = await window.fdc3.addContextListener(
             "fdc3.instrument",
             (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
+              contextTypes[contextsReceived] = context.type;
               checkIfBothContextsReceived();
             }
           );
@@ -177,7 +178,7 @@ export default () =>
           listener2 = await window.fdc3.addContextListener(
             "fdc3.contact",
             (context) => {
-              expect(context.type).to.be.equals("fdc3.contact");
+              contextTypes[contextsReceived] = context.type;
               checkIfBothContextsReceived();
             }
           );
@@ -194,7 +195,11 @@ export default () =>
           function checkIfBothContextsReceived() {
             contextsReceived++;
             if (contextsReceived === 2) {
-              resolve();
+              if(!contextTypes.includes("fdc3.contact") || !contextTypes.includes("fdc3.instrument")){
+                assert.fail("Incorrect context received");
+              }else{
+                resolve();
+              }
             }
           }
         });
@@ -327,6 +332,8 @@ export default () =>
           //App B creates/joins an app channel then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
+          wait();
+
           //App A joins app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
             "test-channel"
@@ -376,6 +383,7 @@ export default () =>
       it("Should receive multiple contexts when app B broadcasts the listened types to the same app channel", async () => {
         return new Promise(async (resolve) => {
           let contextsReceived = 0;
+          let contextTypes: [string];
           channelsAppContext.joinAppChannel = true;
           channelsAppContext.contextBroadcasts.contact = true;
 
@@ -388,7 +396,7 @@ export default () =>
           listener = await testChannel.addContextListener(
             "fdc3.instrument",
             (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
+              contextTypes[contextsReceived] = context.type;
               checkIfBothContextsReceived();
             }
           );
@@ -400,7 +408,7 @@ export default () =>
           listener = await testChannel.addContextListener(
             "fdc3.contact",
             (context) => {
-              expect(context.type).to.be.equals("fdc3.contact");
+              contextTypes[contextsReceived] = context.type;
               checkIfBothContextsReceived();
             }
           );
@@ -414,7 +422,11 @@ export default () =>
           function checkIfBothContextsReceived() {
             contextsReceived++;
             if (contextsReceived === 2) {
-              resolve();
+              if(!contextTypes.includes("fdc3.contact") || !contextTypes.includes("fdc3.instrument")){
+                assert.fail("Incorrect context received");
+              }else{
+                resolve();
+              }
             }
           }
         });
