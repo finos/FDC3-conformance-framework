@@ -555,7 +555,10 @@ export default () =>
 
         if (context === null) {
           assert.fail("No Context retrieved");
-        } else {
+        } else if (context.type === "close window") {
+          assert.fail("Did not retrieve last broadcast context from app B");
+        }
+        else {
           expect(context.type).to.be.equals("fdc3.contact");
         }
       });
