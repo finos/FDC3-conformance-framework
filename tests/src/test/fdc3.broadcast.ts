@@ -819,11 +819,11 @@ export default () =>
       );
     }
 
-    async function wait(miliseconds: number) {
+    async function wait(milliseconds: number) {
       return new Promise((resolve) =>
         setTimeout(() => {
           resolve(true);
-        }, miliseconds)
+        }, milliseconds)
       );
     }
 
