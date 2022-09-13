@@ -1,5 +1,8 @@
-import { Listener, Channel, Context } from "@finos/fdc3";
+import { Listener, Channel, Context, ContextTypes } from "@finos/fdc3";
 import { assert, expect } from "chai";
+
+const documentation =
+  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent\r\nCause";
 
 export default () =>
   describe("fdc3.broadcast", () => {
@@ -18,12 +21,6 @@ export default () =>
       executionComplete: false,
     };
 
-    beforeEach(async () => {
-      await unsubscribeListeners();
-      await window.fdc3.leaveCurrentChannel();
-      resetChannelsAppContext();
-    });
-
     it("Broadcast method is callable", async () => {
       await window.fdc3.broadcast({
         type: "fdc3.instrument",
@@ -32,23 +29,31 @@ export default () =>
     });
 
     describe("User channels", () => {
+      beforeEach(async () => {
+        await unsubscribeListeners();
+        await window.fdc3.leaveCurrentChannel();
+        resetChannelsAppContext();
+      });
+
       afterEach(async () => {
         await broadcastSystemChannelCloseWindow();
       });
 
       it("Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel", async () => {
+        const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
+
         return new Promise(async (resolve) => {
           //Add context listener to app A
-          listener = await window.fdc3.addContextListener(
-            "fdc3.instrument",
-            (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
-              resolve();
-            }
-          );
+          listener = await window.fdc3.addContextListener(null, (context) => {
+            expect(context.type).to.be.equal("fdc3.instrument", errorMessage);
+            resolve();
+          });
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object found");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
 
           //App A joins channel 1
           await joinChannel(1);
@@ -59,23 +64,23 @@ export default () =>
       });
 
       it("Should receive context when joining a user channel then adding a context listener before app B broadcasts context to the same channel", async () => {
-        return new Promise(async (resolve) => {
-          const channels = await window.fdc3.getSystemChannels();
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- Add listener of type fdc3.instrument to App A\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
+        return new Promise(async (resolve) => {
           //App A joins channel 1
           await joinChannel(1);
 
           //Add context listener to app A
-          listener = await window.fdc3.addContextListener(
-            "fdc3.instrument",
-            (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
-              resolve();
-            }
-          );
+          listener = await window.fdc3.addContextListener(null, (context) => {
+            expect(context.type).to.be.equal("fdc3.instrument", errorMessage);
+            resolve();
+          });
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object found");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
 
           //Open ChannelsApp app. channels app joins channel 1, then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -83,6 +88,8 @@ export default () =>
       });
 
       it("Should receive context when app B joins then broadcasts context to a user channel before A joins and listens on the same channel", async () => {
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
+
         return new Promise(async (resolve) => {
           //Open ChannelsApp app. channels app joins channel 1, then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -91,24 +98,26 @@ export default () =>
           await joinChannel(1);
 
           //Add context listener to app A
-          listener = await window.fdc3.addContextListener(
-            "fdc3.instrument",
-            (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
-              resolve();
-            }
-          );
+          listener = await window.fdc3.addContextListener(null, (context) => {
+            expect(context.type).to.be.equal("fdc3.instrument", errorMessage);
+            resolve();
+          });
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
         });
       });
 
       it("Should receive context when app B broadcasts then joins a user channel before A joins and listens on the same channel", async () => {
-        channelsAppContext.reverseFunctionCallOrder = true;
-        channelsAppContext.executionComplete = true;
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App B broadcasts fdc3.instrument context\r\n- App B joins channel 1\r\n- App A joins channel 1\r\n- App A adds a context listener of type null${documentation}`;
 
         return new Promise(async (resolve) => {
+          channelsAppContext.reverseFunctionCallOrder = true;
+          channelsAppContext.executionComplete = true;
+
           //listens for when app B execution is complete
           const executionCompleteContext =
             executionCompleteListener("executionComplete");
@@ -122,20 +131,21 @@ export default () =>
           await joinChannel(1);
 
           //Add context listener to app A
-          listener = await window.fdc3.addContextListener(
-            "fdc3.instrument",
-            (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
-              resolve();
-            }
-          );
+          listener = await window.fdc3.addContextListener(null, (context) => {
+            resolve();
+          });
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
         });
       });
 
       it("Should receive context when app B broadcasts the listened type to the same user channel", async () => {
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
+
         return new Promise(async (resolve) => {
           channelsAppContext.contextBroadcasts.contact = true;
 
@@ -143,13 +153,19 @@ export default () =>
           listener = await window.fdc3.addContextListener(
             "fdc3.instrument",
             (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
+              expect(context.type).to.be.equals(
+                "fdc3.instrument",
+                errorMessage
+              );
               resolve();
             }
           );
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
 
           //App A joins channel 1
           joinChannel(1);
@@ -160,6 +176,8 @@ export default () =>
       });
 
       it("Should receive multiple contexts when app B broadcasts the listened types to the same user channel", async () => {
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
+
         return new Promise(async (resolve) => {
           let contextTypes: string[] = [];
           channelsAppContext.contextBroadcasts.contact = true;
@@ -173,8 +191,11 @@ export default () =>
             }
           );
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
 
           //Add second context listener to app A
           listener2 = await window.fdc3.addContextListener(
@@ -200,7 +221,7 @@ export default () =>
                 !contextTypes.includes("fdc3.contact") ||
                 !contextTypes.includes("fdc3.instrument")
               ) {
-                assert.fail("Incorrect context received");
+                assert.fail("Incorrect context received", errorMessage);
               } else {
                 resolve();
               }
@@ -233,7 +254,7 @@ export default () =>
           executionCompleteListener("executionComplete");
 
         //Add two context listeners
-        listener = await addContextListener("fdc3.intrument");
+        listener = await addContextListener(null);
 
         //App A joins channel 1
         await joinChannel(1);
@@ -303,6 +324,12 @@ export default () =>
     });
 
     describe("App channels", () => {
+      beforeEach(async () => {
+        await unsubscribeListeners();
+        await window.fdc3.leaveCurrentChannel();
+        resetChannelsAppContext();
+      });
+
       afterEach(async () => {
         await broadcastAppChannelCloseWindow();
       });
@@ -317,16 +344,16 @@ export default () =>
           );
 
           //Add context listener to app A
-          listener = await testChannel.addContextListener(
-            "fdc3.instrument",
-            (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
-              resolve();
-            }
-          );
+          listener = await testChannel.addContextListener(null, (context) => {
+            expect(context.type).to.be.equals("fdc3.instrument");
+            resolve();
+          });
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
 
           //App B joins the same app channel as A then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -349,16 +376,16 @@ export default () =>
           );
 
           //Add context listener to app A
-          listener = await testChannel.addContextListener(
-            "fdc3.instrument",
-            (context) => {
-              expect(context.type).to.be.equals("fdc3.instrument");
-              resolve();
-            }
-          );
+          listener = await testChannel.addContextListener(null, (context) => {
+            expect(context.type).to.be.equals("fdc3.instrument");
+            resolve();
+          });
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
         });
       });
 
@@ -381,8 +408,11 @@ export default () =>
             }
           );
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
 
           //App B joins the same app channel as A then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -409,8 +439,11 @@ export default () =>
             }
           );
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
 
           //Add a second context listener to app A
           listener = await testChannel.addContextListener(
@@ -421,8 +454,11 @@ export default () =>
             }
           );
 
-          assert.isObject(listener);
-          expect(typeof listener.unsubscribe).to.be.equals("function");
+          assert.isObject(listener, "No listener object was returned");
+          expect(typeof listener.unsubscribe).to.be.equals(
+            "function",
+            "Listener does not contain an unsubscribe method"
+          );
 
           //App B joins the same app channel as A then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -461,8 +497,11 @@ export default () =>
         //Add context listener to app A
         listener = await addContextListener(null, testChannel);
 
-        assert.isObject(listener);
-        expect(typeof listener.unsubscribe).to.be.equals("function");
+        assert.isObject(listener, "No listener object was returned");
+        expect(typeof listener.unsubscribe).to.be.equals(
+          "function",
+          "Listener does not contain an unsubscribe method"
+        );
 
         //Unsubscribe from app channel
         listener.unsubscribe();
@@ -492,8 +531,11 @@ export default () =>
         //Add context listener to app A
         listener = await addContextListener("fdc3.instrument", testChannel);
 
-        assert.isObject(listener);
-        expect(typeof listener.unsubscribe).to.be.equals("function");
+        assert.isObject(listener, "No listener object was returned");
+        expect(typeof listener.unsubscribe).to.be.equals(
+          "function",
+          "Listener does not contain an unsubscribe method"
+        );
 
         //Unsubscribe from app channel
         listener.unsubscribe();
@@ -515,8 +557,11 @@ export default () =>
         //Add context listener to app A
         listener = await addContextListener("fdc3.instrument", testChannel);
 
-        assert.isObject(listener);
-        expect(typeof listener.unsubscribe).to.be.equals("function");
+        assert.isObject(listener, "No listener object was returned");
+        expect(typeof listener.unsubscribe).to.be.equals(
+          "function",
+          "Listener does not contain an unsubscribe method"
+        );
 
         //App B joins the same app channel as A then broadcasts context
         await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -539,8 +584,11 @@ export default () =>
         //Add context listener to app A
         listener = await addContextListener("fdc3.instrument", testChannel);
 
-        assert.isObject(listener);
-        expect(typeof listener.unsubscribe).to.be.equals("function");
+        assert.isObject(listener, "No listener object was returned");
+        expect(typeof listener.unsubscribe).to.be.equals(
+          "function",
+          "Listener does not contain an unsubscribe method"
+        );
 
         //App B joins the same app channel as A then broadcasts context
         window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -658,15 +706,15 @@ export default () =>
       if (channel !== undefined) {
         listenerObject = await channel.addContextListener(
           contextType === null ? null : contextType,
-          () => {
-            assert.fail(`${contextType} context received`);
+          (context) => {
+            return assert.fail(`${context.type} context received`);
           }
         );
       } else {
         listenerObject = await window.fdc3.addContextListener(
           contextType === null ? null : contextType,
-          () => {
-            assert.fail(`${contextType} context received`);
+          (context) => {
+            return assert.fail(`${context.type} context received`);
           }
         );
       }
