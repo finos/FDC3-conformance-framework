@@ -419,11 +419,7 @@ export default () =>
             resolve();
           });
 
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
+          validateListenerObject(listener);
 
           //App B joins the same app channel as A then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -457,11 +453,7 @@ export default () =>
             resolve();
           });
 
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
+          validateListenerObject(listener);
 
           //if no context received throw error
           await wait(3000);
@@ -493,11 +485,7 @@ export default () =>
             }
           );
 
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
+          validateListenerObject(listener);
 
           //App B joins the same app channel as A then broadcasts two contexts
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -530,14 +518,10 @@ export default () =>
             }
           );
 
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
+          validateListenerObject(listener);
 
           //Add a second context listener to app A
-          listener = await testChannel.addContextListener(
+          listener2 = await testChannel.addContextListener(
             "fdc3.contact",
             (context) => {
               contextTypes.push(context.type);
@@ -545,11 +529,7 @@ export default () =>
             }
           );
 
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
+          validateListenerObject(listener2);
 
           //App B joins the same app channel as A then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -601,12 +581,6 @@ export default () =>
 
           validateListenerObject(listener);
 
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
-
           //Unsubscribe from app channel
           listener.unsubscribe();
 
@@ -646,12 +620,6 @@ export default () =>
 
           validateListenerObject(listener);
 
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
-
           //Unsubscribe from app channel
           listener.unsubscribe();
 
@@ -686,12 +654,6 @@ export default () =>
 
           validateListenerObject(listener);
 
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
-
           //App B joins the same app channel as A then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
@@ -702,7 +664,7 @@ export default () =>
       });
 
       it("Should not receive context when joining two different app channels before app B broadcasts the listened type to the first channel that was joined", async () => {
-        const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App A joins another app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B joins the first channel that A joined\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B joins the first channel that A joined\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
           channelsAppContext.joinAppChannel = true;
@@ -728,12 +690,6 @@ export default () =>
           );
 
           validateListenerObject(listener);
-
-          assert.isObject(listener, "No listener object was returned");
-          expect(typeof listener.unsubscribe).to.be.equals(
-            "function",
-            "Listener does not contain an unsubscribe method"
-          );
 
           //App B joins the first channel that A joined then broadcasts context
           window.fdc3.open("ChannelsApp", channelsAppContext);
