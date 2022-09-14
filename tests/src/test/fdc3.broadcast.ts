@@ -1,6 +1,6 @@
 import { Listener, Channel, Context, ContextTypes } from "@finos/fdc3";
 import { assert, expect } from "chai";
-import  constants from "../constants";
+import constants from "../constants";
 
 const documentation =
   "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent\r\nCause:";
@@ -312,7 +312,7 @@ export default () =>
       });
 
       it("Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined", async () => {
-        const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
           channelsAppContext.executionComplete = true;
