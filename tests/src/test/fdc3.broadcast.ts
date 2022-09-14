@@ -61,7 +61,7 @@ export default () =>
           window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -85,7 +85,7 @@ export default () =>
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -109,7 +109,7 @@ export default () =>
           validateListenerObject(listener);
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -124,7 +124,7 @@ export default () =>
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //wait for ChannelsApp to run
-          await wait(2000);
+          await wait();
 
           //App A joins channel 1
           await joinChannel(1);
@@ -138,7 +138,7 @@ export default () =>
           validateListenerObject(listener);
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -170,7 +170,7 @@ export default () =>
           window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -224,7 +224,7 @@ export default () =>
           }
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(
             new Error(`${errorMessage} At least one context was not received`)
           );
@@ -267,7 +267,7 @@ export default () =>
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //give listener time to receive context
-          await wait(3000);
+          await wait();
           resolve();
         });
       });
@@ -373,7 +373,7 @@ export default () =>
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //give listener time to receive context
-          await wait(3000);
+          await wait();
           resolve();
         });
       });
@@ -425,7 +425,7 @@ export default () =>
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -440,7 +440,7 @@ export default () =>
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //give app B time to fully execute
-          await wait(3000);
+          await wait();
 
           //App A joins app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
@@ -456,7 +456,7 @@ export default () =>
           validateListenerObject(listener);
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -491,7 +491,7 @@ export default () =>
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -548,7 +548,7 @@ export default () =>
           }
 
           //if no context received throw error
-          await wait(3000);
+          await wait();
           reject(new Error(`${errorMessage} No context received`));
         });
       });
@@ -658,7 +658,7 @@ export default () =>
           await window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //give listener time to receive context
-          await wait(3000);
+          await wait();
           resolve();
         });
       });
@@ -695,7 +695,7 @@ export default () =>
           window.fdc3.open("ChannelsApp", channelsAppContext);
 
           //give listener time to receive context
-          await wait(3000);
+          await wait();
           resolve();
         });
       });
@@ -819,11 +819,11 @@ export default () =>
       );
     }
 
-    async function wait(milliseconds: number) {
+    async function wait() {
       return new Promise((resolve) =>
         setTimeout(() => {
           resolve(true);
-        }, milliseconds)
+        }, 3000)
       );
     }
 
