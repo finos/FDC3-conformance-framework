@@ -1,5 +1,6 @@
 import { Listener, Channel, Context, ContextTypes } from "@finos/fdc3";
 import { assert, expect } from "chai";
+import  constants from "../constants";
 
 const documentation =
   "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent\r\nCause:";
@@ -240,22 +241,20 @@ export default () =>
           //Add two context listeners to app A
           listener = window.fdc3.addContextListener(
             "fdc3.instrument",
-            (context) => {
+            (context) =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              );
-            }
+              )
           );
 
           validateListenerObject(listener);
 
           listener2 = window.fdc3.addContextListener(
             "fdc3.contact",
-            (context) => {
+            (context) =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              );
-            }
+              )
           );
 
           validateListenerObject(listener2);
@@ -285,11 +284,10 @@ export default () =>
           //Add context listener
           listener = window.fdc3.addContextListener(
             "fdc3.instrument",
-            (context) => {
+            (context) =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              );
-            }
+              )
           );
 
           validateListenerObject(listener);
@@ -326,11 +324,10 @@ export default () =>
           //Add context listeners to app A
           listener = window.fdc3.addContextListener(
             "fdc3.instrument",
-            (context) => {
+            (context) =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              );
-            }
+              )
           );
 
           validateListenerObject(listener);
@@ -354,11 +351,10 @@ export default () =>
           //Add a context listeners to app A
           listener = window.fdc3.addContextListener(
             "fdc3.instrument",
-            (context) => {
+            (context) =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              );
-            }
+              )
           );
 
           validateListenerObject(listener);
@@ -645,11 +641,10 @@ export default () =>
           //Add context listener to app A
           listener = testChannel.addContextListener(
             "fdc3.instrument",
-            (context) => {
+            (context) =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              );
-            }
+              )
           );
 
           validateListenerObject(listener);
@@ -682,11 +677,10 @@ export default () =>
           //Add context listener to app A
           listener = testChannel.addContextListener(
             "fdc3.instrument",
-            (context) => {
+            (context) =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              );
-            }
+              )
           );
 
           validateListenerObject(listener);
@@ -823,7 +817,7 @@ export default () =>
       return new Promise((resolve) =>
         setTimeout(() => {
           resolve(true);
-        }, 3000)
+        }, constants.WaitTime)
       );
     }
 
