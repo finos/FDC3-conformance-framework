@@ -9,7 +9,6 @@ export default () =>
   describe("fdc3.broadcast", () => {
     let listener: Listener;
     let listener2: Listener;
-    let timeout: NodeJS.Timeout;
 
     let channelsAppContext = {
       type: "channelsAppContext",
@@ -32,14 +31,12 @@ export default () =>
 
     describe("User channels", () => {
       beforeEach(async () => {
-        clearTimeout(timeout);
         await unsubscribeListeners();
         await window.fdc3.leaveCurrentChannel();
         resetChannelsAppContext();
       });
 
       afterEach(async () => {
-        clearTimeout(timeout);
         await broadcastSystemChannelCloseWindow();
       });
 
