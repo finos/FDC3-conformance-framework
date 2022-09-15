@@ -2,7 +2,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Title</title>
+  <link rel="stylesheet" href="index.css" />
 </head>
 
 <body>
@@ -101,10 +101,7 @@
       }
 
       const appChannelBroadcast = async (context, testChannel) => {
-        let items = 1;
-        if (context.broadcastMultipleItems) {
-          items = 2;
-        }
+        context.broadcastMultipleItems ? items = 2 : items = 1;
         try {
           for (const systemContext in context.contextBroadcasts) {
             if (context.contextBroadcasts[systemContext]) {
