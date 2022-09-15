@@ -3,7 +3,6 @@
 <head>
   <meta charset="UTF-8" />
   <title>Title</title>
-  <link rel="stylesheet" href="index.css" />
 </head>
 
 <body>
@@ -15,6 +14,7 @@
   <script>
     onFdc3Ready().then(() => {
       let firedOnce = false;
+      const stats = document.getElementById("context");
 
       const fdc3ApiCalls = async (context) => {
         let testChannel;
@@ -30,7 +30,7 @@
         }
         addCloseWindowListener(testChannel);
 
-        if(context.executionComplete){
+        if (context.executionComplete) {
           executionCompleteBroadcast(testChannel);
         }
       }
@@ -69,12 +69,12 @@
         if (channels.length > 0) {
           try {
             await window.fdc3.joinChannel(channels[0].id);
-            document.getElementById("context").innerHTML += `Joined user channel ${channels[0].id}/ `;
+            stats.innerHTML += `Joined user channel ${channels[0].id}/ `;
           } catch (ex) {
-            document.getElementById("context").innerHTML += `Error while attempting to join user channel: ${ex.message ?? ex}/ `
+            stats.innerHTML += `Error while attempting to join user channel: ${ex.message ?? ex}/ `
           }
         } else {
-          document.getElementById("context").innerHTML += "Error: No system channels available for app B/ ";
+          stats.innerHTML += "Error: No system channels available for app B/ ";
         }
       }
 
@@ -82,10 +82,10 @@
       const joinAppChannel = async () => {
         try {
           const appChannel = await fdc3.getOrCreateChannel("test-channel");
-          document.getElementById("context").innerHTML += "Joined app channel/ ";
+          stats.innerHTML += "Joined app channel/ ";
           return appChannel;
         } catch (ex) {
-          document.getElementById("context").innerHTML += `Error while attempting to join app channel: ${ex.message ?? ex}/ `
+          stats.innerHTML += `Error while attempting to join app channel: ${ex.message ?? ex}/ `
         }
       }
 
@@ -95,7 +95,7 @@
             await window.fdc3.broadcast({
               "type": `fdc3.${context}`
             });
-            document.getElementById("context").innerHTML += `System broadcast: fdc3.${context}/ `;
+            stats.innerHTML += `System broadcast: fdc3.${context}/ `;
           }
         };
       }
@@ -113,12 +113,12 @@
                   "type": `fdc3.${systemContext}`,
                   "name": `History-item-${i + 1}`
                 });
-                document.getElementById("context").innerHTML += `App channel broadcast: fdc3.${systemContext} -- History-item-${i + 1}/ `;
+                stats.innerHTML += `App channel broadcast: fdc3.${systemContext} -- History-item-${i + 1}/ `;
               }
             }
           };
         } catch (ex) {
-          document.getElementById("context").innerHTML += `Error while attempting to broadcast to app channel. ${ex.message ?? ex}`;
+          stats.innerHTML += `Error while attempting to broadcast to app channel. ${ex.message ?? ex}`;
         }
       }
 
@@ -135,7 +135,7 @@
             });
           }
         } catch (ex) {
-          document.getElementById("context").innerHTML += `Error while attempting to broadcast executionComplete type. ${ex.message ?? ex}`;
+          stats.innerHTML += `Error while attempting to broadcast executionComplete type. ${ex.message ?? ex}`;
         }
       }
 
