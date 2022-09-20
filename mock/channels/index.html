@@ -51,7 +51,7 @@
         for (const contextType in context.contextBroadcasts) {
           if (context.contextBroadcasts[contextType]) {
             for (let i = 0; i < items; i++) {
-              let historyItem = i + 1;
+              const historyItem = i + 1;
               await channelService.broadcast(`fdc3.${contextType}`, historyItem, channel);
               stats.innerHTML += `Broadcast fdc3.${contextType} - History-item-${historyItem}/ `;
             }
