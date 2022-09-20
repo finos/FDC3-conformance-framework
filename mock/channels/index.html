@@ -11,128 +11,62 @@
   <p></p>
   <p id="context"></p>
   <script src="lib/mock-functions.js"></script>
+  <script src="channelService.js"></script>
   <script>
     onFdc3Ready().then(() => {
       let firedOnce = false;
       const stats = document.getElementById("context");
+      let channelService;
 
-      const fdc3ApiCalls = async (context) => {
-        let testChannel;
-        switch (context.reverseFunctionCallOrder) {
+      async function runChannelServices(context) {
+        const channelType = context.useAppChannel ? "app" : "system";
+        channelService = getChannelService(channelType);
+        let channel;
+        switch (context.reverseMethodCallOrder) {
+          //Join channel, then broadcast items
           case false:
-            testChannel = await joinChannel(context.joinAppChannel);
-            await broadcast(context, testChannel);
+            channel = await channelService.joinChannel();
+            stats.innerHTML += `Joined ${channelType} channel/ `;
+            await broadcastContextItems(context, channel);
             break;
+
+          //Broadcast items, then join channel
           case true:
-            await broadcast(context);
-            testChannel = await joinChannel(context.joinAppChannel);
+            await broadcastContextItems(context);
+            await channelService.joinChannel();
+            stats.innerHTML += `Joined ${channelType} channel/ `;
             break;
         }
-        addCloseWindowListener(testChannel);
 
-        if (context.executionComplete) {
-          executionCompleteBroadcast(testChannel);
+        //Add listener so app A can close down Channels app
+        channelService.addContextListener("closeWindow", channel);
+        if (context.broadcastExecutionComplete) {
+          //broadcast to let App A know Channels app has finished executing
+          channelService.broadcast("executionComplete", 1, channel);
         }
       }
 
-      const addCloseWindowListener = async (testChannel) => {
-        if (testChannel === undefined) {
-          await window.fdc3.addContextListener(
-            "closeWindow",
-            () => closeFinsembleWindow());
-        } else {
-          await testChannel.addContextListener(
-            "closeWindow",
-            () => closeFinsembleWindow());
-        }
-      }
-
-      const joinChannel = async (useAppChannel) => {
-        if (useAppChannel) {
-          return await joinAppChannel();
-        } else {
-          await joinSystemChannel();
-        }
-      }
-
-      const broadcast = async (context, testChannel) => {
-        if (testChannel === undefined) {
-          await systemBroadcast(context.contextBroadcasts);
-        } else {
-          await appChannelBroadcast(context, testChannel);
-        }
-      }
-
-      //Channels app joins channel 1
-      const joinSystemChannel = async () => {
-        const channels = await window.fdc3.getSystemChannels();
-        if (channels.length > 0) {
-          try {
-            await window.fdc3.joinChannel(channels[0].id);
-            stats.innerHTML += `Joined user channel ${channels[0].id}/ `;
-          } catch (ex) {
-            stats.innerHTML += `Error while attempting to join user channel: ${ex.message ?? ex}/ `
-          }
-        } else {
-          stats.innerHTML += "Error: No system channels available for app B/ ";
-        }
-      }
-
-      //Channels app joins test-channel
-      const joinAppChannel = async () => {
-        try {
-          const appChannel = await fdc3.getOrCreateChannel("test-channel");
-          stats.innerHTML += "Joined app channel/ ";
-          return appChannel;
-        } catch (ex) {
-          stats.innerHTML += `Error while attempting to join app channel: ${ex.message ?? ex}/ `
-        }
-      }
-
-      const systemBroadcast = async (contextBroadcasts) => {
-        for (const context in contextBroadcasts) {
-          if (contextBroadcasts[context]) {
-            await window.fdc3.broadcast({
-              "type": `fdc3.${context}`
-            });
-            stats.innerHTML += `System broadcast: fdc3.${context}/ `;
+      async function broadcastContextItems(context, channel) {
+       const items = context.broadcastMultipleItems ? 2 : 1;
+        for (const contextType in context.contextBroadcasts) {
+          if (context.contextBroadcasts[contextType]) {
+            for (let i = 0; i < items; i++) {
+              let historyItem = i + 1;
+              await channelService.broadcast(`fdc3.${contextType}`, historyItem, channel);
+              stats.innerHTML += `Broadcast fdc3.${contextType} - History-item-${historyItem}/ `;
+            }
           }
         };
       }
 
-      const appChannelBroadcast = async (context, testChannel) => {
-        context.broadcastMultipleItems ? items = 2 : items = 1;
-        try {
-          for (const systemContext in context.contextBroadcasts) {
-            if (context.contextBroadcasts[systemContext]) {
-              for (let i = 0; i < items; i++) {
-                await testChannel.broadcast({
-                  "type": `fdc3.${systemContext}`,
-                  "name": `History-item-${i + 1}`
-                });
-                stats.innerHTML += `App channel broadcast: fdc3.${systemContext} -- History-item-${i + 1}/ `;
-              }
-            }
-          };
-        } catch (ex) {
-          stats.innerHTML += `Error while attempting to broadcast to app channel. ${ex.message ?? ex}`;
-        }
-      }
-
-      //Let app A know that execution in app B is complete
-      const executionCompleteBroadcast = async (testChannel) => {
-        try {
-          if (testChannel === undefined) {
-            await window.fdc3.broadcast({
-              "type": "executionComplete"
-            });
-          } else {
-            await testChannel.broadcast({
-              "type": "executionComplete"
-            });
-          }
-        } catch (ex) {
-          stats.innerHTML += `Error while attempting to broadcast executionComplete type. ${ex.message ?? ex}`;
+      function getChannelService(channelType) {
+        switch (channelType) {
+          case "system":
+            return new SystemChannelService();
+          case "app":
+            return new AppChannelService();
+          default:
+            stats.innerHTML += "Unrecognised channel type/ ";
         }
       }
 
@@ -142,7 +76,7 @@
         (context) => {
           if (firedOnce === false) {
             firedOnce = true;
-            fdc3ApiCalls(context);
+            runChannelServices(context);
           }
         });
     });
