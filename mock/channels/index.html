@@ -19,7 +19,7 @@
       let channelService;
 
       async function runChannelServices(context) {
-        const channelType = context.useAppChannel ? "app" : "system";
+        const channelType = context.useAppChannel ? "app" : "user";
         channelService = getChannelService(channelType);
         let channel;
         switch (context.reverseMethodCallOrder) {
@@ -61,8 +61,8 @@
 
       function getChannelService(channelType) {
         switch (channelType) {
-          case "system":
-            return new SystemChannelService();
+          case "user":
+            return new UserChannelService();
           case "app":
             return new AppChannelService();
           default:

@@ -17,7 +17,7 @@ class AppChannelService {
     }
 }
 
-class SystemChannelService {
+class UserChannelService {
     async joinChannel() {
         const channels = await window.fdc3.getSystemChannels();
         await window.fdc3.joinChannel(channels[0].id);
