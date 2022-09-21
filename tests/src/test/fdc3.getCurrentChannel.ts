@@ -1,4 +1,7 @@
-import { expect } from "chai";
+import APIDocumentation from "../apiDocuments";
+
+const getCurrentChannelDocs =
+  "\r\nDocumentation: " + APIDocumentation.getCurrentChannel + "\r\nCause";
 
 export default () =>
   describe("fdc3.getCurrentChannel", () => {

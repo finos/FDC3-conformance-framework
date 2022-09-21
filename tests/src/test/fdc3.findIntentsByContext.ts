@@ -1,8 +1,8 @@
 import { ResolveError } from "@finos/fdc3";
-import { expect } from "chai";
+import APIDocumentation from "../apiDocuments";
 
 const findIntentsByContextDocs =
-  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent#findintentsbycontext\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation.findIntentsByContext + "\r\nCause";
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md

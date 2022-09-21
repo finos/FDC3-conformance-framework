@@ -1,5 +1,6 @@
-import { Context, ResolveError } from "@finos/fdc3";
+import { Context, raiseIntent, ResolveError } from "@finos/fdc3";
 import { assert, expect } from "chai";
+import APIDocumentation from "../apiDocuments";
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
@@ -18,7 +19,7 @@ const createReceiver = (contextType: string) => {
 };
 
 const raiseIntentDocs =
-  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintent\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation.raiseIntent + "\r\nCause";
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md

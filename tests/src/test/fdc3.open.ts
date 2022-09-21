@@ -1,5 +1,6 @@
 import { OpenError, Context } from "@finos/fdc3";
 import { assert, expect } from "chai";
+import APIDocumentation from "../apiDocuments";
 
 const appBName = "MockApp";
 const appBId = "MockAppId";
@@ -23,8 +24,7 @@ const createReceiver = (contextType: string) => {
   return messageReceived;
 };
 
-const openDocs =
-  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent#open\r\nCause";
+const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause";
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
