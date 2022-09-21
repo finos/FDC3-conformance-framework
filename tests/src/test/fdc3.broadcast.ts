@@ -1,6 +1,7 @@
 import { Listener, Channel, Context, ContextTypes } from "@finos/fdc3";
 import { assert, expect } from "chai";
 import constants from "../constants";
+import fdc3AddContextListener from "./fdc3.addContextListener";
 import APIDocumentation from "../apiDocuments";
 
 const documentation =
@@ -13,14 +14,14 @@ export default () =>
 
     let channelsAppContext = {
       type: "channelsAppContext",
-      reverseFunctionCallOrder: false,
+      reverseMethodCallOrder: false,
       contextBroadcasts: {
         instrument: true,
         contact: false,
       },
-      joinAppChannel: false,
+      useAppChannel: false,
       broadcastMultipleItems: false,
-      executionComplete: false,
+      broadcastExecutionComplete: false,
     };
 
     it("Broadcast method is callable", async () => {
@@ -117,7 +118,7 @@ export default () =>
         let errorMessage = `\r\nSteps to reproduce:\r\n- App B broadcasts fdc3.instrument context\r\n- App B joins channel 1\r\n- App A joins channel 1\r\n- App A adds a context listener of type null${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.reverseFunctionCallOrder = true;
+          channelsAppContext.reverseMethodCallOrder = true;
 
           //Open ChannelsApp app. ChannelsApp broadcasts context, then joins channel 1
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -273,7 +274,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.executionComplete = true;
+          channelsAppContext.broadcastExecutionComplete = true;
 
           //listens for when app B execution is complete
           const executionCompleteContext =
@@ -313,7 +314,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.executionComplete = true;
+          channelsAppContext.broadcastExecutionComplete = true;
 
           //listens for when app B execution is complete
           const executionCompleteContext =
@@ -400,7 +401,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App A adds adds a context listener of type null\r\n- App B joins the same app channel as A\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.joinAppChannel = true;
+          channelsAppContext.useAppChannel = true;
 
           //App A joins app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
@@ -428,7 +429,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins an app channel\r\n- App B broadcasts context of type fdc3.instrument\r\n- App A joins the same app channel as B\r\n- App A adds a context listener of type null${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.joinAppChannel = true;
+          channelsAppContext.useAppChannel = true;
 
           //App B creates/joins an app channel then broadcasts context
           await window.fdc3.open("ChannelsApp", channelsAppContext);
@@ -459,7 +460,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B joins the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.joinAppChannel = true;
+          channelsAppContext.useAppChannel = true;
           channelsAppContext.contextBroadcasts.contact = true;
 
           //App A joins app channel
@@ -495,7 +496,7 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           let contextTypes: string[] = [];
-          channelsAppContext.joinAppChannel = true;
+          channelsAppContext.useAppChannel = true;
           channelsAppContext.contextBroadcasts.contact = true;
 
           //App A joins app channel
@@ -551,9 +552,9 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App A adds a context listener of type null\r\n- App A unsubscribes the app channel\r\n- App B joins the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.joinAppChannel = true;
+          channelsAppContext.useAppChannel = true;
           channelsAppContext.contextBroadcasts.contact = true;
-          channelsAppContext.executionComplete = true;
+          channelsAppContext.broadcastExecutionComplete = true;
 
           //App A joins app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
@@ -590,9 +591,9 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App A unsubscribes the app channel\r\n- App B joins the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.joinAppChannel = true;
+          channelsAppContext.useAppChannel = true;
           channelsAppContext.contextBroadcasts.contact = true;
-          channelsAppContext.executionComplete = true;
+          channelsAppContext.broadcastExecutionComplete = true;
 
           //App A joins app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
@@ -629,7 +630,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B joins a different app channel\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.joinAppChannel = true;
+          channelsAppContext.useAppChannel = true;
 
           //App A joins app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
@@ -660,7 +661,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B joins the first channel that A joined\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          channelsAppContext.joinAppChannel = true;
+          channelsAppContext.useAppChannel = true;
 
           //App A joins app channel
           let testChannel = await window.fdc3.getOrCreateChannel(
@@ -711,7 +712,7 @@ export default () =>
       it("Should receive both contexts when app B broadcasts both contexts to the same app channel and A gets current context for each type", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App B joins the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context for types fdc3.instrument and fdc3.contact${documentation}`;
 
-        channelsAppContext.joinAppChannel = true;
+        channelsAppContext.useAppChannel = true;
         channelsAppContext.contextBroadcasts.contact = true;
 
         //App A joins app channel
@@ -737,7 +738,7 @@ export default () =>
       it("Should retrieve the last broadcast context item when app B broadcasts a context with multiple history items to the same app channel and A gets current context", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App B joins the same app channel\r\n- App B broadcasts two different contexts of type fdc3.instrument\r\n- App A gets current context for types fdc3.instrument${documentation}`;
 
-        channelsAppContext.joinAppChannel = true;
+        channelsAppContext.useAppChannel = true;
         channelsAppContext.broadcastMultipleItems = true;
 
         //App A joins app channel
@@ -758,8 +759,8 @@ export default () =>
       it("Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App B joins the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App B gets current context with no filter applied${documentation}`;
 
-        channelsAppContext.joinAppChannel = true;
-        channelsAppContext.executionComplete = true;
+        channelsAppContext.useAppChannel = true;
+        channelsAppContext.broadcastExecutionComplete = true;
         channelsAppContext.contextBroadcasts.contact = true;
 
         //App A joins app channel
@@ -844,10 +845,10 @@ export default () =>
 
     function resetChannelsAppContext() {
       channelsAppContext.broadcastMultipleItems = false;
-      channelsAppContext.joinAppChannel = false;
+      channelsAppContext.useAppChannel = false;
       channelsAppContext.contextBroadcasts.contact = false;
-      channelsAppContext.reverseFunctionCallOrder = false;
-      channelsAppContext.executionComplete = false;
+      channelsAppContext.reverseMethodCallOrder = false;
+      channelsAppContext.broadcastExecutionComplete = false;
     }
 
     const executionCompleteListener = (
