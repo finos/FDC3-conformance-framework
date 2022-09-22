@@ -1,8 +1,9 @@
 import { ResolveError } from "@finos/fdc3";
-import { expect } from "chai";
+import { assert, expect } from "chai";
+import APIDocumentation from "../apiDocuments";
 
 const findIntentsByContextDocs =
-  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent#findintentsbycontext\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation.findIntentsByContext + "\r\nCause";
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
@@ -10,47 +11,51 @@ const findIntentsByContextDocs =
 export default () =>
   describe("fdc3.findIntentsByContext", () => {
     it("Should find intents by context 'testContextX'", async () => {
-      const intents = await window.fdc3.findIntentsByContext({
-        type: "testContextX",
-      });
-      expect(intents).to.have.length(3, findIntentsByContextDocs);
+      try {
+        const intents = await window.fdc3.findIntentsByContext({
+          type: "testContextX",
+        });
+        expect(intents).to.have.length(3, findIntentsByContextDocs);
 
-      const intentNames = intents.map((appIntent) => appIntent.intent.name);
-      expect(intentNames).to.have.all.members(
-        ["aTestingIntent", "sharedTestingIntent1", "cTestingIntent"],
-        findIntentsByContextDocs
-      );
+        const intentNames = intents.map((appIntent) => appIntent.intent.name);
+        expect(intentNames).to.have.all.members(
+          ["aTestingIntent", "sharedTestingIntent1", "cTestingIntent"],
+          findIntentsByContextDocs
+        );
 
-      const aTestingIntent = intents.find(
-        (appIntent) => appIntent.intent.name === "aTestingIntent"
-      );
-      expect(aTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
-      expect(aTestingIntent.apps[0].name).to.eq(
-        "IntentAppAId",
-        findIntentsByContextDocs
-      );
+        const aTestingIntent = intents.find(
+          (appIntent) => appIntent.intent.name === "aTestingIntent"
+        );
+        expect(aTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
+        expect(aTestingIntent.apps[0].name).to.eq(
+          "IntentAppAId",
+          findIntentsByContextDocs
+        );
 
-      const sharedTestingIntent1 = intents.find(
-        (appIntent) => appIntent.intent.name === "sharedTestingIntent1"
-      );
-      expect(sharedTestingIntent1.apps).to.have.length(
-        2,
-        findIntentsByContextDocs
-      );
-      const sharedAppNames = sharedTestingIntent1.apps.map((app) => app.name);
-      expect(sharedAppNames).to.have.all.members(
-        ["IntentAppAId", "IntentAppBId"],
-        findIntentsByContextDocs
-      );
+        const sharedTestingIntent1 = intents.find(
+          (appIntent) => appIntent.intent.name === "sharedTestingIntent1"
+        );
+        expect(sharedTestingIntent1.apps).to.have.length(
+          2,
+          findIntentsByContextDocs
+        );
+        const sharedAppNames = sharedTestingIntent1.apps.map((app) => app.name);
+        expect(sharedAppNames).to.have.all.members(
+          ["IntentAppAId", "IntentAppBId"],
+          findIntentsByContextDocs
+        );
 
-      const cTestingIntent = intents.find(
-        (appIntent) => appIntent.intent.name === "cTestingIntent"
-      );
-      expect(cTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
-      expect(cTestingIntent.apps[0].name).to.eq(
-        "IntentAppCId",
-        findIntentsByContextDocs
-      );
+        const cTestingIntent = intents.find(
+          (appIntent) => appIntent.intent.name === "cTestingIntent"
+        );
+        expect(cTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
+        expect(cTestingIntent.apps[0].name).to.eq(
+          "IntentAppCId",
+          findIntentsByContextDocs
+        );
+      } catch (ex) {
+        assert.fail(findIntentsByContextDocs + (ex.message ?? ex));
+      }
     });
 
     it("Should throw NoAppsFound error when context does not exist", async () => {

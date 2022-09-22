@@ -1,8 +1,11 @@
 import { ResolveError } from "@finos/fdc3";
 import { assert, expect } from "chai";
+import APIDocumentation from "../apiDocuments";
 
 const docs =
-  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent#raiseintentforcontext\r\nCause";
+  "\r\nDocumentation: " +
+  APIDocumentation.raiseIntentForContext +
+  "\r\nCause: ";
 
 export default () =>
   describe("fdc3.raiseIntentForContext", async () => {

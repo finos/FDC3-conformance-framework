@@ -1,4 +1,6 @@
 import { Listener } from "@finos/fdc3";
+import { assert, expect } from "chai";
+import APIDocumentation from "../apiDocuments";
 
 export default () =>
   describe("fdc3.addIntentListener", () => {
@@ -13,13 +15,23 @@ export default () =>
 
     it("Method is callable", async () => {
       const intentName = "fdc3.conformanceListener";
-      listener = await window.fdc3.addIntentListener(
-        intentName,
-        (info: any) => {
-          console.log(
-            `Intent listener for intent ${intentName} triggered with result ${info}`
-          );
-        }
-      );
+      try {
+        listener = await window.fdc3.addIntentListener(
+          intentName,
+          (info: any) => {
+            console.log(
+              `Intent listener for intent ${intentName} triggered with result ${info}`
+            );
+          }
+        );
+        expect(listener).to.have.property("unsubscribe").that.is.a("function");
+      } catch (ex) {
+        assert.fail(
+          "\r\nDocumentation: " +
+            APIDocumentation.addIntentListener +
+            "\r\nCause" +
+            (ex.message ?? ex)
+        );
+      }
     });
   });

@@ -2,9 +2,10 @@ import { Listener, Channel, Context, ContextTypes } from "@finos/fdc3";
 import { assert, expect } from "chai";
 import constants from "../constants";
 import fdc3AddContextListener from "./fdc3.addContextListener";
+import APIDocumentation from "../apiDocuments";
 
 const documentation =
-  "\r\nDocumentation: https://fdc3.finos.org/docs/api/ref/DesktopAgent\r\nCause:";
+  "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
 
 export default () =>
   describe("fdc3.broadcast", () => {

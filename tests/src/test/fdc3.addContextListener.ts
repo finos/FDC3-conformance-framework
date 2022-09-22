@@ -1,5 +1,9 @@
 import { Listener } from "@finos/fdc3";
 import { assert, expect } from "chai";
+import APIDocumentation from "../apiDocuments";
+
+const documentation =
+  "\r\nDocumentation: " + APIDocumentation.addContextListener + "\r\nCause";
 
 export default () =>
   describe("fdc3.addContextListener", () => {
@@ -24,17 +28,19 @@ export default () =>
           }
         );
       } catch (ex) {
-        assert.fail("Error while calling method. " + (ex.message ?? ex));
+        assert.fail(documentation + (ex.message ?? ex));
       }
     });
 
     it("Returns listener object", async () => {
       try {
         listener = await window.fdc3.addContextListener(null, () => {});
-        assert.isObject(listener);
-        expect(typeof listener.unsubscribe).to.be.equals("function");
+        assert.isObject(listener, documentation);
+        expect(typeof listener.unsubscribe, documentation).to.be.equals(
+          "function"
+        );
       } catch (ex) {
-        assert.fail("No listener object returned. " + (ex.message ?? ex));
+        assert.fail(documentation + (ex.message ?? ex));
       }
     });
   });
