@@ -187,5 +187,5 @@ const validateIntentResolution = (
       appName,
       raiseIntentDocs
     );
-  } else assert.fail("Incorrect type returned");
+  } else assert.fail("Invalid intent resolution object");
 };
