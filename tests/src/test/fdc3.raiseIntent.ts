@@ -1,4 +1,10 @@
-import { Context, raiseIntent, ResolveError } from "@finos/fdc3";
+import {
+  AppMetadata,
+  Context,
+  IntentResolution,
+  raiseIntent,
+  ResolveError,
+} from "@finos/fdc3";
 import { assert, expect } from "chai";
 import APIDocumentation from "../apiDocuments";
 
@@ -53,7 +59,7 @@ export default () =>
         }
       );
 
-      expect(intentResolution.source).to.eq("IntentAppBId", raiseIntentDocs);
+      validateIntentResolution("IntentAppB", intentResolution);
       await result;
     });
 
@@ -66,7 +72,7 @@ export default () =>
         },
         "IntentAppA"
       );
-      expect(intentResolution.source).to.eq("IntentAppAId", raiseIntentDocs);
+      validateIntentResolution("IntentAppA", intentResolution);
       await result;
     });
 
@@ -79,7 +85,7 @@ export default () =>
         },
         { name: "IntentAppA", appId: "IntentAppAId" }
       );
-      expect(intentResolution.source).to.eq("IntentAppAId", raiseIntentDocs);
+      validateIntentResolution("IntentAppA", intentResolution);
       await result;
     });
 
@@ -92,7 +98,8 @@ export default () =>
         },
         { name: "IntentAppA" }
       );
-      expect(intentResolution.source).to.eq("IntentAppAId", raiseIntentDocs);
+
+      validateIntentResolution("IntentAppA", intentResolution);
       await result;
     });
 
@@ -168,3 +175,17 @@ export default () =>
       }
     });
   });
+
+const validateIntentResolution = (
+  appName: string,
+  intentResolution: IntentResolution
+) => {
+  if (typeof intentResolution.source === "string") {
+    expect(intentResolution.source).to.eq(`${appName}Id`, raiseIntentDocs);
+  } else if (typeof intentResolution.source === "object") {
+    expect((intentResolution.source as AppMetadata).name).to.eq(
+      appName,
+      raiseIntentDocs
+    );
+  } else assert.fail("Incorrect type returned");
+};
