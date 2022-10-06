@@ -689,15 +689,11 @@ export default () =>
           "test-channel"
         );
 
-        //listens for when app B execution is complete
-        const executionCompleteContext = executionCompleteListener(
-          "executionComplete",
-          testChannel
-        );
-
         //App B joins the same app channel as A then broadcasts context
         await window.fdc3.open("ChannelsApp", channelsAppContext);
-        await executionCompleteContext;
+
+        //Give app B time to execute
+        await wait();
 
         //get contexts from app B
         const context = await testChannel.getCurrentContext("fdc3.instrument");
