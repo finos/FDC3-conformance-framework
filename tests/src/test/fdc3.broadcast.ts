@@ -343,18 +343,6 @@ export default () =>
           resolve();
         });
       });
-
-      it("Should throw NOT DELIVERED error when system broadcast is sent with an invalid context object structure", async () => {
-        try {
-          // @ts-ignore
-          await window.fdc3.broadcast({
-            id: { ticker: "AAPL" },
-          });
-          assert.fail("No error thrown");
-        } catch (ex) {
-          expect(ex).to.have.property("message", "NOT DELIVERED");
-        }
-      });
     });
 
     describe("App channels", () => {
@@ -662,22 +650,6 @@ export default () =>
           await wait();
           resolve();
         });
-      });
-
-      it("Should throw NOT DELIVERED error when an app channel broadcast is sent with an invalid Context object structure", async () => {
-        try {
-          const testChannel = await window.fdc3.getOrCreateChannel(
-            "test-channel"
-          );
-
-          // @ts-ignore
-          await testChannel.broadcast({
-            id: { ticker: "AAPL" },
-          });
-          assert.fail("No error thrown");
-        } catch (ex) {
-          expect(ex).to.have.property("message", "NOT DELIVERED");
-        }
       });
 
       it("Should receive both contexts when app B broadcasts both contexts to the same app channel and A gets current context for each type", async () => {
