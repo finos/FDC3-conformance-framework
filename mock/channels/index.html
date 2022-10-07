@@ -39,7 +39,7 @@
         }
 
         //Add listener so app A can close down Channels app
-        channelService.addContextListener("closeWindow", channel);
+        channelService.closeAppOnCompletion("closeWindow", channel);
         if (context.broadcastExecutionComplete) {
           //broadcast to let App A know Channels app has finished executing
           channelService.broadcast("executionComplete", 1, channel);

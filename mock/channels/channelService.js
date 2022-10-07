@@ -10,7 +10,7 @@ class AppChannelService {
         });
     }
 
-    async addContextListener(contextType, channel) {
+    async closeAppOnCompletion(contextType, channel) {
         await channel.addContextListener(
             contextType,
             () => closeFinsembleWindow());
@@ -31,7 +31,7 @@ class UserChannelService {
         });
     }
 
-    async addContextListener(contextType) {
+    async closeAppOnCompletion(contextType) {
         await window.fdc3.addContextListener(
             contextType,
             () => closeFinsembleWindow());
