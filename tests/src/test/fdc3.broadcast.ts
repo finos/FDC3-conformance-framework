@@ -829,13 +829,13 @@ export default () =>
       });
     };
 
-    function buildChannelsAppContext(mockAppCommands : any[], notifyAppAOnCompletion?: boolean, broadcastTwoHistoryItems?: boolean, ){
+    function buildChannelsAppContext(mockAppCommands : Commands[], notifyAppAOnCompletion?: boolean, broadcastTwoHistoryItems?: boolean, ){
       return {
         type: "channelsAppContext",
         commands: mockAppCommands,
         settings: {
-          notifyAppAOnCompletion: notifyAppAOnCompletion || false,
-          broadcastTwoHistoryItems: broadcastTwoHistoryItems || false
+          notifyAppAOnCompletion: notifyAppAOnCompletion ?? false,
+          broadcastTwoHistoryItems: broadcastTwoHistoryItems ?? false
         }
       };
     } 
