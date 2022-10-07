@@ -5,13 +5,15 @@ import {
   raiseIntent,
   ResolveError,
 } from "@finos/fdc3";
+import { resolveObjectURL } from "buffer";
 import { assert, expect } from "chai";
 import APIDocumentation from "../apiDocuments";
+import constants from "../constants";
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = (contextType: string) => {
-  const messageReceived = new Promise<Context>(async (resolve) => {
+  const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const listener = await window.fdc3.addContextListener(
       contextType,
       (context) => {
@@ -19,6 +21,10 @@ const createReceiver = (contextType: string) => {
         listener.unsubscribe();
       }
     );
+
+    //if no context received reject promise
+    await wait();
+    reject(new Error("No context received from app B"));
   });
 
   return messageReceived;
@@ -181,7 +187,7 @@ const validateIntentResolution = (
   intentResolution: IntentResolution
 ) => {
   if (typeof intentResolution.source === "string") {
-    expect(intentResolution.source).to.eq(`${appName}Id`, raiseIntentDocs);
+    expect(intentResolution.source).to.eq(appName, raiseIntentDocs);
   } else if (typeof intentResolution.source === "object") {
     expect((intentResolution.source as AppMetadata).name).to.eq(
       appName,
@@ -189,3 +195,11 @@ const validateIntentResolution = (
     );
   } else assert.fail("Invalid intent resolution object");
 };
+
+async function wait() {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve(true);
+    }, constants.WaitTime)
+  );
+}

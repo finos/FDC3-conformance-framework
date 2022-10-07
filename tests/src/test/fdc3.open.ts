@@ -1,6 +1,8 @@
 import { OpenError, Context } from "@finos/fdc3";
+import { resolveObjectURL } from "buffer";
 import { assert, expect } from "chai";
 import APIDocumentation from "../apiDocuments";
+import constants from "../constants";
 
 const appBName = "MockApp";
 const appBId = "MockAppId";
@@ -8,7 +10,7 @@ const appBId = "MockAppId";
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = (contextType: string) => {
-  const messageReceived = new Promise<Context>(async (resolve) => {
+  const messageReceived = new Promise<Context>(async (resolve, reject) => {
     await window.fdc3.getOrCreateChannel("FDC3-Conformance-Channel");
     await window.fdc3.joinChannel("FDC3-Conformance-Channel");
 
@@ -19,10 +21,22 @@ const createReceiver = (contextType: string) => {
         listener.unsubscribe();
       }
     );
+
+    //reject promise if no context received
+    await wait();
+    reject(new Error("No context received from app B"));
   });
 
   return messageReceived;
 };
+
+async function wait() {
+  return new Promise((resolve) =>
+    setTimeout(() => {
+      resolve(true);
+    }, constants.WaitTime)
+  );
+}
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause";
 
