@@ -181,7 +181,7 @@ const validateIntentResolution = (
   intentResolution: IntentResolution
 ) => {
   if (typeof intentResolution.source === "string") {
-    expect(intentResolution.source).to.eq(`${appName}Id`, raiseIntentDocs);
+    expect(intentResolution.source).to.eq(appName, raiseIntentDocs);
   } else if (typeof intentResolution.source === "object") {
     expect((intentResolution.source as AppMetadata).name).to.eq(
       appName,
