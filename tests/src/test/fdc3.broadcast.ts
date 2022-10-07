@@ -114,35 +114,6 @@ export default () =>
         });
       });
 
-      it("Should receive context when app B broadcasts then joins a user channel before A joins and listens on the same channel", async () => {
-        let errorMessage = `\r\nSteps to reproduce:\r\n- App B broadcasts fdc3.instrument context\r\n- App B joins channel 1\r\n- App A joins channel 1\r\n- App A adds a context listener of type null${documentation}`;
-
-        return new Promise(async (resolve, reject) => {
-          channelsAppContext.reverseMethodCallOrder = true;
-
-          //Open ChannelsApp app. ChannelsApp broadcasts context, then joins channel 1
-          await window.fdc3.open("ChannelsApp", channelsAppContext);
-
-          //wait for ChannelsApp to run
-          await wait();
-
-          //App A joins channel 1
-          await joinChannel(1);
-
-          //Add context listener to app A
-          listener = await window.fdc3.addContextListener(null, (context) => {
-            expect(context.type).to.be.equal("fdc3.instrument", errorMessage);
-            resolve();
-          });
-
-          validateListenerObject(listener);
-
-          //if no context received throw error
-          await wait();
-          reject(new Error(`${errorMessage} No context received`));
-        });
-      });
-
       it("Should receive context when app B broadcasts the listened type to the same user channel", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -371,18 +342,6 @@ export default () =>
           await wait();
           resolve();
         });
-      });
-
-      it("Should throw NOT DELIVERED error when system broadcast is sent with an invalid context object structure", async () => {
-        try {
-          // @ts-ignore
-          await window.fdc3.broadcast({
-            id: { ticker: "AAPL" },
-          });
-          assert.fail("No error thrown");
-        } catch (ex) {
-          expect(ex).to.have.property("message", "NOT DELIVERED");
-        }
       });
     });
 
@@ -693,22 +652,6 @@ export default () =>
         });
       });
 
-      it("Should throw NOT DELIVERED error when an app channel broadcast is sent with an invalid Context object structure", async () => {
-        try {
-          const testChannel = await window.fdc3.getOrCreateChannel(
-            "test-channel"
-          );
-
-          // @ts-ignore
-          await testChannel.broadcast({
-            id: { ticker: "AAPL" },
-          });
-          assert.fail("No error thrown");
-        } catch (ex) {
-          expect(ex).to.have.property("message", "NOT DELIVERED");
-        }
-      });
-
       it("Should receive both contexts when app B broadcasts both contexts to the same app channel and A gets current context for each type", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins an app channel\r\n- App B joins the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context for types fdc3.instrument and fdc3.contact${documentation}`;
 
@@ -748,6 +691,9 @@ export default () =>
 
         //App B joins the same app channel as A then broadcasts context
         await window.fdc3.open("ChannelsApp", channelsAppContext);
+
+        //Give app B time to execute
+        await wait();
 
         //get contexts from app B
         const context = await testChannel.getCurrentContext("fdc3.instrument");

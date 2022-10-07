@@ -97,13 +97,4 @@ export default () =>
       expect(receivedValue.context.name).to.eq("context", openDocs);
       expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
     });
-
-    it("Can open app B from app A with invalid context and AppMetadata (name) as target", async () => {
-      const receiver = createReceiver("fdc3-conformance-context-received");
-
-      const malformedContext = {} as any;
-      await window.fdc3.open({ name: appBName }, malformedContext);
-
-      await receiver;
-    });
   });
