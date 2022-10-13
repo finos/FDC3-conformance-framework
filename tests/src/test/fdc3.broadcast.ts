@@ -409,9 +409,8 @@ export default () =>
 
       it("Should receive context when app B broadcasts the listened type to the same app channel", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds adds a context listener of type null\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
-
         return new Promise(async (resolve, reject) => {
-          //App A retrieves app channel
+          //App A retrieves test app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
             "test-channel"
           );
@@ -459,7 +458,7 @@ export default () =>
           //give app B time to fully execute
           await wait();
 
-          //App A retrieves app channel
+          //App A retrieves test app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
             "test-channel"
           );
@@ -497,7 +496,7 @@ export default () =>
           //give app B time to fully execute
           await wait();
 
-          //App A retrieves app channel
+          //App A retrieves test app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
             "test-channel"
           );
@@ -523,7 +522,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          //App A retrieves app channel
+          //App A retrieves test app channel
           const testChannel = await window.fdc3.getOrCreateChannel(
             "test-channel"
           );
@@ -793,7 +792,7 @@ export default () =>
       it("Should receive both contexts when app B broadcasts both contexts to the same app channel and A gets current context for each type", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context for types fdc3.instrument and fdc3.contact${documentation}`;
 
-        //App A retrieves app channel
+        //App A retrieves test app channel
         const testChannel = await window.fdc3.getOrCreateChannel(
           "test-channel"
         );
