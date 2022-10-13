@@ -469,8 +469,6 @@ export default () =>
             resolve();
           });
 
-          validateListenerObject(listener);
-
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
