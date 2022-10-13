@@ -16,8 +16,8 @@ class Fdc3CommandExecutor {
           this.stats.innerHTML += "joined system channel one/ ";
           break;
         }
-        case commands.retrieveTestChannel: {
-          channel = await this.RetrieveTestChannel();
+        case commands.retrieveTestAppChannel: {
+          channel = await this.RetrieveTestAppChannel();
           this.stats.innerHTML += `retrieved test-channel. Channel = ${JSON.stringify(channel)}/ `;
           break;
         }
@@ -53,7 +53,7 @@ class Fdc3CommandExecutor {
   }
 
   //retrieve/create "test-channel" app channel
-  async RetrieveTestChannel() {
+  async RetrieveTestAppChannel() {
     return await window.fdc3.getOrCreateChannel("test-channel");
   }
 
@@ -129,7 +129,7 @@ const channelType = {
 
 const commands = {
   joinSystemChannelOne: "joinSystemChannelOne",
-  retrieveTestChannel: "retrieveTestChannel",
+  retrieveTestAppChannel: "retrieveTestAppChannel",
   broadcastInstrumentContext: "broadcastInstrumentContext",
   broadcastContactContext: "broadcastContactContext",
 };

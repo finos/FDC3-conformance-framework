@@ -425,7 +425,7 @@ export default () =>
           validateListenerObject(listener);
 
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
           ];
 
@@ -446,7 +446,7 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
           ];
 
@@ -483,7 +483,7 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
             commands.broadcastContactContext,
           ];
@@ -543,7 +543,7 @@ export default () =>
           validateListenerObject(listener);
 
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
             commands.broadcastContactContext,
           ];
@@ -593,7 +593,7 @@ export default () =>
           validateListenerObject(listener2);
 
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
             commands.broadcastContactContext,
           ];
@@ -651,7 +651,7 @@ export default () =>
           listener.unsubscribe();
 
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
             commands.broadcastContactContext,
           ];
@@ -695,7 +695,7 @@ export default () =>
           listener.unsubscribe();
 
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
             commands.broadcastContactContext,
           ];
@@ -732,7 +732,7 @@ export default () =>
           validateListenerObject(listener);
 
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
           ];
 
@@ -774,7 +774,7 @@ export default () =>
           validateListenerObject(listener);
 
           const channelsAppCommands = [
-            commands.retrieveTestChannel,
+            commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
           ];
 
@@ -799,7 +799,7 @@ export default () =>
         );
 
         const channelsAppCommands = [
-          commands.retrieveTestChannel,
+          commands.retrieveTestAppChannel,
           commands.broadcastInstrumentContext,
           commands.broadcastContactContext,
         ];
@@ -831,7 +831,7 @@ export default () =>
         );
 
         const channelsAppCommands = [
-          commands.retrieveTestChannel,
+          commands.retrieveTestAppChannel,
           commands.broadcastInstrumentContext,
         ];
 
@@ -866,7 +866,7 @@ export default () =>
         );
 
         const channelsAppCommands = [
-          commands.retrieveTestChannel,
+          commands.retrieveTestAppChannel,
           commands.broadcastInstrumentContext,
           commands.broadcastContactContext,
         ];
@@ -986,7 +986,7 @@ export default () =>
 
 const commands = {
   joinSystemChannelOne: "joinSystemChannelOne",
-  retrieveTestChannel: "retrieveTestChannel",
+  retrieveTestAppChannel: "retrieveTestAppChannel",
   broadcastInstrumentContext: "broadcastInstrumentContext",
   broadcastContactContext: "broadcastContactContext",
 };
