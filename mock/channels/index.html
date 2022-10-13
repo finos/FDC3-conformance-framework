@@ -22,7 +22,7 @@
         (context) => {
           if (firedOnce === false) {
             firedOnce = true;
-            let commandExecutor = new Fdc3CommandExecutor();
+            const commandExecutor = new Fdc3CommandExecutor();
             commandExecutor.executeCommands(context.commands, context.config);
           }
         });
