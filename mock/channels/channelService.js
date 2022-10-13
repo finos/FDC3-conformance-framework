@@ -18,7 +18,7 @@ class Fdc3CommandExecutor {
         }
         case commands.retrieveTestAppChannel: {
           channel = await this.RetrieveTestAppChannel();
-          this.stats.innerHTML += `retrieved test-channel. Channel = ${JSON.stringify(channel)}/ `;
+          this.stats.innerHTML += `retrieved test app channel/ `;
           break;
         }
         case commands.broadcastInstrumentContext: {
@@ -37,7 +37,7 @@ class Fdc3CommandExecutor {
       }
     }
 
-    //close AppChannel when test is complete
+    //close ChannelsApp when test is complete
     await this.CloseWindowOnCompletion(channel);
 
     //notify app A that ChannelsApp has finished executing
