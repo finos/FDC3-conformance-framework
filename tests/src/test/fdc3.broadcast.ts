@@ -43,23 +43,15 @@ export default () =>
           //App A joins channel 1
           await joinChannel(1);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //if no context received throw error
@@ -83,23 +75,15 @@ export default () =>
 
           validateListenerObject(listener);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //if no context received throw error
@@ -112,23 +96,15 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //App A joins channel 1
@@ -169,24 +145,16 @@ export default () =>
           //App A joins channel 1
           joinChannel(1);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-                commands.broadcastContactContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //if no context received throw error
@@ -226,24 +194,16 @@ export default () =>
           //App A joins channel 1
           await joinChannel(1);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-                commands.broadcastContactContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           function checkIfBothContextsReceived() {
@@ -295,24 +255,16 @@ export default () =>
           //App A joins channel 2
           await joinChannel(2);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-                commands.broadcastContactContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //give listener time to receive context
@@ -351,23 +303,15 @@ export default () =>
             assert.fail("Listener undefined", errorMessage);
           }
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: true,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands, true)
           );
 
           await executionCompleteContext;
@@ -398,23 +342,15 @@ export default () =>
           await joinChannel(1);
           await joinChannel(2);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: true,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands, true)
           );
 
           await executionCompleteContext;
@@ -443,23 +379,15 @@ export default () =>
           //App A leaves channel 1
           await window.fdc3.leaveCurrentChannel();
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.user,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.joinSystemChannelOne,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.joinUserChannelOne,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //give listener time to receive context
@@ -496,23 +424,15 @@ export default () =>
 
           validateListenerObject(listener);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //if no context received throw error
@@ -525,23 +445,15 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App B retrieves an app channel\r\n- App B broadcasts context of type fdc3.instrument\r\n- App A retrieves the same app channel as B\r\n- App A retrieves current context of type null${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //give app B time to fully execute
@@ -570,24 +482,16 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App B retrieves an app channel\r\n- App B broadcasts context of type fdc3.instrument and then of type fdc3.contact\r\n- App A retrieves the same app channel as B\r\n- App A retreives current context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-                commands.broadcastContactContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //give app B time to fully execute
@@ -638,24 +542,16 @@ export default () =>
 
           validateListenerObject(listener);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-                commands.broadcastContactContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //if no context received throw error
@@ -696,24 +592,16 @@ export default () =>
 
           validateListenerObject(listener2);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-                commands.broadcastContactContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           function checkIfBothContextsReceived() {
@@ -762,24 +650,16 @@ export default () =>
           //Unsubscribe from app channel
           listener.unsubscribe();
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: true,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-                commands.broadcastContactContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands, true)
           );
 
           await executionCompleteContext;
@@ -787,7 +667,7 @@ export default () =>
         });
       });
 
-      it.only("Should not receive context when unsubscribing an app channel before app B broadcasts the listened type to that channel", async () => {
+      it("Should not receive context when unsubscribing an app channel before app B broadcasts the listened type to that channel", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App A unsubscribes the app channel\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
         return new Promise(async (resolve, reject) => {
@@ -814,24 +694,16 @@ export default () =>
           //Unsubscribe from app channel
           listener.unsubscribe();
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: true,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-                commands.broadcastContactContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands, true)
           );
 
           await executionCompleteContext;
@@ -859,23 +731,15 @@ export default () =>
 
           validateListenerObject(listener);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //give listener time to receive context
@@ -909,23 +773,15 @@ export default () =>
 
           validateListenerObject(listener);
 
-          //Set ChannelsApp config
-          const channelsAppConfig: IChannelsAppConfig = {
-            channelType: channelType.app,
-            notifyAppAOnCompletion: false,
-            historyItems: 1,
-          };
+          const channelsAppCommands = [
+            commands.retrieveTestChannel,
+            commands.broadcastInstrumentContext,
+          ];
 
           //Open ChannelsApp app then execute commands in order
           await window.fdc3.open(
             "ChannelsApp",
-            buildChannelsAppContext(
-              [
-                commands.retrieveTestChannel,
-                commands.broadcastInstrumentContext,
-              ],
-              channelsAppConfig
-            )
+            buildChannelsAppContext(channelsAppCommands)
           );
 
           //give listener time to receive context
@@ -942,24 +798,16 @@ export default () =>
           "test-channel"
         );
 
-        //Set ChannelsApp config
-        const channelsAppConfig: IChannelsAppConfig = {
-          channelType: channelType.app,
-          notifyAppAOnCompletion: false,
-          historyItems: 1,
-        };
+        const channelsAppCommands = [
+          commands.retrieveTestChannel,
+          commands.broadcastInstrumentContext,
+          commands.broadcastContactContext,
+        ];
 
         //Open ChannelsApp app then execute commands in order
         await window.fdc3.open(
           "ChannelsApp",
-          buildChannelsAppContext(
-            [
-              commands.retrieveTestChannel,
-              commands.broadcastInstrumentContext,
-              commands.broadcastContactContext,
-            ],
-            channelsAppConfig
-          )
+          buildChannelsAppContext(channelsAppCommands)
         );
 
         //get contexts from app B
@@ -982,20 +830,15 @@ export default () =>
           "test-channel"
         );
 
-        //Set ChannelsApp config
-        const channelsAppConfig: IChannelsAppConfig = {
-          channelType: channelType.app,
-          notifyAppAOnCompletion: true,
-          historyItems: 2,
-        };
+        const channelsAppCommands = [
+          commands.retrieveTestChannel,
+          commands.broadcastInstrumentContext,
+        ];
 
         //Open ChannelsApp app, retrieve test channel then broadcast two different intrument contexts
         await window.fdc3.open(
           "ChannelsApp",
-          buildChannelsAppContext(
-            [commands.retrieveTestChannel, commands.broadcastInstrumentContext],
-            channelsAppConfig
-          )
+          buildChannelsAppContext(channelsAppCommands, true, 2)
         );
 
         //Give app B time to execute
@@ -1022,24 +865,16 @@ export default () =>
           testChannel
         );
 
-        //Set ChannelsApp config
-        const channelsAppConfig: IChannelsAppConfig = {
-          channelType: channelType.app,
-          notifyAppAOnCompletion: true,
-          historyItems: 1,
-        };
+        const channelsAppCommands = [
+          commands.retrieveTestChannel,
+          commands.broadcastInstrumentContext,
+          commands.broadcastContactContext,
+        ];
 
         //Open ChannelsApp app then execute commands in order
         await window.fdc3.open(
           "ChannelsApp",
-          buildChannelsAppContext(
-            [
-              commands.retrieveTestChannel,
-              commands.broadcastInstrumentContext,
-              commands.broadcastContactContext,
-            ],
-            channelsAppConfig
-          )
+          buildChannelsAppContext(channelsAppCommands, true)
         );
 
         await executionCompleteContext;
@@ -1135,33 +970,22 @@ export default () =>
 
     function buildChannelsAppContext(
       mockAppCommands: string[],
-      channelsAppConfig: IChannelsAppConfig
+      notifyAppAOnCompletion?: boolean,
+      historyItems?: number
     ) {
       return {
         type: "channelsAppContext",
         commands: mockAppCommands,
         config: {
-          channelType: channelsAppConfig.channelType,
-          notifyAppAOnCompletion: channelsAppConfig.notifyAppAOnCompletion,
-          historyItems: channelsAppConfig.historyItems,
+          notifyAppAOnCompletion: notifyAppAOnCompletion ?? false,
+          historyItems: historyItems ?? 1,
         },
       };
     }
   });
 
-interface IChannelsAppConfig {
-  channelType: string;
-  notifyAppAOnCompletion: boolean;
-  historyItems: number;
-}
-
-const channelType = {
-  user: "user",
-  app: "app",
-};
-
 const commands = {
-  joinUserChannelOne: "joinUserChannelOne",
+  joinSystemChannelOne: "joinSystemChannelOne",
   retrieveTestChannel: "retrieveTestChannel",
   broadcastInstrumentContext: "broadcastInstrumentContext",
   broadcastContactContext: "broadcastContactContext",

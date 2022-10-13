@@ -5,32 +5,30 @@ class Fdc3CommandExecutor {
     this.stats = window.document.getElementById("context");
   }
 
-  //execute commands received from app A in order
+  //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
-    let broadcastService;
 
     for (let command of orderedCommands) {
-      this.stats.innerHTML += `fdc3.command = ${command}/ `;
       switch (command) {
-        case commands.joinUserChannelOne: {
-          channel = await this.JoinUserChannelOne();
-          this.stats.innerHTML += `joinUserChannelOne done/ `;
+        case commands.joinSystemChannelOne: {
+          channel = await this.JoinSystemChannelOne();
+          this.stats.innerHTML += "joined system channel one/ ";
           break;
         }
         case commands.retrieveTestChannel: {
           channel = await this.RetrieveTestChannel();
-          this.stats.innerHTML += `retrieve test channel done/ `;
+          this.stats.innerHTML += `retrieved test-channel. Channel = ${JSON.stringify(channel)}/ `;
           break;
         }
         case commands.broadcastInstrumentContext: {
-          await this.BroadcastContextItem("fdc3.instrument", channel, config);
-          this.stats.innerHTML += `broadcast instrument done/ `;
+          await this.BroadcastContextItem("fdc3.instrument", channel, config.historyItems);
+          this.stats.innerHTML += "fdc3.instrument type broadcast/ ";
           break;
         }
         case commands.broadcastContactContext: {
-          await this.BroadcastContextItem("fdc3.contact", channel, config);
-          this.stats.innerHTML += `broadcast contact done/ `;
+          await this.BroadcastContextItem("fdc3.contact", channel, config.historyItems);
+          this.stats.innerHTML += "fdc3.contact type broadcast/ ";
           break;
         }
         default: {
@@ -40,39 +38,36 @@ class Fdc3CommandExecutor {
     }
 
     //close AppChannel when test is complete
-    await this.CloseWindowOnCompletion(channel, config.channelType);
-    this.stats.innerHTML += `close app on Completion done/ `;
+    await this.CloseWindowOnCompletion(channel);
 
     //notify app A that ChannelsApp has finished executing
-    this.NotifyAppAOnCompletion(config.notifyAppAOnCompletion);
+    if(config.notifyAppAOnCompletion){
+      this.NotifyAppAOnCompletion(channel, config);
+    }
   }
 
-  async JoinUserChannelOne() {
+  async JoinSystemChannelOne() {
     const channels = await window.fdc3.getSystemChannels();
     await window.fdc3.joinChannel(channels[0].id);
     return channels[0];
   }
 
-  //retrieve/create app channel
+  //retrieve/create "test-channel" app channel
   async RetrieveTestChannel() {
     return await window.fdc3.getOrCreateChannel("test-channel");
   }
 
-  //get broadcast service and broadcast the given context item
-  async BroadcastContextItem(contextType, channel, config) {
-    this.stats.innerHTML += `${config.channelType}/ `;
-    let broadcastService = this.getBroadcastService(config.channelType);
-    this.stats.innerHTML += `broadcast service retrieved/ `;
-    await broadcastService.broadcast(contextType, config.historyItems, channel);
+  //get broadcast service and broadcast the given context type
+  async BroadcastContextItem(contextType, channel, historyItems) {
+    let broadcastService = this.getBroadcastService(channel.type);
+    await broadcastService.broadcast(contextType, historyItems, channel);
   }
 
-  //get app channel or user channel broadcast service
+  //get app/system channel broadcast service
   getBroadcastService(currentChannelType) {
-    if (currentChannelType === channelType.user) {
-      this.stats.innerHTML += `returning user channel service/ `;
-      return this.userChannelBroadcastService;
+    if (currentChannelType === channelType.system) {
+      return this.systemChannelBroadcastService;
     } else if (currentChannelType === channelType.app) {
-      this.stats.innerHTML += `returning app channel service/ `;
       return this.appChannelBroadcastService;
     } else {
       this.stats.innerHTML += `Error - unrecognised channel type: ${currentChannelType}/ `;
@@ -82,16 +77,12 @@ class Fdc3CommandExecutor {
   //app channel broadcast service
   appChannelBroadcastService = {
     broadcast: async (contextType, historyItems, channel) => {
-      this.stats.innerHTML += `app channel broadcast func reached/ `;
       if (channel !== undefined) {
         for (let i = 0; i < historyItems; i++) {
           await channel.broadcast({
             type: contextType,
             name: `History-item-${i + 1}`,
           });
-          this.stats.innerHTML += `type: ${contextType}/ name: History-item-${
-            i + 1
-          } broadcast`;
         }
       } else {
         this.stats.innerHTML += "Error - app channel undefined/ ";
@@ -99,53 +90,45 @@ class Fdc3CommandExecutor {
     },
   };
 
-  //user channel broadcast service
-  userChannelBroadcastService = {
+  //system channel broadcast service
+  systemChannelBroadcastService = {
     broadcast: async (contextType, historyItems) => {
-      this.stats.innerHTML += `user channel broadcast reached/ `;
       for (let i = 0; i < historyItems; i++) {
         await window.fdc3.broadcast({
           type: contextType,
           name: `History-item-${i + 1}`,
         });
-        this.stats.innerHTML += `type: ${contextType}/ name: History-item-${
-          i + 1
-        } broadcast/ `;
       }
     },
   };
 
   //await instructions from app A to close ChannelsApp on test completion
-  async CloseWindowOnCompletion(channel, channelType) {
-    if (channelType === "user"){
-        await window.fdc3.addContextListener("closeWindow", () =>
+  async CloseWindowOnCompletion(channel) {
+    if (channel.type === channelType.system) {
+      await window.fdc3.addContextListener("closeWindow", () =>
         closeFinsembleWindow()
       );
-    }else if (channelType === "app"){
-        await channel.addContextListener("closeWindow", () =>
+    } else if (channel.type === channelType.app) {
+      await channel.addContextListener("closeWindow", () =>
         closeFinsembleWindow()
       );
-    }else{
-        this.stats.innerHTML += `Error - unrecognised channel type: ${channelType}/ `;
+    } else {
+      this.stats.innerHTML += `Error - unrecognised channel type: ${channel.type}/ `;
     }
   }
 
-  NotifyAppAOnCompletion(notifyAppAOnCompletion) {
-    this.stats.innerHTML += `Notify app on completion = ${notifyAppAOnCompletion}/ `;
-    if (notifyAppAOnCompletion) {
-        this.stats.innerHTML += `Notify app on completion entered/ `;
-      this.BroadcastContextItem("executionComplete", channel, config);
-    }
+  NotifyAppAOnCompletion(channel, config) {
+    this.BroadcastContextItem("executionComplete", channel, config.historyItems);
   }
 }
 
 const channelType = {
-  user: "user",
+  system: "system",
   app: "app",
 };
 
 const commands = {
-  joinUserChannelOne: "joinUserChannelOne",
+  joinSystemChannelOne: "joinSystemChannelOne",
   retrieveTestChannel: "retrieveTestChannel",
   broadcastInstrumentContext: "broadcastInstrumentContext",
   broadcastContactContext: "broadcastContactContext",
