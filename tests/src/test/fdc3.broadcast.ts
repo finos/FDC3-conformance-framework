@@ -44,7 +44,6 @@ export default () =>
               errorMessage
             );
             resolve();
-            clearTimeout(timeout);
             return;
           });
 
@@ -69,8 +68,7 @@ export default () =>
           //wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //If no context received throw error
-          await wait();
+          //reject if no context received
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -94,7 +92,6 @@ export default () =>
               errorMessage
             );
             resolve();
-            clearTimeout(timeout);
             return;
           });
 
@@ -114,8 +111,7 @@ export default () =>
           //wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //If no context received throw error
-          await wait();
+          //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -150,7 +146,6 @@ export default () =>
               errorMessage
             );
             resolve();
-            clearTimeout(timeout);
             return;
           });
 
@@ -159,8 +154,7 @@ export default () =>
           //wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //If no context received throw error
-          await wait();
+          //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -183,7 +177,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              clearTimeout(timeout);
               return;
             }
           );
@@ -208,8 +201,7 @@ export default () =>
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //If no context received throw error
-          await wait();
+          //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -232,7 +224,6 @@ export default () =>
                 assert.fail("Incorrect context received", errorMessage);
               } else {
                 resolve();
-                clearTimeout(timeout);
                 return;
               }
             }
@@ -278,8 +269,7 @@ export default () =>
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //If no context received throw error
-          await wait();
+          //Reject if no context received
           reject(
             new Error(`${errorMessage} At least one context was not received`)
           );
@@ -335,11 +325,7 @@ export default () =>
           );
 
           //Give listener time to receive context
-          await new Promise((resolve) => {
-            timeout = setTimeout(() => {
-              resolve(true);
-            }, 3000);
-          });
+          wait();
 
           resolve();
           return;
@@ -391,6 +377,7 @@ export default () =>
 
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
+
           resolve();
           return;
         });
@@ -429,11 +416,7 @@ export default () =>
           );
 
           //Give listener time to receive context
-          await new Promise((resolve) => {
-            timeout = setTimeout(() => {
-              resolve(true);
-            }, 3000);
-          });
+          wait();
 
           resolve();
           return;
@@ -476,11 +459,7 @@ export default () =>
           );
 
           //Give listener time to receive context
-          await new Promise((resolve) => {
-            timeout = setTimeout(() => {
-              resolve(true);
-            }, 3000);
-          });
+          wait();
 
           resolve();
           return;
@@ -520,7 +499,6 @@ export default () =>
               errorMessage
             );
             resolve();
-            clearTimeout(timeout);
             return;
           });
 
@@ -540,8 +518,7 @@ export default () =>
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //If no context received throw error
-          await wait();
+          //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -577,6 +554,7 @@ export default () =>
 
           //If no context received throw error
           await wait();
+
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -620,15 +598,12 @@ export default () =>
                 errorMessage
               );
               resolve();
-              clearTimeout(timeout);
               return;
             });
 
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //If no context received throw error
-          await wait();
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -658,7 +633,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              clearTimeout(timeout);
               return;
             }
           );
@@ -681,7 +655,6 @@ export default () =>
           await resolveExecutionCompleteListener;
 
           //If no context received throw error
-          await wait();
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -746,7 +719,6 @@ export default () =>
                 assert.fail("Incorrect context received", errorMessage);
               } else {
                 resolve();
-                clearTimeout(timeout);
                 return;
               }
             }
@@ -756,7 +728,6 @@ export default () =>
           await resolveExecutionCompleteListener;
 
           //If no context received throw error
-          await wait();
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
@@ -805,8 +776,6 @@ export default () =>
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //Give listener time to receive context
-          wait();
           resolve();
           return;
         });
@@ -847,14 +816,8 @@ export default () =>
           );
 
           //Give listener time to receive context
-          await new Promise((resolve) => {
-            timeout = setTimeout(() => {
-              resolve(true);
-            }, 3000);
-          });
+          wait();
 
-          //Give listener time to receive context
-          await wait();
           resolve();
           return;
         });
@@ -887,7 +850,6 @@ export default () =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
               );
-              clearTimeout(timeout);
               return;
             }
           );
@@ -908,8 +870,6 @@ export default () =>
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
-          //Give listener time to receive context
-          await wait();
           resolve();
           return;
         });

@@ -5,10 +5,11 @@ import {
   raiseIntent,
   ResolveError,
 } from "@finos/fdc3";
-import { resolveObjectURL } from "buffer";
 import { assert, expect } from "chai";
 import APIDocumentation from "../apiDocuments";
 import constants from "../constants";
+
+let timeout: NodeJS.Timeout;
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
@@ -23,6 +24,7 @@ const createReceiver = (contextType: string) => {
     );
 
     //if no context received reject promise
+    await wait();
     await wait();
     reject(new Error("No context received from app B"));
   });
@@ -197,9 +199,10 @@ const validateIntentResolution = (
 };
 
 async function wait() {
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      resolve(true);
-    }, 3000)
+  return new Promise(
+    (resolve) =>
+      (timeout = setTimeout(() => {
+        resolve(true);
+      }, constants.WaitTime))
   );
 }

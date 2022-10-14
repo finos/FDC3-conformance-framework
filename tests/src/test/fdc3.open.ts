@@ -6,6 +6,7 @@ import constants from "../constants";
 
 const appBName = "MockApp";
 const appBId = "MockAppId";
+let timeout: NodeJS.Timeout;
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
@@ -18,6 +19,7 @@ const createReceiver = (contextType: string) => {
       contextType,
       (context) => {
         resolve(context);
+        clearTimeout(timeout);
         listener.unsubscribe();
       }
     );
@@ -31,10 +33,11 @@ const createReceiver = (contextType: string) => {
 };
 
 async function wait() {
-  return new Promise((resolve) =>
-    setTimeout(() => {
-      resolve(true);
-    }, 3000)
+  return new Promise(
+    (resolve) =>
+      (timeout = setTimeout(() => {
+        resolve(true);
+      }, constants.WaitTime))
   );
 }
 
@@ -47,25 +50,19 @@ export default () =>
   describe("fdc3.open", () => {
     it("Can open app B from app A with no context and string as target", async () => {
       const result = createReceiver("fdc3-conformance-opened");
-
       await window.fdc3.open(appBName);
-
       await result;
     });
 
     it("Can open app B from app A with no context and AppMetadata (name) as target", async () => {
       const result = createReceiver("fdc3-conformance-opened");
-
       await window.fdc3.open({ name: appBName });
-
       await result;
     });
 
     it("Can open app B from app A with no context and AppMetadata (name and appId) as target", async () => {
       const result = createReceiver("fdc3-conformance-opened");
-
       await window.fdc3.open({ name: appBName, appId: appBId });
-
       await result;
     });
 
