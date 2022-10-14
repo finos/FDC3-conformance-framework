@@ -301,7 +301,7 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //listens for when app B execution is complete
-          const executionCompleteContext =
+          const waitForChannelsAppToExecute =
             executionCompleteListener("executionComplete");
 
           //Add context listener
@@ -339,7 +339,7 @@ export default () =>
             buildChannelsAppContext(channelsAppCommands, true)
           );
 
-          await executionCompleteContext;
+          await waitForChannelsAppToExecute;
           resolve();
           return;
         });
@@ -350,7 +350,7 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //listens for when app B execution is complete
-          const executionCompleteContext =
+          const waitForChannelsAppToExecute =
             executionCompleteListener("executionComplete");
 
           //Add context listeners to app A
@@ -381,7 +381,7 @@ export default () =>
             buildChannelsAppContext(channelsAppCommands, true)
           );
 
-          await executionCompleteContext;
+          await waitForChannelsAppToExecute;
           resolve();
           return;
         });
@@ -678,7 +678,7 @@ export default () =>
           );
 
           //listens for when app B execution is complete
-          const executionCompleteContext = executionCompleteListener(
+          const waitForChannelsAppToExecute = executionCompleteListener(
             "executionComplete",
             testChannel
           );
@@ -708,7 +708,7 @@ export default () =>
             buildChannelsAppContext(channelsAppCommands, true)
           );
 
-          await executionCompleteContext;
+          await waitForChannelsAppToExecute;
           resolve();
           return;
         });
@@ -724,7 +724,7 @@ export default () =>
           );
 
           //listens for when app B execution is complete
-          const executionCompleteContext = executionCompleteListener(
+          const waitForChannelsAppToExecute = executionCompleteListener(
             "executionComplete",
             testChannel
           );
@@ -754,7 +754,7 @@ export default () =>
             buildChannelsAppContext(channelsAppCommands, true)
           );
 
-          await executionCompleteContext;
+          await waitForChannelsAppToExecute;
           resolve();
           return;
         });
@@ -917,7 +917,7 @@ export default () =>
         );
 
         //listens for when app B execution is complete
-        const executionCompleteContext = executionCompleteListener(
+        const waitForChannelsAppToExecute = executionCompleteListener(
           "executionComplete",
           testChannel
         );
@@ -934,7 +934,7 @@ export default () =>
           buildChannelsAppContext(channelsAppCommands, true)
         );
 
-        await executionCompleteContext;
+        await waitForChannelsAppToExecute;
 
         //get current context
         const context = await testChannel.getCurrentContext();
