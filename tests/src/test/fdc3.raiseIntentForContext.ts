@@ -1,6 +1,11 @@
 import { ResolveError } from "@finos/fdc3";
+import { assert, expect } from "chai";
+import APIDocumentation from "../apiDocuments";
 
-const ExpectedErrorNotThrownError = "Expected error NoAppsFound not thrown";
+const docs =
+  "\r\nDocumentation: " +
+  APIDocumentation.raiseIntentForContext +
+  "\r\nCause: ";
 
 export default () =>
   describe("fdc3.raiseIntentForContext", async () => {
@@ -18,15 +23,9 @@ export default () =>
 
       try {
         await window.fdc3.raiseIntentForContext(context);
-        throw new Error(ExpectedErrorNotThrownError);
+        assert.fail("Expected error NoAppsFound not thrown", docs);
       } catch (ex) {
-        if ((ex.message ?? ex) !== ResolveError.NoAppsFound) {
-          throw new Error(
-            ExpectedErrorNotThrownError +
-              "\nException thrown: " +
-              (ex.message ?? ex)
-          );
-        }
+        expect(ex).to.have.property("message", ResolveError.NoAppsFound, docs);
       }
     });
   });

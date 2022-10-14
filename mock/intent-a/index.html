@@ -1,0 +1,28 @@
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <link rel="stylesheet" href="index.css" />
+  </head>
+  <body>
+    <p>Conformance Framework Mock Intent App A</p>
+    <p>This app is only used by the conformance framework for intent test purposes.</p>
+    <script src="lib/mock-functions.js"></script>
+    <script>
+      onFdc3Ready().then(() => {
+        window.fdc3.addIntentListener("aTestingIntent", (context) => {
+          return new Promise<Context>((resolve) => resolve(context));
+        });
+        window.fdc3.addIntentListener("sharedTestingIntent1", (context) => {
+          return new Promise<Context>((resolve) => resolve(context));
+        });
+  
+        window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
+          window.fdc3.broadcast({
+            type: "fdc3-intent-a-opened",
+          });
+        });
+        setupCloseListener(window.fdc3);
+      });
+    </script>
+  </body>
+</html>

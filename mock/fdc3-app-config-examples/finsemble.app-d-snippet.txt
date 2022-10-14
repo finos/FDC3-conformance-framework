@@ -1,0 +1,361 @@
+"Conformance": {
+    "appId": "Conformance",
+    "name": "FDC3 Conformance Framework",
+    "description": "Testing spec conformance",
+    "manifest": {
+        "window": {
+            "url": "http://localhost:3000",
+            "affinity": "workspaceComponents",
+            "options": {
+                "resizable": true,
+                "autoShow": true,
+                "alwaysOnTop": false,
+                "addToWorkspace": true
+            },
+            "top": "center",
+            "left": "center",
+            "width": 800,
+            "height": 600
+        },
+        "component": {
+            "displayName": "FDC3 Conformance Framework"
+        },
+        "foreign": {
+            "services": {
+                "windowService": {
+                    "allowSnapping": true,
+                    "allowGrouping": true,
+                    "allowTabbing": true,
+                    "allowAutoArrange": true,
+                    "allowMinimize": true
+                }
+            },
+            "components": {
+                "App Launcher": {
+                    "launchableByUser": true
+                },
+                "Window Manager": {
+                    "alwaysOnTopIcon": false,
+                    "FSBLHeader": {
+                        "hideMaximize": false
+                    },
+                    "persistWindowState": true,
+                    "title": "FDC3 Conformance Framework"
+                }
+            }
+        }
+    },
+    "version": "1.0.0",
+    "publisher": "Scott Logic",
+    "icons": [
+        {
+            "src": "http://localhost:3000/scott-logic-icon-256.png"
+        }
+    ]
+},
+"MockApp": {
+    "appId": "MockAppId",
+    "name": "MockApp",
+    "description": "Testing spec conformance",
+    "manifest": {
+        "window": {
+            "url": "http://localhost:3001",
+            "affinity": "workspaceComponents",
+            "options": {
+                "resizable": true,
+                "autoShow": false,
+                "alwaysOnTop": false,
+                "addToWorkspace": true
+            },
+            "top": "center",
+            "left": "center",
+            "width": 800,
+            "height": 600
+        },
+        "component": {
+            "displayName": "FDC3 Conformance Framework Mock App"
+        },
+        "foreign": {
+            "services": {
+                "windowService": {
+                    "allowSnapping": true,
+                    "allowGrouping": true,
+                    "allowTabbing": true,
+                    "allowAutoArrange": true,
+                    "allowMinimize": true
+                }
+            },
+            "components": {
+                "App Launcher": {
+                    "launchableByUser": true
+                },
+                "Window Manager": {
+                    "alwaysOnTopIcon": false,
+                    "FSBLHeader": {
+                        "hideMaximize": false
+                    },
+                    "persistWindowState": true,
+                    "title": "FDC3 Conformance Framework Mock App"
+                }
+            }
+        }
+    },
+    "version": "1.0.0",
+    "publisher": "Scott Logic",
+    "icons": [
+        {
+            "src": "http://localhost:3000/scott-logic-icon-256.png"
+        }
+    ]
+},
+"IntentAppA": {
+    "appId": "IntentAppAId",
+    "name": "IntentAppA",
+    "description": "Testing find intent A",
+    "manifest": {
+        "window": {
+            "url": "http://localhost:3100",
+            "affinity": "workspaceComponents",
+            "options": {
+                "resizable": true,
+                "autoShow": false,
+                "alwaysOnTop": false,
+                "addToWorkspace": true
+            },
+            "top": "center",
+            "left": "center",
+            "width": 800,
+            "height": 600
+        },
+        "component": {
+            "displayName": "FDC3 Conformance Framework Intent App A"
+        },
+        "foreign": {
+            "services": {
+                "windowService": {
+                    "allowSnapping": true,
+                    "allowGrouping": true,
+                    "allowTabbing": true,
+                    "allowAutoArrange": true,
+                    "allowMinimize": true
+                }
+            },
+            "components": {
+                "App Launcher": {
+                    "launchableByUser": true
+                },
+                "Window Manager": {
+                    "alwaysOnTopIcon": false,
+                    "FSBLHeader": {
+                        "hideMaximize": false
+                    },
+                    "persistWindowState": true,
+                    "title": "FDC3 Conformance Framework Intent App A"
+                }
+            }
+        }
+    },
+    "version": "1.0.0",
+    "publisher": "Scott Logic",
+    "icons": [
+        {
+            "src": "http://localhost:3000/scott-logic-icon-256.png"
+        }
+    ],
+    "intents": [
+        {
+            "name": "aTestingIntent",
+            "displayName": "A Testing Intent",
+            "contexts": ["testContextX", "testContextZ"]
+        },
+        {
+            "name": "sharedTestingIntent1",
+            "displayName": "Shared Testing Intent",
+            "contexts": ["testContextX"]
+        }
+    ]
+},
+"IntentAppB": {
+    "appId": "IntentAppBId",
+    "name": "IntentAppB",
+    "description": "Testing find intent B",
+    "manifest": {
+        "window": {
+            "url": "http://localhost:3101",
+            "affinity": "workspaceComponents",
+            "options": {
+                "resizable": true,
+                "autoShow": false,
+                "alwaysOnTop": false,
+                "addToWorkspace": true
+            },
+            "top": "center",
+            "left": "center",
+            "width": 800,
+            "height": 600
+        },
+        "component": {
+            "displayName": "FDC3 Conformance Framework Intent App B"
+        },
+        "foreign": {
+            "services": {
+                "windowService": {
+                    "allowSnapping": true,
+                    "allowGrouping": true,
+                    "allowTabbing": true,
+                    "allowAutoArrange": true,
+                    "allowMinimize": true
+                }
+            },
+            "components": {
+                "App Launcher": {
+                    "launchableByUser": true
+                },
+                "Window Manager": {
+                    "alwaysOnTopIcon": false,
+                    "FSBLHeader": {
+                        "hideMaximize": false
+                    },
+                    "persistWindowState": true,
+                    "title": "FDC3 Conformance Framework Intent App B"
+                }
+            }
+        }
+    },
+    "version": "1.0.0",
+    "publisher": "Scott Logic",
+    "icons": [
+        {
+            "src": "http://localhost:3101/scott-logic-icon-256.png"
+        }
+    ],
+    "intents": [
+        {
+            "name": "bTestingIntent",
+            "displayName": "B Testing Intent",
+            "contexts": ["testContextY"]
+        },
+        {
+            "name": "sharedTestingIntent1",
+            "displayName": "Shared Testing Intent",
+            "contexts": ["testContextX", "testContextY"]
+        }
+    ]
+},
+"IntentAppC": {
+    "appId": "IntentAppCId",
+    "name": "IntentAppC",
+    "description": "Testing find intent C",
+    "manifest": {
+        "window": {
+            "url": "http://localhost:3102",
+            "affinity": "workspaceComponents",
+            "options": {
+                "resizable": true,
+                "autoShow": false,
+                "alwaysOnTop": false,
+                "addToWorkspace": true
+            },
+            "top": "center",
+            "left": "center",
+            "width": 800,
+            "height": 600
+        },
+        "component": {
+            "displayName": "FDC3 Conformance Framework Intent App C"
+        },
+        "foreign": {
+            "services": {
+                "windowService": {
+                    "allowSnapping": true,
+                    "allowGrouping": true,
+                    "allowTabbing": true,
+                    "allowAutoArrange": true,
+                    "allowMinimize": true
+                }
+            },
+            "components": {
+                "App Launcher": {
+                    "launchableByUser": true
+                },
+                "Window Manager": {
+                    "alwaysOnTopIcon": false,
+                    "FSBLHeader": {
+                        "hideMaximize": false
+                    },
+                    "persistWindowState": true,
+                    "title": "FDC3 Conformance Framework Intent App C"
+                }
+            }
+        }
+    },
+    "version": "1.0.0",
+    "publisher": "Scott Logic",
+    "icons": [
+        {
+            "src": "http://localhost:3102/scott-logic-icon-256.png"
+        }
+    ],
+    "intents": [
+        {
+            "name": "cTestingIntent",
+            "displayName": "C Testing Intent",
+            "contexts": ["testContextX"]
+        }
+    ]
+},
+"ChannelsApp": {
+	"appId": "ChannelsAppId",
+	"name": "ChannelsApp",
+	"description": "Testing channels app",
+	"manifest": {
+		"window": {
+			"url": "http://localhost:3103",
+			"affinity": "workspaceComponents",
+			"options": {
+				"resizable": true,
+				"autoShow": false,
+				"alwaysOnTop": false,
+				"addToWorkspace": true
+			},
+			"top": "center",
+			"left": "center",
+			"width": 800,
+			"height": 600
+		},
+		"component": {
+			"displayName": "FDC3 Conformance Framework Channels App"
+		},
+		"foreign": {
+			"services": {
+				"windowService": {
+					"allowSnapping": true,
+					"allowGrouping": true,
+					"allowTabbing": true,
+					"allowAutoArrange": true,
+					"allowMinimize": true
+				}
+			},
+			"components": {
+				"App Launcher": {
+					"launchableByUser": true
+				},
+				"Window Manager": {
+					"alwaysOnTopIcon": false,
+					"FSBLHeader": {
+						"hideMaximize": false
+					},
+					"persistWindowState": true,
+					"title": "FDC3 Conformance Framework Channels App"
+				}
+			}
+		}
+	},
+	"version": "1.0.0",
+	"publisher": "Scott Logic",
+	"icons": [
+		{
+			"src": "http://localhost:3000/scott-logic-icon-256.png"
+		}
+	]
+},

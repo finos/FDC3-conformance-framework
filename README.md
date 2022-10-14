@@ -12,7 +12,7 @@ This repository currently contains:
 
  - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
  - `app` - A simple application that hosts the tests, allowing them to be executed from within a desktop container.
- - `cli` - Documentation and an example that demonstrates how these tests can be run within a CI environment.
+ - `mock` - Multiple mock applications that are used to verify conformance - [details](./mock/README.md)
 
 In order to get started, install all the dependencies with:
 
@@ -33,159 +33,14 @@ The server(s) can be started as follows:
 cd app
 yarn start
 
-// Start the mock app which the tests will make use of
-cd mock-app
+// Start all the mock apps which the tests will make use of
+cd mock
 yarn start
 ```
 
 The application will start and will open a webbrowser tab, this tab will have an error. The reason is that the app does not have a Window.FDC3 object and should be ran through the desktop agent.
 
 Here is the setup steps for the following desktop agents:
-
-
-### Finsemble setup
-
-Clone and setup the Finsemble seed project with:
-
-```sh
-git clone https://github.com/ChartIQ/finsemble-seed.git
-cd finsemble-seed
-yarn install
-```
-
-After the installation, add the following entry into `/public/configs/application/appd.json` under `appd`. This will add 2 apps into the desktop container application under test, required for conformance testing.
-
-```sh
-"Conformance": {
-    "appId": "Conformance",
-    "name": "FDC3 Conformance Framework",
-    "description": "Testing spec conformance",
-    "manifest": {
-        "window": {
-            "url": "http://localhost:3000",
-            "affinity": "workspaceComponents",
-            "options": {
-                "resizable": true,
-                "autoShow": true,
-                "alwaysOnTop": false,
-                "addToWorkspace": true
-            },
-            "top": "center",
-            "left": "center",
-            "width": 800,
-            "height": 600
-        },
-        "component": {
-            "displayName": "FDC3 Conformance Framework",
-            "preload": "$applicationRoot/preloads/zoom.js"
-        },
-        "foreign": {
-            "services": {
-                "windowService": {
-                    "allowSnapping": true,
-                    "allowGrouping": true,
-                    "allowTabbing": true,
-                    "allowAutoArrange": true,
-                    "allowMinimize": true
-                }
-            },
-            "components": {
-                "App Launcher": {
-                    "launchableByUser": true
-                },
-                "Window Manager": {
-                    "alwaysOnTopIcon": false,
-                    "FSBLHeader": {
-                        "hideMaximize": false
-                    },
-                    "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework"
-                }
-            }
-        }
-    },
-    "version": "1.0.0",
-    "publisher": "Scott Logic",
-    "icons": [
-        {
-            "src": "http://localhost:3000/scott-logic-icon-256.png"
-        }
-    ]
-},
-"MockApp": {
-    "appId": "MockAppId",
-    "name": "MockApp",
-    "description": "Testing spec conformance",
-    "manifest": {
-        "window": {
-            "url": "http://localhost:3001",
-            "affinity": "workspaceComponents",
-            "options": {
-                "resizable": true,
-                "autoShow": true,
-                "alwaysOnTop": false,
-                "addToWorkspace": true
-            },
-            "top": "center",
-            "left": "center",
-            "width": 800,
-            "height": 600
-        },
-        "component": {
-            "displayName": "FDC3 Conformance Framework Mock App"
-        },
-        "foreign": {
-            "services": {
-                "windowService": {
-                    "allowSnapping": true,
-                    "allowGrouping": true,
-                    "allowTabbing": true,
-                    "allowAutoArrange": true,
-                    "allowMinimize": true
-                }
-            },
-            "components": {
-                "App Launcher": {
-                    "launchableByUser": true
-                },
-                "Window Manager": {
-                    "alwaysOnTopIcon": false,
-                    "FSBLHeader": {
-                        "hideMaximize": false
-                    },
-                    "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework Mock App"
-                }
-            }
-        }
-    },
-    "version": "1.0.0",
-    "publisher": "Scott Logic",
-    "icons": [
-        {
-            "src": "http://localhost:3000/scott-logic-icon-256.png"
-        }
-    ]
-},
-```
-
-The desktop agent can be started with:
-
-```sh
-yarn start
-```
-
-The testing framework can be found under the Apps menu.
-
-
-### Openfin setup
-
-Ensure you have the OpenFin Runtime cli tool installed, that can be done with: `npm install -g openfin-cli`.
-
-Once the Testing Framework server has been started, it can be opened with:
-
-`openfin --launch --config http://localhost:3000/openfin_app.json`.
-
 
 ## Contributing
 
