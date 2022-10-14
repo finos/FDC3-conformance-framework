@@ -34,7 +34,7 @@ async function wait() {
   return new Promise((resolve) =>
     setTimeout(() => {
       resolve(true);
-    }, constants.WaitTime)
+    }, 3000)
   );
 }
 
