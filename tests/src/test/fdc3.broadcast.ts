@@ -1,10 +1,11 @@
-import { Listener, Channel, Context, ContextTypes } from "@finos/fdc3";
+import { Listener, Channel, Context } from "@finos/fdc3";
 import { assert, expect } from "chai";
 import constants from "../constants";
 import APIDocumentation from "../apiDocuments";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
+let timeout: NodeJS.Timeout;
 
 export default () =>
   describe("fdc3.broadcast", () => {
@@ -36,6 +37,8 @@ export default () =>
           listener = await window.fdc3.addContextListener(null, (context) => {
             expect(context.type).to.be.equal("fdc3.instrument", errorMessage);
             resolve();
+            clearTimeout(timeout);
+            return;
           });
 
           validateListenerObject(listener);
@@ -57,6 +60,7 @@ export default () =>
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -71,6 +75,8 @@ export default () =>
           listener = await window.fdc3.addContextListener(null, (context) => {
             expect(context.type).to.be.equal("fdc3.instrument", errorMessage);
             resolve();
+            clearTimeout(timeout);
+            return;
           });
 
           validateListenerObject(listener);
@@ -89,6 +95,7 @@ export default () =>
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -114,6 +121,8 @@ export default () =>
           listener = await window.fdc3.addContextListener(null, (context) => {
             expect(context.type).to.be.equal("fdc3.instrument", errorMessage);
             resolve();
+            clearTimeout(timeout);
+            return;
           });
 
           validateListenerObject(listener);
@@ -121,6 +130,7 @@ export default () =>
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -137,6 +147,8 @@ export default () =>
                 errorMessage
               );
               resolve();
+              clearTimeout(timeout);
+              return;
             }
           );
 
@@ -160,6 +172,7 @@ export default () =>
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -215,6 +228,8 @@ export default () =>
                 assert.fail("Incorrect context received", errorMessage);
               } else {
                 resolve();
+                clearTimeout(timeout);
+                return;
               }
             }
           }
@@ -224,6 +239,7 @@ export default () =>
           reject(
             new Error(`${errorMessage} At least one context was not received`)
           );
+          return;
         });
       });
 
@@ -234,20 +250,26 @@ export default () =>
           //Add two context listeners to app A
           listener = window.fdc3.addContextListener(
             "fdc3.instrument",
-            (context) =>
+            (context) => {
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              )
+              );
+              clearTimeout(timeout);
+              return;
+            }
           );
 
           validateListenerObject(listener);
 
           listener2 = window.fdc3.addContextListener(
             "fdc3.contact",
-            (context) =>
+            (context) => {
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              )
+              );
+              clearTimeout(timeout);
+              return;
+            }
           );
 
           validateListenerObject(listener2);
@@ -270,6 +292,7 @@ export default () =>
           //give listener time to receive context
           await wait();
           resolve();
+          return;
         });
       });
 
@@ -284,10 +307,12 @@ export default () =>
           //Add context listener
           listener = window.fdc3.addContextListener(
             "fdc3.instrument",
-            (context) =>
+            (context) => {
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              )
+              );
+              return;
+            }
           );
 
           validateListenerObject(listener);
@@ -316,6 +341,7 @@ export default () =>
 
           await executionCompleteContext;
           resolve();
+          return;
         });
       });
 
@@ -330,10 +356,12 @@ export default () =>
           //Add context listeners to app A
           listener = window.fdc3.addContextListener(
             "fdc3.instrument",
-            (context) =>
+            (context) => {
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              )
+              );
+              return;
+            }
           );
 
           validateListenerObject(listener);
@@ -355,6 +383,7 @@ export default () =>
 
           await executionCompleteContext;
           resolve();
+          return;
         });
       });
 
@@ -365,10 +394,13 @@ export default () =>
           //Add a context listeners to app A
           listener = window.fdc3.addContextListener(
             "fdc3.instrument",
-            (context) =>
+            (context) => {
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              )
+              );
+              clearTimeout(timeout);
+              return;
+            }
           );
 
           validateListenerObject(listener);
@@ -393,6 +425,7 @@ export default () =>
           //give listener time to receive context
           await wait();
           resolve();
+          return;
         });
       });
     });
@@ -419,6 +452,8 @@ export default () =>
           listener = await testChannel.addContextListener(null, (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
             resolve();
+            clearTimeout(timeout);
+            return;
           });
 
           validateListenerObject(listener);
@@ -437,6 +472,7 @@ export default () =>
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -467,11 +503,14 @@ export default () =>
           await testChannel.getCurrentContext().then((context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
             resolve();
+            clearTimeout(timeout);
+            return;
           });
 
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -508,11 +547,14 @@ export default () =>
                 errorMessage
               );
               resolve();
+              clearTimeout(timeout);
+              return;
             });
 
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -534,6 +576,8 @@ export default () =>
                 errorMessage
               );
               resolve();
+              clearTimeout(timeout);
+              return;
             }
           );
 
@@ -554,6 +598,7 @@ export default () =>
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -610,6 +655,8 @@ export default () =>
                 assert.fail("Incorrect context received", errorMessage);
               } else {
                 resolve();
+                clearTimeout(timeout);
+                return;
               }
             }
           }
@@ -617,6 +664,7 @@ export default () =>
           //if no context received throw error
           await wait();
           reject(new Error(`${errorMessage} No context received`));
+          return;
         });
       });
 
@@ -640,6 +688,7 @@ export default () =>
             reject(
               new Error(`${errorMessage} ${context.type} context received`)
             );
+            return;
           });
 
           validateListenerObject(listener);
@@ -661,6 +710,7 @@ export default () =>
 
           await executionCompleteContext;
           resolve();
+          return;
         });
       });
 
@@ -684,6 +734,7 @@ export default () =>
             reject(
               new Error(`${errorMessage} ${context.type} context received`)
             );
+            return;
           });
 
           validateListenerObject(listener);
@@ -705,6 +756,7 @@ export default () =>
 
           await executionCompleteContext;
           resolve();
+          return;
         });
       });
 
@@ -720,10 +772,13 @@ export default () =>
           //Add context listener to app A
           listener = testChannel.addContextListener(
             "fdc3.instrument",
-            (context) =>
+            (context) => {
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              )
+              );
+              clearTimeout(timeout);
+              return;
+            }
           );
 
           validateListenerObject(listener);
@@ -742,6 +797,7 @@ export default () =>
           //give listener time to receive context
           await wait();
           resolve();
+          return;
         });
       });
 
@@ -762,10 +818,13 @@ export default () =>
           //Add context listener to app A
           listener = testChannel.addContextListener(
             "fdc3.instrument",
-            (context) =>
+            (context) => {
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
-              )
+              );
+              clearTimeout(timeout);
+              return;
+            }
           );
 
           validateListenerObject(listener);
@@ -784,6 +843,7 @@ export default () =>
           //give listener time to receive context
           await wait();
           resolve();
+          return;
         });
       });
 
@@ -910,11 +970,11 @@ export default () =>
     }
 
     async function wait() {
-      return new Promise((resolve) =>
-        setTimeout(() => {
+      return new Promise((resolve) => {
+        timeout = setTimeout(() => {
           resolve(true);
-        }, constants.WaitTime)
-      );
+        }, constants.WaitTime);
+      });
     }
 
     const broadcastSystemChannelCloseWindow = async () => {
