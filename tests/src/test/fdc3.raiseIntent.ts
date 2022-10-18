@@ -25,7 +25,6 @@ const createReceiver = (contextType: string) => {
 
     //if no context received reject promise
     await wait();
-    await wait();
     reject(new Error("No context received from app B"));
   });
 
