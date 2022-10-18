@@ -22,12 +22,20 @@ class Fdc3CommandExecutor {
           break;
         }
         case commands.broadcastInstrumentContext: {
-          await this.BroadcastContextItem("fdc3.instrument", channel, config.historyItems);
+          await this.BroadcastContextItem(
+            "fdc3.instrument",
+            channel,
+            config.historyItems
+          );
           this.stats.innerHTML += "fdc3.instrument type broadcast/ ";
           break;
         }
         case commands.broadcastContactContext: {
-          await this.BroadcastContextItem("fdc3.contact", channel, config.historyItems);
+          await this.BroadcastContextItem(
+            "fdc3.contact",
+            channel,
+            config.historyItems
+          );
           this.stats.innerHTML += "fdc3.contact type broadcast/ ";
           break;
         }
@@ -38,11 +46,11 @@ class Fdc3CommandExecutor {
     }
 
     //close ChannelsApp when test is complete
-    await this.CloseWindowOnCompletion(channel);
+    await this.CloseWindowOnCompletion(channel, config);
 
     //notify app A that ChannelsApp has finished executing
-    if(config.notifyAppAOnCompletion){
-      this.NotifyAppAOnCompletion(channel, config);
+    if (config.notifyAppAOnCompletion) {
+      await this.NotifyAppAOnCompletion(channel, config);
     }
   }
 
@@ -98,27 +106,57 @@ class Fdc3CommandExecutor {
           type: contextType,
           name: `History-item-${i + 1}`,
         });
+        this.stats.innerHTML += "broadcasr happened/ ";
       }
+      this.stats.innerHTML += "broadcasr end/ ";
     },
   };
 
   //await instructions from app A to close ChannelsApp on test completion
-  async CloseWindowOnCompletion(channel) {
+  async CloseWindowOnCompletion(channel, config) {
+    this.stats.innerHTML += "closewindowoncompletion/ ";
     if (channel.type === channelType.system) {
-      await window.fdc3.addContextListener("closeWindow", () =>
-        closeFinsembleWindow()
-      );
+      this.stats.innerHTML += "system channel chosen/ ";
+      await window.fdc3.addContextListener("closeWindow", async () => {
+        window.close();
+        await window.fdc3.broadcast({type: "windowClosed"});
+        //await this.NotifyAppAOnWindowClose(channel, config);
+      });
     } else if (channel.type === channelType.app) {
-      await channel.addContextListener("closeWindow", () =>
-        closeFinsembleWindow()
-      );
+      this.stats.innerHTML += "app channel chosen/ ";
+      await channel.addContextListener("closeWindow", async () => {
+        this.stats.innerHTML += "close window on completion reached/ ";
+        window.close();
+        channel.broadcast({type: "windowClosed"});
+        this.stats.innerHTML += "window closed/ ";
+      });
     } else {
       this.stats.innerHTML += `Error - unrecognised channel type: ${channel.type}/ `;
     }
   }
 
-  NotifyAppAOnCompletion(channel, config) {
-    this.BroadcastContextItem("executionComplete", channel, config.historyItems);
+  async NotifyAppAOnCompletion(channel, config) {
+    await this.BroadcastContextItem(
+      "executionComplete",
+      channel,
+      config.historyItems
+    );
+  }
+
+  async NotifyAppAOnWindowClose(channel, config) {
+    await this.BroadcastContextItem(
+      "windowClosed",
+      channel,
+      config.historyItems
+    );
+  }
+
+  async wait() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        resolve(true);
+      }, 3000);
+    });
   }
 }
 
