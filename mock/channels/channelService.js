@@ -9,7 +9,7 @@ class Fdc3CommandExecutor {
   async executeCommands(orderedCommands, config) {
     let channel;
 
-    for (let command of orderedCommands) {
+    for (const command of orderedCommands) {
       switch (command) {
         case commands.joinSystemChannelOne: {
           channel = await this.joinSystemChannelOne();
