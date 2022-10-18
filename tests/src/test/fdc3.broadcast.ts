@@ -26,13 +26,7 @@ export default () =>
       });
 
       afterEach(async () => {
-        await window.fdc3.leaveCurrentChannel();
-        await joinChannel(1);
-        await broadcastSystemChannelCloseWindow();
-
-        const resolveWindowClosedListener = waitForContext("windowClosed");
-
-        await resolveWindowClosedListener;
+        await closeChannelsAppWindow(ChannelType.System);
       });
 
       it("Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel", async () => {
@@ -43,7 +37,7 @@ export default () =>
           const resolveExecutionCompleteListener =
             waitForContext("executionComplete");
 
-          //Add fdc3.instrument context listener
+          //Add context listener
           listener = await window.fdc3.addContextListener(
             null,
             async (context) => {
@@ -164,7 +158,7 @@ export default () =>
 
           validateListenerObject(listener);
 
-          //wait for ChannelsApp to execute
+          //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
 
           //Reject if no context received
@@ -338,7 +332,7 @@ export default () =>
           );
 
           //Give listener time to receive context
-          wait();
+          await wait();
           resolve();
           return;
         });
@@ -389,7 +383,6 @@ export default () =>
 
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
-
           resolve();
           return;
         });
@@ -406,6 +399,7 @@ export default () =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
               );
+              clearTimeout(timeout);
               return;
             }
           );
@@ -427,7 +421,6 @@ export default () =>
 
           //Give listener time to receive context
           await wait();
-
           resolve();
           return;
         });
@@ -469,8 +462,7 @@ export default () =>
           );
 
           //Give listener time to receive context
-          wait();
-
+          await wait();
           resolve();
           return;
         });
@@ -484,8 +476,7 @@ export default () =>
       });
 
       afterEach(async () => {
-        const testChannel = await broadcastAppChannelCloseWindow();
-        await waitForContext("windowClosed", testChannel);
+        await closeChannelsAppWindow(ChannelType.App);
       });
 
       it("Should receive context when app a adds a listener and app B broadcasts to the same app channel", async () => {
@@ -539,9 +530,20 @@ export default () =>
       });
 
       it("Should receive context when app B broadcasts context to an app channel before A retrieves current context", async () => {
-        const errorMessage = `\r\nSteps to reproduce:\r\n- App B retrieves an app channel\r\n- App B broadcasts context of type fdc3.instrument\r\n- App A retrieves the same app channel as B\r\n- App A retrieves current context of type null${documentation}`;
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument\r\n- App A retrieves current context of type null${documentation}`;
 
         return new Promise(async (resolve, reject) => {
+          //Retrieve an app channel
+          const testChannel = await window.fdc3.getOrCreateChannel(
+            "test-channel"
+          );
+
+          //Listen for when ChannelsApp execution is complete
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            testChannel
+          );
+
           const channelsAppCommands = [
             commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
@@ -553,30 +555,36 @@ export default () =>
             buildChannelsAppContext(channelsAppCommands)
           );
 
-          //Retrieve an app channel
-          const testChannel = await window.fdc3.getOrCreateChannel(
-            "test-channel"
-          );
-
           //Retrieve current context from channel
           await testChannel.getCurrentContext().then(async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
             resolve();
-            clearTimeout(timeout);
             return;
           });
 
-          //Give listener time to receive context
-          await wait();
+          //Wait for ChannelsApp the finish executing
+          await resolveExecutionCompleteListener;
+
           reject(new Error(`${errorMessage} No context received`));
           return;
         });
       });
 
       it("Should receive context of correct type when app B broadcasts multiple contexts to an app channel before A retrieves current context of a specified type", async () => {
-        const errorMessage = `\r\nSteps to reproduce:\r\n- App B retrieves an app channel\r\n- App B broadcasts context of type fdc3.instrument and then of type fdc3.contact\r\n- App A retrieves the same app channel as B\r\n- App A retreives current context of type fdc3.instrument${documentation}`;
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument and then of type fdc3.contact\r\n- App A retreives current context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
+          //Retrieve an app channel
+          const testChannel = await window.fdc3.getOrCreateChannel(
+            "test-channel"
+          );
+
+          //Listen for when AppChannel execution is complete
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            testChannel
+          );
+
           const channelsAppCommands = [
             commands.retrieveTestAppChannel,
             commands.broadcastInstrumentContext,
@@ -589,22 +597,12 @@ export default () =>
             buildChannelsAppContext(channelsAppCommands, true)
           );
 
-          //Retrieve an app channel
-          const testChannel = await window.fdc3.getOrCreateChannel(
-            "test-channel"
-          );
-
-          const resolveExecutionCompleteListener = waitForContext(
-            "executionComplete",
-            testChannel
-          );
-
           await resolveExecutionCompleteListener;
 
           //Retrieve current context from channel
           await testChannel
             .getCurrentContext("fdc3.instrument")
-            .then(async (context) => {
+            .then((context) => {
               expect(context.type).to.be.equals(
                 "fdc3.instrument",
                 errorMessage
@@ -614,6 +612,7 @@ export default () =>
             });
 
           reject(new Error(`${errorMessage} No context received`));
+          resolve();
           return;
         });
       });
@@ -784,7 +783,6 @@ export default () =>
 
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
-
           resolve();
           return;
         });
@@ -825,8 +823,7 @@ export default () =>
           );
 
           //Give listener time to receive context
-          wait();
-
+          await wait();
           resolve();
           return;
         });
@@ -878,7 +875,6 @@ export default () =>
 
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
-
           resolve();
           return;
         });
@@ -906,13 +902,10 @@ export default () =>
 
         //get contexts from ChannelsApp
         const context = await testChannel.getCurrentContext("fdc3.instrument");
-
         expect(context.name).to.be.equals("History-item-1", errorMessage);
-
         const contactContext = await testChannel.getCurrentContext(
           "fdc3.contact"
         );
-
         expect(contactContext.name).to.be.equals(
           "History-item-1",
           errorMessage
@@ -949,7 +942,6 @@ export default () =>
 
         //Retrieve fdc3.instrument context
         const context = await testChannel.getCurrentContext("fdc3.instrument");
-
         expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
         expect(context.name).to.be.equals("History-item-2", errorMessage);
       });
@@ -1023,16 +1015,34 @@ export default () =>
       });
     }
 
+    async function closeChannelsAppWindow(channelType: ChannelType) {
+      if (channelType === ChannelType.System) {
+        //Join channel 1
+        await window.fdc3.leaveCurrentChannel();
+        await joinChannel(1);
+
+        //Tell channelsApp to close window
+        await broadcastSystemChannelCloseWindow();
+
+        //Wait for ChannelsApp to respond
+        await waitForContext("windowClosed");
+      } else if (channelType === ChannelType.App) {
+        //Tell ChannelsApp to close window
+        const testChannel = await broadcastAppChannelCloseWindow();
+
+        //Wait for ChannelsApp to respond
+        await waitForContext("windowClosed", testChannel);
+      }
+    }
+
     const broadcastSystemChannelCloseWindow = async () => {
       await window.fdc3.broadcast({ type: "closeWindow" });
-      //return new Promise<void>((resolve) => setTimeout(() => resolve(), 3000)); // Wait until close window event is handled
     };
 
     const broadcastAppChannelCloseWindow = async () => {
       const testChannel = await window.fdc3.getOrCreateChannel("test-channel");
       await testChannel.broadcast({ type: "closeWindow" });
       return testChannel;
-      //return new Promise<void>((resolve) => setTimeout(() => resolve(), 3000)); // Wait until close window event is handled
     };
 
     async function unsubscribeListeners() {

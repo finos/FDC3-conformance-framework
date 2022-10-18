@@ -106,21 +106,16 @@ class Fdc3CommandExecutor {
           type: contextType,
           name: `History-item-${i + 1}`,
         });
-        this.stats.innerHTML += "broadcasr happened/ ";
       }
-      this.stats.innerHTML += "broadcasr end/ ";
     },
   };
 
-  //await instructions from app A to close ChannelsApp on test completion
+  //close ChannelsApp on completion and respond to app A
   async CloseWindowOnCompletion(channel, config) {
-    this.stats.innerHTML += "closewindowoncompletion/ ";
     if (channel.type === channelType.system) {
-      this.stats.innerHTML += "system channel chosen/ ";
       await window.fdc3.addContextListener("closeWindow", async () => {
         window.close();
         await window.fdc3.broadcast({type: "windowClosed"});
-        //await this.NotifyAppAOnWindowClose(channel, config);
       });
     } else if (channel.type === channelType.app) {
       this.stats.innerHTML += "app channel chosen/ ";
@@ -136,19 +131,24 @@ class Fdc3CommandExecutor {
   }
 
   async NotifyAppAOnCompletion(channel, config) {
+    this.stats.innerHTML += "NotifyAppAOnCompletion/ ";
     await this.BroadcastContextItem(
       "executionComplete",
       channel,
       config.historyItems
     );
+    this.stats.innerHTML += "NotifyAppAOnCompletion done/ ";
   }
 
   async NotifyAppAOnWindowClose(channel, config) {
+    this.stats.innerHTML += "NotifyAppAOnWindowClose/ ";
     await this.BroadcastContextItem(
       "windowClosed",
       channel,
       config.historyItems
     );
+
+    this.stats.innerHTML += "NotifyAppAOnWindowClose done/ ";
   }
 
   async wait() {
