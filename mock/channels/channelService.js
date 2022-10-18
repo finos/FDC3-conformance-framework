@@ -1,10 +1,4 @@
 class Fdc3CommandExecutor {
-  stats;
-
-  constructor() {
-    this.stats = window.document.getElementById("context");
-  }
-
   //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
@@ -13,12 +7,10 @@ class Fdc3CommandExecutor {
       switch (command) {
         case commands.joinSystemChannelOne: {
           channel = await this.joinSystemChannelOne();
-          this.stats.innerHTML += "joined system channel one/ ";
           break;
         }
         case commands.retrieveTestAppChannel: {
           channel = await this.retrieveTestAppChannel();
-          this.stats.innerHTML += `retrieved test app channel/ `;
           break;
         }
         case commands.broadcastInstrumentContext: {
@@ -27,7 +19,6 @@ class Fdc3CommandExecutor {
             channel,
             config.historyItems
           );
-          this.stats.innerHTML += "fdc3.instrument type broadcast/ ";
           break;
         }
         case commands.broadcastContactContext: {
@@ -36,11 +27,7 @@ class Fdc3CommandExecutor {
             channel,
             config.historyItems
           );
-          this.stats.innerHTML += "fdc3.contact type broadcast/ ";
           break;
-        }
-        default: {
-          this.stats.innerHTML += `Error - unrecognised command: ${command}/ `;
         }
       }
     }
@@ -77,8 +64,6 @@ class Fdc3CommandExecutor {
       return this.systemChannelBroadcastService;
     } else if (currentChannelType === channelType.app) {
       return this.appChannelBroadcastService;
-    } else {
-      this.stats.innerHTML += `Error - unrecognised channel type: ${currentChannelType}/ `;
     }
   }
 
@@ -92,8 +77,6 @@ class Fdc3CommandExecutor {
             name: `History-item-${i + 1}`,
           });
         }
-      } else {
-        this.stats.innerHTML += "Error - app channel undefined/ ";
       }
     },
   };
@@ -122,8 +105,6 @@ class Fdc3CommandExecutor {
         window.close();
         channel.broadcast({type: "windowClosed"});
       });
-    } else {
-      this.stats.innerHTML += `Error - unrecognised channel type: ${channel.type}/ `;
     }
   }
 
