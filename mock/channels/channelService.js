@@ -12,17 +12,17 @@ class Fdc3CommandExecutor {
     for (let command of orderedCommands) {
       switch (command) {
         case commands.joinSystemChannelOne: {
-          channel = await this.JoinSystemChannelOne();
+          channel = await this.joinSystemChannelOne();
           this.stats.innerHTML += "joined system channel one/ ";
           break;
         }
         case commands.retrieveTestAppChannel: {
-          channel = await this.RetrieveTestAppChannel();
+          channel = await this.retrieveTestAppChannel();
           this.stats.innerHTML += `retrieved test app channel/ `;
           break;
         }
         case commands.broadcastInstrumentContext: {
-          await this.BroadcastContextItem(
+          await this.broadcastContextItem(
             "fdc3.instrument",
             channel,
             config.historyItems
@@ -31,7 +31,7 @@ class Fdc3CommandExecutor {
           break;
         }
         case commands.broadcastContactContext: {
-          await this.BroadcastContextItem(
+          await this.broadcastContextItem(
             "fdc3.contact",
             channel,
             config.historyItems
@@ -46,27 +46,27 @@ class Fdc3CommandExecutor {
     }
 
     //close ChannelsApp when test is complete
-    await this.CloseWindowOnCompletion(channel, config);
+    await this.closeWindowOnCompletion(channel, config);
 
     //notify app A that ChannelsApp has finished executing
     if (config.notifyAppAOnCompletion) {
-      await this.NotifyAppAOnCompletion(channel, config);
+      await this.notifyAppAOnCompletion(channel, config);
     }
   }
 
-  async JoinSystemChannelOne() {
+  async joinSystemChannelOne() {
     const channels = await window.fdc3.getSystemChannels();
     await window.fdc3.joinChannel(channels[0].id);
     return channels[0];
   }
 
   //retrieve/create "test-channel" app channel
-  async RetrieveTestAppChannel() {
+  async retrieveTestAppChannel() {
     return await window.fdc3.getOrCreateChannel("test-channel");
   }
 
   //get broadcast service and broadcast the given context type
-  async BroadcastContextItem(contextType, channel, historyItems) {
+  async broadcastContextItem(contextType, channel, historyItems) {
     let broadcastService = this.getBroadcastService(channel.type);
     await broadcastService.broadcast(contextType, historyItems, channel);
   }
@@ -111,52 +111,36 @@ class Fdc3CommandExecutor {
   };
 
   //close ChannelsApp on completion and respond to app A
-  async CloseWindowOnCompletion(channel, config) {
+  async closeWindowOnCompletion(channel, config) {
     if (channel.type === channelType.system) {
       await window.fdc3.addContextListener("closeWindow", async () => {
         window.close();
         await window.fdc3.broadcast({type: "windowClosed"});
       });
     } else if (channel.type === channelType.app) {
-      this.stats.innerHTML += "app channel chosen/ ";
       await channel.addContextListener("closeWindow", async () => {
-        this.stats.innerHTML += "close window on completion reached/ ";
         window.close();
         channel.broadcast({type: "windowClosed"});
-        this.stats.innerHTML += "window closed/ ";
       });
     } else {
       this.stats.innerHTML += `Error - unrecognised channel type: ${channel.type}/ `;
     }
   }
 
-  async NotifyAppAOnCompletion(channel, config) {
-    this.stats.innerHTML += "NotifyAppAOnCompletion/ ";
-    await this.BroadcastContextItem(
+  async notifyAppAOnCompletion(channel, config) {
+    await this.broadcastContextItem(
       "executionComplete",
       channel,
       config.historyItems
     );
-    this.stats.innerHTML += "NotifyAppAOnCompletion done/ ";
   }
 
   async NotifyAppAOnWindowClose(channel, config) {
-    this.stats.innerHTML += "NotifyAppAOnWindowClose/ ";
-    await this.BroadcastContextItem(
+    await this.broadcastContextItem(
       "windowClosed",
       channel,
       config.historyItems
     );
-
-    this.stats.innerHTML += "NotifyAppAOnWindowClose done/ ";
-  }
-
-  async wait() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        resolve(true);
-      }, 3000);
-    });
   }
 }
 
