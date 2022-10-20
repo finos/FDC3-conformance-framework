@@ -5,7 +5,7 @@ import APIDocumentation from "../apiDocuments";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
-let timeout: NodeJS.Timeout;
+let timeout: ReturnType<typeof setTimeout>;
 
 export default () =>
   describe("fdc3.broadcast", () => {
