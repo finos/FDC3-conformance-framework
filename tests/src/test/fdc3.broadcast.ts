@@ -5,7 +5,7 @@ import APIDocumentation from "../apiDocuments";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
-let timeout: ReturnType<typeof setTimeout>;
+let timeout: number;
 
 export default () =>
   describe("fdc3.broadcast", () => {
@@ -1009,7 +1009,7 @@ export default () =>
 
     async function wait() {
       return new Promise((resolve) => {
-        timeout = setTimeout(() => {
+        timeout = window.setTimeout(() => {
           resolve(true);
         }, constants.WaitTime);
       });
