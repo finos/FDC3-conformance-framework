@@ -1,7 +1,7 @@
-### Certified FDC3 Conformance Program
+### Certified FDC3 Desktop Agent Conformance Program
 #### Participation Form
 
-Complete this form for each Participant (company or other entity) that desires to participate in the Certified FDC3 Conformance Program and to use the Certified FDC3 Marks or Participant FDC3 Combinations. FDC3 and the Certified FDC3 Marks are trademarks of The Linux Foundation. Capitalized terms used herein and not otherwise defined shall have the same meanings set forth in the Program Terms.
+Complete this form for each Participant (company or other entity) that desires to participate in the Certified FDC3 Desktop Agent Conformance Program and to use the Certified FDC3 Marks or Participant FDC3 Combinations. FDC3 and the Certified FDC3 Marks are trademarks of The Linux Foundation. Capitalized terms used herein and not otherwise defined shall have the same meanings set forth in the Program Terms.
 
 By signing below and submitting this form to The Linux Foundation by emailing a scan to [help@finos.org](mailto:help@finos.org)):
 

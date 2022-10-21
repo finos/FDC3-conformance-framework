@@ -1,11 +1,11 @@
-### Certified FDC3 Conformance Program – Terms and Conditions
+### Certified FDC3 Desktop Agent Conformance Program – Terms and Conditions
 
 #### Last updated: September 13, 2022
 
 This document sets forth the terms and conditions that apply to the Conformance Program and use of the Certified FDC3 Marks.
 
 In this document, these terms have the following meanings:
-*  "**Certified FDC3 Marks**" means the mark "Certified FDC3", "FDC3 Certified", "FDC3 1.2 Certified", "FDC3 2.0 Certified", "FDC3 1.2 Certified Desktop Agent" , "FDC3 2.0 Certified Desktop Agent",  "FDC3 1.2 Certified Application" , "FDC3 2.0 Certified Application" and variations and different version numbers thereof;
+*  "**Certified FDC3 Marks**" means the mark "Certified FDC3", "FDC3 Certified", "FDC3 1.2 Certified", "FDC3 2.0 Certified", "FDC3 1.2 Certified Desktop Agent" , "FDC3 2.0 Certified Desktop Agent" and variations and different version numbers thereof;
 *  "**FDC3 Word Mark**" means the trademark "FDC3";
 *  "**Participant FDC3 Combination**" means a combination that includes both the Participant’s mark(s) and the FDC3 Word Mark as elements (for example, "XYZ FDC3" or "XYZ FDC3 Desktop Agent");
 *  "**Conformance Program**" means the program described in this document;
