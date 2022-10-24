@@ -6,7 +6,7 @@ import constants from "../constants";
 
 const appBName = "MockApp";
 const appBId = "MockAppId";
-let timeout: NodeJS.Timeout;
+let timeout: number;
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation

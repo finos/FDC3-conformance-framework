@@ -9,7 +9,7 @@ import { assert, expect } from "chai";
 import APIDocumentation from "../apiDocuments";
 import constants from "../constants";
 
-let timeout: NodeJS.Timeout;
+let timeout: number;
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
@@ -19,6 +19,7 @@ const createReceiver = (contextType: string) => {
       contextType,
       (context) => {
         resolve(context);
+        clearTimeout(timeout);
         listener.unsubscribe();
       }
     );
@@ -200,7 +201,7 @@ const validateIntentResolution = (
 async function wait() {
   return new Promise(
     (resolve) =>
-      (timeout = setTimeout(() => {
+      (timeout = window.setTimeout(() => {
         resolve(true);
       }, constants.WaitTime))
   );
