@@ -35,7 +35,7 @@ const createReceiver = (contextType: string) => {
 async function wait() {
   return new Promise(
     (resolve) =>
-      (timeout = setTimeout(() => {
+      (timeout = window.setTimeout(() => {
         resolve(true);
       }, constants.WaitTime))
   );
