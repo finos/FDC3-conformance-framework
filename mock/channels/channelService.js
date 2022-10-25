@@ -108,11 +108,7 @@ class Fdc3CommandExecutor {
     const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
-    await this.broadcastContextItem(
-      "executionComplete",
-      appControlChannel,
-      1
-    );
+    await this.broadcastContextItem("executionComplete", appControlChannel, 1);
   }
 
   async NotifyAppAOnWindowClose() {
