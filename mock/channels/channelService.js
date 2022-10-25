@@ -33,11 +33,11 @@ class Fdc3CommandExecutor {
     }
 
     //close ChannelsApp when test is complete
-    await this.closeWindowOnCompletion(channel, config);
+    await this.closeWindowOnCompletion();
 
     //notify app A that ChannelsApp has finished executing
     if (config.notifyAppAOnCompletion) {
-      await this.notifyAppAOnCompletion(channel, config);
+      await this.notifyAppAOnCompletion();
     }
   }
 
@@ -94,34 +94,32 @@ class Fdc3CommandExecutor {
   };
 
   //close ChannelsApp on completion and respond to app A
-  async closeWindowOnCompletion(channel, config) {
-    if (channel.type === channelType.system) {
-      await window.fdc3.addContextListener("closeWindow", async () => {
-        window.close();
-        await window.fdc3.broadcast({type: "windowClosed"});
-      });
-    } else if (channel.type === channelType.app) {
-      await channel.addContextListener("closeWindow", async () => {
-        window.close();
-        channel.broadcast({type: "windowClosed"});
-      });
-    }
+  async closeWindowOnCompletion() {
+    const appControlChannel = await window.fdc3.getOrCreateChannel(
+      "app-control"
+    );
+    await appControlChannel.addContextListener("closeWindow", async () => {
+      window.close();
+      appControlChannel.broadcast({ type: "windowClosed" });
+    });
   }
 
-  async notifyAppAOnCompletion(channel, config) {
+  async notifyAppAOnCompletion() {
+    const appControlChannel = await window.fdc3.getOrCreateChannel(
+      "app-control"
+    );
     await this.broadcastContextItem(
       "executionComplete",
-      channel,
-      config.historyItems
+      appControlChannel,
+      1
     );
   }
 
-  async NotifyAppAOnWindowClose(channel, config) {
-    await this.broadcastContextItem(
-      "windowClosed",
-      channel,
-      config.historyItems
+  async NotifyAppAOnWindowClose() {
+    const appControlChannel = await window.fdc3.getOrCreateChannel(
+      "app-control"
     );
+    await this.broadcastContextItem("windowClosed", appControlChannel, 1);
   }
 }
 

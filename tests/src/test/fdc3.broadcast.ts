@@ -26,7 +26,7 @@ export default () =>
       });
 
       afterEach(async () => {
-        await closeChannelsAppWindow(ChannelType.System);
+        await closeChannelsAppWindow();
       });
 
       it("Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel", async () => {
@@ -34,15 +34,17 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Listen for when ChannelsApp execution is complete
-          const resolveExecutionCompleteListener =
-            waitForContext("executionComplete");
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            await window.fdc3.getOrCreateChannel("app-control")
+          );
 
           //Add context listener
           listener = await window.fdc3.addContextListener(
             null,
             async (context) => {
-              expect(context.type).to.be.oneOf(
-                ["fdc3.instrument", "executionComplete"],
+              expect(context.type).to.be.equals(
+                "fdc3.instrument",
                 errorMessage
               );
               resolve();
@@ -80,8 +82,10 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Listen for when ChannelsApp execution is complete
-          const resolveExecutionCompleteListener =
-            waitForContext("executionComplete");
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            await window.fdc3.getOrCreateChannel("app-control")
+          );
 
           //Join system channel 1
           await joinChannel(1);
@@ -90,8 +94,8 @@ export default () =>
           listener = await window.fdc3.addContextListener(
             null,
             async (context) => {
-              expect(context.type).to.be.oneOf(
-                ["fdc3.instrument", "executionComplete"],
+              expect(context.type).to.be.equals(
+                "fdc3.instrument",
                 errorMessage
               );
               resolve();
@@ -126,8 +130,10 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Listen for when ChannelsApp execution is complete
-          const resolveExecutionCompleteListener =
-            waitForContext("executionComplete");
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            await window.fdc3.getOrCreateChannel("app-control")
+          );
 
           const channelsAppCommands = [
             commands.joinSystemChannelOne,
@@ -147,8 +153,8 @@ export default () =>
           listener = await window.fdc3.addContextListener(
             null,
             async (context) => {
-              expect(context.type).to.be.oneOf(
-                ["fdc3.instrument", "executionComplete"],
+              expect(context.type).to.be.equals(
+                "fdc3.instrument",
                 errorMessage
               );
               resolve();
@@ -172,8 +178,10 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Listen for when ChannelsApp execution is complete
-          const resolveExecutionCompleteListener =
-            waitForContext("executionComplete");
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            await window.fdc3.getOrCreateChannel("app-control")
+          );
 
           //Add context listener
           listener = await window.fdc3.addContextListener(
@@ -219,8 +227,10 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Listen for when ChannelsApp execution is complete
-          const resolveExecutionCompleteListener =
-            waitForContext("executionComplete");
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            await window.fdc3.getOrCreateChannel("app-control")
+          );
           let contextTypes: string[] = [];
           function checkIfBothContextsReceived() {
             if (contextTypes.length === 2) {
@@ -343,8 +353,10 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Listen for when ChannelsApp execution is complete
-          const resolveExecutionCompleteListener =
-            waitForContext("executionComplete");
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            await window.fdc3.getOrCreateChannel("app-control")
+          );
 
           //Add fdc3.instrument context listener
           listener = window.fdc3.addContextListener(
@@ -476,7 +488,7 @@ export default () =>
       });
 
       afterEach(async () => {
-        await closeChannelsAppWindow(ChannelType.App);
+        await closeChannelsAppWindow();
       });
 
       it("Should receive context when app a adds a listener and app B broadcasts to the same app channel", async () => {
@@ -491,15 +503,15 @@ export default () =>
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            testChannel
+            await window.fdc3.getOrCreateChannel("app-control")
           );
 
           //Add context listener
           listener = await testChannel.addContextListener(
             null,
             async (context) => {
-              expect(context.type).to.be.oneOf(
-                ["fdc3.instrument", "executionComplete"],
+              expect(context.type).to.be.equals(
+                "fdc3.instrument",
                 errorMessage
               );
               resolve();
@@ -541,7 +553,7 @@ export default () =>
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            testChannel
+            await window.fdc3.getOrCreateChannel("app-control")
           );
 
           const channelsAppCommands = [
@@ -582,7 +594,7 @@ export default () =>
           //Listen for when AppChannel execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            testChannel
+            await window.fdc3.getOrCreateChannel("app-control")
           );
 
           const channelsAppCommands = [
@@ -629,7 +641,7 @@ export default () =>
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            testChannel
+            await window.fdc3.getOrCreateChannel("app-control")
           );
 
           //Add context listener
@@ -681,7 +693,7 @@ export default () =>
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            testChannel
+            await window.fdc3.getOrCreateChannel("app-control")
           );
 
           //Add fdc3.instrument context listener
@@ -753,7 +765,7 @@ export default () =>
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            testChannel
+            await window.fdc3.getOrCreateChannel("app-control")
           );
 
           //Add context listener
@@ -841,7 +853,7 @@ export default () =>
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            testChannel
+            await window.fdc3.getOrCreateChannel("app-control")
           );
 
           //App A retrieves a different app channel
@@ -923,7 +935,7 @@ export default () =>
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
-          testChannel
+          await window.fdc3.getOrCreateChannel("app-control")
         );
 
         const channelsAppCommands = [
@@ -957,7 +969,7 @@ export default () =>
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
-          testChannel
+          await window.fdc3.getOrCreateChannel("app-control")
         );
 
         const channelsAppCommands = [
@@ -979,13 +991,13 @@ export default () =>
 
         if (context === null) {
           assert.fail("No Context retrieved", errorMessage);
-        } else if (context.type === "closeWindow") {
+        } else if (context.type === "fdc3.instrument") {
           assert.fail(
             "Did not retrieve last broadcast context from app B",
             errorMessage
           );
         } else {
-          expect(context.type).to.be.equals("executionComplete", errorMessage);
+          expect(context.type).to.be.equals("fdc3.contact", errorMessage);
         }
       });
     });
@@ -1015,34 +1027,20 @@ export default () =>
       });
     }
 
-    async function closeChannelsAppWindow(channelType: ChannelType) {
-      if (channelType === ChannelType.System) {
-        //Join channel 1
-        await window.fdc3.leaveCurrentChannel();
-        await joinChannel(1);
+    async function closeChannelsAppWindow() {
+      //Tell ChannelsApp to close window
+      const appControlChannel = await broadcastAppChannelCloseWindow();
 
-        //Tell channelsApp to close window
-        await broadcastSystemChannelCloseWindow();
-
-        //Wait for ChannelsApp to respond
-        await waitForContext("windowClosed");
-      } else if (channelType === ChannelType.App) {
-        //Tell ChannelsApp to close window
-        const testChannel = await broadcastAppChannelCloseWindow();
-
-        //Wait for ChannelsApp to respond
-        await waitForContext("windowClosed", testChannel);
-      }
+      //Wait for ChannelsApp to respond
+      await waitForContext("windowClosed", appControlChannel);
     }
 
-    const broadcastSystemChannelCloseWindow = async () => {
-      await window.fdc3.broadcast({ type: "closeWindow" });
-    };
-
     const broadcastAppChannelCloseWindow = async () => {
-      const testChannel = await window.fdc3.getOrCreateChannel("test-channel");
-      await testChannel.broadcast({ type: "closeWindow" });
-      return testChannel;
+      const appControlChannel = await window.fdc3.getOrCreateChannel(
+        "app-control"
+      );
+      await appControlChannel.broadcast({ type: "closeWindow" });
+      return appControlChannel;
     };
 
     async function unsubscribeListeners() {
