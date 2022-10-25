@@ -1100,7 +1100,3 @@ const commands = {
   broadcastContactContext: "broadcastContactContext",
 };
 
-enum ChannelType {
-  System,
-  App,
-}
