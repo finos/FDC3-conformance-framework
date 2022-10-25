@@ -33,12 +33,11 @@ const createReceiver = (contextType: string) => {
 };
 
 async function wait() {
-  return new Promise(
-    (resolve) =>
-      (timeout = window.setTimeout(() => {
-        resolve(true);
-      }, constants.WaitTime))
-  );
+  return new Promise((resolve) => {
+    timeout = window.setTimeout(() => {
+      resolve(true);
+    }, constants.WaitTime);
+  });
 }
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause";
@@ -53,19 +52,16 @@ export default () =>
       await window.fdc3.open(appBName);
       await result;
     });
-
     it("Can open app B from app A with no context and AppMetadata (name) as target", async () => {
       const result = createReceiver("fdc3-conformance-opened");
       await window.fdc3.open({ name: appBName });
       await result;
     });
-
     it("Can open app B from app A with no context and AppMetadata (name and appId) as target", async () => {
       const result = createReceiver("fdc3-conformance-opened");
       await window.fdc3.open({ name: appBName, appId: appBId });
       await result;
     });
-
     it("Receive AppNotFound error when targeting non-existent app name as target", async () => {
       try {
         await window.fdc3.open("ThisAppDoesNotExist");
@@ -74,7 +70,6 @@ export default () =>
         expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
-
     it("Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target", async () => {
       try {
         await window.fdc3.open({ name: "ThisAppDoesNotExist" });
@@ -83,7 +78,6 @@ export default () =>
         expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
-
     it("Receive AppNotFound error when targeting non-existent app AppMetadata (name and appId) as target", async () => {
       try {
         await window.fdc3.open({
@@ -95,15 +89,12 @@ export default () =>
         expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
-
     it("Can open app B from app A with context and AppMetadata (name) as target", async () => {
       const receiver = createReceiver("fdc3-conformance-context-received");
-
       await window.fdc3.open(
         { name: appBName },
         { name: "context", type: "fdc3.testReceiver" }
       );
-
       const receivedValue = (await receiver) as any;
       expect(receivedValue.context.name).to.eq("context", openDocs);
       expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
