@@ -1,6 +1,6 @@
 class Fdc3CommandExecutor {
   //execute commands in order
-  async executeCommands(orderedCommands, config) {
+  async executeCommands(orderedCommands, config, testId) {
     let channel;
 
     for (const command of orderedCommands) {
@@ -17,7 +17,8 @@ class Fdc3CommandExecutor {
           await this.broadcastContextItem(
             "fdc3.instrument",
             channel,
-            config.historyItems
+            config.historyItems, 
+            testId
           );
           break;
         }
@@ -25,7 +26,8 @@ class Fdc3CommandExecutor {
           await this.broadcastContextItem(
             "fdc3.contact",
             channel,
-            config.historyItems
+            config.historyItems, 
+            testId
           );
           break;
         }
@@ -53,9 +55,9 @@ class Fdc3CommandExecutor {
   }
 
   //get broadcast service and broadcast the given context type
-  async broadcastContextItem(contextType, channel, historyItems) {
+  async broadcastContextItem(contextType, channel, historyItems, testId) {
     let broadcastService = this.getBroadcastService(channel.type);
-    await broadcastService.broadcast(contextType, historyItems, channel);
+    await broadcastService.broadcast(contextType, historyItems, channel, testId);
   }
 
   //get app/system channel broadcast service
@@ -69,13 +71,15 @@ class Fdc3CommandExecutor {
 
   //app channel broadcast service
   appChannelBroadcastService = {
-    broadcast: async (contextType, historyItems, channel) => {
+    broadcast: async (contextType, historyItems, channel, testId) => {
       if (channel !== undefined) {
         for (let i = 0; i < historyItems; i++) {
-          await channel.broadcast({
+          let context = {
             type: contextType,
             name: `History-item-${i + 1}`,
-          });
+          };
+          if(testId) context = context.testId = testId;
+          await channel.broadcast(context);
         }
       }
     },
@@ -83,39 +87,41 @@ class Fdc3CommandExecutor {
 
   //system channel broadcast service
   systemChannelBroadcastService = {
-    broadcast: async (contextType, historyItems) => {
+    broadcast: async (contextType, historyItems, ignored, testId) => {
       for (let i = 0; i < historyItems; i++) {
-        await window.fdc3.broadcast({
+        let context = {
           type: contextType,
           name: `History-item-${i + 1}`,
-        });
+        };
+        if(testId) context = context.testId = testId;
+        await window.fdc3.broadcast(context);
       }
     },
   };
 
   //close ChannelsApp on completion and respond to app A
-  async closeWindowOnCompletion() {
+  async closeWindowOnCompletion(testId) {
     const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
     await appControlChannel.addContextListener("closeWindow", async () => {
+      appControlChannel.broadcast({ type: "windowClosed", testId: testId });
       window.close();
-      appControlChannel.broadcast({ type: "windowClosed" });
     });
   }
 
-  async notifyAppAOnCompletion() {
+  async notifyAppAOnCompletion(testId) {
     const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
-    await this.broadcastContextItem("executionComplete", appControlChannel, 1);
+    await this.broadcastContextItem("executionComplete", appControlChannel, 1, testId);
   }
 
-  async NotifyAppAOnWindowClose() {
+  async NotifyAppAOnWindowClose(testId) {
     const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
-    await this.broadcastContextItem("windowClosed", appControlChannel, 1);
+    await this.broadcastContextItem("windowClosed", appControlChannel, 1, testId);
   }
 }
 
