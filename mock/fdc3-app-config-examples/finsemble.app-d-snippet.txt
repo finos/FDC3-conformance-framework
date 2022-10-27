@@ -40,7 +40,8 @@
                         "hideMaximize": false
                     },
                     "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework"
+                    "title": "FDC3 Conformance Framework",
+                    "titlebarType": "injected"
                 }
             }
         }
@@ -95,7 +96,8 @@
                         "hideMaximize": false
                     },
                     "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework Mock App"
+                    "title": "FDC3 Conformance Framework Mock App",
+                    "titlebarType": "injected"
                 }
             }
         }
@@ -150,7 +152,8 @@
                         "hideMaximize": false
                     },
                     "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework Intent App A"
+                    "title": "FDC3 Conformance Framework Intent App A",
+                    "titlebarType": "injected"
                 }
             }
         }
@@ -217,7 +220,8 @@
                         "hideMaximize": false
                     },
                     "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework Intent App B"
+                    "title": "FDC3 Conformance Framework Intent App B",
+                    "titlebarType": "injected"
                 }
             }
         }
@@ -284,7 +288,8 @@
                         "hideMaximize": false
                     },
                     "persistWindowState": true,
-                    "title": "FDC3 Conformance Framework Intent App C"
+                    "title": "FDC3 Conformance Framework Intent App C",
+                    "titlebarType": "injected"
                 }
             }
         }
@@ -346,7 +351,8 @@
 						"hideMaximize": false
 					},
 					"persistWindowState": true,
-					"title": "FDC3 Conformance Framework Channels App"
+					"title": "FDC3 Conformance Framework Channels App",
+                    "titlebarType": "injected"
 				}
 			}
 		}
