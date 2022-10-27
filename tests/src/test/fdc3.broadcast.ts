@@ -1125,34 +1125,33 @@ export default () =>
       channel?: Channel
     ) => {
       return new Promise<Context>(async (resolve) => {
+        const handler = (context: AppControlContext) => {
+          if (testId) {
+            if (testId == context.testId) {
+              resolve(context);
+              listener.unsubscribe();
+            } else {
+              console.warn(
+                `Ignoring ${contextType} context due to mismatched testId (expected: ${testId}, got ${context.testId})`
+              );
+            }
+          } else {
+            resolve(context);
+            listener.unsubscribe();
+          }
+        };
         if (channel === undefined) {
           const listener = await window.fdc3.addContextListener(
             contextType,
-            (context: AppControlContext) => {
-              if (testId) {
-                /* tslint:disable-next-line */
-                if (testId == context.testId) {
-                  resolve(context);
-                  listener.unsubscribe();
-                } else {
-                  /* tslint:disable-next-line */
-                  console.warn(
-                    `Ignoring ${contextType} context due to mismatched testId (expected: ${testId}, got ${context.testId})`
-                  );
-                }
-              } else {
-                resolve(context);
-                listener.unsubscribe();
-              }
-            }
+            handler
           );
         } else {
+          //App channels do not auto-broadcast current context when you start listening, so retrieve currnet context to avoid races
+          const currentContext  = await channel.getCurrentContext(contextType);
+          if (currentContext) handler(currentContext as AppControlContext);
           const listener = await channel.addContextListener(
             contextType,
-            (context) => {
-              resolve(context);
-              listener.unsubscribe();
-            }
+            handler
           );
         }
       });
