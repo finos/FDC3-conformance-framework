@@ -1146,7 +1146,7 @@ export default () =>
             handler
           );
         } else {
-          //App channels do not auto-broadcast current context when you start listening, so retrieve currnet context to avoid races
+          //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
           const currentContext  = await channel.getCurrentContext(contextType);
           if (currentContext) handler(currentContext as AppControlContext);
           const listener = await channel.addContextListener(
