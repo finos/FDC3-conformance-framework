@@ -1125,11 +1125,12 @@ export default () =>
       channel?: Channel
     ) => {
       return new Promise<Context>(async (resolve) => {
+        let listener: Listener | null = null;
         const handler = (context: AppControlContext) => {
           if (testId) {
             if (testId == context.testId) {
               resolve(context);
-              listener.unsubscribe();
+              if(listener) listener.unsubscribe();
             } else {
               console.warn(
                 `Ignoring ${contextType} context due to mismatched testId (expected: ${testId}, got ${context.testId})`
@@ -1137,11 +1138,11 @@ export default () =>
             }
           } else {
             resolve(context);
-            listener.unsubscribe();
+            if(listener) listener.unsubscribe();
           }
         };
         if (channel === undefined) {
-          const listener = await window.fdc3.addContextListener(
+          listener = await window.fdc3.addContextListener(
             contextType,
             handler
           );
@@ -1149,10 +1150,12 @@ export default () =>
           //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
           const currentContext  = await channel.getCurrentContext(contextType);
           if (currentContext) handler(currentContext as AppControlContext);
-          const listener = await channel.addContextListener(
-            contextType,
-            handler
-          );
+          else {
+            listener = await channel.addContextListener(
+              contextType,
+              handler
+            );
+          }
         }
       });
     };
