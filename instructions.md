@@ -37,5 +37,5 @@ On completion of the above steps you will be given your certificate via the [Cre
 
 ## 8.  Re-Certification
 
-Certification only applies to a single version of your software product.   FINOS reserves the right to allow certification to carry over for minor version changes of your desktop agent on request.
+Certification only applies to a single version of your software product. FINOS reserves the right to allow certification to carry over for minor/maintenance version changes of your desktop agent if no backward incompatible changes are introduced.
 
