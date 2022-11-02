@@ -9,16 +9,32 @@
     <div id="mocha"></div>
     <script src="lib/mocha.js"></script>
     <script src="lib/fdc3-compliance.js"></script>
+    <p id="context"></p>
+    <select id="version">
+      <option value="v1.2">v1.2</option>
+      <option value="v2.0">v2.0</option>
+    </select>
+    <input id="runButton" value="Run" type="button"/>
     <script class="mocha-init">
       mocha.setup('bdd');
     </script>
     <script class="mocha-exec">
-      const action = () => fdc3Compliance.executeTestsInBrowser();
-      if (window.fdc3) {
-        action();
-      } else {
-        window.addEventListener('fdc3Ready', action);
-      }
+      let stats = document.getElementById("context");
+
+      function executeTests() {
+          const fdc3Versions = document.getElementById("version");
+          var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
+
+          const action = () => fdc3Compliance.executeTestsInBrowser(selectedVersion);
+          if (window.fdc3) {
+            action();
+          } else {
+            window.addEventListener('fdc3Ready', action);
+          }
+        }
+
+      document.getElementById("runButton").addEventListener("click", executeTests);
+      stats.innerHTML += "event listener reached/ ";
     </script>
   </body>
 </html>

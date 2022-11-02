@@ -1,45 +1,127 @@
 import mocha from "mocha";
 import constants from "../constants";
-import fdc3AddContextListener from "./fdc3.addContextListener";
-import fdc3AddIntentListener from "./fdc3.addIntentListener";
-import fdc3Broadcast from "./fdc3.broadcast";
-import fdc3FindIntent from "./fdc3.findIntent";
-import fdc3FindIntentsByContext from "./fdc3.findIntentsByContext";
-import fdc3GetCurrentChannel from "./fdc3.getCurrentChannel";
-import fdc3GetInfo from "./fdc3.getInfo";
-import fdc3GetOrCreateChannel from "./fdc3.getOrCreateChannel";
-import fdc3GetSystemChannels from "./fdc3.getSystemChannels";
-import fdc3JoinChannel from "./fdc3.joinChannel";
-import fdc3LeaveCurrentChannel from "./fdc3.leaveCurrentChannel";
-import fdc3Open from "./fdc3.open";
-import fdc3RaiseIntent from "./fdc3.raiseIntent";
-import fdc3RaiseIntentForContext from "./fdc3.raiseIntentForContext";
 
-const testSuites = [
-  fdc3AddContextListener,
-  fdc3AddIntentListener,
-  fdc3Broadcast,
-  fdc3GetCurrentChannel,
-  fdc3GetInfo,
-  fdc3GetOrCreateChannel,
-  fdc3GetSystemChannels,
-  fdc3JoinChannel,
-  fdc3LeaveCurrentChannel,
-  fdc3FindIntent,
-  fdc3Open,
-  fdc3RaiseIntent,
-  fdc3RaiseIntentForContext,
-  fdc3FindIntentsByContext,
+import fdc3AddContextListener_1_2 from "./v1.2/fdc3.addContextListener";
+import fdc3AddIntentListener_1_2 from "./v1.2/fdc3.addIntentListener";
+import fdc3Broadcast_1_2 from "./v1.2/fdc3.broadcast";
+import fdc3FindIntent_1_2 from "./v1.2/fdc3.findIntent";
+import fdc3FindIntentsByContext_1_2 from "./v1.2/fdc3.findIntentsByContext";
+import fdc3GetCurrentChannel_1_2 from "./v1.2/fdc3.getCurrentChannel";
+import fdc3GetInfo_1_2 from "./v1.2/fdc3.getInfo";
+import fdc3GetOrCreateChannel_1_2 from "./v1.2/fdc3.getOrCreateChannel";
+import fdc3GetSystemChannels_1_2 from "./v1.2/fdc3.getSystemChannels";
+import fdc3JoinChannel_1_2 from "./v1.2/fdc3.joinChannel";
+import fdc3LeaveCurrentChannel_1_2 from "./v1.2/fdc3.leaveCurrentChannel";
+import fdc3Open_1_2 from "./v1.2/fdc3.open";
+import fdc3RaiseIntent_1_2 from "./v1.2/fdc3.raiseIntent";
+import fdc3RaiseIntentForContext_1_2 from "./v1.2/fdc3.raiseIntentForContext";
+
+//import fdc3AddContextListener_2_0 from "./v2.0/fdc3.addContextListener";
+// import fdc3AddIntentListener_2_0 from "./v2.0/fdc3.addIntentListener";
+import fdc3Broadcast_2_0 from "./v2.0/fdc3.broadcast";
+// import fdc3FindIntent_2_0 from "./v2.0/fdc3.findIntent";
+// import fdc3FindIntentsByContext_2_0 from "./v2.0/fdc3.findIntentsByContext";
+// import fdc3GetCurrentChannel_2_0 from "./v2.0/fdc3.getCurrentChannel";
+// import fdc3GetInfo_2_0 from "./v2.0/fdc3.getInfo";
+// import fdc3GetOrCreateChannel_2_0 from "./v2.0/fdc3.getOrCreateChannel";
+// import fdc3GetSystemChannels_2_0 from "./v2.0/fdc3.getSystemChannels";
+// import fdc3JoinChannel_2_0 from "./v2.0/fdc3.joinChannel";
+// import fdc3LeaveCurrentChannel_2_0 from "./v2.0/fdc3.leaveCurrentChannel";
+// import fdc3Open_2_0 from "./v2.0/fdc3.open";
+// import fdc3RaiseIntent_2_0 from "./v2.0/fdc3.raiseIntent";
+// import fdc3RaiseIntentForContext_2_0 from "./v2.0/fdc3.raiseIntentForContext";
+
+const testSuites_1_2 = [
+  fdc3AddContextListener_1_2,
+  fdc3AddIntentListener_1_2,
+  fdc3Broadcast_1_2,
+  fdc3GetCurrentChannel_1_2,
+  fdc3GetInfo_1_2,
+  fdc3GetOrCreateChannel_1_2,
+  fdc3GetSystemChannels_1_2,
+  fdc3JoinChannel_1_2,
+  fdc3LeaveCurrentChannel_1_2,
+  fdc3FindIntent_1_2,
+  fdc3Open_1_2,
+  fdc3RaiseIntent_1_2,
+  fdc3RaiseIntentForContext_1_2,
+  fdc3FindIntentsByContext_1_2,
 ];
+
+const testSuites_2_0 = [
+  // fdc3AddContextListener_2_0,
+  // fdc3AddIntentListener_2_0,
+  fdc3Broadcast_2_0,
+  // fdc3GetCurrentChannel_2_0,
+  // fdc3GetInfo_2_0,
+  // fdc3GetOrCreateChannel_2_0,
+  // fdc3GetSystemChannels_2_0,
+  // fdc3JoinChannel_2_0,
+  // fdc3LeaveCurrentChannel_2_0,
+  // fdc3FindIntent_2_0,
+  // fdc3Open_2_0,
+  // fdc3RaiseIntent_2_0,
+  // fdc3RaiseIntentForContext_2_0,
+  // fdc3FindIntentsByContext_2_0,
+];
+
+// function getTestSuites(underscoredVersionNumber: string) {
+//   return [
+//     `fdc3AddContextListener${underscoredVersionNumber}` in window
+//     // Object.create(
+//     //   window[`fdc3AddIntentListener${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(window[`fdc3Broadcast${underscoredVersionNumber}`].prototype),
+//     // Object.create(
+//     //   window[`fdc3GetCurrentChannel${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(window[`fdc3GetInfo${underscoredVersionNumber}`].prototype),
+//     // Object.create(
+//     //   window[`fdc3GetOrCreateChannel${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(
+//     //   window[`fdc3GetSystemChannels${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(
+//     //   window[`fdc3JoinChannel${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(
+//     //   window[`fdc3LeaveCurrentChannel${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(
+//     //   window[`fdc3FindIntent${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(window[`fdc3Open${underscoredVersionNumber}`].prototype),
+//     // Object.create(
+//     //   window[`fdc3RaiseIntent${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(
+//     //   window[`fdc3RaiseIntentForContext${underscoredVersionNumber}`].prototype
+//     // ),
+//     // Object.create(
+//     //   window[`fdc3FindIntentsByContext${underscoredVersionNumber}`].prototype
+//     // ),
+//   ];
+// }
 
 /**
  * Intended for running tests in container with results shown
  * in HTML page
  */
-export const executeTestsInBrowser = () => {
+export const executeTestsInBrowser = async (fdc3Version: string) => {
   (mocha as any).timeout(constants.TestTimeout);
-  testSuites
-    .sort((s1, s2) => s1.name.localeCompare(s2.name))
-    .forEach((suite) => suite());
+  const underscoredVersionNumber = getUnderscoredVersionNumber(fdc3Version);
+  //const testSuite = getTestSuites(underscoredVersionNumber);
+  testSuites_2_0.forEach((suite) => suite());
   mocha.run();
 };
+
+function getUnderscoredVersionNumber(fdc3Version) {
+  if (fdc3Version === "v1.2") {
+    return "_1_0";
+  } else if (fdc3Version === "v2.0") {
+    return "_2_0";
+  } else {
+    throw new Error(`Unrecognised FDC3 API version number: ${fdc3Version}`);
+  }
+}

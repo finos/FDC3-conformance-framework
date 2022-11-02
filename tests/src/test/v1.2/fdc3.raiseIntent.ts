@@ -7,8 +7,8 @@ import {
   ResolveError,
 } from "@finos/fdc3";
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
-import constants from "../constants";
+import APIDocumentation from "../../apiDocuments";
+import constants from "../../constants";
 
 let timeout: number;
 

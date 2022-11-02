@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
+import APIDocumentation from "../../apiDocuments";
 
 const getOrCreateChannelDocs =
   "\r\nDocumentation: " + APIDocumentation.getOrCreateChannel + "\r\nCause";

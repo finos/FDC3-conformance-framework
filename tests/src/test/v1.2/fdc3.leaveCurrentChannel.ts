@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import APIDocumentation from "../apiDocuments";
+import APIDocumentation from "../../apiDocuments";
 
 export default () =>
   describe("fdc3.leaveCurrentChannel", () => {

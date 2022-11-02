@@ -1,6 +1,6 @@
 import { ResolveError } from "@finos/fdc3";
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
+import APIDocumentation from "../../apiDocuments";
 
 const findIntentsByContextDocs =
   "\r\nDocumentation: " + APIDocumentation.findIntentsByContext + "\r\nCause";

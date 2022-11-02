@@ -1,8 +1,8 @@
 import { OpenError, Context } from "@finos/fdc3";
 import { resolveObjectURL } from "buffer";
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
-import constants from "../constants";
+import APIDocumentation from "../../apiDocuments";
+import constants from "../../constants";
 
 const appBName = "MockApp";
 const appBId = "MockAppId";

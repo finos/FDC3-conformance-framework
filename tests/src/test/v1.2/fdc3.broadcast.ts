@@ -1,7 +1,7 @@
 import { Listener, Channel, Context, getCurrentChannel } from "@finos/fdc3";
 import { assert, expect } from "chai";
-import constants from "../constants";
-import APIDocumentation from "../apiDocuments";
+import constants from "../../constants";
+import APIDocumentation from "../../apiDocuments";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
@@ -1131,12 +1131,14 @@ export default () =>
       channel?: Channel
     ) => {
       return new Promise<Context>(async (resolve) => {
-        console.log(`Waiting for type: ${contextType}, on channel: ${channel.id} in test: ${testId}`)
+        console.log(
+          `Waiting for type: ${contextType}, on channel: ${channel.id} in test: ${testId}`
+        );
         const handler = (context: AppControlContext) => {
           if (testId) {
             if (testId == context.testId) {
               resolve(context);
-              if(executionListener) executionListener.unsubscribe();
+              if (executionListener) executionListener.unsubscribe();
             } else {
               console.warn(
                 `Ignoring ${contextType} context due to mismatched testId (expected: ${testId}, got ${context.testId})`
@@ -1144,7 +1146,7 @@ export default () =>
             }
           } else {
             resolve(context);
-            if(executionListener) executionListener.unsubscribe();
+            if (executionListener) executionListener.unsubscribe();
           }
         };
         if (channel === undefined) {

@@ -1,6 +1,6 @@
 import { Listener } from "@finos/fdc3";
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
+import APIDocumentation from "../../apiDocuments";
 
 export default () =>
   describe("fdc3.addIntentListener", () => {
