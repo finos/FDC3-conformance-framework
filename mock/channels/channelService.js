@@ -1,6 +1,6 @@
 class Fdc3CommandExecutor {
   //execute commands in order
-  async executeCommands(orderedCommands, config, testId) {
+  async executeCommands(orderedCommands, config) {
     let channel;
 
     for (const command of orderedCommands) {
@@ -18,7 +18,7 @@ class Fdc3CommandExecutor {
             "fdc3.instrument",
             channel,
             config.historyItems, 
-            testId
+            config.testId
           );
           break;
         }
@@ -27,7 +27,7 @@ class Fdc3CommandExecutor {
             "fdc3.contact",
             channel,
             config.historyItems, 
-            testId
+            config.testId
           );
           break;
         }
@@ -35,11 +35,11 @@ class Fdc3CommandExecutor {
     }
 
     //close ChannelsApp when test is complete
-    await this.closeWindowOnCompletion();
+    await this.closeWindowOnCompletion(config.testId);
 
     //notify app A that ChannelsApp has finished executing
     if (config.notifyAppAOnCompletion) {
-      await this.notifyAppAOnCompletion();
+      await this.notifyAppAOnCompletion(config.testId);
     }
   }
 
@@ -78,7 +78,7 @@ class Fdc3CommandExecutor {
             type: contextType,
             name: `History-item-${i + 1}`,
           };
-          if(testId) context = context.testId = testId;
+          if(testId) context.testId = testId;
           await channel.broadcast(context);
         }
       }
@@ -93,7 +93,7 @@ class Fdc3CommandExecutor {
           type: contextType,
           name: `History-item-${i + 1}`,
         };
-        if(testId) context = context.testId = testId;
+        if(testId) context.testId = testId;
         await window.fdc3.broadcast(context);
       }
     },
@@ -115,13 +115,6 @@ class Fdc3CommandExecutor {
       "app-control"
     );
     await this.broadcastContextItem("executionComplete", appControlChannel, 1, testId);
-  }
-
-  async NotifyAppAOnWindowClose(testId) {
-    const appControlChannel = await window.fdc3.getOrCreateChannel(
-      "app-control"
-    );
-    await this.broadcastContextItem("windowClosed", appControlChannel, 1, testId);
   }
 }
 

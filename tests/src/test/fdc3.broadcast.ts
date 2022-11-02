@@ -15,6 +15,7 @@ export default () =>
   describe("fdc3.broadcast", () => {
     let listener: Listener;
     let listener2: Listener;
+    let executionListener: Listener;
 
     it("Broadcast method is callable", async () => {
       await window.fdc3.broadcast({
@@ -1117,6 +1118,11 @@ export default () =>
         await listener2.unsubscribe();
         listener2 = undefined;
       }
+
+      if (executionListener != undefined) {
+        await executionListener.unsubscribe();
+        executionListener = undefined;
+      }
     }
 
     const waitForContext = (
@@ -1125,12 +1131,12 @@ export default () =>
       channel?: Channel
     ) => {
       return new Promise<Context>(async (resolve) => {
-        let listener: Listener | null = null;
+        console.log(`Waiting for type: ${contextType}, on channel: ${channel.id} in test: ${testId}`)
         const handler = (context: AppControlContext) => {
           if (testId) {
             if (testId == context.testId) {
               resolve(context);
-              if(listener) listener.unsubscribe();
+              if(executionListener) executionListener.unsubscribe();
             } else {
               console.warn(
                 `Ignoring ${contextType} context due to mismatched testId (expected: ${testId}, got ${context.testId})`
@@ -1138,24 +1144,21 @@ export default () =>
             }
           } else {
             resolve(context);
-            if(listener) listener.unsubscribe();
+            if(executionListener) executionListener.unsubscribe();
           }
         };
         if (channel === undefined) {
-          listener = await window.fdc3.addContextListener(
+          executionListener = await window.fdc3.addContextListener(
             contextType,
             handler
           );
         } else {
+          executionListener = await channel.addContextListener(
+            contextType,
+            handler
+          );
           //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
-          const currentContext  = await channel.getCurrentContext(contextType);
-          if (currentContext) handler(currentContext as AppControlContext);
-          else {
-            listener = await channel.addContextListener(
-              contextType,
-              handler
-            );
-          }
+          channel.getCurrentContext(contextType).then(handler);
         }
       });
     };

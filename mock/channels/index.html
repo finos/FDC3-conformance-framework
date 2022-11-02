@@ -23,7 +23,7 @@
           if (firedOnce === false) {
             firedOnce = true;
             const commandExecutor = new Fdc3CommandExecutor();
-            commandExecutor.executeCommands(context.commands, context.config, context.testId);
+            commandExecutor.executeCommands(context.commands, context.config);
           }
         });
     });
