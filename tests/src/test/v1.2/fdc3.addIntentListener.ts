@@ -1,6 +1,7 @@
-import { Listener } from "@finos/fdc3";
+import { Listener } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import APIDocumentation from "../../apiDocuments";
+import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
 
 export default () =>
   describe("fdc3.addIntentListener", () => {
@@ -16,7 +17,7 @@ export default () =>
     it("Method is callable", async () => {
       const intentName = "fdc3.conformanceListener";
       try {
-        listener = await window.fdc3.addIntentListener(
+        listener = await (<DesktopAgent>(window.fdc3)).addIntentListener(
           intentName,
           (info: any) => {
             console.log(
