@@ -1,4 +1,4 @@
-import { Listener, Channel, Context, getCurrentChannel } from "fdc3_1_2";
+import { Listener, Channel, Context } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import constants from "../../constants";
 import APIDocumentation from "../../apiDocuments";
@@ -40,6 +40,7 @@ export default () =>
       it(scTestId1, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
         return new Promise(async (resolve, reject) => {
+            const appControlChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control");
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
@@ -321,7 +322,7 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Add fdc3.instrument context listener
-          listener = (<DesktopAgent>window.fdc3).addContextListener(
+          listener = await (<DesktopAgent>window.fdc3).addContextListener(
             "fdc3.instrument",
             (context) => {
               reject(
@@ -335,7 +336,7 @@ export default () =>
           validateListenerObject(listener);
 
           //Add fdc3.contact context listener
-          listener2 = (<DesktopAgent>window.fdc3).addContextListener(
+          listener2 = await (<DesktopAgent>window.fdc3).addContextListener(
             "fdc3.contact",
             (context) => {
               reject(
@@ -384,7 +385,7 @@ export default () =>
           );
 
           //Add fdc3.instrument context listener
-          listener = (<DesktopAgent>window.fdc3).addContextListener(
+          listener = await (<DesktopAgent>window.fdc3).addContextListener(
             "fdc3.instrument",
             (context) => {
               reject(
@@ -432,7 +433,7 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Add fdc3.instrument context listener
-          listener = (<DesktopAgent>window.fdc3).addContextListener(
+          listener = await (<DesktopAgent>window.fdc3).addContextListener(
             "fdc3.instrument",
             async (context) => {
               reject(
@@ -472,7 +473,7 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Add a context listeners to app A
-          listener = (<DesktopAgent>window.fdc3).addContextListener(
+          listener = await (<DesktopAgent>window.fdc3).addContextListener(
             "fdc3.instrument",
             (context) => {
               reject(
@@ -816,7 +817,7 @@ export default () =>
           );
 
           //Add context listener
-          listener = testChannel.addContextListener(null, (context) => {
+          listener = await testChannel.addContextListener(null, (context) => {
             reject(
               new Error(`${errorMessage} ${context.type} context received`)
             );
@@ -859,7 +860,7 @@ export default () =>
           );
 
           //Add context listener
-          listener = testChannel.addContextListener(
+          listener = await testChannel.addContextListener(
             "fdc3.instrument",
             (context) => {
               reject(
@@ -914,7 +915,7 @@ export default () =>
           );
 
           //Add context listener
-          listener = testChannel.addContextListener(
+          listener = await testChannel.addContextListener(
             "fdc3.instrument",
             (context) => {
               reject(
