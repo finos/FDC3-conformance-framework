@@ -20,7 +20,7 @@ export default () =>
     it("Method is callable", async () => {
       const contextType = "fdc3.contact";
       try {
-        listener = await (<DesktopAgent>(window.fdc3)).addContextListener(
+        listener = await (<DesktopAgent>window.fdc3).addContextListener(
           contextType,
           (info: any) => {
             console.log(
@@ -35,7 +35,10 @@ export default () =>
 
     it("Returns listener object", async () => {
       try {
-        listener = await (<DesktopAgent>(window.fdc3)).addContextListener(null, () => {});
+        listener = await (<DesktopAgent>window.fdc3).addContextListener(
+          null,
+          () => {}
+        );
         assert.isObject(listener, documentation);
         expect(typeof listener.unsubscribe, documentation).to.be.equals(
           "function"

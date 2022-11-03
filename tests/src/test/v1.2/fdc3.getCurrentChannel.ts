@@ -9,7 +9,7 @@ export default () =>
   describe("fdc3.getCurrentChannel", () => {
     it("Method is callable", async () => {
       try {
-        await (<DesktopAgent>(window.fdc3)).getCurrentChannel();
+        await (<DesktopAgent>window.fdc3).getCurrentChannel();
       } catch (ex) {
         assert.fail(getCurrentChannelDocs + (ex.message ?? ex));
       }
@@ -17,7 +17,7 @@ export default () =>
 
     it("getCurrentChannel() returns null if no channel has been joined", async () => {
       try {
-        const channel = await (<DesktopAgent>(window.fdc3)).getCurrentChannel();
+        const channel = await (<DesktopAgent>window.fdc3).getCurrentChannel();
         expect(channel).to.be.null;
       } catch (ex) {
         assert.fail(getCurrentChannelDocs + (ex.message ?? ex));

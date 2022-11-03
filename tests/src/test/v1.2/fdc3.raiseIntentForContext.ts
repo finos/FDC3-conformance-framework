@@ -23,7 +23,7 @@ export default () =>
       };
 
       try {
-        await (<DesktopAgent>(window.fdc3)).raiseIntentForContext(context);
+        await (<DesktopAgent>window.fdc3).raiseIntentForContext(context);
         assert.fail("Expected error NoAppsFound not thrown", docs);
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.NoAppsFound, docs);

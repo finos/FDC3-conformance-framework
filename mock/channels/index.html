@@ -24,10 +24,10 @@
           if (firedOnce === false) {
             firedOnce = true;
             // if(context.config.fdc3Version === "1.2"){
-              const commandExecutor = new Fdc3_1_2_CommandExecutor();
+              const commandExecutor = new Fdc3CommandExecutor1_2();
               commandExecutor.executeCommands(context.commands, context.config);
             // }else if(context.config.fdc3Version === "2.0"){
-              // const commandExecutor = new Fdc3_2_0_CommandExecutor();
+              // const commandExecutor = new Fdc3CommandExecutor2_0();
               // commandExecutor.executeCommands(context.commands, context.config);
             // }
           }

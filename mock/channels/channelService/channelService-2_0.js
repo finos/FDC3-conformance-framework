@@ -1,4 +1,4 @@
-class Fdc3_2_0_CommandExecutor {
+class Fdc3CommandExecutor2_0 {
     //execute commands in order
     async executeCommands(orderedCommands, config) {
       let channel;

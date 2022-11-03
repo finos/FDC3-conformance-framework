@@ -17,7 +17,7 @@ export default () =>
     it("Method is callable", async () => {
       const intentName = "fdc3.conformanceListener";
       try {
-        listener = await (<DesktopAgent>(window.fdc3)).addIntentListener(
+        listener = await (<DesktopAgent>window.fdc3).addIntentListener(
           intentName,
           (info: any) => {
             console.log(

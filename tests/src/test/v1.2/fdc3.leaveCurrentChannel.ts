@@ -6,7 +6,7 @@ export default () =>
   describe("fdc3.leaveCurrentChannel", () => {
     try {
       it("Method is callable", async () => {
-        await (<DesktopAgent>(window.fdc3)).leaveCurrentChannel();
+        await (<DesktopAgent>window.fdc3).leaveCurrentChannel();
       });
     } catch (ex) {
       assert.fail(

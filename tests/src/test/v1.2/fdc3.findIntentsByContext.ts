@@ -13,7 +13,7 @@ export default () =>
   describe("fdc3.findIntentsByContext", () => {
     it("Should find intents by context 'testContextX'", async () => {
       try {
-        const intents = await (<DesktopAgent>(window.fdc3)).findIntentsByContext({
+        const intents = await (<DesktopAgent>window.fdc3).findIntentsByContext({
           type: "testContextX",
         });
         expect(intents).to.have.length(3, findIntentsByContextDocs);
@@ -61,7 +61,7 @@ export default () =>
 
     it("Should throw NoAppsFound error when context does not exist", async () => {
       try {
-        await (<DesktopAgent>(window.fdc3)).findIntentsByContext({
+        await (<DesktopAgent>window.fdc3).findIntentsByContext({
           type: "testContextNonExistent",
         });
       } catch (ex) {
