@@ -9,7 +9,7 @@ export default () =>
   describe("fdc3.getUserChannels", () => {
     it("Method is callable", async () => {
       try {
-        await (<DesktopAgent>(window.fdc3)).getUserChannels();
+        await (<DesktopAgent>window.fdc3).getUserChannels();
       } catch (ex) {
         assert.fail(getSystemChannelDocs + (ex.message ?? ex));
       }
