@@ -1,40 +1,53 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>FDC3 Conformance Tests</title>
-    <link rel="stylesheet" href="lib/mocha.css">
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <div id="mocha"></div>
-    <script src="lib/mocha.js"></script>
-    <script src="lib/fdc3-compliance.js"></script>
-    <p id="context"></p>
+
+<head>
+  <meta charset="UTF-8" />
+  <title>FDC3 Conformance Tests</title>
+  <link rel="stylesheet" href="lib/mocha.css">
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+  <div id="mocha"></div>
+  <script src="lib/mocha.js"></script>
+  <script src="lib/fdc3-compliance.js"></script>
+  <p id="context"></p>
+  <div id="version-selector">
     <select id="version">
       <option value="v1.2">v1.2</option>
       <option value="v2.0">v2.0</option>
     </select>
-    <input id="runButton" value="Run" type="button"/>
-    <script class="mocha-init">
-      mocha.setup('bdd');
-    </script>
-    <script class="mocha-exec">
-      let stats = document.getElementById("context");
+    <input id="runButton" value="Run" type="button" />
+  </div>
+  <script class="mocha-init">
+    mocha.setup('bdd');
+  </script>
+  <script class="mocha-exec">
+    let stats = document.getElementById("context");
 
-      function executeTests() {
-          const fdc3Versions = document.getElementById("version");
-          var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
+    function executeTests() {
+      hideVersionSelector();
+      const fdc3Versions = document.getElementById("version");
+      var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
+      const action = () => fdc3Compliance.executeTestsInBrowser(selectedVersion);
+      if (window.fdc3) {
+        action();
+      } else {
+        window.addEventListener('fdc3Ready', action);
+      }
+    }
 
-          const action = () => fdc3Compliance.executeTestsInBrowser(selectedVersion);
-          if (window.fdc3) {
-            action();
-          } else {
-            window.addEventListener('fdc3Ready', action);
-          }
-        }
+    function hideVersionSelector() {
+      const versionSelector = document.getElementById("version-selector");
+      if (versionSelector.style.display === "none") {
+        versionSelector.style.display = "block";
+      } else {
+        versionSelector.style.display = "none";
+      }
+    }
 
-      document.getElementById("runButton").addEventListener("click", executeTests);
-      stats.innerHTML += "event listener reached/ ";
-    </script>
-  </body>
+    document.getElementById("runButton").addEventListener("click", executeTests);
+  </script>
+</body>
+
 </html>

@@ -18,7 +18,7 @@ import fdc3RaiseIntentForContext_1_2 from "./v1.2/fdc3.raiseIntentForContext";
 
 //import fdc3AddContextListener_2_0 from "./v2.0/fdc3.addContextListener";
 // import fdc3AddIntentListener_2_0 from "./v2.0/fdc3.addIntentListener";
-//import fdc3Broadcast_2_0 from "./v2.0/fdc3.broadcast";
+import fdc3Broadcast_2_0 from "./v2.0/fdc3.broadcast";
 // import fdc3FindIntent_2_0 from "./v2.0/fdc3.findIntent";
 // import fdc3FindIntentsByContext_2_0 from "./v2.0/fdc3.findIntentsByContext";
 // import fdc3GetCurrentChannel_2_0 from "./v2.0/fdc3.getCurrentChannel";
@@ -51,7 +51,7 @@ const testSuites_1_2 = [
 const testSuites_2_0 = [
   // fdc3AddContextListener_2_0,
   // fdc3AddIntentListener_2_0,
-  //fdc3Broadcast_2_0,
+  fdc3Broadcast_2_0,
   // fdc3GetCurrentChannel_2_0,
   // fdc3GetInfo_2_0,
   // fdc3GetOrCreateChannel_2_0,
