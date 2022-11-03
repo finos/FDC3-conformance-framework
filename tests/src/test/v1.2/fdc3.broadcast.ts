@@ -1281,44 +1281,44 @@ export default () =>
         }
       });
     };
-
-    type ChannelsAppContext = Context & {
-      commands: string[];
-      config: {
-        testId: string;
-        notifyAppAOnCompletion: boolean;
-        historyItems: number;
-        fdc3ApiVersion: string;
-      };
-    };
-
-    type ChannelsAppConfig = {
-      fdc3ApiVersion: string;
-      testId: string;
-      notifyAppAOnCompletion?: boolean;
-      historyItems?: number;
-    };
-
-    function buildChannelsAppContext(
-      mockAppCommands: string[],
-      config: ChannelsAppConfig
-    ): ChannelsAppContext {
-      return {
-        type: "channelsAppContext",
-        commands: mockAppCommands,
-        config: {
-          fdc3ApiVersion: config.fdc3ApiVersion,
-          testId: config.testId,
-          notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
-          historyItems: config.historyItems ?? 1,
-        },
-      };
-    }
   });
 
-const commands = {
-  joinSystemChannelOne: "joinSystemChannelOne",
-  retrieveTestAppChannel: "retrieveTestAppChannel",
-  broadcastInstrumentContext: "broadcastInstrumentContext",
-  broadcastContactContext: "broadcastContactContext",
-};
+  type ChannelsAppContext = Context & {
+    commands: string[];
+    config: {
+      testId: string;
+      notifyAppAOnCompletion: boolean;
+      historyItems: number;
+      fdc3ApiVersion: string;
+    };
+  };
+
+  export type ChannelsAppConfig = {
+    fdc3ApiVersion: string;
+    testId: string;
+    notifyAppAOnCompletion?: boolean;
+    historyItems?: number;
+  };
+
+  export function buildChannelsAppContext(
+    mockAppCommands: string[],
+    config: ChannelsAppConfig
+  ): ChannelsAppContext {
+    return {
+      type: "channelsAppContext",
+      commands: mockAppCommands,
+      config: {
+        fdc3ApiVersion: config.fdc3ApiVersion,
+        testId: config.testId,
+        notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
+        historyItems: config.historyItems ?? 1,
+      },
+    };
+  }
+
+  const commands = {
+    joinSystemChannelOne: "joinSystemChannelOne",
+    retrieveTestAppChannel: "retrieveTestAppChannel",
+    broadcastInstrumentContext: "broadcastInstrumentContext",
+    broadcastContactContext: "broadcastContactContext",
+  };
