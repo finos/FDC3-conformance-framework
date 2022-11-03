@@ -70,10 +70,16 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId1,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId1, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //wait for ChannelsApp to execute
@@ -121,10 +127,16 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId2,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId2, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //wait for ChannelsApp to execute
@@ -154,10 +166,16 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId3,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId3, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Join system channel 1
@@ -224,10 +242,16 @@ export default () =>
             commands.broadcastContactContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId4,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId4, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Wait for ChannelsApp to execute
@@ -297,10 +321,16 @@ export default () =>
             commands.broadcastContactContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId5,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId5, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Wait for ChannelsApp to execute
@@ -357,10 +387,15 @@ export default () =>
             commands.broadcastContactContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId6,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId6, channelsAppCommands)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Give listener time to receive context
@@ -412,10 +447,16 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId7,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId7, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Wait for ChannelsApp to execute
@@ -452,10 +493,15 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId8,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId8, channelsAppCommands)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Give listener time to receive context
@@ -496,10 +542,15 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: scTestId9,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(scTestId9, channelsAppCommands)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Give listener time to receive context
@@ -558,10 +609,16 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: acTestId,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(acTestId, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Wait for ChannelsApp to execute
@@ -596,10 +653,16 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: acTestId2,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(acTestId2, channelsAppCommands)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Retrieve current context from channel
@@ -641,10 +704,16 @@ export default () =>
             commands.broadcastContactContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: acTestId3,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(acTestId3, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           await resolveExecutionCompleteListener;
@@ -706,10 +775,16 @@ export default () =>
             commands.broadcastContactContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: acTestId4,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(acTestId4, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Wait for ChannelsApp to execute
@@ -768,10 +843,16 @@ export default () =>
             commands.broadcastContactContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: acTestId5,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(acTestId5, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           function checkIfBothContextsReceived() {
@@ -834,10 +915,16 @@ export default () =>
             commands.broadcastContactContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: acTestId6,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(acTestId6, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Wait for ChannelsApp to execute
@@ -877,10 +964,16 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: acTestId7,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(acTestId7, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Give listener time to receive context
@@ -931,10 +1024,16 @@ export default () =>
             commands.broadcastInstrumentContext,
           ];
 
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "1.2",
+            testId: acTestId8,
+            notifyAppAOnCompletion: true,
+          };
+
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
             "ChannelsApp",
-            buildChannelsAppContext(acTestId8, channelsAppCommands, true)
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
           );
 
           //Wait for ChannelsApp to execute
@@ -960,10 +1059,15 @@ export default () =>
           commands.broadcastContactContext,
         ];
 
+        const channelsAppConfig: ChannelsAppConfig = {
+          fdc3ApiVersion: "1.2",
+          testId: acTestId9,
+        };
+
         //Open ChannelsApp then execute commands in order
         await (<DesktopAgent>window.fdc3).open(
           "ChannelsApp",
-          buildChannelsAppContext(acTestId9, channelsAppCommands)
+          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
 
         //get contexts from ChannelsApp
@@ -1001,10 +1105,17 @@ export default () =>
           commands.broadcastInstrumentContext,
         ];
 
+        const channelsAppConfig: ChannelsAppConfig = {
+          fdc3ApiVersion: "1.2",
+          testId: acTestId10,
+          notifyAppAOnCompletion: true,
+          historyItems: 2,
+        };
+
         //Open ChannelsApp and execute commands in order
         await (<DesktopAgent>window.fdc3).open(
           "ChannelsApp",
-          buildChannelsAppContext(acTestId10, channelsAppCommands, true, 2)
+          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
 
         //Wait for ChannelsApp to execute
@@ -1039,10 +1150,16 @@ export default () =>
           commands.broadcastContactContext,
         ];
 
+        const channelsAppConfig: ChannelsAppConfig = {
+          fdc3ApiVersion: "1.2",
+          testId: acTestId11,
+          notifyAppAOnCompletion: true,
+        };
+
         //Open ChannelsApp then execute commands in order
         await (<DesktopAgent>window.fdc3).open(
           "ChannelsApp",
-          buildChannelsAppContext(acTestId11, channelsAppCommands, true)
+          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
 
         //Wait for ChannelsApp to execute
@@ -1171,22 +1288,29 @@ export default () =>
         testId: string;
         notifyAppAOnCompletion: boolean;
         historyItems: number;
+        fdc3ApiVersion: string;
       };
     };
 
+    type ChannelsAppConfig = {
+      fdc3ApiVersion: string;
+      testId: string;
+      notifyAppAOnCompletion?: boolean;
+      historyItems?: number;
+    };
+
     function buildChannelsAppContext(
-      testId: string,
       mockAppCommands: string[],
-      notifyAppAOnCompletion?: boolean,
-      historyItems?: number
+      config: ChannelsAppConfig
     ): ChannelsAppContext {
       return {
         type: "channelsAppContext",
         commands: mockAppCommands,
         config: {
-          testId: testId,
-          notifyAppAOnCompletion: notifyAppAOnCompletion ?? false,
-          historyItems: historyItems ?? 1,
+          fdc3ApiVersion: config.fdc3ApiVersion,
+          testId: config.testId,
+          notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
+          historyItems: config.historyItems ?? 1,
         },
       };
     }

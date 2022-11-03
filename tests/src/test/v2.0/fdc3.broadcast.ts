@@ -40,7 +40,9 @@ export default () =>
       it(scTestId1, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
         return new Promise(async (resolve, reject) => {
-            const appControlChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control");
+          const appControlChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("app-control");
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
@@ -73,7 +75,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId1, channelsAppCommands, true)
           );
 
@@ -124,7 +126,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId2, channelsAppCommands, true)
           );
 
@@ -157,7 +159,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId3, channelsAppCommands, true)
           );
 
@@ -227,7 +229,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId4, channelsAppCommands, true)
           );
 
@@ -300,7 +302,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId5, channelsAppCommands, true)
           );
 
@@ -360,7 +362,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId6, channelsAppCommands)
           );
 
@@ -415,7 +417,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId7, channelsAppCommands, true)
           );
 
@@ -455,7 +457,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId8, channelsAppCommands)
           );
 
@@ -499,7 +501,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(scTestId9, channelsAppCommands)
           );
 
@@ -528,9 +530,9 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-            "test-channel"
-          );
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
@@ -561,7 +563,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(acTestId, channelsAppCommands, true)
           );
 
@@ -581,9 +583,9 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-            "test-channel"
-          );
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
@@ -599,7 +601,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(acTestId2, channelsAppCommands)
           );
 
@@ -625,9 +627,9 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-            "test-channel"
-          );
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Listen for when AppChannel execution is complete
           const resolveExecutionCompleteListener = waitForContext(
@@ -644,7 +646,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(acTestId3, channelsAppCommands, true)
           );
 
@@ -675,9 +677,9 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-            "test-channel"
-          );
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
@@ -709,7 +711,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(acTestId4, channelsAppCommands, true)
           );
 
@@ -730,9 +732,9 @@ export default () =>
         return new Promise(async (resolve, reject) => {
           let contextTypes: string[] = [];
           //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-            "test-channel"
-          );
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
@@ -771,7 +773,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(acTestId5, channelsAppCommands, true)
           );
 
@@ -805,9 +807,9 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-            "test-channel"
-          );
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
@@ -837,7 +839,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(acTestId6, channelsAppCommands, true)
           );
 
@@ -855,9 +857,9 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-            "a-different-test-channel"
-          );
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("a-different-test-channel");
 
           //Add context listener
           listener = await testChannel.addContextListener(
@@ -880,7 +882,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(acTestId7, channelsAppCommands, true)
           );
 
@@ -898,9 +900,9 @@ export default () =>
 
         return new Promise(async (resolve, reject) => {
           //Retrieve an app channel
-          let testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-            "test-channel"
-          );
+          let testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
@@ -934,7 +936,7 @@ export default () =>
 
           //Open ChannelsApp then execute commands in order
           await (<DesktopAgent>window.fdc3).open(
-            {appId: "ChannelsAppId"},
+            { appId: "ChannelsAppId" },
             buildChannelsAppContext(acTestId8, channelsAppCommands, true)
           );
 
@@ -951,9 +953,9 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context for types fdc3.instrument and fdc3.contact${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-          "test-channel"
-        );
+        const testChannel = await (<DesktopAgent>(
+          window.fdc3
+        )).getOrCreateChannel("test-channel");
 
         const channelsAppCommands = [
           commands.retrieveTestAppChannel,
@@ -986,9 +988,9 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts two different contexts of type fdc3.instrument\r\n- App A gets current context for types fdc3.instrument${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-          "test-channel"
-        );
+        const testChannel = await (<DesktopAgent>(
+          window.fdc3
+        )).getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
@@ -1023,9 +1025,9 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App B gets current context with no filter applied${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-          "test-channel"
-        );
+        const testChannel = await (<DesktopAgent>(
+          window.fdc3
+        )).getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
@@ -1067,7 +1069,9 @@ export default () =>
     const joinChannel = async (channel: number) => {
       const channels = await (<DesktopAgent>window.fdc3).getUserChannels();
       if (channels.length > 0) {
-        await (<DesktopAgent>window.fdc3).joinUserChannel(channels[channel - 1].id);
+        await (<DesktopAgent>window.fdc3).joinUserChannel(
+          channels[channel - 1].id
+        );
       } else {
         assert.fail("No system channels available for app A");
       }
@@ -1099,9 +1103,9 @@ export default () =>
     }
 
     const broadcastAppChannelCloseWindow = async (testId: string) => {
-      const appControlChannel = await (<DesktopAgent>window.fdc3).getOrCreateChannel(
-        "app-control"
-      );
+      const appControlChannel = await (<DesktopAgent>(
+        window.fdc3
+      )).getOrCreateChannel("app-control");
       /* tslint:disable-next-line */
       const closeContext: AppControlContext = {
         type: "closeWindow",
@@ -1153,10 +1157,9 @@ export default () =>
           }
         };
         if (channel === undefined) {
-          executionListener = await (<DesktopAgent>window.fdc3).addContextListener(
-            contextType,
-            handler
-          );
+          executionListener = await (<DesktopAgent>(
+            window.fdc3
+          )).addContextListener(contextType, handler);
         } else {
           executionListener = await channel.addContextListener(
             contextType,
