@@ -24,7 +24,7 @@ import fdc3RaiseIntentForContext_1_2 from "./v1.2/fdc3.raiseIntentForContext";
 // import fdc3GetCurrentChannel_2_0 from "./v2.0/fdc3.getCurrentChannel";
 // import fdc3GetInfo_2_0 from "./v2.0/fdc3.getInfo";
 // import fdc3GetOrCreateChannel_2_0 from "./v2.0/fdc3.getOrCreateChannel";
-import fdc3GetSystemChannels_2_0 from "./v2.0/fdc3.getSystemChannels";
+import fdc3GetUserChannels_2_0 from "./v2.0/fdc3.getUserChannels";
 // import fdc3JoinChannel_2_0 from "./v2.0/fdc3.joinChannel";
 // import fdc3LeaveCurrentChannel_2_0 from "./v2.0/fdc3.leaveCurrentChannel";
 // import fdc3Open_2_0 from "./v2.0/fdc3.open";
@@ -55,7 +55,7 @@ const testSuites_2_0 = [
   // fdc3GetCurrentChannel_2_0,
   // fdc3GetInfo_2_0,
   // fdc3GetOrCreateChannel_2_0,
-  fdc3GetSystemChannels_2_0,
+  fdc3GetUserChannels_2_0,
   // fdc3JoinChannel_2_0,
   // fdc3LeaveCurrentChannel_2_0,
   // fdc3FindIntent_2_0,

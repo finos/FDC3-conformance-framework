@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../apiDocuments";
-import { DesktopAgent } from "../../../../node_modules/fdc3_2_0/dist/api/DesktopAgent";
+import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 
 const getSystemChannelDocs =
   "\r\nDocumentation: " + APIDocumentation.getSystemChannels + "\r\nCause";
