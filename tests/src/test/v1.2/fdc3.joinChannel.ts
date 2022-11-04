@@ -4,17 +4,21 @@ import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/Desktop
 export default () =>
   describe("fdc3.joinChannel", () => {
     afterEach(async () => {
-      await (<DesktopAgent>window.fdc3).leaveCurrentChannel();
+      await (<DesktopAgent>(<unknown>window.fdc3)).leaveCurrentChannel();
     });
 
     it("Can join channel", async () => {
-      const channels = await (<DesktopAgent>window.fdc3).getSystemChannels();
+      const channels = await (<DesktopAgent>(
+        (<unknown>window.fdc3)
+      )).getSystemChannels();
 
       if (channels.length > 0) {
         try {
-          await (<DesktopAgent>window.fdc3).joinChannel(channels[0].id);
+          await (<DesktopAgent>(<unknown>window.fdc3)).joinChannel(
+            channels[0].id
+          );
           const currentChannel = await (<DesktopAgent>(
-            window.fdc3
+            (<unknown>window.fdc3)
           )).getCurrentChannel();
           expect(currentChannel).to.not.be.null;
         } catch (ex) {

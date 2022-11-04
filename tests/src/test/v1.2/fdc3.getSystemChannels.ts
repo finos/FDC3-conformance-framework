@@ -9,7 +9,7 @@ export default () =>
   describe("fdc3.getSystemChannels", () => {
     it("Method is callable", async () => {
       try {
-        await (<DesktopAgent>window.fdc3).getSystemChannels();
+        await (<DesktopAgent>(<unknown>window.fdc3)).getSystemChannels();
       } catch (ex) {
         assert.fail(getSystemChannelDocs + (ex.message ?? ex));
       }
