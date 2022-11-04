@@ -263,6 +263,64 @@ export default () =>
         });
       });
 
+      // const scTestId4 =
+      //   "Should receive context when app B broadcasts the listened type to the same user channel";
+      // it(scTestId4, async () => {
+      //   const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
+
+      //   return new Promise(async (resolve, reject) => {
+      //     //Listen for when ChannelsApp execution is complete
+      //     const resolveExecutionCompleteListener = waitForContext(
+      //       "executionComplete",
+      //       scTestId4,
+      //       await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
+      //     );
+
+      //     //Join system channel 1
+      //     joinChannel(1);
+
+      //     //Add context listener
+      //     listener = await (<DesktopAgent>window.fdc3).addContextListener(
+      //       "fdc3.instrument",
+      //       (context) => {
+      //         expect(context.type).to.be.equals(
+      //           "fdc3.instrument",
+      //           errorMessage
+      //         );
+      //         resolve();
+      //         return;
+      //       }
+      //     );
+
+      //     validateListenerObject(listener);
+
+      //     const channelsAppCommands = [
+      //       commands.joinSystemChannelOne,
+      //       commands.broadcastInstrumentContext,
+      //       commands.broadcastContactContext,
+      //     ];
+
+      //     const channelsAppConfig: ChannelsAppConfig = {
+      //       fdc3ApiVersion: "1.2",
+      //       testId: scTestId4,
+      //       notifyAppAOnCompletion: true,
+      //     };
+
+      //     //Open ChannelsApp then execute commands in order
+      //     await (<DesktopAgent>window.fdc3).open(
+      //       "ChannelsApp",
+      //       buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
+      //     );
+
+      //     //Wait for ChannelsApp to execute
+      //     await resolveExecutionCompleteListener;
+
+      //     //Reject if no context received
+      //     reject(new Error(`${errorMessage} No context received`));
+      //     return;
+      //   });
+      // });
+
       const scTestId5 =
         "Should receive multiple contexts when app B broadcasts the listened types to the same user channel";
       it(scTestId5, async () => {
