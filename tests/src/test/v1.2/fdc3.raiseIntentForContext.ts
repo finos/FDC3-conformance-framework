@@ -1,6 +1,7 @@
-import { ResolveError } from "@finos/fdc3";
+import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
+import APIDocumentation from "../../apiDocuments";
+import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
 
 const docs =
   "\r\nDocumentation: " +
@@ -22,7 +23,7 @@ export default () =>
       };
 
       try {
-        await window.fdc3.raiseIntentForContext(context);
+        await (<DesktopAgent>window.fdc3).raiseIntentForContext(context);
         assert.fail("Expected error NoAppsFound not thrown", docs);
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.NoAppsFound, docs);

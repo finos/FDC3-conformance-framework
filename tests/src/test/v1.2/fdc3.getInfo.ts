@@ -1,5 +1,6 @@
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
+import APIDocumentation from "../../apiDocuments";
+import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
 
 const getInfoDocs =
   "\r\nDocumentation: " + APIDocumentation.getInfo + "\r\nCause";
@@ -8,7 +9,7 @@ export default () =>
   describe("fdc3.getInfo", () => {
     it("Method is callable", async () => {
       try {
-        await window.fdc3.getInfo();
+        await (<DesktopAgent>window.fdc3).getInfo();
       } catch (ex) {
         assert.fail(
           "\r\nDocumentation: " +
@@ -21,7 +22,7 @@ export default () =>
 
     it("Returns ImplementationMetadata object", async () => {
       try {
-        const info = await window.fdc3.getInfo();
+        const info = await (<DesktopAgent>window.fdc3).getInfo();
         expect(info, getInfoDocs).to.have.property("fdc3Version");
         expect(info, getInfoDocs).to.have.property("provider");
       } catch (ex) {

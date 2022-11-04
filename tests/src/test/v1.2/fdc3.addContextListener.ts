@@ -1,6 +1,7 @@
-import { Listener } from "@finos/fdc3";
+import { Listener } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
+import APIDocumentation from "../../apiDocuments";
+import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.addContextListener + "\r\nCause";
@@ -19,7 +20,7 @@ export default () =>
     it("Method is callable", async () => {
       const contextType = "fdc3.contact";
       try {
-        listener = await window.fdc3.addContextListener(
+        listener = await (<DesktopAgent>window.fdc3).addContextListener(
           contextType,
           (info: any) => {
             console.log(
@@ -34,7 +35,10 @@ export default () =>
 
     it("Returns listener object", async () => {
       try {
-        listener = await window.fdc3.addContextListener(null, () => {});
+        listener = await (<DesktopAgent>window.fdc3).addContextListener(
+          null,
+          () => {}
+        );
         assert.isObject(listener, documentation);
         expect(typeof listener.unsubscribe, documentation).to.be.equals(
           "function"

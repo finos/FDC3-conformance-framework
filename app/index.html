@@ -1,24 +1,54 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <title>FDC3 Conformance Tests</title>
-    <link rel="stylesheet" href="lib/mocha.css">
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <div id="mocha"></div>
-    <script src="lib/mocha.js"></script>
-    <script src="lib/fdc3-compliance.js"></script>
-    <script class="mocha-init">
-      mocha.setup('bdd');
-    </script>
-    <script class="mocha-exec">
-      const action = () => fdc3Compliance.executeTestsInBrowser();
+
+<head>
+  <meta charset="UTF-8" />
+  <title>FDC3 Conformance Tests</title>
+  <link rel="stylesheet" href="lib/mocha.css">
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+  <div id="mocha"></div>
+  <script src="lib/mocha.js"></script>
+  <script src="lib/fdc3-compliance.js"></script>
+  <div class="center" id="version-selector">
+    <label for="cars">FDC3 API version:</label>
+    <select id="version">
+      <option value="v1.2">v1.2</option>
+      <option value="v2.0">v2.0</option>
+    </select>
+    <input id="runButton" value="Run" type="button" />
+  </div>
+  <p id="context"></p>
+  <script class="mocha-init">
+    mocha.setup('bdd');
+  </script>
+  <script class="mocha-exec">
+    let stats = document.getElementById("context");
+
+    function executeTests() {
+      hideVersionSelector();
+      const fdc3Versions = document.getElementById("version");
+      var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
+      const action = () => fdc3Compliance.executeTestsInBrowser(selectedVersion);
       if (window.fdc3) {
         action();
       } else {
         window.addEventListener('fdc3Ready', action);
       }
-    </script>
-  </body>
+    }
+
+    function hideVersionSelector() {
+      const versionSelector = document.getElementById("version-selector");
+      if (versionSelector.style.display === "none") {
+        versionSelector.style.display = "block";
+      } else {
+        versionSelector.style.display = "none";
+      }
+    }
+
+    document.getElementById("runButton").addEventListener("click", executeTests);
+  </script>
+</body>
+
 </html>
