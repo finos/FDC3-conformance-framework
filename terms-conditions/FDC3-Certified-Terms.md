@@ -1,6 +1,8 @@
 ### Certified FDC3 Desktop Agent Conformance Program – Terms and Conditions
 
-#### Last updated: September 13, 2022
+(Available as [PDF](FDC3-Certified-Terms.pdf))
+
+#### Last updated: November 4, 2022
 
 This document sets forth the terms and conditions that apply to the Conformance Program and use of the Certified FDC3 Marks.
 
