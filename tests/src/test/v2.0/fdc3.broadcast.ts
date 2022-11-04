@@ -782,17 +782,17 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds adds a context listener of type null\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>(
-            window.fdc3
-          )).getOrCreateChannel("test-channel");
-
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
             acTestId,
             await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
           );
+
+          //Retrieve an app channel
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Add context listener
           listener = await testChannel.addContextListener(
@@ -841,17 +841,17 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument\r\n- App A retrieves current context of type null${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>(
-            window.fdc3
-          )).getOrCreateChannel("test-channel");
-
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
             acTestId2,
             await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
           );
+
+          //Retrieve an app channel
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           const channelsAppCommands = [
             commands.retrieveTestAppChannel,
@@ -887,21 +887,21 @@ export default () =>
 
       const acTestId3 =
         "Should receive context of correct type when app B broadcasts multiple contexts to an app channel before A retrieves current context of a specified type";
-      it("Should receive context of correct type when app B broadcasts multiple contexts to an app channel before A retrieves current context of a specified type", async () => {
+      it(acTestId3, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument and then of type fdc3.contact\r\n- App A retreives current context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>(
-            window.fdc3
-          )).getOrCreateChannel("test-channel");
-
           //Listen for when AppChannel execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
             acTestId3,
             await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
           );
+
+          //Retrieve an app channel
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           const channelsAppCommands = [
             commands.retrieveTestAppChannel,
@@ -947,17 +947,17 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
         return new Promise(async (resolve, reject) => {
-          //Retrieve an app channel
-          const testChannel = await (<DesktopAgent>(
-            window.fdc3
-          )).getOrCreateChannel("test-channel");
-
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
             acTestId4,
             await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
           );
+
+          //Retrieve an app channel
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
 
           //Add context listener
           listener = await testChannel.addContextListener(
@@ -1188,8 +1188,142 @@ export default () =>
       });
 
       const acTestId8 =
-        "Should not receive context when retrieving two different app channels before app B broadcasts the listened type to the first channel that was retrieved";
+        "Should receive context of correct type when app B broadcasts multiple contexts to an app channel before A retrieves current context of a specified type";
       it(acTestId8, async () => {
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument and then of type fdc3.contact\r\n- App A retreives current context of type fdc3.instrument${documentation}`;
+
+        return new Promise(async (resolve, reject) => {
+          //Listen for when AppChannel execution is complete
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            acTestId8,
+            await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
+          );
+
+          //Retrieve an app channel
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
+
+          const channelsAppCommands = [
+            commands.retrieveTestAppChannel,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
+
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "2.0",
+            testId: acTestId8,
+            notifyAppAOnCompletion: true,
+          };
+
+          //Open ChannelsApp then execute commands in order
+          await (<DesktopAgent>window.fdc3).open(
+            { appId: "ChannelsAppId" },
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
+          );
+
+          await resolveExecutionCompleteListener;
+
+          //Retrieve current context from channel
+          await testChannel
+            .getCurrentContext("fdc3.instrument")
+            .then((context) => {
+              expect(context.type).to.be.equals(
+                "fdc3.instrument",
+                errorMessage
+              );
+              resolve();
+              return;
+            });
+
+          reject(new Error(`${errorMessage} No context received`));
+          resolve();
+          return;
+        });
+      });
+
+      const acTestId9 =
+        "Should still receive context when listening on one channel and then retrieving a different app channel, before app B broadcasts to the first channel that was retrieved by A";
+      it(acTestId9, async () => {
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n\r\n- App A retrieves different app channel\r\n- App A adds a context listener of type fdc3.instrument to the second channel that was retrieved\r\n- App B retrieves the first app channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
+
+        return new Promise(async (resolve, reject) => {
+          //Listen for when ChannelsApp execution is complete
+          const resolveExecutionCompleteListener = waitForContext(
+            "executionComplete",
+            acTestId9,
+            await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
+          );
+
+          //Retrieve an app channel
+          const testChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("test-channel");
+
+          //Add context listener
+          listener = await testChannel.addContextListener(
+            "fdc3.instrument",
+            (context) => {
+              expect(context.type).to.be.equals(
+                "fdc3.instrument",
+                errorMessage
+              );
+              resolve();
+              return;
+            }
+          );
+
+          //Retrieve a second app channel
+          const anotherTestChannel = await (<DesktopAgent>(
+            window.fdc3
+          )).getOrCreateChannel("another-test-channel");
+
+          //Add a context listener to the second app channel that was retrieved
+          listener2 = await anotherTestChannel.addContextListener(
+            "fdc3.instrument",
+            (context) => {
+              reject(
+                new Error(
+                  `${errorMessage} fdc3.instrument context received on the second channel that was joined rather than the first`
+                )
+              );
+              return;
+            }
+          );
+
+          validateListenerObject(listener);
+
+          const channelsAppCommands = [
+            commands.retrieveTestAppChannel,
+            commands.broadcastInstrumentContext,
+            commands.broadcastContactContext,
+          ];
+
+          const channelsAppConfig: ChannelsAppConfig = {
+            fdc3ApiVersion: "2.0",
+            testId: acTestId9,
+            notifyAppAOnCompletion: true,
+          };
+
+          //Open ChannelsApp then execute commands in order
+          await (<DesktopAgent>window.fdc3).open(
+            { appId: "ChannelsAppId" },
+            buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
+          );
+
+          //Wait for ChannelsApp to execute
+          await resolveExecutionCompleteListener;
+
+          //If no context received throw error
+          reject(new Error(`${errorMessage} No context received`));
+          return;
+        });
+      });
+
+      const acTestId10 =
+        "Should not receive context when retrieving two different app channels before app B broadcasts the listened type to the first channel that was retrieved";
+      it(acTestId10, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
         return new Promise(async (resolve, reject) => {
@@ -1201,7 +1335,7 @@ export default () =>
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            acTestId8,
+            acTestId10,
             await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
           );
 
@@ -1230,7 +1364,7 @@ export default () =>
 
           const channelsAppConfig: ChannelsAppConfig = {
             fdc3ApiVersion: "2.0",
-            testId: acTestId8,
+            testId: acTestId10,
             notifyAppAOnCompletion: true,
           };
 
@@ -1247,9 +1381,9 @@ export default () =>
         });
       });
 
-      const acTestId9 =
+      const acTestId11 =
         "Should receive both contexts when app B broadcasts both contexts to the same app channel and A gets current context for each type";
-      it(acTestId9, async () => {
+      it(acTestId11, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context for types fdc3.instrument and fdc3.contact${documentation}`;
 
         //Retrieve an app channel
@@ -1265,7 +1399,7 @@ export default () =>
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
-          testId: acTestId9,
+          testId: acTestId11,
         };
 
         //Open ChannelsApp then execute commands in order
@@ -1287,9 +1421,40 @@ export default () =>
         );
       });
 
-      const acTestId10 =
+      const acTestId12 =
+        "Should receive the last broadcast context when calling getCurrentContext()";
+      it(acTestId12, async () => {
+        const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context${documentation}`;
+
+        //Retrieve an app channel
+        const testChannel = await (<DesktopAgent>(
+          window.fdc3
+        )).getOrCreateChannel("test-channel");
+
+        const channelsAppCommands = [
+          commands.retrieveTestAppChannel,
+          commands.broadcastInstrumentContext,
+          commands.broadcastContactContext,
+        ];
+
+        const channelsAppConfig: ChannelsAppConfig = {
+          fdc3ApiVersion: "2.0",
+          testId: acTestId12,
+        };
+
+        //Open ChannelsApp then execute commands in order
+        await (<DesktopAgent>window.fdc3).open(
+          { appId: "ChannelsApp" },
+          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
+        );
+
+        const contactContext = await testChannel.getCurrentContext();
+        expect(contactContext.id).to.be.equals("fdc3.contact", errorMessage);
+      });
+
+      const acTestId13 =
         "Should retrieve the last broadcast context item when app B broadcasts a context with multiple history items to the same app channel and A gets current context";
-      it(acTestId10, async () => {
+      it(acTestId13, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts two different contexts of type fdc3.instrument\r\n- App A gets current context for types fdc3.instrument${documentation}`;
 
         //Retrieve an app channel
@@ -1300,7 +1465,7 @@ export default () =>
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
-          acTestId10,
+          acTestId13,
           await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
         );
 
@@ -1310,7 +1475,7 @@ export default () =>
         ];
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
-          testId: acTestId10,
+          testId: acTestId13,
           notifyAppAOnCompletion: true,
           historyItems: 2,
         };
@@ -1330,9 +1495,9 @@ export default () =>
         expect(context.name).to.be.equals("History-item-2", errorMessage);
       });
 
-      const acTestId11 =
+      const acTestId14 =
         "Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context";
-      it(acTestId11, async () => {
+      it(acTestId14, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App B gets current context with no filter applied${documentation}`;
 
         //Retrieve an app channel
@@ -1343,7 +1508,7 @@ export default () =>
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
-          acTestId11,
+          acTestId14,
           await (<DesktopAgent>window.fdc3).getOrCreateChannel("app-control")
         );
 
@@ -1355,7 +1520,7 @@ export default () =>
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
-          testId: acTestId11,
+          testId: acTestId14,
           notifyAppAOnCompletion: true,
         };
 
