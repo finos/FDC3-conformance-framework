@@ -1,6 +1,5 @@
 import {
   AppMetadata,
-  Channel,
   Context,
   IntentResolution,
   raiseIntent,
@@ -8,9 +7,22 @@ import {
 } from "@finos/fdc3";
 import { assert, expect } from "chai";
 import APIDocumentation from "../apiDocuments";
-import constants from "../constants";
 
-let timeout: number;
+// creates a channel and subscribes for broadcast contexts. This is
+// used by the 'mock app' to send messages back to the test runner for validation
+const createReceiver = (contextType: string) => {
+  const messageReceived = new Promise<Context>(async (resolve) => {
+    const listener = await window.fdc3.addContextListener(
+      contextType,
+      (context) => {
+        resolve(context);
+        listener.unsubscribe();
+      }
+    );
+  });
+
+  return messageReceived;
+};
 
 const raiseIntentDocs =
   "\r\nDocumentation: " + APIDocumentation.raiseIntent + "\r\nCause";
@@ -25,12 +37,20 @@ export default () =>
       await window.fdc3.joinChannel("fdc3.raiseIntent");
     });
 
-    afterEach(async () => {
+    const broadcastCloseWindow = async () => {
+      await window.fdc3.broadcast({ type: "closeWindow" });
+      return new Promise<void>((resolve) => setTimeout(() => resolve(), 1000)); // Wait until close window event is handled
+    };
+
+    beforeEach(async () => {
       await broadcastCloseWindow();
-      await waitForMockAppToClose();
     });
 
-    it("Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextY'", async () => {
+    afterEach(async () => {
+      await broadcastCloseWindow();
+    });
+
+    it("(SingleResolve1) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextY'", async () => {
       const result = createReceiver("fdc3-intent-b-opened");
       const intentResolution = await window.fdc3.raiseIntent(
         "sharedTestingIntent1",
@@ -43,7 +63,7 @@ export default () =>
       await result;
     });
 
-    it("Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
+    it("(TargetedResolve1) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await window.fdc3.raiseIntent(
         "aTestingIntent",
@@ -56,7 +76,7 @@ export default () =>
       await result;
     });
 
-    it("Should start app intent-a when targeted (name) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
+    it("(TargetedResolve2) Should start app intent-a when targeted (name) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await window.fdc3.raiseIntent(
         "aTestingIntent",
@@ -70,7 +90,7 @@ export default () =>
       await result;
     });
 
-    it("Should start app intent-a when targeted (name and appId) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
+    it("(TargetedResolve3) Should start app intent-a when targeted (name and appId) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await window.fdc3.raiseIntent(
         "aTestingIntent",
@@ -82,8 +102,8 @@ export default () =>
       validateIntentResolution("IntentAppA", intentResolution);
       await result;
     });
-
-    it("Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
+   
+    it("(FailedResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
       try {
         await window.fdc3.raiseIntent(
           "aTestingIntent",
@@ -95,39 +115,10 @@ export default () =>
         assert.fail("Error was not thrown");
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.NoAppsFound);
-
-        //raise intent so that afterEach resolves
-        await window.fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextY",
-        });
       }
     });
 
-    it("Should fail to raise intent when targeted app intent-a (name and appId), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
-      try {
-        await window.fdc3.raiseIntent(
-          "aTestingIntent",
-          {
-            type: "testContextY",
-          },
-          { name: "IntentAppA", appId: "IntentAppAId" }
-        );
-        assert.fail("Error was not thrown", raiseIntentDocs);
-      } catch (ex) {
-        expect(ex).to.have.property(
-          "message",
-          ResolveError.NoAppsFound,
-          raiseIntentDocs
-        );
-
-        //raise intent so that afterEach resolves
-        await window.fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextY",
-        });
-      }
-    });
-
-    it("Should fail to raise intent when targeted app intent-a (name), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
+    it("(FailedResolve2) )Should fail to raise intent when targeted app intent-a (name), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
       try {
         await window.fdc3.raiseIntent(
           "aTestingIntent",
@@ -143,15 +134,29 @@ export default () =>
           ResolveError.NoAppsFound,
           raiseIntentDocs
         );
-
-        //raise intent so that afterEach resolves
-        await window.fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextY",
-        });
       }
     });
 
-    it("Should fail to raise intent when targeted app intent-c, context 'testContextX' and intent 'aTestingIntent' do not correlate", async () => {
+    it("(FailedResolve3) Should fail to raise intent when targeted app intent-a (name and appId), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
+      try {
+        await window.fdc3.raiseIntent(
+          "aTestingIntent",
+          {
+            type: "testContextY",
+          },
+          { name: "IntentAppA", appId: "IntentAppAId" }
+        );
+        assert.fail("Error was not thrown", raiseIntentDocs);
+      } catch (ex) {
+        expect(ex).to.have.property(
+          "message",
+          ResolveError.NoAppsFound,
+          raiseIntentDocs
+        );
+      }
+    });
+
+    it("(FailedResolve4) Should fail to raise intent when targeted app intent-c, context 'testContextX' and intent 'aTestingIntent' do not correlate", async () => {
       try {
         await window.fdc3.raiseIntent(
           "aTestingIntent",
@@ -167,11 +172,6 @@ export default () =>
           ResolveError.NoAppsFound,
           raiseIntentDocs
         );
-
-        //raise intent so that afterEach resolves
-        await window.fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextY",
-        });
       }
     });
   });
@@ -189,59 +189,3 @@ const validateIntentResolution = (
     );
   } else assert.fail("Invalid intent resolution object");
 };
-
-async function wait() {
-  return new Promise((resolve) => {
-    timeout = window.setTimeout(() => {
-      resolve(true);
-    }, constants.WaitTime);
-  });
-}
-
-const broadcastCloseWindow = async () => {
-  const appControlChannel = await window.fdc3.getOrCreateChannel("app-control");
-  await appControlChannel.broadcast({ type: "closeWindow" });
-};
-
-// creates a channel and subscribes for broadcast contexts. This is
-// used by the 'mock app' to send messages back to the test runner for validation
-const createReceiver = (contextType: string) => {
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const listener = await window.fdc3.addContextListener(
-      contextType,
-      (context) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      }
-    );
-
-    //if no context received reject promise
-    await wait();
-    reject(new Error("No context received from app B"));
-  });
-
-  return messageReceived;
-};
-
-async function waitForMockAppToClose() {
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await window.fdc3.getOrCreateChannel(
-      "app-control"
-    );
-    const listener = await appControlChannel.addContextListener(
-      "windowClosed",
-      (context) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      }
-    );
-
-    //if no context received reject promise
-    await wait();
-    reject(new Error("windowClosed context not received from app B"));
-  });
-
-  return messageReceived;
-}

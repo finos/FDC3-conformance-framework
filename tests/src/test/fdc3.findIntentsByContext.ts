@@ -10,7 +10,7 @@ const findIntentsByContextDocs =
  */
 export default () =>
   describe("fdc3.findIntentsByContext", () => {
-    it("Should find intents by context 'testContextX'", async () => {
+    it("(SingleContext) Should find intents by context 'testContextX'", async () => {
       try {
         const intents = await window.fdc3.findIntentsByContext({
           type: "testContextX",
@@ -58,7 +58,7 @@ export default () =>
       }
     });
 
-    it("Should throw NoAppsFound error when context does not exist", async () => {
+    it("(NoContext) Should throw NoAppsFound error when context does not exist", async () => {
       try {
         await window.fdc3.findIntentsByContext({
           type: "testContextNonExistent",
