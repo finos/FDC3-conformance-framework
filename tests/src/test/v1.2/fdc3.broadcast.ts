@@ -19,10 +19,10 @@ export default () =>
     let executionListener: Listener;
 
     it("Broadcast method is callable", async () => {
-      await (<DesktopAgent>(<unknown>window.fdc3)).broadcast({
+      <DesktopAgent>(<unknown>window.fdc3.broadcast({
         type: "fdc3.instrument",
         id: { ticker: "AAPL" },
-      });
+      }));
     });
 
     describe("System channels", () => {
@@ -1294,7 +1294,7 @@ export default () =>
         type: "closeWindow",
         testId: testId,
       };
-      await appControlChannel.broadcast(closeContext);
+      appControlChannel.broadcast(closeContext);
       return appControlChannel;
     };
 
