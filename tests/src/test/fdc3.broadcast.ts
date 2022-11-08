@@ -35,7 +35,7 @@ export default () =>
       });
 
       const scTestId1 =
-        "Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel";
+        "(UCBasicUsage1) Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel";
       it(scTestId1, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
         return new Promise(async (resolve, reject) => {
@@ -85,7 +85,7 @@ export default () =>
       });
 
       const scTestId2 =
-        "Should receive context when joining a user channel then adding a context listener before app B broadcasts context to the same channel";
+        "(UCBsaicUsage2) Should receive context when joining a user channel then adding a context listener before app B broadcasts context to the same channel";
       it(scTestId2, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- Add listener of type fdc3.instrument to App A\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
@@ -136,7 +136,7 @@ export default () =>
       });
 
       const scTestId3 =
-        "Should receive context when app B joins then broadcasts context to a user channel before A joins and listens on the same channel";
+        "(UCBasicUsage3) Should receive context when app B joins then broadcasts context to a user channel before A joins and listens on the same channel";
       it(scTestId3, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
@@ -187,7 +187,7 @@ export default () =>
       });
 
       const scTestId4 =
-        "Should receive context when app B broadcasts the listened type to the same user channel";
+        "(UCFilteredContext1) Should receive context when app B broadcasts the listened type to the same user channel";
       it(scTestId4, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -239,7 +239,7 @@ export default () =>
       });
 
       const scTestId5 =
-        "Should receive multiple contexts when app B broadcasts the listened types to the same user channel";
+        "(UCFilteredContext2) Should receive multiple contexts when app B broadcasts the listened types to the same user channel";
       it(scTestId5, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
@@ -314,7 +314,7 @@ export default () =>
       });
 
       const scTestId6 =
-        "Should not receive context when A & B join different user channels and app B broadcasts a listened type";
+        "(UCFilteredContext3) Should not receive context when A & B join different user channels and app B broadcasts a listened type";
       it(scTestId6, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
@@ -370,7 +370,7 @@ export default () =>
       });
 
       const scTestId7 =
-        "Should not receive context when unsubscribing a user channel before app B broadcasts the listened type to that channel";
+        "(UCUnsubscribe) Should not receive context when unsubscribing a user channel before app B broadcasts the listened type to that channel";
       it(scTestId7, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -425,7 +425,7 @@ export default () =>
       });
 
       const scTestId8 =
-        "Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined";
+        "(UCFilteredContext4) Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined";
       it(scTestId8, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -465,7 +465,7 @@ export default () =>
       });
 
       const scTestId9 =
-        "Should not receive context when joining and then leaving a user channel before app B broadcasts the listened type to the same channel";
+        "(UCFilteredContext5) Should not receive context when joining and then leaving a user channel before app B broadcasts the listened type to the same channel";
       it(scTestId9, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A leaves channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -520,7 +520,7 @@ export default () =>
       });
 
       const acTestId =
-        "Should receive context when app a adds a listener and app B broadcasts to the same app channel";
+        "(ACBasicUsage1) Should receive context when app a adds a listener and app B broadcasts to the same app channel";
       it(acTestId, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds adds a context listener of type null\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
@@ -573,7 +573,7 @@ export default () =>
       });
 
       const acTestId2 =
-        "Should receive context when app B broadcasts context to an app channel before A retrieves current context";
+        "(ACBasicUsage2) Should receive context when app B broadcasts context to an app channel before A retrieves current context";
       it(acTestId2, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument\r\n- App A retrieves current context of type null${documentation}`;
 
@@ -617,7 +617,7 @@ export default () =>
       });
 
       const acTestId3 =
-        "Should receive context of correct type when app B broadcasts multiple contexts to an app channel before A retrieves current context of a specified type";
+        "(ACBasicUsage3) Should receive context of correct type when app B broadcasts multiple contexts to an app channel before A retrieves current context of a specified type";
       it("Should receive context of correct type when app B broadcasts multiple contexts to an app channel before A retrieves current context of a specified type", async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument and then of type fdc3.contact\r\n- App A retreives current context of type fdc3.instrument${documentation}`;
 
@@ -667,7 +667,7 @@ export default () =>
       });
 
       const acTestId4 =
-        "Should only receive the listened context when app B broadcasts multiple contexts to the same app channel";
+        "(ACFilteredContext1) Should only receive the listened context when app B broadcasts multiple contexts to the same app channel";
       it(acTestId4, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
@@ -721,7 +721,7 @@ export default () =>
       });
 
       const acTestId5 =
-        "Should receive multiple contexts when app B broadcasts the listened types to the same app channel";
+        "(ACFilteredContext2) Should receive multiple contexts when app B broadcasts the listened types to the same app channel";
       it(acTestId5, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument and fdc3.contact\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
@@ -797,7 +797,7 @@ export default () =>
       });
 
       const acTestId6 =
-        "Should not receive context when unsubscribing an app channel before app B broadcasts to that channel";
+        "(ACUnsubscribe) Should not receive context when unsubscribing an app channel before app B broadcasts to that channel";
       it(acTestId6, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type null\r\n- App A unsubscribes the app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
@@ -847,7 +847,7 @@ export default () =>
       });
 
       const acTestId7 =
-        "Should not receive context when app B broadcasts context to a different app channel";
+        "(ACFilteredContext3) Should not receive context when app B broadcasts context to a different app channel";
       it(acTestId7, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves a different app channel\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
@@ -890,7 +890,7 @@ export default () =>
       });
 
       const acTestId8 =
-        "Should not receive context when retrieving two different app channels before app B broadcasts the listened type to the first channel that was retrieved";
+        "(ACFilteredContext4) Should not receive context when retrieving two different app channels before app B broadcasts the listened type to the first channel that was retrieved";
       it(acTestId8, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
@@ -944,7 +944,7 @@ export default () =>
       });
 
       const acTestId9 =
-        "Should receive both contexts when app B broadcasts both contexts to the same app channel and A gets current context for each type";
+        "(ACContextHistoryTyped) Should receive both contexts when app B broadcasts both contexts to the same app channel and A gets current context for each type";
       it(acTestId9, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context for types fdc3.instrument and fdc3.contact${documentation}`;
 
@@ -979,7 +979,7 @@ export default () =>
       });
 
       const acTestId10 =
-        "Should retrieve the last broadcast context item when app B broadcasts a context with multiple history items to the same app channel and A gets current context";
+        "(ACContextHistoryMultiple) Should retrieve the last broadcast context item when app B broadcasts a context with multiple history items to the same app channel and A gets current context";
       it(acTestId10, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts two different contexts of type fdc3.instrument\r\n- App A gets current context for types fdc3.instrument${documentation}`;
 
@@ -1016,7 +1016,7 @@ export default () =>
       });
 
       const acTestId11 =
-        "Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context";
+        "(ACContextHistoryLast) Should retrieve the last broadcast context item when app B broadcasts two different contexts to the same app channel and A gets current context";
       it(acTestId11, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App B gets current context with no filter applied${documentation}`;
 

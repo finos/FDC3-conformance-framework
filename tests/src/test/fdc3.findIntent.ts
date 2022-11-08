@@ -10,7 +10,7 @@ const findIntentDocs =
  */
 export default () =>
   describe("fdc3.findIntent", () => {
-    it("Should find intent 'aTestingIntent' belonging only to app intent-a", async () => {
+    it("(IntentAppD) Should find intent 'aTestingIntent' belonging only to app intent-a", async () => {
       const appIntent = await window.fdc3.findIntent("aTestingIntent");
       expect(appIntent.intent).to.deep.eq(
         {
@@ -27,7 +27,7 @@ export default () =>
       );
     });
 
-    it("Should throw NoAppsFound error when intent does not exist", async () => {
+    it("(WrongIntentAppD) Should throw NoAppsFound error when intent does not exist", async () => {
       try {
         await window.fdc3.findIntent("nonExistentIntent");
         assert.fail("No error was thrown", findIntentDocs);
@@ -40,7 +40,7 @@ export default () =>
       }
     });
 
-    it("Should find intent 'aTestingIntent' belonging only to app intent-a with context 'testContextX'", async () => {
+    it("(IntentAppDRightContext) Should find intent 'aTestingIntent' belonging only to app intent-a with context 'testContextX'", async () => {
       const appIntent = await window.fdc3.findIntent("aTestingIntent", {
         type: "testContextX",
       });
@@ -59,7 +59,7 @@ export default () =>
       );
     });
 
-    it("Should throw NoAppsFound error when intent exists but context does not", async () => {
+    it("(IntentAppDWrongContext) Should throw NoAppsFound error when intent exists but context does not", async () => {
       try {
         await window.fdc3.findIntent("aTestingIntent", {
           type: "testContextY",
@@ -74,7 +74,7 @@ export default () =>
       }
     });
 
-    it("Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b)", async () => {
+    it("(IntentAppDMultiple1) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b)", async () => {
       const appIntent = await window.fdc3.findIntent("sharedTestingIntent1");
       expect(appIntent.intent).to.deep.eq(
         {
@@ -96,7 +96,7 @@ export default () =>
       );
     });
 
-    it("Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextX'", async () => {
+    it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextX'", async () => {
       const appIntent = await window.fdc3.findIntent("sharedTestingIntent1", {
         type: "testContextX",
       });

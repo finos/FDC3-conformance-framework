@@ -14,7 +14,7 @@ export default () =>
       }
     });
 
-    it("getCurrentChannel() returns null if no channel has been joined", async () => {
+    it("(UCCurrentChannel) getCurrentChannel() returns null if no channel has been joined", async () => {
       try {
         const channel = await window.fdc3.getCurrentChannel();
         expect(channel).to.be.null;
