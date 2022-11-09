@@ -47,22 +47,25 @@ const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause";
  */
 export default () =>
   describe("fdc3.open", () => {
-    it("Can open app B from app A with no context and string as target", async () => {
+    it("(AOpensB1) Can open app B from app A with no context and string as target", async () => {
       const result = createReceiver("fdc3-conformance-opened");
       await window.fdc3.open(appBName);
       await result;
     });
-    it("Can open app B from app A with no context and AppMetadata (name) as target", async () => {
+
+    it("(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target", async () => {
       const result = createReceiver("fdc3-conformance-opened");
       await window.fdc3.open({ name: appBName });
       await result;
     });
-    it("Can open app B from app A with no context and AppMetadata (name and appId) as target", async () => {
+
+    it("(AOpensB3) Can open app B from app A with no context and AppMetadata (name and appId) as target", async () => {
       const result = createReceiver("fdc3-conformance-opened");
       await window.fdc3.open({ name: appBName, appId: appBId });
       await result;
     });
-    it("Receive AppNotFound error when targeting non-existent app name as target", async () => {
+
+    it("(AFailsToOpenB1) Receive AppNotFound error when targeting non-existent app name as target", async () => {
       try {
         await window.fdc3.open("ThisAppDoesNotExist");
         assert.fail("No error was not thrown", openDocs);
@@ -70,7 +73,8 @@ export default () =>
         expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
-    it("Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target", async () => {
+
+    it("(AFailsToOpenB2) Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target", async () => {
       try {
         await window.fdc3.open({ name: "ThisAppDoesNotExist" });
         assert.fail("No error was not thrown", openDocs);
@@ -78,7 +82,8 @@ export default () =>
         expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
-    it("Receive AppNotFound error when targeting non-existent app AppMetadata (name and appId) as target", async () => {
+
+    it("(AFailsToOpenB3) Receive AppNotFound error when targeting non-existent app AppMetadata (name and appId) as target", async () => {
       try {
         await window.fdc3.open({
           name: "ThisAppDoesNotExist",
@@ -89,7 +94,8 @@ export default () =>
         expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);
       }
     });
-    it("Can open app B from app A with context and AppMetadata (name) as target", async () => {
+
+    it("(AOpensBWithContext2) Can open app B from app A with context and AppMetadata (name) as target", async () => {
       const receiver = createReceiver("fdc3-conformance-context-received");
       await window.fdc3.open(
         { name: appBName },
