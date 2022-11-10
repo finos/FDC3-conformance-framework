@@ -1,8 +1,8 @@
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
+import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
-import constants from "../../constants";
+import constants from "../../../constants";
 
 const getMetadataDocs =
   "\r\nDocumentation: " + APIDocumentation.appMetadata + "\r\nCause";
@@ -110,25 +110,25 @@ export default () =>
   });
 
 async function waitForMockAppToClose() {
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const appControlChannel = await (<DesktopAgent>(
       (<unknown>window.fdc3)
     )).getOrCreateChannel("app-control");
+    let listenerReceived = false;
     const listener = await appControlChannel.addContextListener(
       "windowClosed",
       (context) => {
-        resolve(context);
+        listenerReceived = true;
         clearTimeout(timeout);
-        listener.unsubscribe();
       }
     );
 
     //if no context received reject promise
     await wait();
-    reject(new Error("windowClosed context not received from app B"));
-  });
+    if (!listenerReceived) {
+      assert.fail("The intent listener did not receive the raised intent");
+    }
 
-  return messageReceived;
+    listener.unsubscribe();
 }
 
 export function validateAppMetadata(metadata) {

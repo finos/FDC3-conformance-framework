@@ -1,9 +1,9 @@
 import { OpenError, Context } from "fdc3_1_2";
 import { resolveObjectURL } from "buffer";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
-import constants from "../../constants";
-import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
+import constants from "../../../constants";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 const appBName = "MockApp";
 const appBId = "MockAppId";
@@ -11,30 +11,30 @@ let timeout: number;
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
-const createReceiver = (contextType: string) => {
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
+const createReceiver = async (contextType: string) => {
     await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
       "FDC3-Conformance-Channel"
     );
     await (<DesktopAgent>(<unknown>window.fdc3)).joinChannel(
       "FDC3-Conformance-Channel"
     );
-
+    let receivedListener = false;
     const listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
       contextType,
       (context) => {
-        resolve(context);
+        receivedListener = true
         clearTimeout(timeout);
-        listener.unsubscribe();
       }
     );
 
     //reject promise if no context received
     await wait();
-    reject(new Error("No context received from app B"));
-  });
 
-  return messageReceived;
+    if(!receivedListener){
+      assert.fail("windowClosed context not received from app B");
+    }
+
+    listener.unsubscribe();
 };
 
 async function wait() {

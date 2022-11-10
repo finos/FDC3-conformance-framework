@@ -6,6 +6,7 @@
     "mock"
   ],
   "scripts": {
-    "build": "yarn workspaces run build"
+    "build": "yarn workspaces run build",
+    "bra" : "yarn build; cd app; yarn start3500"
   }
 }

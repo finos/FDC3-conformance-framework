@@ -1,7 +1,7 @@
 import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
-import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 const findIntentDocs =
   "\r\nDocumentation: " + APIDocumentation.findIntent + "\r\nCause";
@@ -24,8 +24,8 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(1, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppAId",
+        "name",
+        "IntentAppA",
         findIntentDocs
       );
     });
@@ -61,8 +61,8 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(1, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppAId",
+        "name",
+        "IntentAppA",
         findIntentDocs
       );
     });
@@ -98,13 +98,13 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(2, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppAId",
+        "name",
+        "IntentAppA",
         findIntentDocs
       );
       expect(appIntent.apps[1]).to.have.property(
-        "appId",
-        "IntentAppBId",
+        "name",
+        "IntentAppB",
         findIntentDocs
       );
     });
@@ -125,13 +125,13 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(2, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppAId",
+        "name",
+        "IntentAppA",
         findIntentDocs
       );
       expect(appIntent.apps[1]).to.have.property(
-        "appId",
-        "IntentAppBId",
+        "name",
+        "IntentAppB",
         findIntentDocs
       );
     });
@@ -152,8 +152,8 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(1, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppBId",
+        "name",
+        "IntentAppB",
         findIntentDocs
       );
     });

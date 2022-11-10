@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 export default () =>
   describe("fdc3.joinChannel", () => {

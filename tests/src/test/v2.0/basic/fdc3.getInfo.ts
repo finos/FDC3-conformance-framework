@@ -1,9 +1,9 @@
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
-import { DesktopAgent } from "../../../../node_modules/fdc3_2_0/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
+import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
-import constants from "../../constants";
-import { validateAppMetadata } from "./fdc3.getAppMetadata";
+import constants from "../../../constants";
+import { validateAppMetadata } from "../advanced/fdc3.getAppMetadata";
 
 const getInfoDocs =
   "\r\nDocumentation: " + APIDocumentation.getInfo2_0 + "\r\nCause";
@@ -96,25 +96,24 @@ export default () =>
     });
 
     async function waitForMockAppToClose() {
-      const messageReceived = new Promise<Context>(async (resolve, reject) => {
-        const appControlChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("app-control");
-        const listener = await appControlChannel.addContextListener(
-          "windowClosed",
-          (context) => {
-            resolve(context);
-            clearTimeout(timeout);
-            listener.unsubscribe();
-          }
-        );
+      const appControlChannel = await(
+        <DesktopAgent>(<unknown>window.fdc3)
+      ).getOrCreateChannel("app-control");
+      let receivedListener = false;
+      const listener = await appControlChannel.addContextListener(
+        "windowClosed",
+        (context) => {
+          receivedListener = true;
+          clearTimeout(timeout);
+        }
+      );
 
-        //if no context received reject promise
-        await wait();
-        reject(new Error("windowClosed context not received from app B"));
-      });
-
-      return messageReceived;
+      //if no context received reject promise
+      await wait();
+      if (!receivedListener) {
+        assert.fail("windowClosed context not received from app B");
+      }
+      listener.unsubscribe();
     }
 
     const broadcastCloseWindow = async () => {

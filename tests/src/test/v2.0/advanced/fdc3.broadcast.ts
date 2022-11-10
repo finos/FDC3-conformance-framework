@@ -1,12 +1,8 @@
 import { Listener, Channel, Context } from "fdc3_2_0";
 import { assert, expect } from "chai";
-import constants from "../../constants";
-import APIDocumentation from "../../apiDocuments";
-import { DesktopAgent } from "../../../../node_modules/fdc3_2_0/dist/api/DesktopAgent";
-import {
-  ChannelsAppConfig,
-  buildChannelsAppContext,
-} from "../v1.2/fdc3.broadcast";
+import constants from "../../../constants";
+import APIDocumentation from "../../../apiDocuments";
+import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
@@ -1659,6 +1655,39 @@ export default () =>
       });
     };
   });
+
+type ChannelsAppContext = Context & {
+  commands: string[];
+  config: {
+    testId: string;
+    notifyAppAOnCompletion: boolean;
+    historyItems: number;
+    fdc3ApiVersion: string;
+  };
+};
+
+type ChannelsAppConfig = {
+  fdc3ApiVersion: string;
+  testId: string;
+  notifyAppAOnCompletion?: boolean;
+  historyItems?: number;
+};
+
+function buildChannelsAppContext(
+  mockAppCommands: string[],
+  config: ChannelsAppConfig
+): ChannelsAppContext {
+  return {
+    type: "channelsAppContext",
+    commands: mockAppCommands,
+    config: {
+      fdc3ApiVersion: config.fdc3ApiVersion,
+      testId: config.testId,
+      notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
+      historyItems: config.historyItems ?? 1,
+    },
+  };
+}
 
 const commands = {
   joinUserChannelOne: "joinUserChannelOne",

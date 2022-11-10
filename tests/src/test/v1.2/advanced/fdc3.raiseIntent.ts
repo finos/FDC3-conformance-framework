@@ -1,15 +1,8 @@
-import {
-  AppMetadata,
-  Channel,
-  Context,
-  IntentResolution,
-  raiseIntent,
-  ResolveError,
-} from "fdc3_1_2";
+import { AppMetadata, Context, IntentResolution, ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
-import constants from "../../constants";
-import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
+import constants from "../../../constants";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 let timeout: number;
 
@@ -229,43 +222,45 @@ const broadcastCloseWindow = async () => {
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
-const createReceiver = (contextType: string) => {
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
+const createReceiver = async (contextType: string) => {
+  let receivedListener = false;
     const listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
       contextType,
       (context) => {
-        resolve(context);
+        receivedListener = true;
         clearTimeout(timeout);
-        listener.unsubscribe();
       }
     );
 
     //if no context received reject promise
     await wait();
-    reject(new Error("No context received from app B"));
-  });
+    
+    if(!receivedListener){
+      assert.fail("No context received from app B");
+    }
 
-  return messageReceived;
+    listener.unsubscribe();
 };
 
 async function waitForMockAppToClose() {
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const appControlChannel = await (<DesktopAgent>(
       (<unknown>window.fdc3)
     )).getOrCreateChannel("app-control");
+    let receivedListener = false;
     const listener = appControlChannel.addContextListener(
       "windowClosed",
       (context) => {
-        resolve(context);
+        receivedListener = true;
         clearTimeout(timeout);
-        listener.unsubscribe();
       }
     );
 
     //if no context received reject promise
     await wait();
-    reject(new Error("windowClosed context not received from app B"));
-  });
 
-  return messageReceived;
+    if(!receivedListener){
+      assert.fail("windowClosed context not received from app B");
+    }
+
+    listener.unsubscribe();
 }

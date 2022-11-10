@@ -1,7 +1,7 @@
 import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
-import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 const findIntentsByContextDocs =
   "\r\nDocumentation: " + APIDocumentation.findIntentsByContext + "\r\nCause";
@@ -31,7 +31,7 @@ export default () =>
         );
         expect(aTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
         expect(aTestingIntent.apps[0].name).to.eq(
-          "IntentAppAId",
+          "IntentAppA",
           findIntentsByContextDocs
         );
 
@@ -44,7 +44,7 @@ export default () =>
         );
         const sharedAppNames = sharedTestingIntent1.apps.map((app) => app.name);
         expect(sharedAppNames).to.have.all.members(
-          ["IntentAppAId", "IntentAppBId"],
+          ["IntentAppA", "IntentAppB"],
           findIntentsByContextDocs
         );
 
@@ -53,7 +53,7 @@ export default () =>
         );
         expect(cTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
         expect(cTestingIntent.apps[0].name).to.eq(
-          "IntentAppCId",
+          "IntentAppC",
           findIntentsByContextDocs
         );
       } catch (ex) {
