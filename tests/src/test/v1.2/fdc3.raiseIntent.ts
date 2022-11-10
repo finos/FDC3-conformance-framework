@@ -224,20 +224,21 @@ const broadcastCloseWindow = async () => {
   const appControlChannel = await (<DesktopAgent>(
     (<unknown>window.fdc3)
   )).getOrCreateChannel("app-control");
-  await appControlChannel.broadcast({ type: "closeWindow" });
+  appControlChannel.broadcast({ type: "closeWindow" });
 };
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = (contextType: string) => {
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const listener = await (<DesktopAgent>(
-      (<unknown>window.fdc3)
-    )).addContextListener(contextType, (context) => {
-      resolve(context);
-      clearTimeout(timeout);
-      listener.unsubscribe();
-    });
+    const listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+      contextType,
+      (context) => {
+        resolve(context);
+        clearTimeout(timeout);
+        listener.unsubscribe();
+      }
+    );
 
     //if no context received reject promise
     await wait();
@@ -252,7 +253,7 @@ async function waitForMockAppToClose() {
     const appControlChannel = await (<DesktopAgent>(
       (<unknown>window.fdc3)
     )).getOrCreateChannel("app-control");
-    const listener = await appControlChannel.addContextListener(
+    const listener = appControlChannel.addContextListener(
       "windowClosed",
       (context) => {
         resolve(context);

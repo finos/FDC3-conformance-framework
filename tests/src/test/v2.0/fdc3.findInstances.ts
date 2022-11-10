@@ -54,7 +54,7 @@ export default () =>
           }
 
           //ensure appIdentifier receives the raised intent
-          (<DesktopAgent>(<unknown>window.fdc3)).addIntentListener(
+          await (<DesktopAgent>(<unknown>window.fdc3)).addIntentListener(
             "aTestingIntent",
             (context, metadata) => {
               expect(

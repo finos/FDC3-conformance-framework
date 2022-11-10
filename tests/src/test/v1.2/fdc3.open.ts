@@ -20,13 +20,14 @@ const createReceiver = (contextType: string) => {
       "FDC3-Conformance-Channel"
     );
 
-    const listener = await (<DesktopAgent>(
-      (<unknown>window.fdc3)
-    )).addContextListener(contextType, (context) => {
-      resolve(context);
-      clearTimeout(timeout);
-      listener.unsubscribe();
-    });
+    const listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+      contextType,
+      (context) => {
+        resolve(context);
+        clearTimeout(timeout);
+        listener.unsubscribe();
+      }
+    );
 
     //reject promise if no context received
     await wait();

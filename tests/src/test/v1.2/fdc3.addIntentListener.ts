@@ -17,13 +17,14 @@ export default () =>
     it("Method is callable", async () => {
       const intentName = "fdc3.conformanceListener";
       try {
-        listener = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).addIntentListener(intentName, (info: any) => {
-          console.log(
-            `Intent listener for intent ${intentName} triggered with result ${info}`
-          );
-        });
+        listener = (<DesktopAgent>(<unknown>window.fdc3)).addIntentListener(
+          intentName,
+          (info: any) => {
+            console.log(
+              `Intent listener for intent ${intentName} triggered with result ${info}`
+            );
+          }
+        );
         expect(listener).to.have.property("unsubscribe").that.is.a("function");
       } catch (ex) {
         assert.fail(
