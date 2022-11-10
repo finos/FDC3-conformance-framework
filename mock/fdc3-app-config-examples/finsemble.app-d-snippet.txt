@@ -57,7 +57,9 @@
 "MockApp": {
     "appId": "MockAppId",
     "name": "MockApp",
-    "description": "Testing spec conformance",
+    "description": "Mock app used for testing. WARNING: changing this app's property definitions will cause metadata tests to fail",
+    "title": "A generic app directory record example",
+    "tooltip": "tooltip",
     "manifest": {
         "window": {
             "url": "http://localhost:3001",
@@ -102,13 +104,10 @@
             }
         }
     },
+    "icons": [{"src": "http://localhost:3000/pathToIcon.png"}],
+    "images": [{"src": "http://localhost:3000/pathToImage.png"}],
     "version": "1.0.0",
-    "publisher": "Scott Logic",
-    "icons": [
-        {
-            "src": "http://localhost:3000/scott-logic-icon-256.png"
-        }
-    ]
+    "publisher": "Scott Logic"
 },
 "IntentAppA": {
     "appId": "IntentAppAId",

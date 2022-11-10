@@ -1,4 +1,4 @@
-class Fdc3CommandExecutor {
+class Fdc3CommandExecutor1_2 {
   //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
@@ -33,7 +33,7 @@ class Fdc3CommandExecutor {
         }
       }
     }
-
+    
     //close ChannelsApp when test is complete
     await this.closeWindowOnCompletion(config.testId);
 
@@ -71,7 +71,7 @@ class Fdc3CommandExecutor {
 
   //app channel broadcast service
   appChannelBroadcastService = {
-    broadcast: async (contextType, historyItems, channel, testId) => {
+    broadcast: (contextType, historyItems, channel, testId) => {
       if (channel !== undefined) {
         for (let i = 0; i < historyItems; i++) {
           let context = {
@@ -79,7 +79,7 @@ class Fdc3CommandExecutor {
             name: `History-item-${i + 1}`,
           };
           if(testId) context.testId = testId;
-          await channel.broadcast(context);
+          channel.broadcast(context);
         }
       }
     },
@@ -87,14 +87,14 @@ class Fdc3CommandExecutor {
 
   //system channel broadcast service
   systemChannelBroadcastService = {
-    broadcast: async (contextType, historyItems, ignored, testId) => {
+    broadcast: (contextType, historyItems, ignored, testId) => {
       for (let i = 0; i < historyItems; i++) {
         let context = {
           type: contextType,
           name: `History-item-${i + 1}`,
         };
         if(testId) context.testId = testId;
-        await window.fdc3.broadcast(context);
+        window.fdc3.broadcast(context);
       }
     },
   };

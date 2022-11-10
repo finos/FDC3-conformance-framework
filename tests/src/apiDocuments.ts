@@ -15,6 +15,7 @@ const APIDocumentation = {
   getCurrentChannel:
     "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#getcurrentchannel",
   getInfo: "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#getinfo",
+  getInfo2_0: "https://fdc3.finos.org/docs/api/ref/DesktopAgent#getinfo",
   getOrCreateChannel:
     "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#getorcreatechannel",
   getSystemChannels:
@@ -28,6 +29,9 @@ const APIDocumentation = {
     "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#raiseintent",
   raiseIntentForContext:
     "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#raiseintentforcontext",
+  appMetadata: "https://fdc3.finos.org/docs/api/ref/Metadata#appmetadata",
+  findInstances:
+    "https://fdc3.finos.org/docs/api/ref/DesktopAgent#findinstances",
 } as const;
 
 export default APIDocumentation;

@@ -1,6 +1,7 @@
-import { Listener } from "@finos/fdc3";
+import { Listener } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../apiDocuments";
+import APIDocumentation from "../../apiDocuments";
+import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
 
 export default () =>
   describe("fdc3.addIntentListener", () => {
@@ -16,14 +17,13 @@ export default () =>
     it("Method is callable", async () => {
       const intentName = "fdc3.conformanceListener";
       try {
-        listener = await window.fdc3.addIntentListener(
-          intentName,
-          (info: any) => {
-            console.log(
-              `Intent listener for intent ${intentName} triggered with result ${info}`
-            );
-          }
-        );
+        listener = await (<DesktopAgent>(
+          (<unknown>window.fdc3)
+        )).addIntentListener(intentName, (info: any) => {
+          console.log(
+            `Intent listener for intent ${intentName} triggered with result ${info}`
+          );
+        });
         expect(listener).to.have.property("unsubscribe").that.is.a("function");
       } catch (ex) {
         assert.fail(

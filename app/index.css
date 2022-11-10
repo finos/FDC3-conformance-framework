@@ -13,3 +13,8 @@ body {
 body {
 	height: 100%;
 }
+
+.center {
+	margin: auto;
+	width: 90%;
+  }
