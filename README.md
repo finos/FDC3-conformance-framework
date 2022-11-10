@@ -39,7 +39,7 @@ cd mock
 yarn start
 ```
 
-The application will start and will open a webbrowser tab, this tab will have an error. The reason is that the app does not have a Window.FDC3 object and should be ran through the desktop agent.
+Note that if you open any of the app's URLs in a webbrowser you will see any error. The reason is that the app does not have a Window.FDC3 object and should be ran through a Desktop Agent.
 
 Here is the setup steps for the following desktop agents:
 
