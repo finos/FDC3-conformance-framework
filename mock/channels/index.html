@@ -11,7 +11,8 @@
   <p></p>
   <p id="context"></p>
   <script src="lib/mock-functions.js"></script>
-  <script src="channelService.js"></script>
+  <script src="channelService/channelService-1_2.js"></script>
+  <script src="channelService/channelService-2_0.js"></script>
   <script>
     onFdc3Ready().then(() => {
       let firedOnce = false;
@@ -22,8 +23,13 @@
         (context) => {
           if (firedOnce === false) {
             firedOnce = true;
-            const commandExecutor = new Fdc3CommandExecutor();
-            commandExecutor.executeCommands(context.commands, context.config);
+             if(context.config.fdc3ApiVersion === "1.2"){
+              const commandExecutor = new Fdc3CommandExecutor1_2();
+              commandExecutor.executeCommands(context.commands, context.config);
+             }else if(context.config.fdc3ApiVersion === "2.0"){
+               const commandExecutor = new Fdc3CommandExecutor2_0();
+               commandExecutor.executeCommands(context.commands, context.config);
+             }
           }
         });
     });

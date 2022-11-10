@@ -5,10 +5,11 @@ import {
   IntentResolution,
   raiseIntent,
   ResolveError,
-} from "@finos/fdc3";
+} from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
-import constants from "../../constants";
+import APIDocumentation from "../../../apiDocuments";
+import constants from "../../../constants";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 let timeout: number;
 
@@ -21,8 +22,12 @@ const raiseIntentDocs =
 export default () =>
   describe("fdc3.raiseIntent", () => {
     before(async () => {
-      await window.fdc3.getOrCreateChannel("fdc3.raiseIntent");
-      await window.fdc3.joinChannel("fdc3.raiseIntent");
+      await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+        "fdc3.raiseIntent"
+      );
+      await (<DesktopAgent>(<unknown>window.fdc3)).joinChannel(
+        "fdc3.raiseIntent"
+      );
     });
 
     afterEach(async () => {
@@ -32,12 +37,11 @@ export default () =>
 
     it("(SingleResolve1) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextY'", async () => {
       const result = createReceiver("fdc3-intent-b-opened");
-      const intentResolution = await window.fdc3.raiseIntent(
-        "sharedTestingIntent1",
-        {
-          type: "testContextY",
-        }
-      );
+      const intentResolution = await (<DesktopAgent>(
+        (<unknown>window.fdc3)
+      )).raiseIntent("sharedTestingIntent1", {
+        type: "testContextY",
+      });
 
       validateIntentResolution("IntentAppB", intentResolution);
       await result;
@@ -45,7 +49,9 @@ export default () =>
 
     it("(TargetedResolve1) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
-      const intentResolution = await window.fdc3.raiseIntent(
+      const intentResolution = await (<DesktopAgent>(
+        (<unknown>window.fdc3)
+      )).raiseIntent(
         "aTestingIntent",
         {
           type: "testContextX",
@@ -58,7 +64,9 @@ export default () =>
 
     it("(TargetedResolve2) Should start app intent-a when targeted (name) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
-      const intentResolution = await window.fdc3.raiseIntent(
+      const intentResolution = await (<DesktopAgent>(
+        (<unknown>window.fdc3)
+      )).raiseIntent(
         "aTestingIntent",
         {
           type: "testContextX",
@@ -72,7 +80,9 @@ export default () =>
 
     it("(TargetedResolve3) Should start app intent-a when targeted (name and appId) by raising intent 'aTestingIntent' with context 'testContextX'", async () => {
       const result = createReceiver("fdc3-intent-a-opened");
-      const intentResolution = await window.fdc3.raiseIntent(
+      const intentResolution = await (<DesktopAgent>(
+        (<unknown>window.fdc3)
+      )).raiseIntent(
         "aTestingIntent",
         {
           type: "testContextX",
@@ -85,7 +95,7 @@ export default () =>
 
     it("(FailedResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
       try {
-        await window.fdc3.raiseIntent(
+        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntent(
           "aTestingIntent",
           {
             type: "testContextY",
@@ -97,15 +107,18 @@ export default () =>
         expect(ex).to.have.property("message", ResolveError.NoAppsFound);
 
         //raise intent so that afterEach resolves
-        await window.fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextY",
-        });
+        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntent(
+          "sharedTestingIntent1",
+          {
+            type: "testContextY",
+          }
+        );
       }
     });
 
     it("(FailedResolve2) )Should fail to raise intent when targeted app intent-a (name), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
       try {
-        await window.fdc3.raiseIntent(
+        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntent(
           "aTestingIntent",
           {
             type: "testContextY",
@@ -121,15 +134,18 @@ export default () =>
         );
 
         //raise intent so that afterEach resolves
-        await window.fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextY",
-        });
+        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntent(
+          "sharedTestingIntent1",
+          {
+            type: "testContextY",
+          }
+        );
       }
     });
 
     it("(FailedResolve3) Should fail to raise intent when targeted app intent-a (name and appId), context 'testContextY' and intent 'aTestingIntent' do not correlate", async () => {
       try {
-        await window.fdc3.raiseIntent(
+        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntent(
           "aTestingIntent",
           {
             type: "testContextY",
@@ -145,15 +161,18 @@ export default () =>
         );
 
         //raise intent so that afterEach resolves
-        await window.fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextY",
-        });
+        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntent(
+          "sharedTestingIntent1",
+          {
+            type: "testContextY",
+          }
+        );
       }
     });
 
     it("(FailedResolve4) Should fail to raise intent when targeted app intent-c, context 'testContextX' and intent 'aTestingIntent' do not correlate", async () => {
       try {
-        await window.fdc3.raiseIntent(
+        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntent(
           "aTestingIntent",
           {
             type: "testContextX",
@@ -169,9 +188,12 @@ export default () =>
         );
 
         //raise intent so that afterEach resolves
-        await window.fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextY",
-        });
+        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntent(
+          "sharedTestingIntent1",
+          {
+            type: "testContextY",
+          }
+        );
       }
     });
   });
@@ -199,7 +221,9 @@ async function wait() {
 }
 
 const broadcastCloseWindow = async () => {
-  const appControlChannel = await window.fdc3.getOrCreateChannel("app-control");
+  const appControlChannel = await (<DesktopAgent>(
+    (<unknown>window.fdc3)
+  )).getOrCreateChannel("app-control");
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
 
@@ -207,14 +231,13 @@ const broadcastCloseWindow = async () => {
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = (contextType: string) => {
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const listener = await window.fdc3.addContextListener(
-      contextType,
-      (context) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      }
-    );
+    const listener = await (<DesktopAgent>(
+      (<unknown>window.fdc3)
+    )).addContextListener(contextType, (context) => {
+      resolve(context);
+      clearTimeout(timeout);
+      listener.unsubscribe();
+    });
 
     //if no context received reject promise
     await wait();
@@ -226,9 +249,9 @@ const createReceiver = (contextType: string) => {
 
 async function waitForMockAppToClose() {
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await window.fdc3.getOrCreateChannel(
-      "app-control"
-    );
+    const appControlChannel = await (<DesktopAgent>(
+      (<unknown>window.fdc3)
+    )).getOrCreateChannel("app-control");
     const listener = await appControlChannel.addContextListener(
       "windowClosed",
       (context) => {

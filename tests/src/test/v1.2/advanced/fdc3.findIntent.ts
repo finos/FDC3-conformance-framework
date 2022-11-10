@@ -1,6 +1,7 @@
-import { ResolveError } from "@finos/fdc3";
+import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
+import APIDocumentation from "../../../apiDocuments";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 const findIntentDocs =
   "\r\nDocumentation: " + APIDocumentation.findIntent + "\r\nCause";
@@ -29,7 +30,9 @@ export default () =>
 
     it("(WrongIntentAppD) Should throw NoAppsFound error when intent does not exist", async () => {
       try {
-        await window.fdc3.findIntent("nonExistentIntent");
+        await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+          "nonExistentIntent"
+        );
         assert.fail("No error was thrown", findIntentDocs);
       } catch (ex) {
         expect(ex).to.have.property(
@@ -61,9 +64,12 @@ export default () =>
 
     it("(IntentAppDWrongContext) Should throw NoAppsFound error when intent exists but context does not", async () => {
       try {
-        await window.fdc3.findIntent("aTestingIntent", {
-          type: "testContextY",
-        });
+        await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+          "aTestingIntent",
+          {
+            type: "testContextY",
+          }
+        );
         assert.fail("No error was thrown", findIntentDocs);
       } catch (ex) {
         expect(ex).to.have.property(
@@ -121,9 +127,12 @@ export default () =>
     });
 
     it("Should find intent 'sharedTestingIntent1' belonging to app 'intent-b' when filtered by specific context 'testContextY'", async () => {
-      const appIntent = await window.fdc3.findIntent("sharedTestingIntent1", {
-        type: "testContextY",
-      });
+      const appIntent = await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+        "sharedTestingIntent1",
+        {
+          type: "testContextY",
+        }
+      );
       expect(appIntent.intent).to.deep.eq(
         {
           name: "sharedTestingIntent1",
