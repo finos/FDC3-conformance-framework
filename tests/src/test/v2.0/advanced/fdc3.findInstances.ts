@@ -79,9 +79,8 @@ export default () =>
         );
 
         await wait();
-        if (!listenerReceived) {
+        if (!listenerReceived)
           assert.fail("The intent listener did not receive the raised intent");
-        }
       } catch (ex) {
         assert.fail(findInstancesDocs + (ex.message ?? ex));
       }
@@ -93,24 +92,21 @@ async function waitForMockAppToClose() {
     const appControlChannel = await (<DesktopAgent>(
       (<unknown>window.fdc3)
     )).getOrCreateChannel("app-control");
-    let receivedListener = false;
     const listener = await appControlChannel.addContextListener(
       "windowClosed",
       (context) => {
-        receivedListener = true;
+        resolve(context);
         clearTimeout(timeout);
-        
+        listener.unsubscribe();
       }
     );
 
     //if no context received reject promise
     await wait();
-    
-    if(!receivedListener){
-      assert.fail("windowClosed context not received from app B");
-    }
-    
-    listener.unsubscribe();
+    reject(new Error("windowClosed context not received from app B"));
+  });
+
+  return messageReceived;
 }
 
 const broadcastCloseWindow = async () => {

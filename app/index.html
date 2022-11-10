@@ -27,6 +27,16 @@
   </script>
   <script class="mocha-exec">
     let stats = document.getElementById("context");
+    const version = document.getElementById("version")
+
+    // populate drop-down
+    fdc3Compliance.getPackNames().forEach(pn => {
+      const opt = document.createElement("option")
+      const text = document.createTextNode(pn)
+      opt.setAttribute("value", pn);
+      opt.appendChild(text)
+      version.appendChild(opt);
+    })
 
     function executeTests() {
       hideVersionSelector();

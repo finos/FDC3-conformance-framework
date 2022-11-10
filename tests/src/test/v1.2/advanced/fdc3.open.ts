@@ -11,30 +11,30 @@ let timeout: number;
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
-const createReceiver = async (contextType: string) => {
+const createReceiver = (contextType: string) => {
+  const messageReceived = new Promise<Context>(async (resolve, reject) => {
     await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
       "FDC3-Conformance-Channel"
     );
     await (<DesktopAgent>(<unknown>window.fdc3)).joinChannel(
       "FDC3-Conformance-Channel"
     );
-    let receivedListener = false;
+
     const listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
       contextType,
       (context) => {
-        receivedListener = true
+        resolve(context);
         clearTimeout(timeout);
+        listener.unsubscribe();
       }
     );
 
     //reject promise if no context received
     await wait();
+    reject(new Error("No context received from app B"));
+  });
 
-    if(!receivedListener){
-      assert.fail("windowClosed context not received from app B");
-    }
-
-    listener.unsubscribe();
+  return messageReceived;
 };
 
 async function wait() {

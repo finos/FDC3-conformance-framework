@@ -96,24 +96,25 @@ export default () =>
     });
 
     async function waitForMockAppToClose() {
-      const appControlChannel = await(
-        <DesktopAgent>(<unknown>window.fdc3)
-      ).getOrCreateChannel("app-control");
-      let receivedListener = false;
-      const listener = await appControlChannel.addContextListener(
-        "windowClosed",
-        (context) => {
-          receivedListener = true;
-          clearTimeout(timeout);
-        }
-      );
+      const messageReceived = new Promise<Context>(async (resolve, reject) => {
+        const appControlChannel = await (<DesktopAgent>(
+          (<unknown>window.fdc3)
+        )).getOrCreateChannel("app-control");
+        const listener = await appControlChannel.addContextListener(
+          "windowClosed",
+          (context) => {
+            resolve(context);
+            clearTimeout(timeout);
+            listener.unsubscribe();
+          }
+        );
 
-      //if no context received reject promise
-      await wait();
-      if (!receivedListener) {
-        assert.fail("windowClosed context not received from app B");
-      }
-      listener.unsubscribe();
+        //if no context received reject promise
+        await wait();
+        reject(new Error("windowClosed context not received from app B"));
+      });
+
+      return messageReceived;
     }
 
     const broadcastCloseWindow = async () => {
