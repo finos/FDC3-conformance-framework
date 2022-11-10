@@ -83,7 +83,6 @@ export function getPackNames(): string[] {
  * Intended for running tests in container with results shown
  * in HTML page
  */
-<<<<<<< HEAD
 export const executeTestsInBrowser = (pack: string) => {
   (mocha as any).timeout(constants.TestTimeout);
   packs[pack]
