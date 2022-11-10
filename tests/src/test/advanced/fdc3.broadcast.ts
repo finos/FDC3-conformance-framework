@@ -1,7 +1,7 @@
 import { Listener, Channel, Context, getCurrentChannel } from "@finos/fdc3";
 import { assert, expect } from "chai";
-import constants from "../constants";
-import APIDocumentation from "../apiDocuments";
+import constants from "../../constants";
+import APIDocumentation from "../../apiDocuments";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
