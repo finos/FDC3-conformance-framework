@@ -1365,7 +1365,7 @@ type ChannelsAppContext = Context & {
   };
 };
 
-export type ChannelsAppConfig = {
+type ChannelsAppConfig = {
   fdc3ApiVersion: string;
   testId: string;
   notifyAppAOnCompletion?: boolean;

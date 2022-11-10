@@ -52,7 +52,6 @@ const advancedSuite_1_2 = [
   fdc3RaiseIntentForContext_1_2,
 ];
 
-
 const allSuites_1_2 = [...basicSuite_1_2, ...advancedSuite_1_2];
 
 export const packs: { [index: string]: (() => Suite)[] } = {
