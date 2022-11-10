@@ -311,16 +311,16 @@ export default () =>
         });
       });
 
-      const scTestId6 =
-        "Should receive multiple contexts when app B broadcasts the listened types to the same user channel";
-      it(scTestId6, async () => {
+      const scTestId666 =
+        "(UNLABELLED) Should receive multiple contexts when app B broadcasts the listened types to the same user channel";
+      it(scTestId666, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
         return new Promise(async (resolve, reject) => {
           //Listen for when ChannelsApp execution is complete
           const resolveExecutionCompleteListener = waitForContext(
             "executionComplete",
-            scTestId6,
+            scTestId666,
             await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
               "app-control"
             )
@@ -594,7 +594,7 @@ export default () =>
 
           const channelsAppConfig: ChannelsAppConfig = {
             fdc3ApiVersion: "1.2",
-            testId: scTestId10,
+            testId: scTestId9,
           };
 
           //Open ChannelsApp then execute commands in order
