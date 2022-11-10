@@ -1,6 +1,6 @@
 import { assert } from "chai";
-import APIDocumentation from "../../apiDocuments";
-import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 export default () =>
   describe("fdc3.leaveCurrentChannel", () => {

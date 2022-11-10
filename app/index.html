@@ -14,8 +14,6 @@
   <div class="center" id="version-selector">
     <label for="cars">FDC3 API version:</label>
     <select id="version">
-      <option value="v1.2">v1.2</option>
-      <option value="v2.0">v2.0</option>
     </select>
     <input id="runButton" value="Run" type="button" />
   </div>
@@ -25,6 +23,16 @@
   </script>
   <script class="mocha-exec">
     let stats = document.getElementById("context");
+    const version = document.getElementById("version")
+
+    // populate drop-down
+    fdc3Compliance.getPackNames().forEach(pn => {
+      const opt = document.createElement("option")
+      const text = document.createTextNode(pn)
+      opt.setAttribute("value", pn);
+      opt.appendChild(text)
+      version.appendChild(opt);
+    })
 
     function executeTests() {
       hideVersionSelector();

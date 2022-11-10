@@ -1,8 +1,8 @@
 import { Listener, Channel, Context, getCurrentChannel } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import constants from "../../constants";
-import APIDocumentation from "../../apiDocuments";
-import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
+import constants from "../../../constants";
+import APIDocumentation from "../../../apiDocuments";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
@@ -1365,7 +1365,7 @@ type ChannelsAppContext = Context & {
   };
 };
 
-export type ChannelsAppConfig = {
+type ChannelsAppConfig = {
   fdc3ApiVersion: string;
   testId: string;
   notifyAppAOnCompletion?: boolean;

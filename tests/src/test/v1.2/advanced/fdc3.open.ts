@@ -1,9 +1,9 @@
 import { OpenError, Context } from "fdc3_1_2";
 import { resolveObjectURL } from "buffer";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../apiDocuments";
-import constants from "../../constants";
-import { DesktopAgent } from "../../../../node_modules/fdc3_1_2/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
+import constants from "../../../constants";
+import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 const appBName = "MockApp";
 const appBId = "MockAppId";
