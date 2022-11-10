@@ -28,7 +28,7 @@ export default () =>
         );
         expect(aTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
         expect(aTestingIntent.apps[0].name).to.eq(
-          "IntentAppAId",
+          "IntentAppA",
           findIntentsByContextDocs
         );
 
@@ -41,7 +41,7 @@ export default () =>
         );
         const sharedAppNames = sharedTestingIntent1.apps.map((app) => app.name);
         expect(sharedAppNames).to.have.all.members(
-          ["IntentAppAId", "IntentAppBId"],
+          ["IntentAppA", "IntentAppB"],
           findIntentsByContextDocs
         );
 
@@ -50,7 +50,7 @@ export default () =>
         );
         expect(cTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
         expect(cTestingIntent.apps[0].name).to.eq(
-          "IntentAppCId",
+          "IntentAppC",
           findIntentsByContextDocs
         );
       } catch (ex) {

@@ -15,7 +15,7 @@ import fdc3Open from "./advanced/fdc3.open";
 import fdc3RaiseIntent from "./advanced/fdc3.raiseIntent";
 import fdc3RaiseIntentForContext from "./basic/fdc3.raiseIntentForContext";
 
-const basicSuite: (() => Suite)[] = [
+const advancedSuite: (() => Suite)[] = [
   fdc3Broadcast,
   fdc3FindIntent,
   fdc3Open,
@@ -23,7 +23,7 @@ const basicSuite: (() => Suite)[] = [
   fdc3RaiseIntentForContext,
 ];
 
-const advancedSuite = [
+const basicSuite = [
   fdc3AddContextListener,
   fdc3AddIntentListener,
   fdc3GetCurrentChannel,
