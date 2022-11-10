@@ -3,6 +3,7 @@ import APIDocumentation from "../../apiDocuments";
 import { DesktopAgent } from "../../../../node_modules/fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import constants from "../../constants";
+import { validateAppMetadata } from "./fdc3.getAppMetadata";
 
 const getInfoDocs =
   "\r\nDocumentation: " + APIDocumentation.getInfo2_0 + "\r\nCause";
@@ -87,51 +88,7 @@ export default () =>
             appIdentifier.instanceId
           );
 
-          //validate metadata properties
-          expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-            "name"
-          );
-          expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-            "version"
-          );
-          expect(implMetadata.appMetadata.version, getInfoDocs).to.be.equal(
-            "1.0.0"
-          );
-          expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-            "title"
-          );
-          expect(implMetadata.appMetadata.title, getInfoDocs).to.be.equal(
-            "A generic app directory record example"
-          );
-          expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-            "tooltip"
-          );
-          expect(implMetadata.appMetadata.tooltip, getInfoDocs).to.be.equal(
-            "tooltip"
-          );
-          expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-            "description"
-          );
-          expect(implMetadata.appMetadata.description, getInfoDocs).to.be.equal(
-            "Mock app used for testing. WARNING: changing this app's property definitions will cause metadata tests to fail"
-          );
-          expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-            "icons"
-          );
-          expect(
-            JSON.stringify(implMetadata.appMetadata.icons),
-            getInfoDocs
-          ).to.be.equal("[{ \"src\": \"http://localhost:3000/pathToIcon.png\" }]");
-          expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-            "images"
-          );
-          expect(
-            JSON.stringify(implMetadata.appMetadata.images),
-            getInfoDocs
-          ).to.be.equal("[{ \"src\": \"http://localhost:3000/pathToImage.png\" }]");
-          expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-            "instanceId"
-          );
+          validateAppMetadata(implMetadata);
 
           await broadcastCloseWindow();
           await waitForMockAppToClose();
@@ -175,3 +132,5 @@ export default () =>
       });
     }
   });
+
+

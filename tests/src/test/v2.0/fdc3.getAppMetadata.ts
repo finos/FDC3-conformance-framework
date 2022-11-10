@@ -27,30 +27,7 @@ export default () =>
           (<unknown>window.fdc3)
         )).getAppMetadata({ appId: "MockAppId" });
 
-        //validate AppMetadata
-        expect(metadata, getMetadataDocs).to.not.have.property("instanceId");
-        expect(metadata, getMetadataDocs).to.have.property("name");
-        expect(metadata.name, getMetadataDocs).to.be.equal("appMetadata");
-        expect(metadata, getMetadataDocs).to.have.property("version");
-        expect(metadata.version).to.be.equal("1.0.0");
-        expect(metadata, getMetadataDocs).to.have.property("title");
-        expect(metadata.title).to.be.equal(
-          "A generic app directory record example"
-        );
-        expect(metadata, getMetadataDocs).to.have.property("tooltip");
-        expect(metadata.tooltip).to.be.equal("tooltip");
-        expect(metadata, getMetadataDocs).to.have.property("description");
-        expect(metadata.description).to.be.equal(
-          "Mock app used for testing. WARNING: changing this app's property definitions will cause metadata tests to fail"
-        );
-        expect(metadata, getMetadataDocs).to.have.property("icons");
-        expect(JSON.stringify(metadata.icons)).to.be.equal(
-          "[{ \"src\": \"http://localhost:3000/pathToIcon.png\" }]"
-        );
-        expect(metadata, getMetadataDocs).to.have.property("images");
-        expect(JSON.stringify(metadata.images)).to.be.equal(
-          "[{ \"src\": \"http://localhost:3000/pathToImage.png\" }]"
-        );
+        validateAppMetadata(metadata);
       } catch (ex) {
         assert.fail(getMetadataDocs + (ex.message ?? ex));
       }
@@ -103,31 +80,7 @@ export default () =>
           (<unknown>window.fdc3)
         )).getAppMetadata(appIdentifier1);
 
-        //validate metadata properties
-        expect(metadata1, getMetadataDocs).to.not.have.property("instanceId");
-        expect(metadata1, getMetadataDocs).to.have.property("name");
-        expect(metadata1.name).to.be.equal("MockApp");
-        expect(metadata1, getMetadataDocs).to.have.property("version");
-        expect(metadata1.version).to.be.equal("1.0.0");
-        expect(metadata1, getMetadataDocs).to.have.property("title");
-        expect(metadata1.title).to.be.equal(
-          "A generic app directory record example"
-        );
-        expect(metadata1, getMetadataDocs).to.have.property("tooltip");
-        expect(metadata1.tooltip).to.be.equal("tooltip");
-        expect(metadata1, getMetadataDocs).to.have.property("description");
-        expect(metadata1.description).to.be.equal(
-          "Mock app used for testing. WARNING: changing this app's property definitions will cause metadata tests to fail"
-        );
-        expect(metadata1, getMetadataDocs).to.have.property("icons");
-        expect(JSON.stringify(metadata1.icons)).to.be.equal(
-          "[{ \"src\": \"http://localhost:3000/pathToIcon.png\" }]"
-        );
-        expect(metadata1, getMetadataDocs).to.have.property("images");
-        expect(JSON.stringify(metadata1.images)).to.be.equal(
-          "[{ \"src\": \"http://localhost:3000/pathToImage.png\" }]"
-        );
-        expect(metadata1, getMetadataDocs).to.have.property("instanceId");
+        validateAppMetadata(metadata1);
 
         //check that metadata instanceId is the same as the appIdentifyer instanceId
         expect(
@@ -176,6 +129,76 @@ async function waitForMockAppToClose() {
   });
 
   return messageReceived;
+}
+
+export function validateAppMetadata(metadata) {
+  expect(metadata, getMetadataDocs).to.not.have.property("instanceId");
+  expect(metadata, getMetadataDocs).to.have.property("name");
+  if (typeof metadata.name !== "string") {
+    assert.fail(
+      `Incorrect type detected for AppMetadata.name. Expected a string, got ${typeof metadata.name}`
+    );
+  }
+  expect(metadata, getMetadataDocs).to.have.property("version");
+  if (typeof metadata.version !== "string") {
+    assert.fail(
+      `Incorrect type detected for AppMetadata.version. Expected a string, got ${typeof metadata.version}`
+    );
+  }
+  expect(metadata, getMetadataDocs).to.have.property("title");
+  if (typeof metadata.title !== "string") {
+    assert.fail(
+      `Incorrect type detected for AppMetadata.title. Expected a string, got ${typeof metadata.title}`
+    );
+  }
+  expect(metadata, getMetadataDocs).to.have.property("tooltip");
+  if (typeof metadata.tooltip !== "string") {
+    assert.fail(
+      `Incorrect type detected for AppMetadata.tooltip. Expected a string, got ${typeof metadata.tooltip}`
+    );
+  }
+  expect(metadata, getMetadataDocs).to.have.property("description");
+  if (typeof metadata.description !== "string") {
+    assert.fail(
+      `Incorrect type detected for AppMetadata.description. Expected a string, got ${typeof metadata.description}`
+    );
+  }
+  expect(metadata, getMetadataDocs).to.have.property("icons");
+
+  //ensure icons property contains an array of objects
+  if (!Array.isArray(metadata.icons)) {
+    assert.fail(
+      `Incorrect type detected for AppMetadata.icons. Expected an Array, got ${typeof metadata.description}`
+    );
+  } else {
+    const isObjectArray =
+      metadata.icons.length > 0 &&
+      metadata.icons.every((value) => {
+        return typeof value === "object";
+      });
+
+    if (!isObjectArray)
+      assert.fail("AppMetadata.icons should contain an Array of objects");
+  }
+
+  expect(metadata, getMetadataDocs).to.have.property("images");
+
+  //ensure images property contains an array of objects
+  if (!Array.isArray(metadata.images)) {
+    assert.fail(
+      `Incorrect type detected for AppMetadata.images. Expected an Array, got ${typeof metadata.description}`
+    );
+  } else {
+    const isObjectArray =
+      metadata.images.length > 0 &&
+      metadata.images.every((value) => {
+        return typeof value === "object";
+      });
+
+    if (!isObjectArray)
+      assert.fail("AppMetadata.images should contain an Array of objects");
+  }
+  expect(metadata, getMetadataDocs).to.have.property("interop");
 }
 
 const broadcastCloseWindow = async () => {
