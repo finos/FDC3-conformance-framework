@@ -15,7 +15,6 @@ export default () =>
   describe("fdc3.broadcast", () => {
     let listener: Listener;
     let listener2: Listener;
-    let executionListener: Listener;
 
     it("Broadcast method is callable", async () => {
       await window.fdc3.broadcast({
@@ -38,101 +37,97 @@ export default () =>
         "(UCBasicUsage1) Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel";
       it(scTestId1, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
-        return new Promise(async (resolve, reject) => {
-          //Listen for when ChannelsApp execution is complete
-          const resolveExecutionCompleteListener = waitForContext(
-            "executionComplete",
-            scTestId1,
-            await window.fdc3.getOrCreateChannel("app-control")
-          );
 
-          //Add context listener
-          listener = await window.fdc3.addContextListener(
-            null,
-            async (context) => {
-              expect(context.type).to.be.equals(
-                "fdc3.instrument",
-                errorMessage
-              );
-              resolve();
-              return;
-            }
-          );
+        //Listen for when ChannelsApp execution is complete
+        const resolveExecutionCompleteListener = waitForContext(
+          "executionComplete",
+          scTestId1,
+          await window.fdc3.getOrCreateChannel("app-control")
+        );
 
-          validateListenerObject(listener);
+        //Add context listener
+        let receivedContext = false;
+        listener = await window.fdc3.addContextListener(
+          null,
+          async (context) => {
+            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
+            receivedContext = true;
+            return;
+          }
+        );
 
-          //Join system channel 1
-          await joinChannel(1);
+        validateListenerObject(listener);
 
-          const channelsAppCommands = [
-            commands.joinSystemChannelOne,
-            commands.broadcastInstrumentContext,
-          ];
+        //Join system channel 1
+        await joinChannel(1);
 
-          //Open ChannelsApp then execute commands in order
-          await window.fdc3.open(
-            "ChannelsApp",
-            buildChannelsAppContext(scTestId1, channelsAppCommands, true)
-          );
+        const channelsAppCommands = [
+          commands.joinSystemChannelOne,
+          commands.broadcastInstrumentContext,
+        ];
 
-          //wait for ChannelsApp to execute
-          await resolveExecutionCompleteListener;
+        //Open ChannelsApp then execute commands in order
+        await window.fdc3.open(
+          "ChannelsApp",
+          buildChannelsAppContext(scTestId1, channelsAppCommands, true)
+        );
 
-          //reject if no context received
-          reject(new Error(`${errorMessage} No context received`));
-          return;
-        });
+        //wait for ChannelsApp to execute
+        await resolveExecutionCompleteListener;
+
+        //reject if no context received
+        if (!receivedContext) {
+          assert.fail("No context received" + errorMessage);
+        }
       });
 
       const scTestId2 =
-        "(UCBsaicUsage2) Should receive context when joining a user channel then adding a context listener before app B broadcasts context to the same channel";
+        "(UCBasicUsage2) Should receive context when joining a user channel then adding a context listener before app B broadcasts context to the same channel";
       it(scTestId2, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- Add listener of type fdc3.instrument to App A\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
-        return new Promise(async (resolve, reject) => {
-          //Listen for when ChannelsApp execution is complete
-          const resolveExecutionCompleteListener = waitForContext(
-            "executionComplete",
-            scTestId2,
-            await window.fdc3.getOrCreateChannel("app-control")
-          );
+        //Listen for when ChannelsApp execution is complete
+        const resolveExecutionCompleteListener = waitForContext(
+          "executionComplete",
+          scTestId2,
+          await window.fdc3.getOrCreateChannel("app-control")
+        );
 
-          //Join system channel 1
-          await joinChannel(1);
+        //Join system channel 1
+        await joinChannel(1);
 
-          //Add fdc3.instrument context listener
-          listener = await window.fdc3.addContextListener(
-            null,
-            async (context) => {
-              expect(context.type).to.be.equals(
-                "fdc3.instrument",
-                errorMessage
-              );
-              resolve();
-              return;
-            }
-          );
+        let receivedContext = false;
 
-          validateListenerObject(listener);
+        //Add fdc3.instrument context listener
+        listener = await window.fdc3.addContextListener(
+          null,
+          async (context) => {
+            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
+            receivedContext = true;
+          }
+        );
 
-          const channelsAppCommands = [
-            commands.joinSystemChannelOne,
-            commands.broadcastInstrumentContext,
-          ];
+        validateListenerObject(listener);
 
-          //Open ChannelsApp then execute commands in order
-          await window.fdc3.open(
-            "ChannelsApp",
-            buildChannelsAppContext(scTestId2, channelsAppCommands, true)
-          );
+        const channelsAppCommands = [
+          commands.joinSystemChannelOne,
+          commands.broadcastInstrumentContext,
+        ];
 
-          //wait for ChannelsApp to execute
-          await resolveExecutionCompleteListener;
+        //Open ChannelsApp then execute commands in order
+        await window.fdc3.open(
+          "ChannelsApp",
+          buildChannelsAppContext(scTestId2, channelsAppCommands, true)
+        );
 
-          //Reject if no context received
-          reject(new Error(`${errorMessage} No context received`));
-          return;
-        });
+        //wait for ChannelsApp to execute
+        await resolveExecutionCompleteListener;
+
+        //Fail if no context received
+        if (!receivedContext) {
+          assert.fail(`No context received!\n${errorMessage}`);
+        }
+        return;
       });
 
       const scTestId3 =
@@ -601,15 +596,15 @@ export default () =>
             buildChannelsAppContext(acTestId2, channelsAppCommands)
           );
 
+          //Wait for ChannelsApp the finish executing
+          await resolveExecutionCompleteListener;
+
           //Retrieve current context from channel
           await testChannel.getCurrentContext().then(async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
             resolve();
             return;
           });
-
-          //Wait for ChannelsApp the finish executing
-          await resolveExecutionCompleteListener;
 
           reject(new Error(`${errorMessage} No context received`));
           return;
@@ -1119,34 +1114,48 @@ export default () =>
         listener2 = undefined;
       }
 
-      if (executionListener != undefined) {
-        await executionListener.unsubscribe();
-        executionListener = undefined;
-      }
+      // if (executionListener != undefined) {
+      //   await executionListener.unsubscribe();
+      //   executionListener = undefined;
+      // }
     }
 
     const waitForContext = (
       contextType: string,
       testId: string,
       channel?: Channel
-    ) => {
+    ): Promise<Context> => {
+      let executionListener: Listener;
       return new Promise<Context>(async (resolve) => {
-        console.log(`Waiting for type: ${contextType}, on channel: ${channel.id} in test: ${testId}`)
+        console.log(
+          Date.now() +
+            ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
+        );
+
         const handler = (context: AppControlContext) => {
           if (testId) {
             if (testId == context.testId) {
+              console.log(
+                Date.now() + ` Received ${contextType} for test: ${testId}`
+              );
               resolve(context);
-              if(executionListener) executionListener.unsubscribe();
+              if (executionListener) executionListener.unsubscribe();
             } else {
               console.warn(
-                `Ignoring ${contextType} context due to mismatched testId (expected: ${testId}, got ${context.testId})`
+                Date.now() +
+                  ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
               );
             }
           } else {
+            console.log(
+              Date.now() +
+                ` Received (without testId) "${contextType}" for test: "${testId}"`
+            );
             resolve(context);
-            if(executionListener) executionListener.unsubscribe();
+            if (executionListener) executionListener.unsubscribe();
           }
         };
+
         if (channel === undefined) {
           executionListener = await window.fdc3.addContextListener(
             contextType,
@@ -1158,7 +1167,45 @@ export default () =>
             handler
           );
           //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
-          channel.getCurrentContext(contextType).then(handler);
+          const ccHandler = async (context: AppControlContext) => {
+            if (context) {
+              if (testId) {
+                if (testId == context?.testId && context?.type == contextType) {
+                  console.log(
+                    Date.now() +
+                      ` Received "${contextType}" (from current context) for test: "${testId}"`
+                  );
+                  if (executionListener) executionListener.unsubscribe();
+                  resolve(context);
+                } //do not warn as it will be ignoring mismatches which will be common
+                else {
+                  console.log(
+                    Date.now() +
+                      ` CHecking for current context of type "${contextType}" for test: "${testId}"
+    Current context did ${context ? "" : "NOT "} exist, 
+    had testId: "${context?.testId}" (${
+                        testId == context?.testId
+                          ? "did match"
+                          : "did NOT match"
+                      }) 
+    and type "${context?.type}" (${
+                        context?.type == contextType
+                          ? "did match"
+                          : "did NOT match"
+                      })`
+                  );
+                }
+              } else {
+                console.log(
+                  Date.now() +
+                    ` Received "${contextType}" (from current context) for an unspecified test`
+                );
+                if (executionListener) executionListener.unsubscribe();
+                resolve(context);
+              }
+            }
+          };
+          channel.getCurrentContext().then(ccHandler);
         }
       });
     };

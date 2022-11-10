@@ -3,6 +3,9 @@ class Fdc3CommandExecutor {
   async executeCommands(orderedCommands, config) {
     let channel;
 
+    //close ChannelsApp when test is complete
+    this.closeWindowOnCompletion(config.testId);
+    
     for (const command of orderedCommands) {
       switch (command) {
         case commands.joinSystemChannelOne: {
@@ -33,9 +36,6 @@ class Fdc3CommandExecutor {
         }
       }
     }
-
-    //close ChannelsApp when test is complete
-    await this.closeWindowOnCompletion(config.testId);
 
     //notify app A that ChannelsApp has finished executing
     if (config.notifyAppAOnCompletion) {
@@ -101,12 +101,20 @@ class Fdc3CommandExecutor {
 
   //close ChannelsApp on completion and respond to app A
   async closeWindowOnCompletion(testId) {
+    console.log(
+      Date.now() + ` Setting up closeWindow listener`
+    );
     const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
     await appControlChannel.addContextListener("closeWindow", async () => {
+      console.log(
+        Date.now() + ` Received closeWindow message`
+      );
       appControlChannel.broadcast({ type: "windowClosed", testId: testId });
-      window.close();
+      setTimeout(()=>{ //yield to make sure the broadcast gets out before we close
+        window.close();
+      },1);
     });
   }
 
