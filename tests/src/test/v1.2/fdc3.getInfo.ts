@@ -9,7 +9,7 @@ export default () =>
   describe("fdc3.getInfo", () => {
     it("Method is callable", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).getInfo();
+        (<DesktopAgent>(<unknown>window.fdc3)).getInfo();
       } catch (ex) {
         assert.fail(
           "\r\nDocumentation: " +
@@ -22,7 +22,7 @@ export default () =>
 
     it("Returns ImplementationMetadata object", async () => {
       try {
-        const info = await (<DesktopAgent>(<unknown>window.fdc3)).getInfo();
+        const info = (<DesktopAgent>(<unknown>window.fdc3)).getInfo();
         expect(info, getInfoDocs).to.have.property("fdc3Version");
         expect(info, getInfoDocs).to.have.property("provider");
       } catch (ex) {
