@@ -17,7 +17,7 @@ export default () =>
       }
     });
 
-    it("Method is callable", async () => {
+    it("(BasicCL1) Method is callable", async () => {
       const contextType = "fdc3.contact";
       try {
         listener = await (<DesktopAgent>(
@@ -32,7 +32,7 @@ export default () =>
       }
     });
 
-    it("Returns listener object", async () => {
+    it("(BasicCL2) Returns listener object", async () => {
       try {
         listener = await (<DesktopAgent>(
           (<unknown>window.fdc3)

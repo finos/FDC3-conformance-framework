@@ -7,21 +7,23 @@ const getCurrentChannelDocs =
 
 export default () =>
   describe("fdc3.getCurrentChannel", () => {
-    it("Method is callable", async () => {
+    it("(BasicCH1) Method is callable", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).getCurrentChannel();
+        const channel = await window.fdc3.getCurrentChannel();
       } catch (ex) {
         assert.fail(getCurrentChannelDocs + (ex.message ?? ex));
       }
     });
 
-    it("(UCCurrentChannel) getCurrentChannel() returns null if no channel has been joined", async () => {
+    it("(BasicCH2) getCurrentChannel() returns null if no channel has been joined", async () => {
       try {
+        await window.fdc3.leaveCurrentChannel()
         const channel = await (<DesktopAgent>(
           (<unknown>window.fdc3)
         )).getCurrentChannel();
-        expect(channel).to.be.null;
+        expect(channel).equals(null)
       } catch (ex) {
+        console.log(ex)
         assert.fail(getCurrentChannelDocs + (ex.message ?? ex));
       }
     });
