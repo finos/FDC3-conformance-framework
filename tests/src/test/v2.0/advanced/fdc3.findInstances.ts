@@ -5,7 +5,7 @@ import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { resolveObjectURL } from "buffer";
 
-const fdc3 = <DesktopAgent>(<unknown>window.fdc3)
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 const findInstancesDocs =
   "\r\nDocumentation: " + APIDocumentation.findInstances + "\r\nCause";
 let timeout: number;
@@ -21,11 +21,9 @@ export default () =>
       try {
         let listenerReceived = false;
         //start A and retrieve its AppIdentifier
-        const appIdentifier = await fdc3.open(
-          {
-            appId: "MockAppId",
-          }
-        );
+        const appIdentifier = await fdc3.open({
+          appId: "MockAppId",
+        });
 
         //start A again and retrieve another AppIdentifier
         let appIdentifier2 = await fdc3.open({
@@ -51,22 +49,19 @@ export default () =>
         }
 
         //ensure appIdentifier receives the raised intent
-        await fdc3.addIntentListener(
-          "aTestingIntent",
-          (context, metadata) => {
-            expect(
-              metadata.source,
-              "The raised intent was not received by the mock app"
-            ).to.be.equals(appIdentifier);
-            expect(
-              resolution.source,
-              "IntentResolution.source did not match the mock app's AppIdentifier"
-            ).to.be.equals(appIdentifier);
-            listenerReceived = true;
-            clearTimeout(timeout);
-            return;
-          }
-        );
+        await fdc3.addIntentListener("aTestingIntent", (context, metadata) => {
+          expect(
+            metadata.source,
+            "The raised intent was not received by the mock app"
+          ).to.be.equals(appIdentifier);
+          expect(
+            resolution.source,
+            "IntentResolution.source did not match the mock app's AppIdentifier"
+          ).to.be.equals(appIdentifier);
+          listenerReceived = true;
+          clearTimeout(timeout);
+          return;
+        });
 
         //raise an intent and target appIdentifier
         const resolution = await fdc3.raiseIntent(
@@ -86,9 +81,7 @@ export default () =>
 
 async function waitForMockAppToClose() {
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await (<DesktopAgent>(
-      (<unknown>window.fdc3)
-    )).getOrCreateChannel("app-control");
+    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
     const listener = await appControlChannel.addContextListener(
       "windowClosed",
       (context) => {
@@ -107,9 +100,7 @@ async function waitForMockAppToClose() {
 }
 
 const broadcastCloseWindow = async () => {
-  const appControlChannel = await (<DesktopAgent>(
-    (<unknown>window.fdc3)
-  )).getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
 

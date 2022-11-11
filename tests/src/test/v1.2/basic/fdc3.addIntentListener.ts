@@ -14,7 +14,7 @@ export default () =>
       }
     });
 
-    it("Method is callable", async () => {
+    it("(BasicIL1) Method is callable", async () => {
       const intentName = "fdc3.conformanceListener";
       try {
         listener = (<DesktopAgent>(<unknown>window.fdc3)).addIntentListener(

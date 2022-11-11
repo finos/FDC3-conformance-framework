@@ -16,9 +16,7 @@ export default () =>
 
       if (channels.length > 0) {
         try {
-          await fdc3.joinChannel(
-            channels[0].id
-          );
+          await fdc3.joinChannel(channels[0].id);
           const currentChannel = await fdc3.getCurrentChannel();
           expect(currentChannel).to.not.be.null;
         } catch (ex) {
