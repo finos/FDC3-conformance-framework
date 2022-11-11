@@ -3,6 +3,7 @@ import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.addContextListener + "\r\nCause";
 
@@ -20,7 +21,7 @@ export default () =>
     it("Method is callable", async () => {
       const contextType = "fdc3.contact";
       try {
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           contextType,
           (info: any) => {
             console.log(
@@ -35,7 +36,7 @@ export default () =>
 
     it("Returns listener object", async () => {
       try {
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           null,
           () => {}
         );

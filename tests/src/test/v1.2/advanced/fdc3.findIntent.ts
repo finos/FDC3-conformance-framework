@@ -2,6 +2,7 @@ import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 
 const findIntentDocs =
   "\r\nDocumentation: " + APIDocumentation.findIntent + "\r\nCause";
@@ -12,7 +13,7 @@ const findIntentDocs =
 export default () =>
   describe("fdc3.findIntent", () => {
     it("Should find intent 'aTestingIntent' belonging only to app intent-a", async () => {
-      const appIntent = await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+      const appIntent = await fdc3.findIntent(
         "aTestingIntent"
       );
       expect(appIntent.intent).to.deep.eq(
@@ -32,7 +33,7 @@ export default () =>
 
     it("Should throw NoAppsFound error when intent does not exist", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+        await fdc3.findIntent(
           "nonExistentIntent"
         );
         assert.fail("No error was thrown", findIntentDocs);
@@ -46,7 +47,7 @@ export default () =>
     });
 
     it("Should find intent 'aTestingIntent' belonging only to app intent-a with context 'testContextX'", async () => {
-      const appIntent = await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+      const appIntent = await fdc3.findIntent(
         "aTestingIntent",
         {
           type: "testContextX",
@@ -69,7 +70,7 @@ export default () =>
 
     it("Should throw NoAppsFound error when intent exists but context does not", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+        await fdc3.findIntent(
           "aTestingIntent",
           {
             type: "testContextY",
@@ -86,7 +87,7 @@ export default () =>
     });
 
     it("Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b)", async () => {
-      const appIntent = await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+      const appIntent = await fdc3.findIntent(
         "sharedTestingIntent1"
       );
       expect(appIntent.intent).to.deep.eq(
@@ -110,7 +111,7 @@ export default () =>
     });
 
     it("Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextX'", async () => {
-      const appIntent = await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+      const appIntent = await fdc3.findIntent(
         "sharedTestingIntent1",
         {
           type: "testContextX",
@@ -137,7 +138,7 @@ export default () =>
     });
 
     it("Should find intent 'sharedTestingIntent1' belonging to app 'intent-b' when filtered by specific context 'testContextY'", async () => {
-      const appIntent = await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
+      const appIntent = await fdc3.findIntent(
         "sharedTestingIntent1",
         {
           type: "testContextY",

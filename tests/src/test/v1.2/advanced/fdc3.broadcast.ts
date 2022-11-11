@@ -4,6 +4,8 @@ import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
+
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
 let timeout: number;
@@ -18,7 +20,7 @@ export default () =>
     let listener2: Listener;
 
     it("Broadcast method is callable", async () => {
-      (<DesktopAgent>(<unknown>window.fdc3)).broadcast({
+      fdc3.broadcast({
         type: "fdc3.instrument",
         id: { ticker: "AAPL" },
       });
@@ -27,7 +29,7 @@ export default () =>
     describe("System channels", () => {
       beforeEach(async () => {
         await unsubscribeListeners();
-        await (<DesktopAgent>(<unknown>window.fdc3)).leaveCurrentChannel();
+        await fdc3.leaveCurrentChannel();
       });
 
       afterEach(async function afterEach() {
@@ -43,14 +45,14 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId1,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
 
         //Add context listener
         let receivedContext = false;
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           null,
           async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
@@ -75,7 +77,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -98,7 +100,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId2,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -109,7 +111,7 @@ export default () =>
         let receivedContext = false;
 
         //Add fdc3.instrument context listener
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           null,
           async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
@@ -131,7 +133,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -154,7 +156,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId3,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -171,7 +173,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -182,7 +184,7 @@ export default () =>
         let receivedContext = false;
 
         //Add fdc3.instrument context listener
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           null,
           async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
@@ -210,7 +212,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId4,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -218,7 +220,7 @@ export default () =>
         let receivedContext = false;
 
         //Add context listener
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           "fdc3.instrument",
           (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
@@ -244,7 +246,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -267,7 +269,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId5,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -287,7 +289,7 @@ export default () =>
         }
 
         //Add context listener
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           "fdc3.instrument",
           (context) => {
             contextTypes.push(context.type);
@@ -298,7 +300,7 @@ export default () =>
         validateListenerObject(listener);
 
         //Add second context listener to app A
-        listener2 = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener2 = fdc3.addContextListener(
           "fdc3.contact",
           (context) => {
             contextTypes.push(context.type);
@@ -324,7 +326,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -347,7 +349,7 @@ export default () =>
 
         let receivedContext = false;
         //Add fdc3.instrument context listener
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           "fdc3.instrument",
           (context) => {
             assert.fail(`${errorMessage} ${context.type} context received`);
@@ -357,7 +359,7 @@ export default () =>
         validateListenerObject(listener);
 
         //Add fdc3.contact context listener
-        listener2 = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener2 = fdc3.addContextListener(
           "fdc3.contact",
           (context) => {
             assert.fail(`${errorMessage} ${context.type} context received`);
@@ -381,7 +383,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -399,13 +401,13 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId7,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
 
         //Add fdc3.instrument context listener
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           "fdc3.instrument",
           (context) => {
             assert.fail(`${errorMessage} ${context.type} context received`);
@@ -437,7 +439,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -452,7 +454,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         //Add fdc3.instrument context listener
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           "fdc3.instrument",
           async (context) => {
             assert.fail(`${errorMessage} ${context.type} context received`);
@@ -474,7 +476,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -489,7 +491,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A leaves channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         //Add a context listeners to app A
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addContextListener(
+        listener = fdc3.addContextListener(
           "fdc3.instrument",
           (context) => {
             assert.fail(`${errorMessage} ${context.type} context received`);
@@ -502,7 +504,7 @@ export default () =>
         await joinChannel(1);
 
         //App A leaves channel 1
-        await (<DesktopAgent>(<unknown>window.fdc3)).leaveCurrentChannel();
+        await fdc3.leaveCurrentChannel();
 
         const channelsAppCommands = [
           commands.joinSystemChannelOne,
@@ -515,7 +517,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -528,7 +530,7 @@ export default () =>
     describe("App channels", () => {
       beforeEach(async () => {
         await unsubscribeListeners();
-        await (<DesktopAgent>(<unknown>window.fdc3)).leaveCurrentChannel();
+        await fdc3.leaveCurrentChannel();
       });
 
       afterEach(async function afterEach() {
@@ -541,15 +543,13 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds adds a context listener of type null\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -576,7 +576,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -596,15 +596,13 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument\r\n- App A retrieves current context of type null${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId2,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -621,7 +619,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -649,15 +647,13 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A & B retrieve the same app channel\r\n- App B broadcasts context of type fdc3.instrument and then of type fdc3.contact\r\n- App A retreives current context of type fdc3.instrument${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when AppChannel execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId3,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -675,7 +671,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -704,15 +700,13 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId4,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -743,7 +737,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -764,15 +758,13 @@ export default () =>
 
         let contextTypes: string[] = [];
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId5,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -812,7 +804,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -846,15 +838,13 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type null\r\n- App A unsubscribes the app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId6,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -882,7 +872,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -897,9 +887,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves a different app channel\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("a-different-test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("a-different-test-channel");
 
         //Add context listener
         listener = testChannel.addContextListener(
@@ -923,7 +911,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -938,23 +926,19 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
         //Retrieve an app channel
-        let testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        let testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId8,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
 
         //App A retrieves a different app channel
-        testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("a-different-test-channel");
+        testChannel = await fdc3.getOrCreateChannel("a-different-test-channel");
 
         //Add context listener
         listener = testChannel.addContextListener(
@@ -978,7 +962,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -993,9 +977,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context for types fdc3.instrument and fdc3.contact${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         const channelsAppCommands = [
           commands.retrieveTestAppChannel,
@@ -1009,7 +991,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -1033,15 +1015,13 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts two different contexts of type fdc3.instrument\r\n- App A gets current context for types fdc3.instrument${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId10,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -1059,7 +1039,7 @@ export default () =>
         };
 
         //Open ChannelsApp and execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -1079,15 +1059,13 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App B gets current context with no filter applied${documentation}`;
 
         //Retrieve an app channel
-        const testChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("test-channel");
+        const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId11,
-          await (<DesktopAgent>(<unknown>window.fdc3)).getOrCreateChannel(
+          await fdc3.getOrCreateChannel(
             "app-control"
           )
         );
@@ -1105,7 +1083,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
@@ -1129,11 +1107,9 @@ export default () =>
     });
 
     const joinChannel = async (channel: number) => {
-      const channels = await (<DesktopAgent>(
-        (<unknown>window.fdc3)
-      )).getSystemChannels();
+      const channels = await fdc3.getSystemChannels();
       if (channels.length > 0) {
-        await (<DesktopAgent>(<unknown>window.fdc3)).joinChannel(
+        await fdc3.joinChannel(
           channels[channel - 1].id
         );
       } else {
@@ -1166,9 +1142,7 @@ export default () =>
     }
 
     const broadcastAppChannelCloseWindow = async (testId: string) => {
-      const appControlChannel = await (<DesktopAgent>(
-        (<unknown>window.fdc3)
-      )).getOrCreateChannel("app-control");
+      const appControlChannel = await fdc3.getOrCreateChannel("app-control");
       /* tslint:disable-next-line */
       const closeContext: AppControlContext = {
         type: "closeWindow",
@@ -1227,9 +1201,7 @@ export default () =>
         };
 
         if (channel === undefined) {
-          executionListener = (<DesktopAgent>(
-            (<unknown>window.fdc3)
-          )).addContextListener(contextType, handler);
+          executionListener = fdc3.addContextListener(contextType, handler);
         } else {
           executionListener = channel.addContextListener(contextType, handler);
           //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races

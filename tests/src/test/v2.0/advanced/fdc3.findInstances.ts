@@ -5,6 +5,7 @@ import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { resolveObjectURL } from "buffer";
 
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3)
 const findInstancesDocs =
   "\r\nDocumentation: " + APIDocumentation.findInstances + "\r\nCause";
 let timeout: number;
@@ -20,14 +21,14 @@ export default () =>
       try {
         let listenerReceived = false;
         //start A and retrieve its AppIdentifier
-        const appIdentifier = await (<DesktopAgent>(<unknown>window.fdc3)).open(
+        const appIdentifier = await fdc3.open(
           {
             appId: "MockAppId",
           }
         );
 
         //start A again and retrieve another AppIdentifier
-        let appIdentifier2 = await (<DesktopAgent>(<unknown>window.fdc3)).open({
+        let appIdentifier2 = await fdc3.open({
           appId: "MockAppId",
         });
 
@@ -38,9 +39,7 @@ export default () =>
         ).to.not.equal(appIdentifier2.instanceId);
 
         //retrieve instance details
-        let instances = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).findInstances({ appId: "MockAppId" });
+        let instances = await fdc3.findInstances({ appId: "MockAppId" });
 
         if (
           !instances.includes(appIdentifier) ||
@@ -52,7 +51,7 @@ export default () =>
         }
 
         //ensure appIdentifier receives the raised intent
-        await (<DesktopAgent>(<unknown>window.fdc3)).addIntentListener(
+        await fdc3.addIntentListener(
           "aTestingIntent",
           (context, metadata) => {
             expect(
@@ -70,9 +69,7 @@ export default () =>
         );
 
         //raise an intent and target appIdentifier
-        const resolution = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).raiseIntent(
+        const resolution = await fdc3.raiseIntent(
           "aTestingIntent",
           { type: "testContextX" },
           appIdentifier

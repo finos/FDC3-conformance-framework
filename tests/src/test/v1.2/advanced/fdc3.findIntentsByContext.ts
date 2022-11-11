@@ -3,6 +3,8 @@ import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
+
 const findIntentsByContextDocs =
   "\r\nDocumentation: " + APIDocumentation.findIntentsByContext + "\r\nCause";
 
@@ -13,9 +15,7 @@ export default () =>
   describe("fdc3.findIntentsByContext", () => {
     it("Should find intents by context 'testContextX'", async () => {
       try {
-        const intents = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).findIntentsByContext({
+        const intents = await fdc3.findIntentsByContext({
           type: "testContextX",
         });
         expect(intents).to.have.length(3, findIntentsByContextDocs);
@@ -63,7 +63,7 @@ export default () =>
 
     it("Should throw NoAppsFound error when context does not exist", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).findIntentsByContext({
+        await fdc3.findIntentsByContext({
           type: "testContextNonExistent",
         });
       } catch (ex) {

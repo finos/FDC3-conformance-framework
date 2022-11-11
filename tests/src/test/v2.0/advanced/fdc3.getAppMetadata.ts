@@ -4,6 +4,8 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
+
 const getMetadataDocs =
   "\r\nDocumentation: " + APIDocumentation.appMetadata + "\r\nCause";
 let timeout: number;
@@ -12,7 +14,7 @@ export default () =>
   describe("fdc3.getAppMetadata", () => {
     it("Method is callable", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).getAppMetadata({
+        await fdc3.getAppMetadata({
           appId: "MockAppId",
         });
       } catch (ex) {
@@ -23,9 +25,7 @@ export default () =>
     it("(getAppMetadata (no instance)) Valid metadata object", async () => {
       try {
         //retrieve AppMetadata object
-        const metadata = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getAppMetadata({ appId: "MockAppId" });
+        const metadata = await fdc3.getAppMetadata({ appId: "MockAppId" });
 
         validateAppMetadata(metadata);
       } catch (ex) {
@@ -35,9 +35,7 @@ export default () =>
 
     it("(getAppMetadata (for instances)) App instance metadata is valid", async () => {
       try {
-        const appIdentifier1 = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).open({ appId: "MockAppId" });
+        const appIdentifier1 = await fdc3.open({ appId: "MockAppId" });
         expect(
           appIdentifier1,
           `The AppIdentifier object retrieved after calling fdc3.open() should contain an appId property.${getMetadataDocs}`
@@ -51,9 +49,7 @@ export default () =>
           assert.fail("The instanceId property is not of type string");
         }
 
-        const appIdentifier2 = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).open({ appId: "MockAppId" });
+        const appIdentifier2 = await fdc3.open({ appId: "MockAppId" });
         expect(
           appIdentifier2,
           `The AppIdentifier object retrieved after calling fdc3.open() should contain an appId property.${getMetadataDocs}`
@@ -76,9 +72,7 @@ export default () =>
           `The AppIdentifier's instanceId property for both instances of the opened app should not be the same.${getMetadataDocs}`
         ).to.not.equal(appIdentifier2.instanceId);
 
-        const metadata1 = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getAppMetadata(appIdentifier1);
+        const metadata1 = await fdc3.getAppMetadata(appIdentifier1);
 
         validateAppMetadata(metadata1);
 
@@ -88,9 +82,7 @@ export default () =>
           "The AppMetaData's instanceId property that was retrieved when calling open() does not match AppIdentifier's instanceId property that was retrieved when calling getAppMetadata() for the same app instance"
         ).to.be.equal(appIdentifier1.instanceId);
 
-        const metadata2 = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getAppMetadata(appIdentifier2);
+        const metadata2 = await fdc3.getAppMetadata(appIdentifier2);
 
         expect(
           metadata2,
@@ -111,9 +103,7 @@ export default () =>
 
 async function waitForMockAppToClose() {
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await (<DesktopAgent>(
-      (<unknown>window.fdc3)
-    )).getOrCreateChannel("app-control");
+    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
     const listener = await appControlChannel.addContextListener(
       "windowClosed",
       (context) => {
@@ -202,9 +192,7 @@ export function validateAppMetadata(metadata) {
 }
 
 const broadcastCloseWindow = async () => {
-  const appControlChannel = await (<DesktopAgent>(
-    (<unknown>window.fdc3)
-  )).getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
 

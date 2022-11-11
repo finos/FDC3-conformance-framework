@@ -5,6 +5,7 @@ import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { validateAppMetadata } from "../advanced/fdc3.getAppMetadata";
 
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 const getInfoDocs =
   "\r\nDocumentation: " + APIDocumentation.getInfo2_0 + "\r\nCause";
 const getMetadataDocs =
@@ -15,7 +16,7 @@ export default () =>
   describe("fdc3.getInfo", () => {
     it("Method is callable", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).getInfo();
+        await fdc3.getInfo();
       } catch (ex) {
         assert.fail(
           "\r\nDocumentation: " +
@@ -28,7 +29,7 @@ export default () =>
 
     it("(DA metadata) Returns a valid ImplementationMetadata object ", async () => {
       try {
-        (<DesktopAgent>(<unknown>window.fdc3))
+        fdc3
           .getInfo()
           .then((implMetadata) => {
             expect(implMetadata, getInfoDocs).to.have.property("fdc3Version");
@@ -65,13 +66,13 @@ export default () =>
     });
 
     it("(own AppMetadata) Returns a valid ImplementationMetadata object", async () => {
-      const appIdentifier = await (<DesktopAgent>(<unknown>window.fdc3)).open({
+      const appIdentifier = await fdc3.open({
         appId: "MockApp",
       });
       expect(appIdentifier).to.have.property("appId");
       expect(appIdentifier).to.have.property("instanceId");
 
-      (<DesktopAgent>(<unknown>window.fdc3))
+      fdc3
         .getInfo()
         .then(async (implMetadata) => {
           expect(implMetadata, getInfoDocs).to.have.property("appMetadata");
@@ -97,9 +98,7 @@ export default () =>
 
     async function waitForMockAppToClose() {
       const messageReceived = new Promise<Context>(async (resolve, reject) => {
-        const appControlChannel = await (<DesktopAgent>(
-          (<unknown>window.fdc3)
-        )).getOrCreateChannel("app-control");
+        const appControlChannel = await fdc3.getOrCreateChannel("app-control");
         const listener = await appControlChannel.addContextListener(
           "windowClosed",
           (context) => {
@@ -118,9 +117,7 @@ export default () =>
     }
 
     const broadcastCloseWindow = async () => {
-      const appControlChannel = await (<DesktopAgent>(
-        (<unknown>window.fdc3)
-      )).getOrCreateChannel("app-control");
+      const appControlChannel = await fdc3.getOrCreateChannel("app-control");
       await appControlChannel.broadcast({ type: "closeWindow" });
     };
 

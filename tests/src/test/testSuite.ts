@@ -33,15 +33,15 @@ import fdc3getAppMetadata_2_0 from "./v2.0/advanced/fdc3.getAppMetadata";
 // import fdc3RaiseIntentForContext_2_0 from "./v2.0/fdc3.raiseIntentForContext";
 
 const basicSuite_1_2 = [
-  fdc3GetInfo_1_2,
-  fdc3GetSystemChannels_1_2,
-  fdc3GetCurrentChannel_1_2,
-  fdc3GetOrCreateChannel_1_2,
-  fdc3LeaveCurrentChannel_1_2,
   fdc3AddContextListener_1_2,
   fdc3AddIntentListener_1_2,
-  fdc3RaiseIntentForContext_1_2,
+  fdc3GetCurrentChannel_1_2,
+  fdc3GetInfo_1_2,
+  fdc3GetOrCreateChannel_1_2,
+  fdc3GetSystemChannels_1_2,
   fdc3JoinChannel_1_2,
+  fdc3LeaveCurrentChannel_1_2,
+  fdc3RaiseIntentForContext_1_2,
 ];
 
 const advancedSuite_1_2 = [

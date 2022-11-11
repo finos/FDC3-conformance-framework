@@ -1,10 +1,12 @@
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
+
 export default () =>
   describe("fdc3.joinChannel", () => {
     afterEach(async () => {
-      await (<DesktopAgent>(<unknown>window.fdc3)).leaveCurrentChannel();
+      await fdc3.leaveCurrentChannel();
     });
 
     it("Can join channel", async () => {
@@ -14,12 +16,10 @@ export default () =>
 
       if (channels.length > 0) {
         try {
-          await (<DesktopAgent>(<unknown>window.fdc3)).joinChannel(
+          await fdc3.joinChannel(
             channels[0].id
           );
-          const currentChannel = await (<DesktopAgent>(
-            (<unknown>window.fdc3)
-          )).getCurrentChannel();
+          const currentChannel = await fdc3.getCurrentChannel();
           expect(currentChannel).to.not.be.null;
         } catch (ex) {
           assert.fail("Error while joining channel: " + (ex.message ?? ex));
