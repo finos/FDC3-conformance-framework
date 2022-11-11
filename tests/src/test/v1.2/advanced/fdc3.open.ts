@@ -72,9 +72,7 @@ export default () =>
 
     it("(AFailsToOpenB1) Receive AppNotFound error when targeting non-existent app name as target", async () => {
       try {
-        await fdc3.open(
-          "ThisAppDoesNotExist"
-        );
+        await fdc3.open("ThisAppDoesNotExist");
         assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
         expect(ex).to.have.property("message", OpenError.AppNotFound, openDocs);

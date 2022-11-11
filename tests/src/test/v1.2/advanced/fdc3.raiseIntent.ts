@@ -17,12 +17,8 @@ const raiseIntentDocs =
 export default () =>
   describe("fdc3.raiseIntent", () => {
     before(async () => {
-      await fdc3.getOrCreateChannel(
-        "fdc3.raiseIntent"
-      );
-      await fdc3.joinChannel(
-        "fdc3.raiseIntent"
-      );
+      await fdc3.getOrCreateChannel("fdc3.raiseIntent");
+      await fdc3.joinChannel("fdc3.raiseIntent");
     });
 
     afterEach(async () => {
@@ -106,12 +102,9 @@ export default () =>
         expect(ex).to.have.property("message", ResolveError.NoAppsFound);
 
         //raise intent so that afterEach resolves
-        await fdc3.raiseIntent(
-          "sharedTestingIntent1",
-          {
-            type: "testContextY",
-          }
-        );
+        await fdc3.raiseIntent("sharedTestingIntent1", {
+          type: "testContextY",
+        });
       }
     });
 
@@ -135,12 +128,9 @@ export default () =>
         );
 
         //raise intent so that afterEach resolves
-        await fdc3.raiseIntent(
-          "sharedTestingIntent1",
-          {
-            type: "testContextY",
-          }
-        );
+        await fdc3.raiseIntent("sharedTestingIntent1", {
+          type: "testContextY",
+        });
       }
     });
 
@@ -164,12 +154,9 @@ export default () =>
         );
 
         //raise intent so that afterEach resolves
-        await fdc3.raiseIntent(
-          "sharedTestingIntent1",
-          {
-            type: "testContextY",
-          }
-        );
+        await fdc3.raiseIntent("sharedTestingIntent1", {
+          type: "testContextY",
+        });
       }
     });
 
@@ -193,12 +180,9 @@ export default () =>
         );
 
         //raise intent so that afterEach resolves
-        await fdc3.raiseIntent(
-          "sharedTestingIntent1",
-          {
-            type: "testContextY",
-          }
-        );
+        await fdc3.raiseIntent("sharedTestingIntent1", {
+          type: "testContextY",
+        });
       }
     });
   });
@@ -234,14 +218,11 @@ const broadcastCloseWindow = async () => {
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = (contextType: string) => {
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const listener = fdc3.addContextListener(
-      contextType,
-      (context) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      }
-    );
+    const listener = fdc3.addContextListener(contextType, (context) => {
+      resolve(context);
+      clearTimeout(timeout);
+      listener.unsubscribe();
+    });
 
     //if no context received reject promise
     await wait();
