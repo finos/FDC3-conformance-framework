@@ -1,15 +1,19 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
-import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 const getSystemChannelDocs =
   "\r\nDocumentation: " + APIDocumentation.getSystemChannels + "\r\nCause";
 
 export default () =>
   describe("fdc3.getSystemChannels", () => {
-    it("Method is callable", async () => {
+    it("(BasicUC1) Method is callable, returns channels", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3.getSystemChannels()));
+        const result = await window.fdc3.getSystemChannels();
+        expect(result.length).greaterThan(0)
+        result.forEach(c => {
+          expect(c.type).equals("system")
+          expect(c.id).not.equals(null);
+        })
       } catch (ex) {
         assert.fail(getSystemChannelDocs + (ex.message ?? ex));
       }

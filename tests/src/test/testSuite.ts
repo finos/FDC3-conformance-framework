@@ -33,15 +33,15 @@ import fdc3getAppMetadata_2_0 from "./v2.0/fdc3.getAppMetadata";
 // import fdc3RaiseIntentForContext_2_0 from "./v2.0/fdc3.raiseIntentForContext";
 
 const basicSuite_1_2 = [
-  fdc3GetInfo_1_2,
-  fdc3GetSystemChannels_1_2,
-  fdc3GetCurrentChannel_1_2,
-  fdc3GetOrCreateChannel_1_2,
-  fdc3LeaveCurrentChannel_1_2,
   fdc3AddContextListener_1_2,
   fdc3AddIntentListener_1_2,
+  fdc3GetCurrentChannel_1_2,
+  fdc3GetInfo_1_2,
+  fdc3GetOrCreateChannel_1_2,
+  fdc3GetSystemChannels_1_2,
   fdc3JoinChannel_1_2,
-  fdc3FindIntentsByContext_1_2,
+  fdc3LeaveCurrentChannel_1_2,
+  fdc3RaiseIntentForContext_1_2,
 ];
 
 const advancedSuite_1_2 = [
@@ -49,7 +49,7 @@ const advancedSuite_1_2 = [
   fdc3Broadcast_1_2,
   fdc3FindIntent_1_2,
   fdc3RaiseIntent_1_2,
-  fdc3RaiseIntentForContext_1_2,
+  fdc3FindIntentsByContext_1_2,
 ];
 
 const allSuites_1_2 = [...basicSuite_1_2, ...advancedSuite_1_2];
@@ -84,9 +84,7 @@ export function getPackNames(): string[] {
  */
 export const executeTestsInBrowser = (pack: string) => {
   (mocha as any).timeout(constants.TestTimeout);
-  packs[pack]
-    .sort((s1, s2) => s1.name.localeCompare(s2.name))
-    .forEach((suite) => suite());
+  packs[pack].forEach((suite) => suite());
 
   mocha.run();
 };

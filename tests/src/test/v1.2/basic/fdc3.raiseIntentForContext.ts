@@ -10,7 +10,7 @@ const docs =
 
 export default () =>
   describe("fdc3.raiseIntentForContext", async () => {
-    it("Method is callable", async () => {
+    it("(BasicRI1) Method is callable", async () => {
       const context = {
         type: "ThisContextDoesNotExist",
         name: "Name",
