@@ -10,7 +10,7 @@ export default () =>
   describe("fdc3.getInfo", () => {
     it("(BasicGI1) Returns ImplementationMetadata object", async () => {
       try {
-        const info = (<DesktopAgent>(<unknown>window.fdc3)).getInfo();
+        const info = fdc3.getInfo();
         expect(info, getInfoDocs).to.have.property("fdc3Version");
         expect(info, getInfoDocs).to.have.property("provider");
       } catch (ex) {
