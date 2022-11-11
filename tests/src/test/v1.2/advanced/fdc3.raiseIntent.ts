@@ -251,3 +251,4 @@ async function waitForMockAppToClose() {
 
   return messageReceived;
 }
+
