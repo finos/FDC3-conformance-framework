@@ -45,7 +45,7 @@ const basicSuite_1_2 = [
 ];
 
 const advancedSuite_1_2 = [
-  //fdc3Open_1_2,
+  fdc3Open_1_2,
   fdc3Broadcast_1_2,
   fdc3FindIntent_1_2,
   fdc3RaiseIntent_1_2,
@@ -59,10 +59,10 @@ export const packs: { [index: string]: (() => Suite)[] } = {
   "Basic 1.2": basicSuite_1_2,
   "Advanced 1.2": advancedSuite_1_2,
   "fdc3AddContextListener 1.2": [fdc3AddContextListener_1_2],
-  fdc3Broadcast_1_2: [fdc3Broadcast_1_2],
-  fdc3FindIntent_1_2: [fdc3FindIntent_1_2],
-  //fdc3Open_1_2: [fdc3Open_1_2],
-  fdc3RaiseIntent_1_2: [fdc3RaiseIntent_1_2],
+  "fdc3Broadcast 1.2": [fdc3Broadcast_1_2],
+  "fdc3FindIntent 1.2": [fdc3FindIntent_1_2],
+  "fdc3Open 1.2": [fdc3Open_1_2],
+  "fdc3RaiseIntent 1.2": [fdc3RaiseIntent_1_2],
   "fdc3RaiseIntentForContext 1.2": [fdc3RaiseIntentForContext_1_2],
   "fdc3AddIntentListener 1.2": [fdc3AddIntentListener_1_2],
   "fdc3GetCurrentChannel 1.2": [fdc3GetCurrentChannel_1_2],
@@ -85,6 +85,5 @@ export function getPackNames(): string[] {
 export const executeTestsInBrowser = (pack: string) => {
   (mocha as any).timeout(constants.TestTimeout);
   packs[pack].forEach((suite) => suite());
-
   mocha.run();
 };
