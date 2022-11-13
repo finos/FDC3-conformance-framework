@@ -3,6 +3,7 @@ import {
   Channel,
   Context,
   IntentResolution,
+  Listener,
   ResolveError,
 } from "fdc3_1_2";
 import { assert, expect } from "chai";
@@ -237,32 +238,30 @@ const createReceiver = (contextType: string) => {
   return messageReceived;
 };
 
-async function closeIntentAppsWindows(testId){
+async function closeIntentAppsWindows(testId) {
   await broadcastCloseWindow(testId);
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-  await waitForContext(
-    "windowClosed",
-    testId,
-    appControlChannel
-  );
-};
+  await waitForContext("windowClosed", testId, appControlChannel);
+}
 
 const waitForContext = (
   contextType: string,
   testId: string,
   channel?: Channel
 ): Promise<Context> => {
-  let executionListener;
+  let executionListener: Listener;
   return new Promise<Context>(async (resolve) => {
     console.log(
       Date.now() +
-        ` Waiting for type: "${contextType}", on channel: "${channel.id}""`
+        ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
     );
 
-    const handler = (context) => {
+    const handler = (context: AppControlContext) => {
       if (testId) {
         if (testId == context.testId) {
-          console.log(Date.now() + ` Received ${contextType}`);
+          console.log(
+            Date.now() + ` Received ${contextType} for test: ${testId}`
+          );
           resolve(context);
           if (executionListener) executionListener.unsubscribe();
         } else {
@@ -286,13 +285,13 @@ const waitForContext = (
     } else {
       executionListener = channel.addContextListener(contextType, handler);
       //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
-      const ccHandler = async (context) => {
+      const ccHandler = async (context: AppControlContext) => {
         if (context) {
           if (testId) {
             if (testId == context?.testId && context?.type == contextType) {
               console.log(
                 Date.now() +
-                  ` Received "${contextType}" (from current context)"`
+                  ` Received "${contextType}" (from current context) for test: "${testId}"`
               );
               if (executionListener) executionListener.unsubscribe();
               resolve(context);
@@ -302,9 +301,11 @@ const waitForContext = (
                 Date.now() +
                   ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
                     context ? "" : "NOT "
-                  } exist, had testId: "${context?.testId}" (${
+                  } exist, 
+had testId: "${context?.testId}" (${
                     testId == context?.testId ? "did match" : "did NOT match"
-                  }) and type "${context?.type}" (${
+                  }) 
+and type "${context?.type}" (${
                     context?.type == contextType ? "did match" : "did NOT match"
                   })`
               );

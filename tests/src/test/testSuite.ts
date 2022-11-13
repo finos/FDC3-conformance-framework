@@ -55,23 +55,23 @@ const advancedSuite_1_2 = [
 const allSuites_1_2 = [...basicSuite_1_2, ...advancedSuite_1_2];
 
 export const packs: { [index: string]: (() => Suite)[] } = {
-  All_1_2: allSuites_1_2,
-  Basic_1_2: basicSuite_1_2,
-  Advanced_1_2: advancedSuite_1_2,
-  fdc3AddContextListener_1_2: [fdc3AddContextListener_1_2],
+  "All 1.2": allSuites_1_2,
+  "Basic 1.2": basicSuite_1_2,
+  "Advanced 1.2": advancedSuite_1_2,
+  "fdc3AddContextListener 1.2": [fdc3AddContextListener_1_2],
   fdc3Broadcast_1_2: [fdc3Broadcast_1_2],
   fdc3FindIntent_1_2: [fdc3FindIntent_1_2],
   //fdc3Open_1_2: [fdc3Open_1_2],
   fdc3RaiseIntent_1_2: [fdc3RaiseIntent_1_2],
-  fdc3RaiseIntentForContext_1_2: [fdc3RaiseIntentForContext_1_2],
-  fdc3AddIntentListener_1_2: [fdc3AddIntentListener_1_2],
-  fdc3GetCurrentChannel_1_2: [fdc3GetCurrentChannel_1_2],
-  fdc3GetInfo_1_2: [fdc3GetInfo_1_2],
-  fdc3GetOrCreateChannel_1_2: [fdc3GetOrCreateChannel_1_2],
-  fdc3GetSystemChannels_1_2: [fdc3GetSystemChannels_1_2],
-  fdc3JoinChannel_1_2: [fdc3JoinChannel_1_2],
-  fdc3LeaveCurrentChannel_1_2: [fdc3LeaveCurrentChannel_1_2],
-  fdc3FindIntentsByContext_1_2: [fdc3FindIntentsByContext_1_2],
+  "fdc3RaiseIntentForContext 1.2": [fdc3RaiseIntentForContext_1_2],
+  "fdc3AddIntentListener 1.2": [fdc3AddIntentListener_1_2],
+  "fdc3GetCurrentChannel 1.2": [fdc3GetCurrentChannel_1_2],
+  "fdc3GetInfo 1.2": [fdc3GetInfo_1_2],
+  "fdc3GetOrCreateChannel 1.2": [fdc3GetOrCreateChannel_1_2],
+  "fdc3GetSystemChannels 1.2": [fdc3GetSystemChannels_1_2],
+  "fdc3JoinChannel 1.2": [fdc3JoinChannel_1_2],
+  "fdc3LeaveCurrentChannel 1.2": [fdc3LeaveCurrentChannel_1_2],
+  "fdc3FindIntentsByContext 1.2": [fdc3FindIntentsByContext_1_2],
 };
 
 export function getPackNames(): string[] {
