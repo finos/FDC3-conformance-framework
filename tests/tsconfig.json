@@ -7,11 +7,11 @@
       "target": "es5",
       "allowJs": true,
       "moduleResolution":"Node",
-      "sourceMap": true,
       "esModuleInterop": true,
       "declaration": true,
       "declarationDir": "lib",
-      "declarationMap": true
+      "declarationMap": true,
+      "inlineSourceMap": true
     },
     "include": ["src/**/*.ts"],
 }

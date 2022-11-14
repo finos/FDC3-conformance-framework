@@ -3,6 +3,9 @@ class Fdc3CommandExecutor1_2 {
   async executeCommands(orderedCommands, config) {
     let channel;
 
+    //close ChannelsApp when test is complete
+    await this.closeWindowOnCompletion(config.testId);
+
     for (const command of orderedCommands) {
       switch (command) {
         case commands.joinSystemChannelOne: {
@@ -17,7 +20,7 @@ class Fdc3CommandExecutor1_2 {
           await this.broadcastContextItem(
             "fdc3.instrument",
             channel,
-            config.historyItems, 
+            config.historyItems,
             config.testId
           );
           break;
@@ -26,16 +29,13 @@ class Fdc3CommandExecutor1_2 {
           await this.broadcastContextItem(
             "fdc3.contact",
             channel,
-            config.historyItems, 
+            config.historyItems,
             config.testId
           );
           break;
         }
       }
     }
-    
-    //close ChannelsApp when test is complete
-    await this.closeWindowOnCompletion(config.testId);
 
     //notify app A that ChannelsApp has finished executing
     if (config.notifyAppAOnCompletion) {
@@ -57,7 +57,7 @@ class Fdc3CommandExecutor1_2 {
   //get broadcast service and broadcast the given context type
   async broadcastContextItem(contextType, channel, historyItems, testId) {
     let broadcastService = this.getBroadcastService(channel.type);
-    await broadcastService.broadcast(contextType, historyItems, channel, testId);
+    broadcastService.broadcast(contextType, historyItems, channel, testId);
   }
 
   //get app/system channel broadcast service
@@ -101,12 +101,20 @@ class Fdc3CommandExecutor1_2 {
 
   //close ChannelsApp on completion and respond to app A
   async closeWindowOnCompletion(testId) {
+    console.log(
+      Date.now() + ` Setting up closeWindow listener`
+    );
     const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
-    await appControlChannel.addContextListener("closeWindow", async () => {
+    appControlChannel.addContextListener("closeWindow", async () => {
+      console.log(
+        Date.now() + ` Received closeWindow message`
+      );
       appControlChannel.broadcast({ type: "windowClosed", testId: testId });
-      window.close();
+      setTimeout(()=>{ //yield to make sure the broadcast gets out before we close
+        window.close();
+      },1);
     });
   }
 

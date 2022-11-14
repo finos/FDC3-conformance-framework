@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import APIDocumentation from "../../apiDocuments";
+import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 
 const getSystemChannelDocs =

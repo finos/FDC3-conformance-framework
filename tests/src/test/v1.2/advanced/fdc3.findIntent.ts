@@ -2,6 +2,7 @@ import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 
 const findIntentDocs =
   "\r\nDocumentation: " + APIDocumentation.findIntent + "\r\nCause";
@@ -12,7 +13,7 @@ const findIntentDocs =
 export default () =>
   describe("fdc3.findIntent", () => {
     it("(IntentAppD) Should find intent 'aTestingIntent' belonging only to app intent-a", async () => {
-      const appIntent = await window.fdc3.findIntent("aTestingIntent");
+      const appIntent = await fdc3.findIntent("aTestingIntent");
       expect(appIntent.intent).to.deep.eq(
         {
           name: "aTestingIntent",
@@ -22,17 +23,15 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(1, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppAId",
+        "name",
+        "IntentAppA",
         findIntentDocs
       );
     });
 
     it("(WrongIntentAppD) Should throw NoAppsFound error when intent does not exist", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
-          "nonExistentIntent"
-        );
+        await fdc3.findIntent("nonExistentIntent");
         assert.fail("No error was thrown", findIntentDocs);
       } catch (ex) {
         expect(ex).to.have.property(
@@ -44,7 +43,7 @@ export default () =>
     });
 
     it("(IntentAppDRightContext) Should find intent 'aTestingIntent' belonging only to app intent-a with context 'testContextX'", async () => {
-      const appIntent = await window.fdc3.findIntent("aTestingIntent", {
+      const appIntent = await fdc3.findIntent("aTestingIntent", {
         type: "testContextX",
       });
       expect(appIntent.intent).to.deep.eq(
@@ -56,20 +55,17 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(1, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppAId",
+        "name",
+        "IntentAppA",
         findIntentDocs
       );
     });
 
     it("(IntentAppDWrongContext) Should throw NoAppsFound error when intent exists but context does not", async () => {
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
-          "aTestingIntent",
-          {
-            type: "testContextY",
-          }
-        );
+        await fdc3.findIntent("aTestingIntent", {
+          type: "testContextY",
+        });
         assert.fail("No error was thrown", findIntentDocs);
       } catch (ex) {
         expect(ex).to.have.property(
@@ -81,7 +77,7 @@ export default () =>
     });
 
     it("(IntentAppDMultiple1) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b)", async () => {
-      const appIntent = await window.fdc3.findIntent("sharedTestingIntent1");
+      const appIntent = await fdc3.findIntent("sharedTestingIntent1");
       expect(appIntent.intent).to.deep.eq(
         {
           name: "sharedTestingIntent1",
@@ -91,19 +87,19 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(2, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppAId",
+        "name",
+        "IntentAppA",
         findIntentDocs
       );
       expect(appIntent.apps[1]).to.have.property(
-        "appId",
-        "IntentAppBId",
+        "name",
+        "IntentAppB",
         findIntentDocs
       );
     });
 
     it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextX'", async () => {
-      const appIntent = await window.fdc3.findIntent("sharedTestingIntent1", {
+      const appIntent = await fdc3.findIntent("sharedTestingIntent1", {
         type: "testContextX",
       });
       expect(appIntent.intent).to.deep.eq(
@@ -115,24 +111,21 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(2, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppAId",
+        "name",
+        "IntentAppA",
         findIntentDocs
       );
       expect(appIntent.apps[1]).to.have.property(
-        "appId",
-        "IntentAppBId",
+        "name",
+        "IntentAppB",
         findIntentDocs
       );
     });
 
     it("Should find intent 'sharedTestingIntent1' belonging to app 'intent-b' when filtered by specific context 'testContextY'", async () => {
-      const appIntent = await (<DesktopAgent>(<unknown>window.fdc3)).findIntent(
-        "sharedTestingIntent1",
-        {
-          type: "testContextY",
-        }
-      );
+      const appIntent = await fdc3.findIntent("sharedTestingIntent1", {
+        type: "testContextY",
+      });
       expect(appIntent.intent).to.deep.eq(
         {
           name: "sharedTestingIntent1",
@@ -142,8 +135,8 @@ export default () =>
       );
       expect(appIntent.apps).to.have.length(1, findIntentDocs);
       expect(appIntent.apps[0]).to.have.property(
-        "appId",
-        "IntentAppBId",
+        "name",
+        "IntentAppB",
         findIntentDocs
       );
     });
