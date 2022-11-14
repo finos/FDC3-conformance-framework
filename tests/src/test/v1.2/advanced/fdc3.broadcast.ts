@@ -1058,7 +1058,7 @@ export default () =>
     };
 
     function validateListenerObject(listenerObject) {
-      assert.isObject(listenerObject, "No listener object found");
+      assert.isTrue(typeof listenerObject === "object", "No listener object found");
       expect(typeof listenerObject.unsubscribe).to.be.equals(
         "function",
         "Listener does not contain an unsubscribe method"
