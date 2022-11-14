@@ -14,6 +14,15 @@ const closeWindowOnCompletion = async (fdc3) => {
       window.close();
 
       //notify app A that window was closed
-      await appControlChannel.broadcast({type: "windowClosed"});
+      await appControlChannel.broadcast({
+        type: "windowClosed",
+        testId: context.testId,
+      });
+      setTimeout(() => {
+        //yield to make sure the broadcast gets out before we close
+        //window.close();
+        resolve();
+        return;
+      }, 100);
   });
 };
