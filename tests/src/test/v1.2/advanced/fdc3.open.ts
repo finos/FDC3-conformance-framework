@@ -341,8 +341,8 @@ const waitForContext = (
               Date.now() +
                 ` Received "${contextType}" (from current context) for an unspecified test`
             );
-             if (executionListener) executionListener.unsubscribe();
-             resolve(context);
+            if (executionListener) executionListener.unsubscribe();
+            resolve(context);
           }
         }
       };
