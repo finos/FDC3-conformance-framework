@@ -14,12 +14,11 @@ const closeWindowOnCompletion = async (fdc3) => {
       
 
       //notify app A that window was closed
-      await appControlChannel.broadcast({
+      appControlChannel.broadcast({
         type: "windowClosed",
         testId: context.testId,
       });
 
       window.close();
-      
   });
 };
