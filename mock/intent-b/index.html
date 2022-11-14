@@ -23,7 +23,6 @@
       });
       window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
         window.fdc3.addContextListener(null, (context) => {
-          stats.innerHTML += `CONTEXT = ${JSON.stringify(context)}/ `;
           // broadcast that this app has received context
           window.fdc3.broadcast({
             type: "fdc3-conformance-context-received",

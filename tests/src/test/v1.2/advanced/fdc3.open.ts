@@ -33,33 +33,28 @@ export default () =>
       await result;
       await closeAppWindows(AOpensB1Test);
       assert.equal(true, true);
-      console.log("test 1 complete");
     });
 
     const AOpensB2Test =
       "(AOpensB2Test) Can open app B from app A with no context and AppMetadata (name) as target";
     it(AOpensB2Test, async () => {
-      console.log("test 2 start");
       await fdc3.joinChannel("FDC3-Conformance-Channel");
       const result = createReceiver("fdc3-conformance-opened");
       await (<DesktopAgent>window.fdc3).open({ name: appBName });
       await result;
       await closeAppWindows(AOpensB2Test);
       assert.equal(true, true);
-      console.log("test 2 complete");
     });
 
     const AOpensB3Test =
       "(AOpensB3Test) Can open app B from app A with no context and AppMetadata (name and appId) as target";
     it(AOpensB3Test, async () => {
-      console.log("test 3 start");
       await fdc3.joinChannel("FDC3-Conformance-Channel");
       const result = createReceiver("fdc3-conformance-opened");
       await (<DesktopAgent>window.fdc3).open({ name: appBName, appId: appBId });
       await result;
       await closeAppWindows(AOpensB3Test);
       assert.equal(true, true);
-      console.log("test 3 end");
     });
 
     const AFailsToOpenB1Test =
@@ -246,7 +241,6 @@ export default () =>
 const createReceiver = (contextType: string) => {
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const listener = fdc3.addContextListener(contextType, (context) => {
-      console.log(JSON.stringify(context));
       resolve(context);
       clearTimeout(timeout);
       listener.unsubscribe();
@@ -264,7 +258,6 @@ async function closeAppWindows(testId) {
   await broadcastCloseWindow(testId);
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   await waitForContext("windowClosed", testId, appControlChannel);
-  console.log("closeAppWindows complete");
 }
 
 const broadcastCloseWindow = async (currentTest) => {
@@ -309,7 +302,7 @@ const waitForContext = (
           Date.now() +
             ` Received (without testId) "${contextType}" for test: "${testId}"`
         );
-        //resolve(context);
+        resolve(context);
         if (executionListener) executionListener.unsubscribe();
       }
     };
@@ -351,8 +344,8 @@ const waitForContext = (
               Date.now() +
                 ` Received "${contextType}" (from current context) for an unspecified test`
             );
-            // if (executionListener) executionListener.unsubscribe();
-            // resolve(context);
+             if (executionListener) executionListener.unsubscribe();
+             resolve(context);
           }
         }
       };
