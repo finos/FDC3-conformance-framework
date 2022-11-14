@@ -45,7 +45,7 @@ const basicSuite_1_2 = [
 ];
 
 const advancedSuite_1_2 = [
-  fdc3Open_1_2,
+  //fdc3Open_1_2,
   fdc3Broadcast_1_2,
   fdc3FindIntent_1_2,
   fdc3RaiseIntent_1_2,
@@ -61,7 +61,7 @@ export const packs: { [index: string]: (() => Suite)[] } = {
   "fdc3AddContextListener 1.2": [fdc3AddContextListener_1_2],
   "fdc3Broadcast 1.2": [fdc3Broadcast_1_2],
   "fdc3FindIntent 1.2": [fdc3FindIntent_1_2],
-  "fdc3Open 1.2": [fdc3Open_1_2],
+  //"fdc3Open 1.2": [fdc3Open_1_2],
   "fdc3RaiseIntent 1.2": [fdc3RaiseIntent_1_2],
   "fdc3RaiseIntentForContext 1.2": [fdc3RaiseIntentForContext_1_2],
   "fdc3AddIntentListener 1.2": [fdc3AddIntentListener_1_2],
