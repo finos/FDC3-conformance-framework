@@ -3,7 +3,7 @@ import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
-import { sleep } from "../../../utils";
+import { sleep, wait } from "../../../utils";
 
 const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 const findInstancesDocs =
@@ -69,7 +69,7 @@ export default () =>
           appIdentifier
         );
 
-        const { promise: sleepPromise, timeout: theTimeout } = sleep();
+        const {promise: sleepPromise, timeout: theTimeout} = sleep();
         timeout = theTimeout;
         await sleepPromise;
         if (!listenerReceived)
@@ -86,14 +86,15 @@ async function waitForMockAppToClose() {
     const appControlChannel = await fdc3.getOrCreateChannel("app-control");
     const listener = await appControlChannel.addContextListener(
       "windowClosed",
-      (context) => {
+      async (context) => {
+        await wait(constants.WindowCloseWaitTime);
         resolve(context);
         listener.unsubscribe();
       }
     );
 
     //if no context received reject promise
-    const { promise: sleepPromise, timeout: theTimeout } = sleep();
+    const {promise: sleepPromise, timeout: theTimeout} = sleep();
     timeout = theTimeout;
     await sleepPromise;
     reject(new Error("windowClosed context not received from app B"));
