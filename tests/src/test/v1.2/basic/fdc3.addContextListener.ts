@@ -34,7 +34,7 @@ export default () =>
     it("(BasicCL2) Returns listener object", async () => {
       try {
         listener = fdc3.addContextListener(null, () => {});
-        assert.isTrue(typeof listener === "object", documentation);
+        assert.isTrue(listener && typeof listener === "object", documentation);
         expect(typeof listener.unsubscribe, documentation).to.be.equals(
           "function"
         );
