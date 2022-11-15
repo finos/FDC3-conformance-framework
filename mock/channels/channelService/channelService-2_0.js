@@ -2,8 +2,6 @@ class Fdc3CommandExecutor2_0 {
   //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
-    let stats = document.getElementById("context");
-    stats.innerHTML += "executer reached";
 
     //close ChannelsApp when test is complete
     await this.closeWindowOnCompletion(config.testId);
