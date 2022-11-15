@@ -3,12 +3,11 @@ import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
-import { resolveObjectURL } from "buffer";
+import { sleep } from "../../../utils";
 
 const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 const findInstancesDocs =
   "\r\nDocumentation: " + APIDocumentation.findInstances + "\r\nCause";
-let timeout: number;
 
 export default () =>
   describe("fdc3.findInstances", () => {
@@ -18,6 +17,7 @@ export default () =>
     });
 
     it("valid metadata", async () => {
+      let timeout;
       try {
         let listenerReceived = false;
         //start A and retrieve its AppIdentifier
@@ -60,7 +60,6 @@ export default () =>
           ).to.be.equals(appIdentifier);
           listenerReceived = true;
           clearTimeout(timeout);
-          return;
         });
 
         //raise an intent and target appIdentifier
@@ -70,7 +69,9 @@ export default () =>
           appIdentifier
         );
 
-        await wait();
+        const { promise: sleepPromise, timeout: theTimeout } = sleep();
+        timeout = theTimeout;
+        await sleepPromise;
         if (!listenerReceived)
           assert.fail("The intent listener did not receive the raised intent");
       } catch (ex) {
@@ -80,19 +81,21 @@ export default () =>
   });
 
 async function waitForMockAppToClose() {
+  let timeout;
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const appControlChannel = await fdc3.getOrCreateChannel("app-control");
     const listener = await appControlChannel.addContextListener(
       "windowClosed",
       (context) => {
         resolve(context);
-        clearTimeout(timeout);
         listener.unsubscribe();
       }
     );
 
     //if no context received reject promise
-    await wait();
+    const { promise: sleepPromise, timeout: theTimeout } = sleep();
+    timeout = theTimeout;
+    await sleepPromise;
     reject(new Error("windowClosed context not received from app B"));
   });
 
@@ -103,11 +106,3 @@ const broadcastCloseWindow = async () => {
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
-
-async function wait() {
-  return new Promise((resolve) => {
-    timeout = window.setTimeout(() => {
-      resolve(true);
-    }, constants.WaitTime);
-  });
-}
