@@ -2,21 +2,22 @@ class Fdc3CommandExecutor1_2 {
   //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
-
+    let stats = document.getElementById("context");
+    stats.innerHTML += "executer reached";
     //close ChannelsApp when test is complete
     await this.closeWindowOnCompletion(config.testId);
 
     for (const command of orderedCommands) {
       switch (command) {
-        case commands.joinSystemChannelOne: {
+        case "joinSystemChannelOne": {
           channel = await this.joinSystemChannelOne();
           break;
         }
-        case commands.retrieveTestAppChannel: {
+        case "retrieveTestAppChannel": {
           channel = await this.retrieveTestAppChannel();
           break;
         }
-        case commands.broadcastInstrumentContext: {
+        case "broadcastInstrumentContext": {
           await this.broadcastContextItem(
             "fdc3.instrument",
             channel,
@@ -25,7 +26,7 @@ class Fdc3CommandExecutor1_2 {
           );
           break;
         }
-        case commands.broadcastContactContext: {
+        case "broadcastContactContext": {
           await this.broadcastContextItem(
             "fdc3.contact",
             channel,
@@ -62,9 +63,9 @@ class Fdc3CommandExecutor1_2 {
 
   //get app/system channel broadcast service
   getBroadcastService(currentChannelType) {
-    if (currentChannelType === channelType.system) {
+    if (currentChannelType === "system") {
       return this.systemChannelBroadcastService;
-    } else if (currentChannelType === channelType.app) {
+    } else if (currentChannelType === "app") {
       return this.appChannelBroadcastService;
     }
   }
@@ -126,14 +127,4 @@ class Fdc3CommandExecutor1_2 {
   }
 }
 
-const channelType = {
-  system: "system",
-  app: "app",
-};
 
-const commands = {
-  joinSystemChannelOne: "joinSystemChannelOne",
-  retrieveTestAppChannel: "retrieveTestAppChannel",
-  broadcastInstrumentContext: "broadcastInstrumentContext",
-  broadcastContactContext: "broadcastContactContext",
-};
