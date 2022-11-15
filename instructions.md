@@ -21,7 +21,7 @@ Maintainers of the FDC3 Conformance Framework will aim to replicate your test re
 
 ## 4.  Fees
 
-Since certification requires work from the FINOS team a fee is charged for the certification process.   FINOS members receive certification as a benefit and pay no fees for this process.
+Since certification requires work from the FINOS team, it is expected that in the future a fee might be charged for the the formal certification process and badge issuance. Currently, in order to grow the standard adoption, certification is provided free of charge until October 2023. 
 
 ## 5.  Failed Tests
 
