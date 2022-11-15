@@ -63,7 +63,7 @@ _Removal of Certified FDC3 Marks and Participant FDC3 Combinations at End of Par
 
 #### Use of the Certified FDC3 Marks and Participant FDC3 Combinations
 
-Use of the Certified FDC3 Marks and Participant FDC3 Combinations is only permitted for Participants who have satisfied the requirements of the Conformance Program; is only permitted in connection with its Qualifying Offerings; and is only permitted for the usage time periods specified above. No other rights to use the Certified FDC3 Marks or the FDC3 Word Mark are permitted hereunder, except to the extent permitted under "fair use" or other applicable law.
+Use of the Certified FDC3 Marks and Participant FDC3 Combinations is only permitted for Participants who have satisfied the requirements of the Conformance Program; and is only permitted in connection with its Qualifying Offerings. No other rights to use the Certified FDC3 Marks or the FDC3 Word Mark are permitted hereunder, except to the extent permitted under "fair use" or other applicable law.
 
 All use of the Certified FDC3 Marks and Participant FDC3 Combinations is subject to the LF Trademark Usage Guidelines, which are incorporated herein.
 
@@ -107,7 +107,8 @@ Each Participant hereby grants to The Linux Foundation a royalty-free, worldwide
 
 _Term_. The term of a Participant’s participation in the Conformance Program shall begin upon the Participant’s submission (by email to [help@finos.org](mailto:help@finos.org) or other method made available by The Linux Foundation), and The Linux Foundation’s receipt and acceptance, of a fully-completed Participation Form signed by the Participant.
 
-_Termination_. Either The Linux Foundation or the Participant may terminate Participant’s participation in the Conformance Program upon written notice to the other. Additionally, Participant’s participation in the Conformance Program shall automatically terminate (unless otherwise agreed by The Linux Foundation in writing) upon the occurrence of: (1) the Participant’s breach of the terms of the Conformance Program, if such breach is incurable or, if curable, is not cured within 15 days thereafter; or (2) the expiration of the usage time period for all of the Participant’s Qualifying Offerings, if the Participant does not confirm any new Qualifying Offering within 30 days thereafter.
+_Termination_. Either The Linux Foundation or the Participant may terminate Participant’s participation in the Conformance Program upon written notice to the other. Additionally, Participant’s participation in the Conformance Program shall automatically terminate (unless otherwise agreed by The Linux Foundation in writing) upon the occurrence of the Participant’s breach of the terms of the Conformance Program, if such breach is incurable or, if curable, is not cured within 15 days thereafter
+.
 
 _Effect of Termination; Survival_. Upon the termination of Participant’s participation in the Conformance Program, the Participant may no longer use the Certified FDC3 Marks or Participant FDC3 Combinations and must remove them from existing marketing materials and websites. The sections of this agreement entitled "Participant Marks," "Disclaimer of Warranties," "Limitation of Liability," "Indemnification" and "Miscellaneous" shall survive any such termination.
 
