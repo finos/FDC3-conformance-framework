@@ -10,13 +10,17 @@ const closeWindowOnCompletion = async (fdc3) => {
   const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
-  appControlChannel.addContextListener("closeWindow", async (context) => {
+   appControlChannel.addContextListener("closeWindow", async (context) => {
+
       //notify app A that window was closed
       appControlChannel.broadcast({
         type: "windowClosed",
         testId: context.testId,
       });
-
-      window.close();
+      setTimeout(() => {
+        //yield to make sure the broadcast gets out before we close
+        window.close();
+        return;
+      }, 1);
   });
 };

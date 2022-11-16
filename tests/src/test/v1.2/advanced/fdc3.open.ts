@@ -91,64 +91,65 @@ export default () =>
       }
     });
 
-    //   const AOpensBWithSpecificContext1Test =
-    //     "(AOpensBWithSpecificContext1) Can open app B from app A with context and string as target, app B adds specific listener";
-    //   it(AOpensBWithSpecificContext1Test, async () => {
-    //     await fdc3.joinChannel("FDC3-Conformance-Channel");
-    //     const receiver = createReceiver("fdc3-conformance-context-received");
-    //     await fdc3.open(appBName, {
-    //       name: "context",
-    //       type: "fdc3.testReceiver",
-    //     });
-    //     const receivedValue = (await receiver) as any;
-    //     expect(receivedValue.context.name).to.eq("context", openDocs);
-    //     expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
-    //     await closeAppWindows(AOpensBWithSpecificContext1Test);
-    //   });
+    const AOpensBWithSpecificContext1Test =
+      "(AOpensBWithSpecificContext1) Can open app B from app A with context and string as target, app B adds specific listener";
+    it(AOpensBWithSpecificContext1Test, async () => {
+      await fdc3.joinChannel("FDC3-Conformance-Channel");
+      const receiver = createReceiver("fdc3-conformance-context-received");
+      await fdc3.open(appBName, {
+        name: "context",
+        type: "fdc3.testReceiver",
+      });
+      const receivedValue = (await receiver) as any;
+      expect(receivedValue.context.name).to.eq("context", openDocs);
+      expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
+      await closeAppWindows(AOpensBWithSpecificContext1Test);
+    });
 
-    //   const AOpensBWithSpecificContext2Test =
-    //     "(AOpensBWithSpecificContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds specific listener";
-    //   it(AOpensBWithSpecificContext2Test, async () => {
-    //     await fdc3.joinChannel("FDC3-Conformance-Channel");
-    //     const receiver = createReceiver("fdc3-conformance-context-received");
-    //     await fdc3.open(
-    //       { name: appBName },
-    //       { name: "context", type: "fdc3.testReceiver" }
-    //     );
-    //     const receivedValue = (await receiver) as any;
-    //     expect(receivedValue.context.name).to.eq("context", openDocs);
-    //     expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
-    //     await closeAppWindows(AOpensBWithSpecificContext2Test);
-    //   });
+    const AOpensBWithSpecificContext2Test =
+      "(AOpensBWithSpecificContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds specific listener";
+    it(AOpensBWithSpecificContext2Test, async () => {
+      await fdc3.joinChannel("FDC3-Conformance-Channel");
+      const receiver = createReceiver("fdc3-conformance-context-received");
+      await fdc3.open(
+        { name: appBName },
+        { name: "context", type: "fdc3.testReceiver" }
+      );
+      const receivedValue = (await receiver) as any;
+      expect(receivedValue.context.name).to.eq("context", openDocs);
+      expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
+      await closeAppWindows(AOpensBWithSpecificContext2Test);
+    });
 
-    //   const AOpensBWithSpecificContext3Test =
-    //     "(AOpensBWithSpecificContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds specific listener";
-    //   it(AOpensBWithSpecificContext3Test, async () => {
-    //     await fdc3.joinChannel("FDC3-Conformance-Channel");
-    //     const receiver = createReceiver("fdc3-conformance-context-received");
-    //     await fdc3.open(
-    //       { name: appBName, appId: appBId },
-    //       { name: "context", type: "fdc3.testReceiver" }
-    //     );
-    //     const receivedValue = (await receiver) as any;
-    //     expect(receivedValue.context.name).to.eq("context", openDocs);
-    //     expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
-    //     await closeAppWindows(AOpensBWithSpecificContext3Test);
-    //   });
+    const AOpensBWithSpecificContext3Test =
+      "(AOpensBWithSpecificContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds specific listener";
+    it(AOpensBWithSpecificContext3Test, async () => {
+      await fdc3.joinChannel("FDC3-Conformance-Channel");
+      const receiver = createReceiver("fdc3-conformance-context-received");
+      await fdc3.open(
+        { name: appBName, appId: appBId },
+        { name: "context", type: "fdc3.testReceiver" }
+      );
+      const receivedValue = (await receiver) as any;
+      expect(receivedValue.context.name).to.eq("context", openDocs);
+      expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
+      await closeAppWindows(AOpensBWithSpecificContext3Test);
+    });
 
-    //   const AOpensBWithContext1Test =
-    //     "(AOpensBWithContext1) Can open app B from app A with context and string as target, app B adds generic listener";
-    //   it(AOpensBWithContext1Test, async () => {
-    //     const receiver = createReceiver("fdc3-conformance-context-received");
-    //     await fdc3.open(genericListenerAppName, {
-    //       name: "context",
-    //       type: "fdc3.testReceiver",
-    //     });
-    //     const receivedValue = (await receiver) as any;
-    //     expect(receivedValue.context.name).to.eq("context", openDocs);
-    //     expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
-    //     await closeAppWindows(AOpensBWithContext1Test);
+    // const AOpensBWithContext1Test =
+    //   "(AOpensBWithContext1) Can open app B from app A with context and string as target, app B adds generic listener";
+    // it(AOpensBWithContext1Test, async () => {
+    //   await fdc3.joinChannel("fdc3.raiseIntent");
+    //   const receiver = createReceiver("fdc3-conformance-context-received");
+    //   await fdc3.open(genericListenerAppName, {
+    //     name: "context",
+    //     type: "fdc3.testReceiver",
     //   });
+    //   const receivedValue = (await receiver) as any;
+    //   expect(receivedValue.context.name).to.eq("context", openDocs);
+    //   expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
+    //   await closeAppWindows(AOpensBWithContext1Test);
+    // });
 
     //     const AOpensBWithContext2Test =
     //       "(AOpensBWithContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds generic listener";
@@ -309,6 +310,7 @@ const waitForContext = (
     if (channel === undefined) {
       executionListener = fdc3.addContextListener(contextType, handler);
     } else {
+      console.log("adding listener in waitforcontext");
       executionListener = channel.addContextListener(contextType, handler);
       //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
       const ccHandler = async (context: AppControlContext) => {
@@ -327,11 +329,11 @@ const waitForContext = (
                 Date.now() +
                   ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
                     context ? "" : "NOT "
-                  } exist, 
-  had testId: "${context?.testId}" (${
+                  } exist,
+            had testId: "${context?.testId}" (${
                     testId == context?.testId ? "did match" : "did NOT match"
-                  }) 
-  and type "${context?.type}" (${
+                  })
+            and type "${context?.type}" vs ${contextType} (${
                     context?.type == contextType ? "did match" : "did NOT match"
                   })`
               );

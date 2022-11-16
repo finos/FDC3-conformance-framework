@@ -1,14 +1,15 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <p>Conformance Framework Mock Intent App B</p>
-    <p>This app is only used by the conformance framework for intent test purposes.</p>
-    <script src="lib/mock-functions.js"></script>
-    <script type="module">
-      onFdc3Ready().then(() => {
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+<body>
+  <p>Conformance Framework Mock Intent App B</p>
+  <p>This app is only used by the conformance framework for intent test purposes.</p>
+  <script src="lib/mock-functions.js"></script>
+  <script type="module">
+      onFdc3Ready().then(async() => {
+        await closeWindowOnCompletion(window.fdc3);
         window.fdc3.addIntentListener('bTestingIntent', async (context) => {
           return context;
         });
@@ -16,12 +17,20 @@
           return context;
         });
         window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
+          window.fdc3.addContextListener(null, (context) => {
+          // broadcast that this app has received context
           window.fdc3.broadcast({
-            type: "fdc3-intent-b-opened",
+            type: "fdc3-conformance-context-received",
+            context: context,
           });
         });
-        closeWindowOnCompletion(window.fdc3);
+
+        window.fdc3.broadcast({
+          type: "fdc3-intent-b-opened",
+        });
       });
-    </script>
-  </body>
+    });
+  </script>
+</body>
+
 </html>
