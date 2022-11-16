@@ -24,9 +24,7 @@ export default () =>
       };
 
       try {
-        await fdc3.raiseIntentForContext(
-          context
-        );
+        await fdc3.raiseIntentForContext(context);
         assert.fail("Expected error NoAppsFound not thrown", docs);
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.NoAppsFound, docs);
