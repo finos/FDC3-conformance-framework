@@ -69,7 +69,7 @@ export default () =>
           appIdentifier
         );
 
-        const {promise: sleepPromise, timeout: theTimeout} = sleep();
+        const { promise: sleepPromise, timeout: theTimeout } = sleep();
         timeout = theTimeout;
         await sleepPromise;
         if (!listenerReceived)
@@ -94,7 +94,7 @@ async function waitForMockAppToClose() {
     );
 
     //if no context received reject promise
-    const {promise: sleepPromise, timeout: theTimeout} = sleep();
+    const { promise: sleepPromise, timeout: theTimeout } = sleep();
     timeout = theTimeout;
     await sleepPromise;
     reject(new Error("windowClosed context not received from app B"));

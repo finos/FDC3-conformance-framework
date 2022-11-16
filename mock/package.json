@@ -6,7 +6,7 @@
     "copy:intent:a": "npx copyfiles --flat ./mock-functions.js intent-a/lib",
     "copy:intent:b": "npx copyfiles --flat ./mock-functions.js intent-b/lib",
     "copy:intent:c": "npx copyfiles --flat ./mock-functions.js intent-c/lib",
-    "copy:channels": "npx copyfiles --flat ./mock-functions.js channels/lib",
+    "copy:channels": "npx copyfiles --flat ./mock-functions.js ./constants.js channels/lib",
     "build": "npm-run-all copy:general copy:intent:a copy:intent:b copy:intent:c copy:channels",
     "start:general": "npx http-server ./general -p 3001 -c-1",
     "start:intent:a": "npx http-server ./intent-a -p 3100 -c-1",
