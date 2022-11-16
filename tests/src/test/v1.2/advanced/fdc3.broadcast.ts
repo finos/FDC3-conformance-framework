@@ -61,7 +61,7 @@ export default () =>
         await joinChannel(1);
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
         ];
 
@@ -70,15 +70,16 @@ export default () =>
           testId: scTestId1,
           notifyAppAOnCompletion: true,
         };
-
+        console.log("opening app");
         //Open ChannelsApp then execute commands in order
         await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
-
+        console.log("resolving execution");
         //wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
+        console.log("resolved execution");
 
         //reject if no context received
         if (!receivedContext) {
@@ -112,7 +113,7 @@ export default () =>
         validateListenerObject(listener);
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
         ];
 
@@ -150,7 +151,7 @@ export default () =>
         );
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
         ];
 
@@ -214,7 +215,7 @@ export default () =>
         joinChannel(1);
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
           commands.broadcastContactContext,
         ];
@@ -286,7 +287,7 @@ export default () =>
         await joinChannel(1);
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
           commands.broadcastContactContext,
         ];
@@ -338,7 +339,7 @@ export default () =>
         await joinChannel(2);
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
           commands.broadcastContactContext,
         ];
@@ -389,7 +390,7 @@ export default () =>
         }
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
         ];
 
@@ -427,7 +428,7 @@ export default () =>
         await joinChannel(2);
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
         ];
 
@@ -465,7 +466,7 @@ export default () =>
         await fdc3.leaveCurrentChannel();
 
         const channelsAppCommands = [
-          commands.joinSystemChannelOne,
+          commands.joinUserChannelOne,
           commands.broadcastInstrumentContext,
         ];
 
@@ -1058,7 +1059,10 @@ export default () =>
     };
 
     function validateListenerObject(listenerObject) {
-      assert.isTrue(listenerObject && typeof listenerObject === "object", "No listener object found");
+      assert.isTrue(
+        listenerObject && typeof listenerObject === "object",
+        "No listener object found"
+      );
       expect(typeof listenerObject.unsubscribe).to.be.equals(
         "function",
         "Listener does not contain an unsubscribe method"
@@ -1224,7 +1228,7 @@ function buildChannelsAppContext(
 }
 
 const commands = {
-  joinSystemChannelOne: "joinSystemChannelOne",
+  joinUserChannelOne: "joinUserChannelOne",
   retrieveTestAppChannel: "retrieveTestAppChannel",
   broadcastInstrumentContext: "broadcastInstrumentContext",
   broadcastContactContext: "broadcastContactContext",
