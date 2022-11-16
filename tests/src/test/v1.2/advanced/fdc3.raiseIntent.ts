@@ -10,9 +10,9 @@ import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+import { sleep, wait } from "../../../utils";
 
 const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
-let timeout: number;
 
 const raiseIntentDocs =
   "\r\nDocumentation: " + APIDocumentation.raiseIntent + "\r\nCause";
@@ -204,14 +204,6 @@ const validateIntentResolution = (
   } else assert.fail("Invalid intent resolution object");
 };
 
-async function wait() {
-  return new Promise((resolve) => {
-    timeout = window.setTimeout(() => {
-      resolve(true);
-    }, constants.WaitTime);
-  });
-}
-
 const broadcastCloseWindow = async (currentTest) => {
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   appControlChannel.broadcast({
@@ -223,6 +215,7 @@ const broadcastCloseWindow = async (currentTest) => {
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = (contextType: string) => {
+  let timeout;
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const listener = fdc3.addContextListener(contextType, (context) => {
       resolve(context);
@@ -231,7 +224,9 @@ const createReceiver = (contextType: string) => {
     });
 
     //if no context received reject promise
-    await wait();
+    const { promise: sleepPromise, timeout: theTimeout } = sleep();
+    timeout = theTimeout;
+    await sleepPromise;
     reject(new Error("No context received from app B"));
   });
 
@@ -242,6 +237,7 @@ async function closeIntentAppsWindows(testId) {
   await broadcastCloseWindow(testId);
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   await waitForContext("windowClosed", testId, appControlChannel);
+  await wait(constants.WindowCloseWaitTime);
 }
 
 const waitForContext = (

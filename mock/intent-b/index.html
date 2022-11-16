@@ -9,11 +9,11 @@
     <script src="lib/mock-functions.js"></script>
     <script type="module">
       onFdc3Ready().then(() => {
-        window.fdc3.addIntentListener('bTestingIntent', (context) => {
-          return new Promise<Context>((resolve) => resolve(context));
+        window.fdc3.addIntentListener('bTestingIntent', async (context) => {
+          return context;
         });
-        window.fdc3.addIntentListener('sharedTestingIntent1', (context) => {
-          return new Promise<Context>((resolve) => resolve(context));
+        window.fdc3.addIntentListener('sharedTestingIntent1', async (context) => {
+          return context;
         });
         window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
           window.fdc3.broadcast({

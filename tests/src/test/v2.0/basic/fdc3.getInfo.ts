@@ -4,13 +4,13 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { validateAppMetadata } from "../advanced/fdc3.getAppMetadata";
+import { sleep } from "../../../utils";
 
 const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 const getInfoDocs =
   "\r\nDocumentation: " + APIDocumentation.getInfo2_0 + "\r\nCause";
 const getMetadataDocs =
   "\r\nDocumentation: " + APIDocumentation.appMetadata + "\r\nCause";
-let timeout: number;
 
 export default () =>
   describe("fdc3.getInfo", () => {
@@ -87,6 +87,7 @@ export default () =>
     });
 
     async function waitForMockAppToClose() {
+      let timeout;
       const messageReceived = new Promise<Context>(async (resolve, reject) => {
         const appControlChannel = await fdc3.getOrCreateChannel("app-control");
         const listener = await appControlChannel.addContextListener(
@@ -99,7 +100,9 @@ export default () =>
         );
 
         //if no context received reject promise
-        await wait();
+        const {promise: sleepPromise, timeout: theTimeout} = sleep();
+        timeout = theTimeout;
+        await sleepPromise;
         reject(new Error("windowClosed context not received from app B"));
       });
 
@@ -111,11 +114,4 @@ export default () =>
       await appControlChannel.broadcast({ type: "closeWindow" });
     };
 
-    async function wait() {
-      return new Promise((resolve) => {
-        timeout = window.setTimeout(() => {
-          resolve(true);
-        }, constants.WaitTime);
-      });
-    }
   });

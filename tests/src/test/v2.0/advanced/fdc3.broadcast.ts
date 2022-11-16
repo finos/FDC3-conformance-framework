@@ -3,11 +3,11 @@ import { assert, expect } from "chai";
 import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
+import { sleep, wait } from "../../../utils";
 
 const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
-let timeout: number;
 
 interface AppControlContext extends Context {
   testId: string;
@@ -53,7 +53,6 @@ export default () =>
           listener = await fdc3.addContextListener(null, async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
             resolve();
-            return;
           });
 
           validateListenerObject(listener);
@@ -83,7 +82,6 @@ export default () =>
 
           //reject if no context received
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -107,7 +105,6 @@ export default () =>
           listener = await fdc3.addContextListener(null, async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
             resolve();
-            return;
           });
 
           validateListenerObject(listener);
@@ -134,7 +131,6 @@ export default () =>
 
           //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -175,7 +171,6 @@ export default () =>
           listener = await fdc3.addContextListener(null, async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
             resolve();
-            return;
           });
 
           validateListenerObject(listener);
@@ -185,7 +180,6 @@ export default () =>
 
           //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -211,7 +205,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             }
           );
 
@@ -243,7 +236,6 @@ export default () =>
 
           //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -272,7 +264,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             }
           );
 
@@ -301,7 +292,6 @@ export default () =>
 
           //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -348,7 +338,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             }
           );
 
@@ -359,7 +348,6 @@ export default () =>
 
           //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -409,7 +397,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             }
           );
 
@@ -417,7 +404,6 @@ export default () =>
 
           //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -444,7 +430,6 @@ export default () =>
                 assert.fail("Incorrect context received", errorMessage);
               } else {
                 resolve();
-                return;
               }
             }
           }
@@ -499,7 +484,6 @@ export default () =>
           reject(
             new Error(`${errorMessage} At least one context was not received`)
           );
-          return;
         });
       });
 
@@ -507,7 +491,7 @@ export default () =>
         "Should not receive context when A & B join different user channels and app B broadcasts a listened type";
       it(scTestId9, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
-
+        let timeout;
         return new Promise(async (resolve, reject) => {
           //Add fdc3.instrument context listener
           listener = await fdc3.addContextListener(
@@ -517,7 +501,6 @@ export default () =>
                 new Error(`${errorMessage} ${context.type} context received`)
               );
               clearTimeout(timeout);
-              return;
             }
           );
 
@@ -531,7 +514,6 @@ export default () =>
                 new Error(`${errorMessage} ${context.type} context received`)
               );
               clearTimeout(timeout);
-              return;
             }
           );
 
@@ -558,9 +540,10 @@ export default () =>
           );
 
           //Give listener time to receive context
-          await wait();
+          const { promise: sleepPromise, timeout: theTimeout } = sleep();
+          timeout = theTimeout;
+          await sleepPromise;
           resolve();
-          return;
         });
       });
 
@@ -584,7 +567,6 @@ export default () =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
               );
-              return;
             }
           );
 
@@ -621,7 +603,6 @@ export default () =>
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
           resolve();
-          return;
         });
       });
 
@@ -629,7 +610,7 @@ export default () =>
         "Should not receive context when joining two different user channels before app B broadcasts the listened type to the first channel that was joined";
       it(scTestId11, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
-
+        let timeout;
         return new Promise(async (resolve, reject) => {
           //Add fdc3.instrument context listener
           listener = await fdc3.addContextListener(
@@ -639,7 +620,6 @@ export default () =>
                 new Error(`${errorMessage} ${context.type} context received`)
               );
               clearTimeout(timeout);
-              return;
             }
           );
 
@@ -664,9 +644,10 @@ export default () =>
           );
 
           //Give listener time to receive context
-          await wait();
+          const { promise: sleepPromise, timeout: theTimeout } = sleep();
+          timeout = theTimeout;
+          await sleepPromise;
           resolve();
-          return;
         });
       });
 
@@ -674,7 +655,7 @@ export default () =>
         "Should not receive context when joining and then leaving a user channel before app B broadcasts the listened type to the same channel";
       it(scTestId12, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A leaves channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
-
+        let timeout;
         return new Promise(async (resolve, reject) => {
           //Add a context listeners to app A
           listener = await fdc3.addContextListener(
@@ -684,7 +665,6 @@ export default () =>
                 new Error(`${errorMessage} ${context.type} context received`)
               );
               clearTimeout(timeout);
-              return;
             }
           );
 
@@ -714,9 +694,10 @@ export default () =>
           );
 
           //Give listener time to receive context
-          await wait();
+          const { promise: sleepPromise, timeout: theTimeout } = sleep();
+          timeout = theTimeout;
+          await sleepPromise;
           resolve();
-          return;
         });
       });
 
@@ -776,7 +757,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             }
           );
 
@@ -804,7 +784,6 @@ export default () =>
 
           //Reject if no context received
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -845,14 +824,12 @@ export default () =>
           await testChannel.getCurrentContext().then(async (context) => {
             expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
             resolve();
-            return;
           });
 
           //Wait for ChannelsApp the finish executing
           await resolveExecutionCompleteListener;
 
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -901,12 +878,10 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             });
 
           reject(new Error(`${errorMessage} No context received`));
           resolve();
-          return;
         });
       });
 
@@ -935,7 +910,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             }
           );
 
@@ -964,7 +938,6 @@ export default () =>
 
           //If no context received throw error
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -1034,7 +1007,6 @@ export default () =>
                 assert.fail("Incorrect context received", errorMessage);
               } else {
                 resolve();
-                return;
               }
             }
           }
@@ -1044,7 +1016,6 @@ export default () =>
 
           //If no context received throw error
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -1069,7 +1040,6 @@ export default () =>
             reject(
               new Error(`${errorMessage} ${context.type} context received`)
             );
-            return;
           });
 
           validateListenerObject(listener);
@@ -1098,7 +1068,6 @@ export default () =>
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
           resolve();
-          return;
         });
       });
 
@@ -1106,7 +1075,7 @@ export default () =>
         "Should not receive context when app B broadcasts context to a different app channel";
       it(acTestId7, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves a different app channel\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
-
+        let timeout;
         return new Promise(async (resolve, reject) => {
           //Retrieve an app channel
           const testChannel = await fdc3.getOrCreateChannel(
@@ -1121,7 +1090,6 @@ export default () =>
                 new Error(`${errorMessage} ${context.type} context received`)
               );
               clearTimeout(timeout);
-              return;
             }
           );
 
@@ -1144,9 +1112,10 @@ export default () =>
           );
 
           //Give listener time to receive context
-          await wait();
+          const { promise: sleepPromise, timeout: theTimeout } = sleep();
+          timeout = theTimeout;
+          await sleepPromise;
           resolve();
-          return;
         });
       });
 
@@ -1195,12 +1164,10 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             });
 
           reject(new Error(`${errorMessage} No context received`));
           resolve();
-          return;
         });
       });
 
@@ -1229,7 +1196,6 @@ export default () =>
                 errorMessage
               );
               resolve();
-              return;
             }
           );
 
@@ -1247,7 +1213,6 @@ export default () =>
                   `${errorMessage} fdc3.instrument context received on the second channel that was joined rather than the first`
                 )
               );
-              return;
             }
           );
 
@@ -1276,7 +1241,6 @@ export default () =>
 
           //If no context received throw error
           reject(new Error(`${errorMessage} No context received`));
-          return;
         });
       });
 
@@ -1308,7 +1272,6 @@ export default () =>
               reject(
                 new Error(`${errorMessage} ${context.type} context received`)
               );
-              return;
             }
           );
 
@@ -1334,7 +1297,6 @@ export default () =>
           //Wait for ChannelsApp to execute
           await resolveExecutionCompleteListener;
           resolve();
-          return;
         });
       });
 
@@ -1507,19 +1469,14 @@ export default () =>
     };
 
     function validateListenerObject(listenerObject) {
-      assert.isTrue(listenerObject && typeof listenerObject === "object", "No listener object found");
+      assert.isTrue(
+        typeof listenerObject === "object",
+        "No listener object found"
+      );
       expect(typeof listenerObject.unsubscribe).to.be.equals(
         "function",
         "Listener does not contain an unsubscribe method"
       );
-    }
-
-    async function wait() {
-      return new Promise((resolve) => {
-        timeout = window.setTimeout(() => {
-          resolve(true);
-        }, constants.WaitTime);
-      });
     }
 
     async function closeChannelsAppWindow(testId: string) {
@@ -1528,6 +1485,7 @@ export default () =>
 
       //Wait for ChannelsApp to respond
       await waitForContext("windowClosed", testId, appControlChannel);
+      await wait(constants.WindowCloseWaitTime);
     }
 
     const broadcastAppChannelCloseWindow = async (testId: string) => {
