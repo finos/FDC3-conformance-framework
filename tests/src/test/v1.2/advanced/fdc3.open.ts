@@ -287,7 +287,6 @@ const waitForContext = (
           );
           resolve(context);
           if (executionListener) executionListener.unsubscribe();
-          return;
         } else {
           console.warn(
             Date.now() +
@@ -320,7 +319,6 @@ const waitForContext = (
               );
               if (executionListener) executionListener.unsubscribe();
               resolve(context);
-              return;
             } //do not warn as it will be ignoring mismatches which will be common
             else {
               console.log(
