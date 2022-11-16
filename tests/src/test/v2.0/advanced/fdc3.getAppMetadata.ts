@@ -115,7 +115,7 @@ async function waitForMockAppToClose() {
     );
 
     //if no context received reject promise
-    const {promise: sleepPromise, timeout: theTimeout} = sleep();
+    const { promise: sleepPromise, timeout: theTimeout } = sleep();
     timeout = theTimeout;
     await sleepPromise;
     reject(new Error("windowClosed context not received from app B"));
@@ -198,4 +198,3 @@ const broadcastCloseWindow = async () => {
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
-
