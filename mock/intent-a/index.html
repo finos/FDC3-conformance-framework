@@ -11,7 +11,7 @@
   <script src="lib/mock-functions.js"></script>
   <script type="module">
     onFdc3Ready().then(async () => {
-      await closeWindowOnCompletion(window.fdc3);
+      await closeWindowOnCompletion();
       window.fdc3.addIntentListener("aTestingIntent", async (context) => {
         return context;
       });
