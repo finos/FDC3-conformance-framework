@@ -3,12 +3,12 @@ import { assert, expect } from "chai";
 import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+import { sleep, wait } from "../../../utils";
 
 const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
-let timeout: number;
 
 interface AppControlContext extends Context {
   testId: string;
@@ -356,7 +356,7 @@ export default () =>
         );
 
         //Give listeners time to receive context
-        wait();
+        await wait();
       });
 
       const scTestId7 =
@@ -1069,20 +1069,13 @@ export default () =>
       );
     }
 
-    async function wait() {
-      return new Promise((resolve) => {
-        timeout = window.setTimeout(() => {
-          resolve(true);
-        }, constants.WaitTime);
-      });
-    }
-
     async function closeChannelsAppWindow(testId: string) {
       //Tell ChannelsApp to close window
       const appControlChannel = await broadcastAppChannelCloseWindow(testId);
 
       //Wait for ChannelsApp to respond
       await waitForContext("windowClosed", testId, appControlChannel);
+      await wait(constants.WindowCloseWaitTime);
     }
 
     const broadcastAppChannelCloseWindow = async (testId: string) => {
