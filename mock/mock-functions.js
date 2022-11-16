@@ -7,16 +7,16 @@ const onFdc3Ready = () =>
     }
   });
 
-  const closeWindowOnCompletion = async (fdc3) => {
-    let implementationMetadata = await fdc3.getInfo();
-    let {fdc3Version} = implementationMetadata;
-    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-    if(fdc3Version === "1.2"){
-      await closeWindowOnCompletion_1_2(appControlChannel);
-    }else if(fdc3Version === "2.0"){
-      await closeWindowOnCompletion_2_0(appControlChannel);
-    }
+const closeWindowOnCompletion = async (fdc3) => {
+  let implementationMetadata = await fdc3.getInfo();
+  let { fdc3Version } = implementationMetadata;
+  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  if (fdc3Version === "1.2") {
+    await closeWindowOnCompletion_1_2(appControlChannel);
+  } else if (fdc3Version === "2.0") {
+    await closeWindowOnCompletion_2_0(appControlChannel);
   }
+};
 
 const closeWindowOnCompletion_1_2 = async (appControlChannel) => {
   appControlChannel.addContextListener("closeWindow", async (context) => {
@@ -46,11 +46,9 @@ const closeWindowOnCompletion_2_0 = async (appControlChannel) => {
 
 async function sleep(timeoutMs) {
   let timeout;
-  const promise = new Promise((resolve) => {
+  return new Promise((resolve) => {
     timeout = window.setTimeout(() => {
       resolve();
     }, timeoutMs);
   });
-  return { promise, timeout };
 }
-
