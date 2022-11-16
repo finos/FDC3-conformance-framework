@@ -20,7 +20,7 @@ class Fdc3CommandExecutor1_2 {
             "fdc3.instrument",
             channel,
             config.historyItems,
-            config.testId,
+            config.testId
           );
           break;
         }
