@@ -2,30 +2,29 @@ class Fdc3CommandExecutor1_2 {
   //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
-
+    
     //close ChannelsApp when test is complete
     await this.closeWindowOnCompletion(config.testId);
-
     for (const command of orderedCommands) {
       switch (command) {
-        case "joinSystemChannelOne": {
-          channel = await this.joinSystemChannelOne();
+        case commands.joinUserChannelOne: {
+          channel = await this.joinUserChannelOne();
           break;
         }
-        case "retrieveTestAppChannel": {
+        case commands.retrieveTestAppChannel: {
           channel = await this.retrieveTestAppChannel();
           break;
         }
-        case "broadcastInstrumentContext": {
+        case commands.broadcastInstrumentContext: {
           await this.broadcastContextItem(
             "fdc3.instrument",
             channel,
             config.historyItems,
-            config.testId
+            config.testId,
           );
           break;
         }
-        case "broadcastContactContext": {
+        case commands.broadcastContactContext: {
           await this.broadcastContextItem(
             "fdc3.contact",
             channel,
@@ -41,9 +40,10 @@ class Fdc3CommandExecutor1_2 {
     if (config.notifyAppAOnCompletion) {
       await this.notifyAppAOnCompletion(config.testId);
     }
+
   }
 
-  async joinSystemChannelOne() {
+  async joinUserChannelOne() {
     const channels = await window.fdc3.getSystemChannels();
     await window.fdc3.joinChannel(channels[0].id);
     return channels[0];
@@ -62,9 +62,9 @@ class Fdc3CommandExecutor1_2 {
 
   //get app/system channel broadcast service
   getBroadcastService(currentChannelType) {
-    if (currentChannelType === "system") {
+    if (currentChannelType === channelType.system) {
       return this.systemChannelBroadcastService;
-    } else if (currentChannelType === "app") {
+    } else if (currentChannelType === channelType.app) {
       return this.appChannelBroadcastService;
     }
   }

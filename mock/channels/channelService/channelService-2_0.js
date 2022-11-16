@@ -8,15 +8,15 @@ class Fdc3CommandExecutor2_0 {
 
     for (const command of orderedCommands) {
       switch (command) {
-        case "joinUserChannelOne": {
+        case commands.joinUserChannelOne: {
           channel = await this.joinUserChannelOne();
           break;
         }
-        case "retrieveTestAppChannel": {
+        case commands.retrieveTestAppChannel: {
           channel = await this.retrieveTestAppChannel();
           break;
         }
-        case "broadcastInstrumentContext": {
+        case commands.broadcastInstrumentContext: {
           await this.broadcastContextItem(
             "fdc3.instrument",
             channel,
@@ -25,7 +25,7 @@ class Fdc3CommandExecutor2_0 {
           );
           break;
         }
-        case "broadcastContactContext": {
+        case commands.broadcastContactContext: {
           await this.broadcastContextItem(
             "fdc3.contact",
             channel,
@@ -67,9 +67,9 @@ class Fdc3CommandExecutor2_0 {
 
   //get app/system channel broadcast service
   getBroadcastService(currentChannelType) {
-    if (currentChannelType === "system") {
+    if (currentChannelType === channelType.system) {
       return this.systemChannelBroadcastService;
-    } else if (currentChannelType === "app") {
+    } else if (currentChannelType === channelType.app) {
       return this.appChannelBroadcastService;
     }
   }
