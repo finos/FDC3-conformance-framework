@@ -3,12 +3,12 @@ import { assert, expect } from "chai";
 import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+import { sleep, wait } from "../../../utils";
 
 const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
-let timeout: number;
 
 interface AppControlContext extends Context {
   testId: string;
@@ -355,7 +355,7 @@ export default () =>
         );
 
         //Give listeners time to receive context
-        wait();
+        await wait();
       });
 
       const scTestId7 =
@@ -1058,19 +1058,14 @@ export default () =>
     };
 
     function validateListenerObject(listenerObject) {
-      assert.isTrue(listenerObject && typeof listenerObject === "object", "No listener object found");
+      assert.isTrue(
+        typeof listenerObject === "object",
+        "No listener object found"
+      );
       expect(typeof listenerObject.unsubscribe).to.be.equals(
         "function",
         "Listener does not contain an unsubscribe method"
       );
-    }
-
-    async function wait() {
-      return new Promise((resolve) => {
-        timeout = window.setTimeout(() => {
-          resolve(true);
-        }, constants.WaitTime);
-      });
     }
 
     async function closeChannelsAppWindow(testId: string) {
@@ -1079,6 +1074,7 @@ export default () =>
 
       //Wait for ChannelsApp to respond
       await waitForContext("windowClosed", testId, appControlChannel);
+      await wait(constants.WindowCloseWaitTime);
     }
 
     const broadcastAppChannelCloseWindow = async (testId: string) => {
