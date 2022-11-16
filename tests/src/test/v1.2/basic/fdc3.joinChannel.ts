@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
-const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
+declare let fdc3: DesktopAgent;
 
 export default () =>
   describe("fdc3.joinChannel", () => {
@@ -10,9 +10,7 @@ export default () =>
     });
 
     it("Can join channel", async () => {
-      const channels = await (<DesktopAgent>(
-        (<unknown>window.fdc3)
-      )).getSystemChannels();
+      const channels = await fdc3.getSystemChannels();
 
       if (channels.length > 0) {
         try {

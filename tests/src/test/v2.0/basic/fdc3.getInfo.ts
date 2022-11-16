@@ -6,7 +6,7 @@ import constants from "../../../constants";
 import { validateAppMetadata } from "../advanced/fdc3.getAppMetadata";
 import { sleep } from "../../../utils";
 
-const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
+declare let fdc3: DesktopAgent;
 const getInfoDocs =
   "\r\nDocumentation: " + APIDocumentation.getInfo2_0 + "\r\nCause";
 const getMetadataDocs =
@@ -27,35 +27,36 @@ export default () =>
       }
     });
 
-    it("(DA metadata) Returns a valid ImplementationMetadata object ", async () => {
+    it("(DA metadata) Returns a valid ImplementationMetadata object", async () => {
       try {
-        fdc3.getInfo().then((implMetadata) => {
-          expect(implMetadata, getInfoDocs).to.have.property("fdc3Version");
-          expect(Number(implMetadata.fdc3Version)).to.be.greaterThanOrEqual(2);
-          expect(implMetadata, getInfoDocs).to.have.property("provider");
-          expect(implMetadata.provider).to.not.be.equal("");
-          expect(implMetadata.optionalFeatures, getInfoDocs).to.have.property(
-            "OriginatingAppMetadata"
+        const implMetadata = await fdc3.getInfo();
+        expect(implMetadata, getInfoDocs).to.have.property("fdc3Version");
+        expect(parseFloat(implMetadata.fdc3Version)).to.be.greaterThanOrEqual(
+          2
+        );
+        expect(implMetadata, getInfoDocs).to.have.property("provider");
+        expect(implMetadata.provider).to.not.be.equal("");
+        expect(implMetadata.optionalFeatures, getInfoDocs).to.have.property(
+          "OriginatingAppMetadata"
+        );
+        expect(implMetadata.optionalFeatures, getInfoDocs).to.have.property(
+          "UserChannelMembershipAPIs"
+        );
+        if (
+          typeof implMetadata.optionalFeatures.OriginatingAppMetadata !==
+          "boolean"
+        ) {
+          assert.fail(
+            "ImplementationMetadata.optionalFeatures.OriginatingAppMetadata should be of type boolean"
           );
-          expect(implMetadata.optionalFeatures, getInfoDocs).to.have.property(
-            "UserChannelMembershipAPIs"
+        } else if (
+          typeof implMetadata.optionalFeatures.UserChannelMembershipAPIs !==
+          "boolean"
+        ) {
+          assert.fail(
+            "ImplementationMetadata.optionalFeatures.UserChannelMembershipAPIs should be of type boolean"
           );
-          if (
-            typeof implMetadata.optionalFeatures.OriginatingAppMetadata !==
-            "boolean"
-          ) {
-            assert.fail(
-              "ImplementationMetadata.optionalFeatures.OriginatingAppMetadata should be of type boolean"
-            );
-          } else if (
-            typeof implMetadata.optionalFeatures.UserChannelMembershipAPIs !==
-            "boolean"
-          ) {
-            assert.fail(
-              "ImplementationMetadata.optionalFeatures.UserChannelMembershipAPIs should be of type boolean"
-            );
-          }
-        });
+        }
       } catch (ex) {
         assert.fail(getInfoDocs + (ex.message ?? ex));
       }
@@ -68,22 +69,20 @@ export default () =>
       expect(appIdentifier).to.have.property("appId");
       expect(appIdentifier).to.have.property("instanceId");
 
-      fdc3.getInfo().then(async (implMetadata) => {
-        expect(implMetadata, getInfoDocs).to.have.property("appMetadata");
-        expect(implMetadata.appMetadata, getInfoDocs).to.have.property("appId");
-        expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
-          "instanceId"
-        );
-        expect(implMetadata.appMetadata.appId).to.be.equal(appIdentifier.appId);
-        expect(implMetadata.appMetadata.instanceId).to.be.equal(
-          appIdentifier.instanceId
-        );
+      const implMetadata = await fdc3.getInfo();
+      expect(implMetadata, getInfoDocs).to.have.property("appMetadata");
+      expect(implMetadata.appMetadata, getInfoDocs).to.have.property("appId");
+      expect(implMetadata.appMetadata, getInfoDocs).to.have.property(
+        "instanceId"
+      );
+      expect(implMetadata.appMetadata.appId).to.be.equal(appIdentifier.appId);
+      expect(implMetadata.appMetadata.instanceId).to.be.equal(
+        appIdentifier.instanceId
+      );
 
-        validateAppMetadata(implMetadata);
-
-        await broadcastCloseWindow();
-        await waitForMockAppToClose();
-      });
+      validateAppMetadata(implMetadata);
+      await broadcastCloseWindow();
+      await waitForMockAppToClose();
     });
 
     async function waitForMockAppToClose() {

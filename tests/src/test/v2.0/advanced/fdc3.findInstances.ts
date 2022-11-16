@@ -5,7 +5,7 @@ import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
 
-const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
+declare let fdc3: DesktopAgent;
 const findInstancesDocs =
   "\r\nDocumentation: " + APIDocumentation.findInstances + "\r\nCause";
 
