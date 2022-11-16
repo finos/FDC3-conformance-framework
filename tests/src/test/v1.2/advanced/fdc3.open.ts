@@ -3,6 +3,7 @@ import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+import { sleep, wait } from "../../../utils";
 
 const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
 const appBName = "MockApp";
@@ -11,7 +12,6 @@ const noListenerAppId = "IntentAppAId";
 const noListenerAppName = "IntentAppA";
 const genericListenerAppId = "IntentAppBId";
 const genericListenerAppName = "IntentAppB";
-let timeout: number;
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause";
 
@@ -236,6 +236,7 @@ export default () =>
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = (contextType: string) => {
+  let timeout;
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const listener = fdc3.addContextListener(contextType, (context) => {
       resolve(context);
@@ -244,7 +245,9 @@ const createReceiver = (contextType: string) => {
     });
 
     //if no context received reject promise
-    await wait();
+    const { promise: thePromise, timeout: theTimeout } = sleep();
+    timeout = theTimeout;
+    await thePromise;
     reject(new Error("No context received from app B"));
   });
 
@@ -255,6 +258,7 @@ async function closeAppWindows(testId) {
   await broadcastCloseWindow(testId);
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   await waitForContext("windowClosed", testId, appControlChannel);
+  await wait(constants.WindowCloseWaitTime);
 }
 
 const broadcastCloseWindow = async (currentTest) => {
@@ -348,14 +352,6 @@ const waitForContext = (
     }
   });
 };
-
-async function wait() {
-  return new Promise((resolve) => {
-    timeout = window.setTimeout(() => {
-      resolve(true);
-    }, constants.WaitTime);
-  });
-}
 
 interface AppControlContext extends Context {
   testId: string;

@@ -7,11 +7,11 @@
     <p>Conformance Framework Mock Intent App C</p>
     <p>This app is only used by the conformance framework for intent test purposes.</p>
     <script src="lib/mock-functions.js"></script>
-    <script type="module">
+   <script type="module">
       onFdc3Ready().then(async () => {
         await closeWindowOnCompletion(window.fdc3);
-        window.fdc3.addIntentListener('cTestingIntent', (context) => {
-          return new Promise<Context>((resolve) => resolve(context));
+        window.fdc3.addIntentListener('cTestingIntent', async (context) => {
+          return context;
         });
         window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
           window.fdc3.broadcast({

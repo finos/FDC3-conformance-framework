@@ -10,11 +10,11 @@
     <script type="module">
       onFdc3Ready().then(async () => {
         await closeWindowOnCompletion(window.fdc3);
-        window.fdc3.addIntentListener("aTestingIntent", (context) => {
-          return new Promise<Context>((resolve) => resolve(context));
+        window.fdc3.addIntentListener("aTestingIntent", async (context) => {
+          return context;
         });
-        window.fdc3.addIntentListener("sharedTestingIntent1", (context) => {
-          return new Promise<Context>((resolve) => resolve(context));
+        window.fdc3.addIntentListener("sharedTestingIntent1", async (context) => {
+          return context;
         });
   
         window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
