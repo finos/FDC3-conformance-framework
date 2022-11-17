@@ -42,7 +42,6 @@ export default () =>
 
           fdc3.addContextListener('someContext', (ctx) => {
             if (ctx.type == 'someContext') {
-              console.log("resolved")
               wrapper.resolve();
             } else {
               wrapper.reject("wrong context type")
@@ -56,8 +55,6 @@ export default () =>
           })
           
           await wrapper.promise
-          console.log("done")
-
         } catch (ex) {
           assert.fail("Error while joining channel: " + (ex.message ?? ex));
         }

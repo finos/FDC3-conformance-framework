@@ -15,9 +15,17 @@
       window.fdc3.addIntentListener('cTestingIntent', async (context) => {
         return context;
       });
+
       window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
         window.fdc3.broadcast({
           type: "fdc3-intent-c-opened",
+        });
+        window.fdc3.addContextListener(null, (context) => {
+          // broadcast that this app has received context
+          window.fdc3.broadcast({
+            type: "fdc3-conformance-context-received",
+            context: context,
+          });
         });
       });
     });
