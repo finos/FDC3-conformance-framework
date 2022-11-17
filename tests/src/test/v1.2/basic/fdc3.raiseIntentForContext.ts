@@ -10,18 +10,12 @@ const docs =
   "\r\nCause: ";
 
 export default () =>
-  describe("(NoContext) fdc3.raiseIntentForContext", async () => {
+  describe("fdc3.raiseIntentForContext", async () => {
     it("(NoContext) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
       const context = {
         type: "ThisContextDoesNotExist",
-        name: "Name",
-        id: {
-          ticker: "ticker",
-          ISIN: "US0378331005",
-          CUSIP: "037833100",
-          FIGI: "BBG000B9XRY4",
-        },
       };
+
       try {
         await fdc3.raiseIntentForContext(context);
         assert.fail("Expected error NoAppsFound not thrown", docs);

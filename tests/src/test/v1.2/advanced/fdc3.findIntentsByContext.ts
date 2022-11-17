@@ -59,4 +59,23 @@ export default () =>
         assert.fail(findIntentsByContextDocs + (ex.message ?? ex));
       }
     });
+
+    it("(NoContext) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
+      const context = {
+        type: "ThisContextDoesNotExist",
+      };
+      try {
+        await fdc3.findIntentsByContext(context);
+        assert.fail(
+          "Expected error NoAppsFound not thrown",
+          findIntentsByContextDocs
+        );
+      } catch (ex) {
+        expect(ex).to.have.property(
+          "message",
+          ResolveError.NoAppsFound,
+          findIntentsByContextDocs
+        );
+      }
+    });
   });

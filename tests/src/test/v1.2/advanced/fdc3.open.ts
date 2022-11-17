@@ -149,7 +149,10 @@ export default () =>
       const receivedValue = (await receiver) as any;
       await closeAppWindows(AOpensBWithContext1Test);
       expect(receivedValue.context.name).to.eq("context", openDocs);
-      expect(receivedValue.context.type).to.eq("fdc3.genericListener", openDocs);
+      expect(receivedValue.context.type).to.eq(
+        "fdc3.genericListener",
+        openDocs
+      );
     });
 
     const AOpensBWithContext2Test =
