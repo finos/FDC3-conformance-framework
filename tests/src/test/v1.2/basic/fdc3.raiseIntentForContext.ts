@@ -11,7 +11,7 @@ const docs =
 
 export default () =>
   describe("fdc3.raiseIntentForContext", async () => {
-    it("(NoContext) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
+    it("(BasicRI1) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
       const context = {
         type: "ThisContextDoesNotExist",
       };
