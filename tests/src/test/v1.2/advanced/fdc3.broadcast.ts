@@ -5,8 +5,7 @@ import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
 
-const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
-
+declare let fdc3: DesktopAgent;
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
 
@@ -70,16 +69,13 @@ export default () =>
           testId: scTestId1,
           notifyAppAOnCompletion: true,
         };
-        console.log("opening app");
         //Open ChannelsApp then execute commands in order
         await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
-        console.log("resolving execution");
         //wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
-        console.log("resolved execution");
 
         //reject if no context received
         if (!receivedContext) {
@@ -1014,7 +1010,7 @@ export default () =>
 
     function validateListenerObject(listenerObject) {
       assert.isTrue(
-        listenerObject && typeof listenerObject === "object",
+        typeof listenerObject === "object",
         "No listener object found"
       );
       expect(typeof listenerObject.unsubscribe).to.be.equals(

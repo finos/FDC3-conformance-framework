@@ -3,6 +3,8 @@ import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
+declare let fdc3: DesktopAgent;
+
 export default () =>
   describe("fdc3.addIntentListener", () => {
     let listener: Listener;
@@ -17,14 +19,11 @@ export default () =>
     it("(BasicIL1) Method is callable", async () => {
       const intentName = "fdc3.conformanceListener";
       try {
-        listener = (<DesktopAgent>(<unknown>window.fdc3)).addIntentListener(
-          intentName,
-          (info: any) => {
-            console.log(
-              `Intent listener for intent ${intentName} triggered with result ${info}`
-            );
-          }
-        );
+        listener = fdc3.addIntentListener(intentName, (info: any) => {
+          console.log(
+            `Intent listener for intent ${intentName} triggered with result ${info}`
+          );
+        });
         expect(listener).to.have.property("unsubscribe").that.is.a("function");
       } catch (ex) {
         assert.fail(
