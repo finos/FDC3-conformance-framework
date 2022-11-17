@@ -28,11 +28,16 @@
 
     // populate drop-down
     fdc3Compliance.getPackNames().forEach(pn => {
-      const opt = document.createElement("option")
-      const text = document.createTextNode(pn)
-      opt.setAttribute("value", pn);
-      opt.appendChild(text)
-      version.appendChild(opt);
+      const optGroup = document.createElement("optgroup")
+      optGroup.setAttribute("label", pn);
+      fdc3Compliance.getPackMembers(pn).forEach(pm => {
+        const opt = document.createElement("option")
+        const text = document.createTextNode(pm)
+        opt.setAttribute("value", pm);
+        opt.appendChild(text)
+        optGroup.appendChild(opt)
+      })
+      version.appendChild(optGroup);
     })
 
     function executeTests() {

@@ -14,7 +14,7 @@ const getMetadataDocs =
 
 export default () =>
   describe("fdc3.getInfo", () => {
-    it("Method is callable", async () => {
+    it("(2.0-BasicGI1) Method is callable", async () => {
       try {
         await fdc3.getInfo();
       } catch (ex) {
@@ -27,7 +27,7 @@ export default () =>
       }
     });
 
-    it("(DA metadata) Returns a valid ImplementationMetadata object", async () => {
+    it("(2.0-BasicGI2) Returns a valid ImplementationMetadata object", async () => {
       try {
         const implMetadata = await fdc3.getInfo();
         expect(implMetadata, getInfoDocs).to.have.property("fdc3Version");

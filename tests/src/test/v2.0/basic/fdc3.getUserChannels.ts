@@ -8,7 +8,7 @@ const getSystemChannelDocs =
 
 export default () =>
   describe("fdc3.getUserChannels", () => {
-    it("Method is callable", async () => {
+    it("(2.0-BasicUC1) Method is callable", async () => {
       try {
         await fdc3.getUserChannels();
       } catch (ex) {
