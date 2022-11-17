@@ -26,56 +26,83 @@ import fdc3GetInstances_2_0 from "./v2.0/advanced/fdc3.findInstances";
 // import fdc3GetOrCreateChannel_2_0 from "./v2.0/fdc3.getOrCreateChannel";
 import fdc3GetUserChannels_2_0 from "./v2.0/basic/fdc3.getUserChannels";
 import fdc3getAppMetadata_2_0 from "./v2.0/advanced/fdc3.getAppMetadata";
+import fdc3FindInstances_2_0 from "./v2.0/advanced/fdc3.findInstances";
 // import fdc3JoinChannel_2_0 from "./v2.0/fdc3.joinChannel";
 // import fdc3LeaveCurrentChannel_2_0 from "./v2.0/fdc3.leaveCurrentChannel";
 // import fdc3Open_2_0 from "./v2.0/fdc3.open";
 // import fdc3RaiseIntent_2_0 from "./v2.0/fdc3.raiseIntent";
 // import fdc3RaiseIntentForContext_2_0 from "./v2.0/fdc3.raiseIntentForContext";
 
-const basicSuite_1_2 = [
-  fdc3AddContextListener_1_2,
-  fdc3AddIntentListener_1_2,
-  fdc3GetCurrentChannel_1_2,
-  fdc3GetInfo_1_2,
-  fdc3GetOrCreateChannel_1_2,
-  fdc3GetSystemChannels_1_2,
-  fdc3JoinChannel_1_2,
-  fdc3LeaveCurrentChannel_1_2,
-  fdc3RaiseIntentForContext_1_2,
-];
+type testSet = { [key: string]: (() => void)[] };
 
-const advancedSuite_1_2 = [
-  fdc3Open_1_2,
-  fdc3Broadcast_1_2,
-  fdc3FindIntent_1_2,
-  fdc3RaiseIntent_1_2,
-  fdc3FindIntentsByContext_1_2,
-];
+const basicSuite_1_2: testSet = {
+  AddContextListener_1_2: [fdc3AddContextListener_1_2],
+  AddIntentListener_1_2: [fdc3AddIntentListener_1_2],
+  fdc3GetCurrentChannel_1_2: [fdc3GetCurrentChannel_1_2],
+  fdc3GetInfo_1_2: [fdc3GetInfo_1_2],
+  fdc3GetOrCreateChannel_1_2: [fdc3GetOrCreateChannel_1_2],
+  fdc3GetSystemChannels_1_2: [fdc3GetSystemChannels_1_2],
+  fdc3JoinChannel_1_2: [fdc3JoinChannel_1_2],
+  fdc3LeaveCurrentChannel_1_2: [fdc3LeaveCurrentChannel_1_2],
+  fdc3RaiseIntentForContext_1_2: [fdc3RaiseIntentForContext_1_2],
+};
 
-const allSuites_1_2 = [...basicSuite_1_2, ...advancedSuite_1_2];
+const basicSuite_2_0: testSet = {
+  fdc3GetInfo_2_0: [fdc3GetInfo_2_0],
+  fdc3GetUserChannels_2_0: [fdc3GetUserChannels_2_0],
+};
 
-export const packs: { [index: string]: (() => Suite)[] } = {
-  "All 1.2": allSuites_1_2,
-  "Basic 1.2": basicSuite_1_2,
-  "Advanced 1.2": advancedSuite_1_2,
-  "fdc3AddContextListener 1.2": [fdc3AddContextListener_1_2],
-  "fdc3Broadcast 1.2": [fdc3Broadcast_1_2],
-  "fdc3FindIntent 1.2": [fdc3FindIntent_1_2],
-  "fdc3Open 1.2": [fdc3Open_1_2],
-  "fdc3RaiseIntent 1.2": [fdc3RaiseIntent_1_2],
-  "fdc3RaiseIntentForContext 1.2": [fdc3RaiseIntentForContext_1_2],
-  "fdc3AddIntentListener 1.2": [fdc3AddIntentListener_1_2],
-  "fdc3GetCurrentChannel 1.2": [fdc3GetCurrentChannel_1_2],
-  "fdc3GetInfo 1.2": [fdc3GetInfo_1_2],
-  "fdc3GetOrCreateChannel 1.2": [fdc3GetOrCreateChannel_1_2],
-  "fdc3GetSystemChannels 1.2": [fdc3GetSystemChannels_1_2],
-  "fdc3JoinChannel 1.2": [fdc3JoinChannel_1_2],
-  "fdc3LeaveCurrentChannel 1.2": [fdc3LeaveCurrentChannel_1_2],
-  "fdc3FindIntentsByContext 1.2": [fdc3FindIntentsByContext_1_2],
+const advancedSuite_1_2: testSet = {
+  fdc3Open_1_2: [fdc3Open_1_2],
+  fdc3Broadcast_1_2: [fdc3Broadcast_1_2],
+  fdc3FindIntent_1_2: [fdc3FindIntent_1_2],
+  fdc3RaiseIntent_1_2: [fdc3RaiseIntent_1_2],
+  fdc3FindIntentsByContext_1_2: [fdc3FindIntentsByContext_1_2],
+};
+
+const advancedSuite_2_0: testSet = {
+  fdc3Broadcast_2_0: [fdc3Broadcast_2_0],
+  fdc3FindInstances_2_0: [fdc3FindInstances_2_0],
+  fdc3getAppMetadata_2_0: [fdc3getAppMetadata_2_0],
+};
+
+function stripSuites(ts: testSet[]): (() => void)[] {
+  const out: (() => void)[] = [];
+  ts.map((item) => {
+    const sets = Object.values(item);
+    sets.forEach((set) => set.forEach((test) => out.push(test)));
+  });
+  return out;
+}
+
+export const allTests: testSet = {
+  "All 1.2": stripSuites([basicSuite_1_2, advancedSuite_1_2]),
+  "All 2.0": stripSuites([basicSuite_2_0, advancedSuite_2_0]),
+  "Basic 1.2": stripSuites([basicSuite_1_2]),
+  "Basic 2.0": stripSuites([basicSuite_2_0]),
+  "Advanced 1.2": stripSuites([advancedSuite_1_2]),
+  "Advanced 2.0": stripSuites([advancedSuite_2_0]),
+  ...basicSuite_1_2,
+  ...advancedSuite_1_2,
+  ...basicSuite_2_0,
+  ...advancedSuite_2_0,
+};
+
+export const packs: { [index: string]: string[] } = {
+  "1.2 (Combined)": ["All 1.2", "Basic 1.2", "Advanced 1.2"],
+  "1.2 (Individual Basic)": Object.keys(basicSuite_1_2),
+  "1.2 (Individual Advanced)": Object.keys(advancedSuite_1_2),
+  "2.0 (Combined)": ["All 2.0", "Basic 2.0", "Advanced 2.0"],
+  "2.0 (Individual Basic)": Object.keys(basicSuite_2_0),
+  "2.0 (Individual Advanced)": Object.keys(advancedSuite_2_0),
 };
 
 export function getPackNames(): string[] {
   return Object.keys(packs);
+}
+
+export function getPackMembers(packName: string): string[] {
+  return packs[packName];
 }
 
 /**
@@ -84,6 +111,7 @@ export function getPackNames(): string[] {
  */
 export const executeTestsInBrowser = (pack: string) => {
   (mocha as any).timeout(constants.TestTimeout);
-  packs[pack].forEach((suite) => suite());
+  const suite = allTests[pack];
+  suite.forEach((s) => s());
   mocha.run();
 };
