@@ -9,14 +9,17 @@ export default () =>
       await fdc3.leaveCurrentChannel();
     });
 
-    it("Can join channel", async () => {
+    it("(BasicJC1) Can join channel", async () => {
       const channels = await fdc3.getSystemChannels();
 
       if (channels.length > 0) {
         try {
           await fdc3.joinChannel(channels[0].id);
           const currentChannel = await fdc3.getCurrentChannel();
-          expect(currentChannel).to.not.be.null;
+          expect(typeof currentChannel).to.be.equals(
+            "object",
+            "getCurrentChannel() did not return an object"
+          );
         } catch (ex) {
           assert.fail("Error while joining channel: " + (ex.message ?? ex));
         }

@@ -11,16 +11,9 @@ const docs =
 
 export default () =>
   describe("fdc3.raiseIntentForContext", async () => {
-    it("(BasicRI1) Method is callable", async () => {
+    it("(BasicRI1) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
       const context = {
         type: "ThisContextDoesNotExist",
-        name: "Name",
-        id: {
-          ticker: "ticker",
-          ISIN: "US0378331005",
-          CUSIP: "037833100",
-          FIGI: "BBG000B9XRY4",
-        },
       };
 
       try {
