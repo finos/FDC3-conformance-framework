@@ -24,7 +24,6 @@ export default () =>
 
     it("(BasicJC1) Can join channel and broadcast", async () => {
       const wrapper = wrapPromise()
-
       const channels = await fdc3.getSystemChannels();
 
       if (channels.length > 0) {
@@ -36,7 +35,6 @@ export default () =>
           expect(currentChannel).to.not.be.null;
 
           const gotContext = (c) => {
-            console.log("Received" + c)
             return true;
           }
 
