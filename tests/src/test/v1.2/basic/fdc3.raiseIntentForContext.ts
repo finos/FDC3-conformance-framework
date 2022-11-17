@@ -3,6 +3,7 @@ import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
+declare let fdc3: DesktopAgent;
 const docs =
   "\r\nDocumentation: " +
   APIDocumentation.raiseIntentForContext +
@@ -23,9 +24,7 @@ export default () =>
       };
 
       try {
-        await (<DesktopAgent>(<unknown>window.fdc3)).raiseIntentForContext(
-          context
-        );
+        await fdc3.raiseIntentForContext(context);
         assert.fail("Expected error NoAppsFound not thrown", docs);
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.NoAppsFound, docs);

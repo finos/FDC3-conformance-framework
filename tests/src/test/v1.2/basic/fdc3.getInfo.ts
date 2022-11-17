@@ -2,7 +2,7 @@ import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
-const fdc3 = <DesktopAgent>(<unknown>window.fdc3);
+declare let fdc3: DesktopAgent;
 const getInfoDocs =
   "\r\nDocumentation: " + APIDocumentation.getInfo + "\r\nCause";
 
