@@ -15,29 +15,29 @@ import fdc3LeaveCurrentChannel_1_2 from "./v1.2/basic/fdc3.leaveCurrentChannel";
 import fdc3Open_1_2 from "./v1.2/advanced/fdc3.open";
 import fdc3RaiseIntent_1_2 from "./v1.2/advanced/fdc3.raiseIntent";
 import fdc3RaiseIntentForContext_1_2 from "./v1.2/basic/fdc3.raiseIntentForContext";
-//import fdc3AddContextListener_2_0 from "./v2.0/fdc3.addContextListener";
-// import fdc3AddIntentListener_2_0 from "./v2.0/fdc3.addIntentListener";
+import fdc3AddContextListener_2_0 from "./v2.0/basic/fdc3.addContextListener";
+import fdc3AddIntentListener_2_0 from "./v2.0/basic/fdc3.addIntentListener";
 import fdc3Broadcast_2_0 from "./v2.0/advanced/fdc3.broadcast";
 // import fdc3FindIntent_2_0 from "./v2.0/fdc3.findIntent";
 // import fdc3FindIntentsByContext_2_0 from "./v2.0/fdc3.findIntentsByContext";
-// import fdc3GetCurrentChannel_2_0 from "./v2.0/fdc3.getCurrentChannel";
+import fdc3GetCurrentChannel_2_0 from "./v2.0/basic/fdc3.getCurrentChannel";
 import fdc3GetInfo_2_0 from "./v2.0/basic/fdc3.getInfo";
 import fdc3GetInstances_2_0 from "./v2.0/advanced/fdc3.findInstances";
-// import fdc3GetOrCreateChannel_2_0 from "./v2.0/fdc3.getOrCreateChannel";
+import fdc3GetOrCreateChannel_2_0 from "./v2.0/basic/fdc3.getOrCreateChannel";
 import fdc3GetUserChannels_2_0 from "./v2.0/basic/fdc3.getUserChannels";
 import fdc3getAppMetadata_2_0 from "./v2.0/advanced/fdc3.getAppMetadata";
 import fdc3FindInstances_2_0 from "./v2.0/advanced/fdc3.findInstances";
-// import fdc3JoinChannel_2_0 from "./v2.0/fdc3.joinChannel";
-// import fdc3LeaveCurrentChannel_2_0 from "./v2.0/fdc3.leaveCurrentChannel";
+import fdc3JoinUserChannel_2_0 from "./v2.0/basic/fdc3.joinUserChannel";
+import fdc3LeaveCurrentChannel_2_0 from "./v2.0/basic/fdc3.leaveCurrentChannel";
 // import fdc3Open_2_0 from "./v2.0/fdc3.open";
 // import fdc3RaiseIntent_2_0 from "./v2.0/fdc3.raiseIntent";
-// import fdc3RaiseIntentForContext_2_0 from "./v2.0/fdc3.raiseIntentForContext";
+import fdc3RaiseIntentForContext_2_0 from "./v2.0/basic/fdc3.raiseIntentForContext";
 
 type testSet = { [key: string]: (() => void)[] };
 
 const basicSuite_1_2: testSet = {
-  AddContextListener_1_2: [fdc3AddContextListener_1_2],
-  AddIntentListener_1_2: [fdc3AddIntentListener_1_2],
+  fdc3AddContextListener_1_2: [fdc3AddContextListener_1_2],
+  fdc3AddIntentListener_1_2: [fdc3AddIntentListener_1_2],
   fdc3GetCurrentChannel_1_2: [fdc3GetCurrentChannel_1_2],
   fdc3GetInfo_1_2: [fdc3GetInfo_1_2],
   fdc3GetOrCreateChannel_1_2: [fdc3GetOrCreateChannel_1_2],
@@ -48,8 +48,15 @@ const basicSuite_1_2: testSet = {
 };
 
 const basicSuite_2_0: testSet = {
+  fdc3AddContextListener_2_0: [fdc3AddContextListener_2_0],
+  fdc3AddIntentListener_2_0: [fdc3AddIntentListener_2_0],
+  fdc3GetCurrentChannel_2_0: [fdc3GetCurrentChannel_2_0],
   fdc3GetInfo_2_0: [fdc3GetInfo_2_0],
+  fdc3GetOrCreateChannel_2_0: [fdc3GetOrCreateChannel_2_0],
   fdc3GetUserChannels_2_0: [fdc3GetUserChannels_2_0],
+  fdc3JoinUserChannel_2_0: [fdc3JoinUserChannel_2_0],
+  fdc3LeaveCurrentChannel_2_0: [fdc3LeaveCurrentChannel_2_0],
+  fdc3RaiseIntentForContext_2_0: [fdc3RaiseIntentForContext_2_0],
 };
 
 const advancedSuite_1_2: testSet = {
