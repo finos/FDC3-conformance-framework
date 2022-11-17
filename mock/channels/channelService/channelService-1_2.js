@@ -2,14 +2,13 @@ class Fdc3CommandExecutor1_2 {
   //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
-
+    
     //close ChannelsApp when test is complete
     await this.closeWindowOnCompletion(config.testId);
-
     for (const command of orderedCommands) {
       switch (command) {
-        case commands.joinSystemChannelOne: {
-          channel = await this.joinSystemChannelOne();
+        case commands.joinUserChannelOne: {
+          channel = await this.joinUserChannelOne();
           break;
         }
         case commands.retrieveTestAppChannel: {
@@ -41,9 +40,10 @@ class Fdc3CommandExecutor1_2 {
     if (config.notifyAppAOnCompletion) {
       await this.notifyAppAOnCompletion(config.testId);
     }
+
   }
 
-  async joinSystemChannelOne() {
+  async joinUserChannelOne() {
     const channels = await window.fdc3.getSystemChannels();
     await window.fdc3.joinChannel(channels[0].id);
     return channels[0];
@@ -126,14 +126,4 @@ class Fdc3CommandExecutor1_2 {
   }
 }
 
-const channelType = {
-  system: "system",
-  app: "app",
-};
 
-const commands = {
-  joinSystemChannelOne: "joinSystemChannelOne",
-  retrieveTestAppChannel: "retrieveTestAppChannel",
-  broadcastInstrumentContext: "broadcastInstrumentContext",
-  broadcastContactContext: "broadcastContactContext",
-};

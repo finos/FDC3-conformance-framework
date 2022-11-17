@@ -1,24 +1,27 @@
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <link rel="stylesheet" href="index.css" />
-  </head>
-  <body>
-    <p>Conformance Framework Mock Intent App C</p>
-    <p>This app is only used by the conformance framework for intent test purposes.</p>
-    <script src="lib/mock-functions.js"></script>
-    <script type="module">
-      onFdc3Ready().then(() => {
-        window.fdc3.addIntentListener('cTestingIntent', (context) => {
-          return new Promise<Context>((resolve) => resolve(context));
-        });
-        window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
-          window.fdc3.broadcast({
-            type: "fdc3-intent-c-opened",
-          });
-        });
-        closeWindowOnCompletion(window.fdc3);
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="index.css" />
+</head>
+
+<body>
+  <p>Conformance Framework Mock Intent App C</p>
+  <p>This app is only used by the conformance framework for intent test purposes.</p>
+  <script src="lib/mock-functions.js"></script>
+  <script type="module">
+    onFdc3Ready().then(async () => {
+      await closeWindowOnCompletion();
+      window.fdc3.addIntentListener('cTestingIntent', async (context) => {
+        return context;
       });
-    </script>
-  </body>
+      window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
+        window.fdc3.broadcast({
+          type: "fdc3-intent-c-opened",
+        });
+      });
+    });
+  </script>
+</body>
+
 </html>

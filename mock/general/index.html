@@ -8,10 +8,10 @@
 <body>
   <p>Conformance Framework Mock App</p>
   <p>This app is only used by the conformance framework for test purposes.</p>
-  <p></p>
   <script src="lib/mock-functions.js"></script>
   <script type="module">
-    onFdc3Ready().then(() => {
+    onFdc3Ready().then( async() => {
+      await closeWindowOnCompletion();
       window.fdc3.joinChannel("FDC3-Conformance-Channel").then(() => {
         // broadcast that this app has opened
         window.fdc3.broadcast({
@@ -27,10 +27,7 @@
             context: context,
           });
         });
-
-        window.fdc3.addContextListener("fdc3.instrument");
       });
-      closeWindowOnCompletion(window.fdc3);
     });
   </script>
 </body>
