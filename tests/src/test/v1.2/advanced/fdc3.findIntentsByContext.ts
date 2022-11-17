@@ -59,18 +59,4 @@ export default () =>
         assert.fail(findIntentsByContextDocs + (ex.message ?? ex));
       }
     });
-
-    it("(NoContext) Should throw NoAppsFound error when context does not exist", async () => {
-      try {
-        await fdc3.findIntentsByContext({
-          type: "testContextNonExistent",
-        });
-      } catch (ex) {
-        expect(ex).to.have.property(
-          "message",
-          ResolveError.NoAppsFound,
-          findIntentsByContextDocs
-        );
-      }
-    });
   });

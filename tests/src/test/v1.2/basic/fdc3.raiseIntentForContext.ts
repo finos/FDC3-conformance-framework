@@ -10,8 +10,8 @@ const docs =
   "\r\nCause: ";
 
 export default () =>
-  describe("fdc3.raiseIntentForContext", async () => {
-    it("(BasicRI1) Method is callable", async () => {
+  describe("(NoContext) fdc3.raiseIntentForContext", async () => {
+    it("(NoContext) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
       const context = {
         type: "ThisContextDoesNotExist",
         name: "Name",
@@ -22,7 +22,6 @@ export default () =>
           FIGI: "BBG000B9XRY4",
         },
       };
-
       try {
         await fdc3.raiseIntentForContext(context);
         assert.fail("Expected error NoAppsFound not thrown", docs);

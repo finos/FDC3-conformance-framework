@@ -16,7 +16,10 @@ export default () =>
         try {
           await fdc3.joinChannel(channels[0].id);
           const currentChannel = await fdc3.getCurrentChannel();
-          expect(typeof currentChannel).to.be.equals("object", "getCurrentChannel() did not return an object");
+          expect(typeof currentChannel).to.be.equals(
+            "object",
+            "getCurrentChannel() did not return an object"
+          );
         } catch (ex) {
           assert.fail("Error while joining channel: " + (ex.message ?? ex));
         }
