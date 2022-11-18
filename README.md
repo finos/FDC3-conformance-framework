@@ -14,6 +14,7 @@ This repository currently contains:
  - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
  - `app` - A simple application that hosts the tests, allowing them to be executed from within a desktop container.
  - `mock` - Multiple mock applications that are used to verify conformance - [details](./mock/README.md)
+ - `directory` - Some JSON files in the FDC3 V2 Directory format that you can use to set up your desktop agent with either 1.2 or 2.0 test suites.
 
 In order to get started, install all the dependencies with:
 
@@ -30,11 +31,11 @@ yarn build
 The server(s) can be started as follows:
 
 ```sh
-// Start the app which runs the tests
+// Start the app which runs the tests (on port 3500)
 cd app
 yarn start
 
-// Start all the mock apps which the tests will make use of
+// Start all the mock apps which the tests will make use of (runs on port 3001)
 cd mock
 yarn start
 ```

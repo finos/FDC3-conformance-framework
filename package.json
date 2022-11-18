@@ -7,6 +7,6 @@
   ],
   "scripts": {
     "build": "yarn workspaces run build",
-    "bra" : "yarn build; cd app; yarn bs3500"
+    "bra" : "yarn build; cd app; yarn build; yarn start"
   }
 }
