@@ -20,7 +20,7 @@
         window.fdc3.broadcast({
           type: "fdc3-intent-c-opened",
         });
-        window.fdc3.addContextListener(null, (context) => {
+        window.fdc3.addContextListener("fdc3.genericListener", (context) => {
           // broadcast that this app has received context
           window.fdc3.broadcast({
             type: "fdc3-conformance-context-received",
