@@ -4,7 +4,7 @@
     "description": "Testing spec conformance",
     "manifest": {
         "window": {
-            "url": "http://localhost:3000",
+            "url": "http://localhost:3500",
             "affinity": "workspaceComponents",
             "options": {
                 "resizable": true,
@@ -62,7 +62,7 @@
     "tooltip": "tooltip",
     "manifest": {
         "window": {
-            "url": "http://localhost:3001",
+            "url": "http://localhost:3001/v1.2/general",
             "affinity": "workspaceComponents",
             "options": {
                 "resizable": true,
@@ -115,7 +115,7 @@
     "description": "Testing find intent A",
     "manifest": {
         "window": {
-            "url": "http://localhost:3100",
+            "url": "http://localhost:3001/v1.2/intent-a",
             "affinity": "workspaceComponents",
             "options": {
                 "resizable": true,
@@ -183,7 +183,7 @@
     "description": "Testing find intent B",
     "manifest": {
         "window": {
-            "url": "http://localhost:3101",
+            "url": "http://localhost:3001/v1.2/intent-b",
             "affinity": "workspaceComponents",
             "options": {
                 "resizable": true,
@@ -251,7 +251,7 @@
     "description": "Testing find intent C",
     "manifest": {
         "window": {
-            "url": "http://localhost:3102",
+            "url": "http://localhost:3001/v1.2/intent-c",
             "affinity": "workspaceComponents",
             "options": {
                 "resizable": true,
@@ -314,7 +314,7 @@
 	"description": "Testing channels app",
 	"manifest": {
 		"window": {
-			"url": "http://localhost:3103",
+			"url": "http://localhost:3001/v1.2/channels",
 			"affinity": "workspaceComponents",
 			"options": {
 				"resizable": true,
