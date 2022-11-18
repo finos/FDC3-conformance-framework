@@ -3,7 +3,7 @@
     {
       "appId": "Conformance1",
       "name": "Conformance1",
-      "title": "FDC3 1.2 Conformance Framework",
+      "title": "FDC3 2.0 Conformance Framework",
       "description": "Testing Conformance",
       "type": "web",
       "details": {
@@ -17,6 +17,29 @@
       "hostManifests": {
         "sail": {
           "inject-api": "2.0"
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ]
+    },
+    {
+      "appId": "ChannelsAppId",
+      "name": "ChannelsApp",
+      "title": "Channels App",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/channels"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
         }
       },
       "version": "1.0.0",
