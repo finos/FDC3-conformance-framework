@@ -267,14 +267,7 @@
       "interop": {
         "intents": {
           "listensFor": {
-            "aTestingIntent": {
-              "displayName": "A Testing Intent",
-              "contexts": [
-                "testContextX",
-                "testContextZ"
-              ]
-            },
-            "sharedTestingIntent1": {
+            "sharedTestingIntent2": {
               "displayName": "Shared Testing Intent",
               "contexts": [
                 "testContextX"
