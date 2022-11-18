@@ -49,6 +49,47 @@
           "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
         }
       ]
+    },
+    {
+      "appId": "MetadataAppId",
+      "name": "MetadataApp",
+      "title": "Metadata App",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "tooltip": "Metadata Tooltip",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/channels"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "screenshots": [
+        {
+          "src": "https://directory.fdc3.finos.org/assets/app/Conformance1.png"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          }
+        }
+      }
     }
   ],
   "message": "OK"
