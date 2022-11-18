@@ -57,23 +57,26 @@ export default () =>
         validateListenerObject(listener);
 
         //Join system channel 1
-        await joinChannel(1);
+        const channel = await retrieveAndJoinChannel(1);
 
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
         ];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId1,
+          userChannelId: channel.id,
           notifyAppAOnCompletion: true,
         };
+
         //Open ChannelsApp then execute commands in order
         await fdc3.open(
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
+
         //wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
 
@@ -96,7 +99,7 @@ export default () =>
         );
 
         //Join system channel 1
-        await joinChannel(1);
+        const channel = await retrieveAndJoinChannel(1);
 
         let receivedContext = false;
 
@@ -109,13 +112,14 @@ export default () =>
         validateListenerObject(listener);
 
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
         ];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId2,
+          userChannelId: channel.id,
           notifyAppAOnCompletion: true,
         };
 
@@ -146,14 +150,18 @@ export default () =>
           await fdc3.getOrCreateChannel("app-control")
         );
 
+        //retrieve a user channel to pass to channels app
+        const channel = await getUserChannel(1);
+
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
         ];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId3,
+          userChannelId: channel.id,
           notifyAppAOnCompletion: true,
         };
 
@@ -164,7 +172,7 @@ export default () =>
         );
 
         //Join system channel 1
-        await joinChannel(1);
+        await fdc3.joinChannel(channel.id);
 
         let receivedContext = false;
 
@@ -208,10 +216,10 @@ export default () =>
         validateListenerObject(listener);
 
         //Join system channel 1
-        joinChannel(1);
+        const channel = await retrieveAndJoinChannel(1);
 
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
           commands.broadcastContactContext,
         ];
@@ -219,6 +227,7 @@ export default () =>
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId4,
+          userChannelId: channel.id,
           notifyAppAOnCompletion: true,
         };
 
@@ -280,10 +289,10 @@ export default () =>
         validateListenerObject(listener2);
 
         //Join system channel 1
-        await joinChannel(1);
+        const channel = await retrieveAndJoinChannel(1);
 
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
           commands.broadcastContactContext,
         ];
@@ -291,6 +300,7 @@ export default () =>
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId5,
+          userChannelId: channel.id,
           notifyAppAOnCompletion: true,
         };
 
@@ -316,7 +326,6 @@ export default () =>
       it(scTestId6, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
-        let receivedContext = false;
         //Add fdc3.instrument context listener
         listener = fdc3.addContextListener("fdc3.instrument", (context) => {
           assert.fail(`${errorMessage} ${context.type} context received`);
@@ -331,11 +340,15 @@ export default () =>
 
         validateListenerObject(listener2);
 
-        //ChannelsApp joins channel 2
-        await joinChannel(2);
+        const channels = await fdc3.getSystemChannels();
+        if (channels.length < 1)
+          assert.fail("No system channels available for app A");
+
+        //Join a different channel to the one passed to channelsApp
+        await fdc3.joinChannel(channels[0].id);
 
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
           commands.broadcastContactContext,
         ];
@@ -343,6 +356,7 @@ export default () =>
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId6,
+          userChannelId: channels[1].id,
         };
 
         //Open ChannelsApp then execute commands in order
@@ -375,7 +389,7 @@ export default () =>
         validateListenerObject(listener);
 
         //Join system channel 1
-        await joinChannel(1);
+        const channel = await retrieveAndJoinChannel(1);
 
         //Unsubscribe from listeners
         if (listener !== undefined) {
@@ -386,13 +400,14 @@ export default () =>
         }
 
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
         ];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId7,
+          userChannelId: channel.id,
           notifyAppAOnCompletion: true,
         };
 
@@ -420,17 +435,23 @@ export default () =>
         );
 
         //ChannelsApp joins a channel and then joins another
-        await joinChannel(1);
-        await joinChannel(2);
+        const channels = await fdc3.getSystemChannels();
+        if (channels.length < 1)
+          assert.fail("No system channels available for app A");
+
+        //Join a channel before joining a different channel
+        await fdc3.joinChannel(channels[0].id);
+        await fdc3.joinChannel(channels[1].id);
 
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
         ];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId8,
+          userChannelId: channels[0].id,
         };
 
         //Open ChannelsApp then execute commands in order
@@ -456,19 +477,20 @@ export default () =>
         validateListenerObject(listener);
 
         //Join system channel 1
-        await joinChannel(1);
+        const channel = await retrieveAndJoinChannel(1);
 
         //App A leaves channel 1
         await fdc3.leaveCurrentChannel();
 
         const channelsAppCommands = [
-          commands.joinUserChannelOne,
+          commands.joinRetrievedUserChannel,
           commands.broadcastInstrumentContext,
         ];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "1.2",
           testId: scTestId9,
+          userChannelId: channel.id,
         };
 
         //Open ChannelsApp then execute commands in order
@@ -999,10 +1021,18 @@ export default () =>
       });
     });
 
-    const joinChannel = async (channel: number) => {
+    const retrieveAndJoinChannel = async (
+      channelNumber: number
+    ): Promise<Channel> => {
+      const channel = await getUserChannel(channelNumber);
+      await fdc3.joinChannel(channel.id);
+      return channel;
+    };
+
+    const getUserChannel = async (channel: number): Promise<Channel> => {
       const channels = await fdc3.getSystemChannels();
       if (channels.length > 0) {
-        await fdc3.joinChannel(channels[channel - 1].id);
+        return channels[channel - 1];
       } else {
         assert.fail("No system channels available for app A");
       }
@@ -1144,12 +1174,14 @@ type ChannelsAppContext = Context & {
     notifyAppAOnCompletion: boolean;
     historyItems: number;
     fdc3ApiVersion: string;
+    userChannelId: string;
   };
 };
 
 type ChannelsAppConfig = {
   fdc3ApiVersion: string;
   testId: string;
+  userChannelId?: string;
   notifyAppAOnCompletion?: boolean;
   historyItems?: number;
 };
@@ -1166,12 +1198,13 @@ function buildChannelsAppContext(
       testId: config.testId,
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
+      userChannelId: config.userChannelId ?? null,
     },
   };
 }
 
 const commands = {
-  joinUserChannelOne: "joinUserChannelOne",
+  joinRetrievedUserChannel: "joinRetrievedUserChannel",
   retrieveTestAppChannel: "retrieveTestAppChannel",
   broadcastInstrumentContext: "broadcastInstrumentContext",
   broadcastContactContext: "broadcastContactContext",

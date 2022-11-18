@@ -2,13 +2,13 @@ class Fdc3CommandExecutor1_2 {
   //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
-    
+
     //close ChannelsApp when test is complete
     await this.closeWindowOnCompletion(config.testId);
     for (const command of orderedCommands) {
       switch (command) {
-        case commands.joinUserChannelOne: {
-          channel = await this.joinUserChannelOne();
+        case commands.joinRetrievedUserChannel: {
+          channel = await this.joinRetrievedUserChannel(config.userChannelId);
           break;
         }
         case commands.retrieveTestAppChannel: {
@@ -40,13 +40,15 @@ class Fdc3CommandExecutor1_2 {
     if (config.notifyAppAOnCompletion) {
       await this.notifyAppAOnCompletion(config.testId);
     }
-
   }
 
-  async joinUserChannelOne() {
-    const channels = await window.fdc3.getSystemChannels();
-    await window.fdc3.joinChannel(channels[0].id);
-    return channels[0];
+  async joinRetrievedUserChannel(channelId) {
+    const systemChannels = await window.fdc3.getSystemChannels();
+    const joinedChannel = systemChannels.find((c) => c.id === channelId);
+    if(joinedChannel){
+      await window.fdc3.joinChannel(channelId);
+      return joinedChannel;
+    }
   }
 
   //retrieve/create "test-channel" app channel
@@ -78,7 +80,7 @@ class Fdc3CommandExecutor1_2 {
             type: contextType,
             name: `History-item-${i + 1}`,
           };
-          if(testId) context.testId = testId;
+          if (testId) context.testId = testId;
           channel.broadcast(context);
         }
       }
@@ -93,7 +95,7 @@ class Fdc3CommandExecutor1_2 {
           type: contextType,
           name: `History-item-${i + 1}`,
         };
-        if(testId) context.testId = testId;
+        if (testId) context.testId = testId;
         window.fdc3.broadcast(context);
       }
     },
@@ -101,20 +103,17 @@ class Fdc3CommandExecutor1_2 {
 
   //close ChannelsApp on completion and respond to app A
   async closeWindowOnCompletion(testId) {
-    console.log(
-      Date.now() + ` Setting up closeWindow listener`
-    );
+    console.log(Date.now() + ` Setting up closeWindow listener`);
     const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
     appControlChannel.addContextListener("closeWindow", async () => {
-      console.log(
-        Date.now() + ` Received closeWindow message`
-      );
+      console.log(Date.now() + ` Received closeWindow message`);
       appControlChannel.broadcast({ type: "windowClosed", testId: testId });
-      setTimeout(()=>{ //yield to make sure the broadcast gets out before we close
+      setTimeout(() => {
+        //yield to make sure the broadcast gets out before we close
         window.close();
-      },1);
+      }, 1);
     });
   }
 
@@ -122,8 +121,11 @@ class Fdc3CommandExecutor1_2 {
     const appControlChannel = await window.fdc3.getOrCreateChannel(
       "app-control"
     );
-    await this.broadcastContextItem("executionComplete", appControlChannel, 1, testId);
+    await this.broadcastContextItem(
+      "executionComplete",
+      appControlChannel,
+      1,
+      testId
+    );
   }
 }
-
-
