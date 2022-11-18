@@ -90,6 +90,451 @@
           }
         }
       }
+    },
+    {
+      "appId": "IntentAppAId",
+      "name": "IntentAppA",
+      "title": "Intent App A",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-a"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "IntentAppBId",
+      "name": "IntentAppB",
+      "title": "Intent App B",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-b"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "bTestingIntent": {
+              "displayName": "B Testing Intent",
+              "contexts": [
+                "testContextY"
+              ]
+            },
+            "sharedTestingIntent1": {
+              "displayName": "Shared Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextY"
+              ]
+            }
+          },
+          "raises" : ["testContextY"]
+        }
+      }
+    },
+    {
+      "appId": "IntentAppCId",
+      "name": "IntentAppC",
+      "title": "Intent App C",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-c"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "cTestingIntent": {
+              "displayName": "C Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          },
+          "raises" : [ "testContextZ" ]
+        }
+      }
+    },
+    {
+      "appId": "IntentAppDId",
+      "name": "IntentAppD",
+      "title": "Intent App D",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-d"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "sharedTestingIntent2": {
+              "displayName": "Shared Testing Intent 2",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          },
+          "raises" : ["testContextZ"]
+        }
+      }
+    },
+    {
+      "appId": "IntentAppEId",
+      "name": "IntentAppE",
+      "title": "Intent App E",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-e"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
+            },
+            "sharedTestingIntent1": {
+              "displayName": "Shared Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "IntentAppFId",
+      "name": "IntentAppF",
+      "title": "Intent App F",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-f"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
+            },
+            "sharedTestingIntent1": {
+              "displayName": "Shared Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "IntentAppGId",
+      "name": "IntentAppG",
+      "title": "Intent App G",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-g"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
+            },
+            "sharedTestingIntent1": {
+              "displayName": "Shared Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "IntentAppHId",
+      "name": "IntentAppH",
+      "title": "Intent App H",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-h"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
+            },
+            "sharedTestingIntent1": {
+              "displayName": "Shared Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "IntentAppIId",
+      "name": "IntentAppI",
+      "title": "Intent App I",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-i"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
+            },
+            "sharedTestingIntent1": {
+              "displayName": "Shared Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "IntentAppJId",
+      "name": "IntentAppJ",
+      "title": "Intent App J",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-j"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
+            },
+            "sharedTestingIntent1": {
+              "displayName": "Shared Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          }
+        }
+      }
+    },
+    {
+      "appId": "IntentAppKId",
+      "name": "IntentAppK",
+      "title": "Intent App K",
+      "description": "Part of the FDC3 2.0 Conformance Tests",
+      "type": "web",
+      "details": {
+        "url": "http://localhost:3001/v2.0/intent-k"
+      },
+      "hostManifests": {
+        "sail": {
+          "inject-api": "2.0",
+          "searchable": false
+        }
+      },
+      "version": "1.0.0",
+      "publisher": "Scott Logic",
+      "icons": [
+        {
+          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+        }
+      ],
+      "interop": {
+        "intents": {
+          "listensFor": {
+            "aTestingIntent": {
+              "displayName": "A Testing Intent",
+              "contexts": [
+                "testContextX",
+                "testContextZ"
+              ]
+            },
+            "sharedTestingIntent1": {
+              "displayName": "Shared Testing Intent",
+              "contexts": [
+                "testContextX"
+              ]
+            }
+          }
+        }
+      }
     }
   ],
   "message": "OK"
