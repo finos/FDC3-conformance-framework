@@ -36,7 +36,7 @@ export default () =>
     });
 
     const AOpensB2Test =
-      "(AOpensB2Test) Can open app B from app A with no context and AppMetadata (name) as target";
+      "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
     it(AOpensB2Test, async () => {
       await fdc3.joinChannel("FDC3-Conformance-Channel");
       const result = createReceiver("fdc3-conformance-opened");
@@ -46,7 +46,7 @@ export default () =>
     });
 
     const AOpensB3Test =
-      "(AOpensB3Test) Can open app B from app A with no context and AppMetadata (name and appId) as target";
+      "(AOpensB3) Can open app B from app A with no context and AppMetadata (name and appId) as target";
     it(AOpensB3Test, async () => {
       await fdc3.joinChannel("FDC3-Conformance-Channel");
       const result = createReceiver("fdc3-conformance-opened");
