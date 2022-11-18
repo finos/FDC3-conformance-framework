@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
-import { Context } from "fdc3_1_2";
-import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
+import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
 
@@ -22,24 +22,27 @@ export default () =>
       await fdc3.leaveCurrentChannel();
     });
 
-    it("(BasicJC1) Can join channel and broadcast", async () => {
+    it("(2.0-BasicJC1) Can join channel and broadcast", async () => {
       const wrapper = wrapPromise()
-      const channels = await fdc3.getSystemChannels();
+
+      const channels = await fdc3.getUserChannels();
 
       if (channels.length > 0) {
         try {
-          await fdc3.joinChannel(channels[0].id);
+          await fdc3.joinUserChannel(channels[0].id);
 
           const currentChannel = await fdc3.getCurrentChannel();
 
           expect(currentChannel).to.not.be.null;
 
           const gotContext = (c) => {
+            console.log("Received" + c)
             return true;
           }
 
           fdc3.addContextListener('someContext', (ctx) => {
             if (ctx.type == 'someContext') {
+              console.log("resolved")
               wrapper.resolve();
             } else {
               wrapper.reject("wrong context type")
@@ -53,6 +56,8 @@ export default () =>
           })
           
           await wrapper.promise
+          console.log("done")
+
         } catch (ex) {
           assert.fail("Error while joining channel: " + (ex.message ?? ex));
         }
