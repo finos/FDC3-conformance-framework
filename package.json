@@ -5,7 +5,9 @@
     "compile": "webpack build",
     "replace-glue-core": "npm run copy; npx replace-in-file --configFile=options/glue-core-app.js; npx replace-in-file --configFile=options/glue-core-support.js",
     "serve": "npx http-server ./dist -p 3001",
-    "start": "npm run compile; npm run copy; npm run serve"
+    "start": "npm run compile; npm run copy; npm run serve",
+    "start-glue-core": "npm run compile; npm run copy; npm run replace-glue-core; npm run serve"
+
   },
   "dependencies": {
     "buffer": "^6.0.3",

@@ -18,6 +18,7 @@
   <p id="context"></p>
   <script class="mocha-init">
     mocha.setup('bdd');
+    sourceMapSupport.install();
   </script>
   <script class="mocha-exec">
     let stats = document.getElementById("context");
