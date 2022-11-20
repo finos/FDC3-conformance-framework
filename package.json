@@ -2,10 +2,10 @@
   "private": true,
   "workspaces": [
     "tests",
-    "app"
+    "static"
   ],
   "scripts": {
     "build": "yarn workspaces run build",
-    "bra" : "yarn build; cd app; yarn build; yarn start"
+    "bra" : "yarn build; cd dist; npx http-server . -p 3001"
   }
 }

@@ -15,7 +15,7 @@ const config = {
     },
     filename: 'fdc3-compliance.js',
     globalObject: 'this',
-    path: path.resolve(__dirname, "lib"),
+    path: path.resolve(__dirname, "../dist/lib"),
   },
   plugins: [
     new webpack.ProvidePlugin({
