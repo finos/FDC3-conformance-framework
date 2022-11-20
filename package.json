@@ -3,9 +3,9 @@
   "scripts": {
     "copy": "mkdir -p ./dist; cp -R static/v1.2 static/v2.0 ./dist; ",
     "compile": "webpack build",
-    "replace-glue-core": "npx replace-in-file --configFile=options/glue-core-app.js; npx replace-in-file --configFile=options/glue-core-support.js",
-    "start": "npx http-server ./dist -p 3001",
-    "build-and-start": "npm run compile; npm run copy; npm run start"
+    "replace-glue-core": "npm run copy; npx replace-in-file --configFile=options/glue-core-app.js; npx replace-in-file --configFile=options/glue-core-support.js",
+    "serve": "npx http-server ./dist -p 3001",
+    "start": "npm run compile; npm run copy; npm run serve"
   },
   "dependencies": {
     "buffer": "^6.0.3",

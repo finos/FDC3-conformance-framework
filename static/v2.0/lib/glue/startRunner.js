@@ -120,98 +120,12 @@
 		const applications = {
 			local: [
 				{
-					"name": "MockApp",
-					"title": "Mock App",
-					"description": "Testing spec conformance",
-					"type": "window",
-					"details": {
-						"url": "http://localhost:3001",
-						"top": 100,
-						"left": 100,
-						"width": 800,
-						"height": 600,
-						"icon": "http://localhost:3000/scott-logic-icon-256.png"
-					}
-				},
-				{
-					"name": "IntentAppAId",
-					"title": "Intent App A",
-					"type": "window",
-					"details": {
-						"url": "http://localhost:3100",
-						"top": 100,
-						"left": 100,
-						"width": 800,
-						"height": 600,
-						"icon": "http://localhost:3000/scott-logic-icon-256.png"
-					},
-					"intents": [
-						{
-							"name": "aTestingIntent",
-							"displayName": "A Testing Intent",
-							"contexts": ["testContextX", "testContextZ"]
-						},
-						{
-							"name": "sharedTestingIntent1",
-							"displayName": "Shared Testing Intent",
-							"contexts": ["testContextX"]
-						}
-					]
-				},
-				{
-					"name": "IntentAppBId",
-					"title": "Intent App B",
-					"description": "Testing find intent B",
-					"type": "window",
-					"details": {
-						"url": "http://localhost:3101",
-						"top": 100,
-						"left": 100,
-						"width": 800,
-						"height": 600,
-						"icon": "http://localhost:3101/scott-logic-icon-256.png"
-					},
-					"intents": [
-						{
-							"name": "bTestingIntent",
-							"displayName": "B Testing Intent",
-							"contexts": ["testContextY"]
-						},
-						{
-							"name": "sharedTestingIntent1",
-							"displayName": "Shared Testing Intent",
-							"contexts": ["testContextX", "testContextY"]
-						}
-					]
-				},
-				{
-					"name": "IntentAppCId",
-					"title": "Intent App C",
-					"description": "Testing find intent C",
-					"type": "window",
-					"details": {
-						"url": "http://localhost:3102",
-						"top": 100,
-						"left": 100,
-						"width": 800,
-						"height": 600,
-						"icon": "http://localhost:3102/scott-logic-icon-256.png"
-					},
-					"intents": [
-						{
-							"name": "cTestingIntent",
-							"displayName": "C Testing Intent",
-							"contexts": ["testContextX"]
-						}
-					]
-				},
-				{
 					"name": "ChannelsAppId",
 					"title": "Channels App",
 					"description": "Testing channels app",
 					"type": "window",
 					"details": {
-						"url": "http://localhost:3103",
+						"url": "http://localhost:3001/v2.0/channels",
 						"top": 100,
 						"left": 100,
 						"width": 800,
