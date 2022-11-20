@@ -8,9 +8,6 @@
       "allowJs": true,
       "moduleResolution":"Node",
       "esModuleInterop": true,
-      "declaration": true,
-      "declarationDir": "lib",
-      "declarationMap": true,
       "sourceMap": true
     },
     "include": ["src/**/*.ts"],

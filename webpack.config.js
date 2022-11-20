@@ -5,17 +5,18 @@ const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
-    index: "./src/index.ts",
+    'v1.2': "./src/test/v1.2/index.ts",
+    'v2.0': "./src/test/v2.0/index.ts"
   },
-  devtool: "inline-source-map",
+  devtool: "source-map",
   output: {
     library: {
       name: "fdc3Compliance",
       type: "umd",
     },
-    filename: 'fdc3-compliance.js',
+    filename: 'fdc3-compliance-[name].js',
     globalObject: 'this',
-    path: path.resolve(__dirname, "../dist/lib"),
+    path: path.resolve(__dirname, "./dist/lib"),
   },
   plugins: [
     new webpack.ProvidePlugin({
@@ -30,6 +31,10 @@ const config = {
         loader: "ts-loader",
         exclude: [path.resolve(__dirname, "/node_modules/")],
       },
+      {
+        test: /\.css$/,
+        use: ['style-loader', 'css-loader']
+      }
     ],
   },
   resolve: {

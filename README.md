@@ -7,7 +7,7 @@ A framework for testing whether desktop containers implement the [FDC3 standard]
 
 This project currently targets FDC3 v1.2.
 
-## Installation
+## Installation / Local Running
 
 This repository currently contains:
 
@@ -19,28 +19,14 @@ This repository currently contains:
 In order to get started, install all the dependencies with:
 
 ```sh
-yarn
+npm install
 ```
 
-Then build all the components with:
+To run the conformance suite locally on port 3001:
 
 ```sh
-yarn build
+npm run start
 ```
-
-The server(s) can be started as follows:
-
-```sh
-// Start the app which runs the tests (on port 3500)
-cd app
-yarn start
-
-// Start all the mock apps which the tests will make use of (runs on port 3001)
-cd mock
-yarn start
-```
-
-Note that if you open any of the app's URLs in a webbrowser you will see any error. The reason is that the app does not have a Window.FDC3 object and should be ran through a Desktop Agent.
 
 Here is the setup steps for the following desktop agents:
 

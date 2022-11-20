@@ -1,9 +1,0 @@
-{
-  "name": "@finos/fdc3-conformance-app",
-  "version": "1.0.0",
-  "scripts": {
-    "build": "npx copyfiles -f ../tests/lib/fdc3-compliance.js ../node_modules/mocha/mocha.js ../node_modules/source-map-support/browser-source-map-support.js mocha.js  ../node_modules/mocha/mocha.css lib",
-    "start": "npx http-server -p 3500 -c-1"
-  },
-  "license": "Apache-2.0"
-}
