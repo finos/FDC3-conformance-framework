@@ -1,11 +1,9 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
-import { Context } from "fdc3_2_0";
+import { Context, ContextMetadata, ImplementationMetadata } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
-import { MetadataContext } from "../metadata-shared";
-import { MetadataAppCommand } from "../metadata-shared";
 
 declare let fdc3: DesktopAgent;
 const findInstancesDocs =
@@ -121,3 +119,17 @@ const broadcastCloseWindow = async () => {
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
+
+export interface MetadataContext extends Context {
+  implMetadata?: ImplementationMetadata;
+  contextMetadata?: ContextMetadata;
+}
+
+export interface MetadataAppCommandContext extends Context {
+  command: string;
+}
+
+export enum MetadataAppCommand {
+  sendGetInfoMetadataToTests = "sendGetInfoMetadataToTests",
+  confirmRaisedIntentReceived = "confirmRaisedIntentReceived",
+}
