@@ -7,7 +7,11 @@ import { sleep, wrapPromise } from "../../../utils";
 import { ImplementationMetadata } from "fdc3_2_0";
 import { getOrCreateChannel } from "fdc3_2_0";
 import { validateAppMetadata } from "./fdc3.getAppMetadata";
-import { MetadataAppCommandContext, MetadataContext, MetadataAppCommand } from "./fdc3.findInstances";
+import {
+  MetadataAppCommandContext,
+  MetadataContext,
+  MetadataAppCommand,
+} from "./fdc3.findInstances";
 
 declare let fdc3: DesktopAgent;
 const getInfoDocs =

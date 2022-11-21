@@ -69,7 +69,7 @@ const advancedSuite_1_2: testSet = {
 
 const advancedSuite_2_0: testSet = {
   fdc3Broadcast_2_0: [fdc3Broadcast_2_0],
-  fdc3GetInfo_2_0 : [fdc3GetInfo_2_0],
+  fdc3GetInfo_2_0: [fdc3GetInfo_2_0],
   fdc3FindInstances_2_0: [fdc3FindInstances_2_0],
   fdc3getAppMetadata_2_0: [fdc3getAppMetadata_2_0],
 };
