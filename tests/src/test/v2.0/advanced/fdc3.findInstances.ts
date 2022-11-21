@@ -3,7 +3,8 @@ import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
-import { sleep, wait } from "../../../utils";
+import { sleep, wait, wrapPromise } from "../../../utils";
+import { MetadataAppCommand, MetadataContext } from "./fdc3.getInfo";
 
 declare let fdc3: DesktopAgent;
 const findInstancesDocs =
@@ -16,18 +17,16 @@ export default () =>
       await waitForMockAppToClose();
     });
 
-    it("valid metadata", async () => {
-      let timeout;
+    it("(2.0-FindInstances) valid metadata", async () => {
       try {
-        let listenerReceived = false;
         //start A and retrieve its AppIdentifier
         const appIdentifier = await fdc3.open({
-          appId: "MockAppId",
+          appId: "MetadataAppId",
         });
 
         //start A again and retrieve another AppIdentifier
         let appIdentifier2 = await fdc3.open({
-          appId: "MockAppId",
+          appId: "MetadataAppId",
         });
 
         //confirm that the instanceId for both app instantiations is different
@@ -37,43 +36,57 @@ export default () =>
         ).to.not.equal(appIdentifier2.instanceId);
 
         //retrieve instance details
-        let instances = await fdc3.findInstances({ appId: "MockAppId" });
+        let instances = await fdc3.findInstances({ appId: "MetadataAppId" });
 
         if (
           !instances.includes(appIdentifier) ||
           !instances.includes(appIdentifier2)
         ) {
           assert.fail(
-            `At least one AppIdentifier is missing from the array returned after calling fdc3.findInstances(app: AppIdentifier)${findInstancesDocs}`
+            `At least one AppIdentifier object is missing from the AppIdentifier array returned after calling fdc3.findInstances(app: AppIdentifier)${findInstancesDocs}`
           );
         }
 
-        //ensure appIdentifier receives the raised intent
-        await fdc3.addIntentListener("aTestingIntent", (context, metadata) => {
-          expect(
-            metadata.source,
-            "The raised intent was not received by the mock app"
-          ).to.be.equals(appIdentifier);
-          expect(
-            resolution.source,
-            "IntentResolution.source did not match the mock app's AppIdentifier"
-          ).to.be.equals(appIdentifier);
-          listenerReceived = true;
-          clearTimeout(timeout);
-        });
+        let timeout;
+        const wrapper = wrapPromise();
+
+        //ensure appIdentifier received the raised intent
+        await fdc3.addContextListener(
+          "metadataContext",
+          (context: MetadataContext) => {
+            clearTimeout(timeout);
+            expect(
+              context.contextMetadata.source,
+              "ContextMetadata.source did not match the AppIdentifier of the first mock app that was opened"
+            ).to.be.equals(appIdentifier);
+            wrapper.resolve();
+          }
+        );
+
+        const metadataAppContext = {
+          type: "metadataAppContext",
+          command: MetadataAppCommand.confirmRaisedIntentReceived,
+        };
 
         //raise an intent and target appIdentifier
         const resolution = await fdc3.raiseIntent(
           "aTestingIntent",
-          { type: "testContextX" },
+          metadataAppContext,
           appIdentifier
         );
 
-        const { promise: sleepPromise, timeout: theTimeout } = sleep();
-        timeout = theTimeout;
-        await sleepPromise;
-        if (!listenerReceived)
-          assert.fail("The intent listener did not receive the raised intent");
+        expect(
+          resolution.source,
+          "IntentResolution.source did not match the mock app's AppIdentifier"
+        ).to.be.equal(appIdentifier);
+
+        //fail if no metadataContext received
+        timeout = await window.setTimeout(() => {
+          wrapper.reject("did not receive MetadataContext from metadata app");
+        }, constants.WaitTime);
+
+        //wait for raised intent
+        await wrapper.promise;
       } catch (ex) {
         assert.fail(findInstancesDocs + (ex.message ?? ex));
       }

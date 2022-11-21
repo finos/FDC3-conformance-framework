@@ -6,6 +6,6 @@
   ],
   "scripts": {
     "build": "yarn workspaces run build",
-    "bra" : "yarn build; cd app; yarn build; yarn start"
+    "bra": "yarn build; cd app; yarn build; yarn start"
   }
 }

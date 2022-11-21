@@ -1,12 +1,12 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
-import { Context } from "fdc3_2_0";
+import { Context, ContextMetadata } from "fdc3_2_0";
 import constants from "../../../constants";
-import { validateAppMetadata } from "./fdc3.getAppMetadata";
-import { sleep } from "../../../utils";
+import { sleep, wrapPromise } from "../../../utils";
 import { ImplementationMetadata } from "fdc3_2_0";
-import { getOrCreateChannel } from "fdc3_1_2";
+import { getOrCreateChannel } from "fdc3_2_0";
+import { validateAppMetadata } from "./fdc3.getAppMetadata";
 
 declare let fdc3: DesktopAgent;
 const getInfoDocs =
@@ -71,42 +71,42 @@ export default () =>
     });
 
     it("(2.0-GetInfo2) Returns a valid ImplementationMetadata object", async () => {
-      let timeout;
-      let contextReceived = false;
+      console.log("startstart");
+      let implMetadata: ImplementationMetadata;
       const appControlChannel = await getOrCreateChannel("app-control");
+
+      //set command for metadata app
+      const metadataAppContext: MetadataAppCommandContext = {
+        type: "metadataAppContext",
+        command: MetadataAppCommand.sendGetInfoMetadataToTests,
+      };
+
+      let timeout;
+      const wrapper = wrapPromise();
+
       appControlChannel.addContextListener(
         "metadataContext",
-        (context: metadataContext) => {
-          contextReceived = true;
-          const implMetadata = context.implMetadata;
-          expect(
-            implMetadata,
-            `ImplementationMetadata did not have property appMetadata${getInfoDocs}`
-          ).to.have.property("appMetadata");
-          expect(
-            implMetadata.appMetadata,
-            `ImplementationMetadata did not have property appId${getInfoDocs}`
-          ).to.have.property("appId");
-          expect(
-            implMetadata.appMetadata,
-            `ImplementationMetadata did not have property instanceId${getInfoDocs}`
-          ).to.have.property("instanceId");
-          expect(
-            implMetadata.appMetadata.appId,
-            `ImplementationMetadata.appMetadata.appId did not match the ApplicationIdentifier.appId retrieved from the opened app`
-          ).to.be.equal(appIdentifier.appId);
-          expect(
-            implMetadata.appMetadata.instanceId,
-            `ImplementationMetadata.appMetadata.instanceId did not match the ApplicationIdentifier.instanceId retrieved from the opened app`
-          ).to.be.equal(appIdentifier.instanceId);
-          validateAppMetadata(implMetadata);
+        async (context: MetadataContext) => {
+          implMetadata = context.implMetadata;
+          wrapper.resolve();
           clearTimeout(timeout);
         }
       );
 
-      const appIdentifier = await fdc3.open({
-        appId: "MetadataAppId",
-      });
+      const appIdentifier = await fdc3.open(
+        { appId: "MetadataAppId" },
+        metadataAppContext
+      );
+
+      //fail if no metadataContext received
+      timeout = await window.setTimeout(() => {
+        wrapper.reject("did not receive MetadataContext from metadata app");
+      }, constants.WaitTime);
+
+      //wait for listener to receive context
+      await wrapper.promise;
+
+      //validate AppIdentifier
       expect(
         appIdentifier,
         `AppIdentifier did not have property appId${getInfoDocs}`
@@ -116,14 +116,34 @@ export default () =>
         `AppIdentifier did not have property instanceId${getInfoDocs}`
       ).to.have.property("instanceId");
 
-      //if no context received fail
-      const { promise: sleepPromise, timeout: theTimeout } = sleep();
-      timeout = theTimeout;
-      await sleepPromise;
+      //validate ImplementationMetadata
+      expect(
+        implMetadata,
+        `ImplementationMetadata did not have property appMetadata${getInfoDocs}`
+      ).to.have.property("appMetadata");
+      expect(
+        implMetadata.appMetadata,
+        `ImplementationMetadata did not have property appId${getInfoDocs}`
+      ).to.have.property("appId");
+      expect(
+        implMetadata.appMetadata,
+        `ImplementationMetadata did not have property instanceId${getInfoDocs}`
+      ).to.have.property("instanceId");
+      expect(
+        implMetadata.appMetadata.appId,
+        `ImplementationMetadata.appMetadata.appId did not match the ApplicationIdentifier.appId retrieved from the opened app`
+      ).to.be.equal(appIdentifier.appId);
+      expect(
+        implMetadata.appMetadata.instanceId,
+        `ImplementationMetadata.appMetadata.instanceId did not match the ApplicationIdentifier.instanceId retrieved from the opened app`
+      ).to.be.equal(appIdentifier.instanceId);
+      console.log("validating");
 
-      if (contextReceived === false) {
-        assert.fail("ImplementationMetadata not received from the opened app");
-      }
+      //validate AppMetadata
+      const metadata = await fdc3.getAppMetadata(appIdentifier);
+      console.log(JSON.stringify(metadata));
+      validateAppMetadata(metadata);
+      console.log("vefore cleartimeout");
     });
 
     async function waitForMockAppToClose() {
@@ -155,6 +175,16 @@ export default () =>
     };
   });
 
-interface metadataContext extends Context {
-  implMetadata: ImplementationMetadata;
+export interface MetadataContext extends Context {
+  implMetadata?: ImplementationMetadata;
+  contextMetadata?: ContextMetadata;
+}
+
+export interface MetadataAppCommandContext extends Context {
+  command: string;
+}
+
+export enum MetadataAppCommand {
+  sendGetInfoMetadataToTests = "sendGetInfoMetadataToTests",
+  confirmRaisedIntentReceived = "confirmRaisedIntentReceived",
 }

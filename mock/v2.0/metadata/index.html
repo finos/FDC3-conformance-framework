@@ -20,7 +20,7 @@
       await window.fdc3.addContextListener(
         "metadataAppContext",
         async (context) => {
-          //execute command from test app and send back metad
+          //execute command from test app and send back metadata
           if (context.command === "sendGetInfoMetadataToTests") {
             const implMetadata = await fdc3.getInfo();
             const metadataContext = {

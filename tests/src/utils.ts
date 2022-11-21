@@ -14,3 +14,17 @@ export async function wait(timeoutMs?: number): Promise<void> {
   const { promise, timeout } = sleep(timeoutMs);
   return promise;
 }
+
+export function wrapPromise(): {
+  promise: Promise<void>;
+  resolve: () => void;
+  reject: (reason?: any) => void;
+} {
+  let wrapperResolve;
+  let wrapperReject;
+  const promise = new Promise<void>((resolve, reject) => {
+    wrapperResolve = resolve;
+    wrapperReject = reject;
+  });
+  return { promise, resolve: wrapperResolve, reject: wrapperReject };
+}
