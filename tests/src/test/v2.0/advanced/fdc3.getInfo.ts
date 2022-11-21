@@ -1,12 +1,13 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
-import { Context, ContextMetadata } from "fdc3_2_0";
+import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
 import { ImplementationMetadata } from "fdc3_2_0";
 import { getOrCreateChannel } from "fdc3_2_0";
 import { validateAppMetadata } from "./fdc3.getAppMetadata";
+import { MetadataAppCommandContext, MetadataContext, MetadataAppCommand } from "../metadata-shared";
 
 declare let fdc3: DesktopAgent;
 const getInfoDocs =
@@ -174,17 +175,3 @@ export default () =>
       await appControlChannel.broadcast({ type: "closeWindow" });
     };
   });
-
-export interface MetadataContext extends Context {
-  implMetadata?: ImplementationMetadata;
-  contextMetadata?: ContextMetadata;
-}
-
-export interface MetadataAppCommandContext extends Context {
-  command: string;
-}
-
-export enum MetadataAppCommand {
-  sendGetInfoMetadataToTests = "sendGetInfoMetadataToTests",
-  confirmRaisedIntentReceived = "confirmRaisedIntentReceived",
-}
