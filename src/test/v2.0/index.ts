@@ -7,7 +7,6 @@ require('source-map-support/browser-source-map-support.js')
 
 
 mocha.setup('bdd');
-let stats = document.getElementById("context");
 const version = document.getElementById("version")
 
 // populate drop-down
