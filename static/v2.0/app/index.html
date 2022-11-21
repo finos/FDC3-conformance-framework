@@ -8,7 +8,6 @@
 
 <body>
   <div id="mocha"></div>
-  <script src="../../lib/fdc3-compliance-v2.0.js"></script>
   <!-- optional 2.0 app scripts -->
   <div class="center" id="version-selector">
     <label for="version">Test suite:</label>
@@ -16,51 +15,7 @@
     <input id="runButton" value="Run" type="button" />
   </div>
   <p id="context"></p>
-  <script class="mocha-init">
-    mocha.setup('bdd');
-    sourceMapSupport.install();
-  </script>
-  <script class="mocha-exec">
-    let stats = document.getElementById("context");
-    const version = document.getElementById("version")
-
-    // populate drop-down
-    fdc3Compliance.getPackNames().forEach(pn => {
-      const optGroup = document.createElement("optgroup")
-      optGroup.setAttribute("label", pn);
-      fdc3Compliance.getPackMembers(pn).forEach(pm => {
-        const opt = document.createElement("option")
-        const text = document.createTextNode(pm)
-        opt.setAttribute("value", pm);
-        opt.appendChild(text)
-        optGroup.appendChild(opt)
-      })
-      version.appendChild(optGroup);
-    })
-
-    function executeTests() {
-      hideVersionSelector();
-      const fdc3Versions = document.getElementById("version");
-      var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
-      const action = () => fdc3Compliance.executeTestsInBrowser(selectedVersion);
-      if (window.fdc3) {
-        action();
-      } else {
-        window.addEventListener('fdc3Ready', action);
-      }
-    }
-
-    function hideVersionSelector() {
-      const versionSelector = document.getElementById("version-selector");
-      if (versionSelector.style.display === "none") {
-        versionSelector.style.display = "block";
-      } else {
-        versionSelector.style.display = "none";
-      }
-    }
-
-    document.getElementById("runButton").addEventListener("click", executeTests);
-  </script>
+  <script src="../../lib/fdc3-compliance-v2.0.js"></script>
 </body>
 
 </html>

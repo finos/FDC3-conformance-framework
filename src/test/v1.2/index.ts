@@ -2,12 +2,9 @@ import { getPackMembers, getPackNames, executeTestsInBrowser } from "./testSuite
 
 require('mocha/mocha.css');
 
-const sms = require('source-map-support/browser-source-map-support.js')
-
+require('source-map-support/browser-source-map-support.js')
 
 mocha.setup('bdd');
-
-//sourceMapSupport.install();
 
 let stats = document.getElementById("context");
 const version = document.getElementById("version")
