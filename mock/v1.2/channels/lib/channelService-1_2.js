@@ -64,7 +64,8 @@ class Fdc3CommandExecutor1_2 {
 
   //get app/system channel broadcast service
   getBroadcastService(currentChannelType) {
-    if (currentChannelType === channelType.system) {
+    console.log("HERE-ABC", currentChannelType, channelType);
+    if (currentChannelType === "user") {
       return this.systemChannelBroadcastService;
     } else if (currentChannelType === channelType.app) {
       return this.appChannelBroadcastService;
