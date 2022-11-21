@@ -5,17 +5,14 @@ const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
-    'v1.2': "./src/test/v1.2/index.ts",
-    'v2.0': "./src/test/v2.0/index.ts"
+    'fdc3-compliance-v1.2': "./src/test/v1.2/index.ts",
+    'channel-v1.2': "./src/mock/v1.2/channel.ts",
+    'fdc3-compliance-v2.0': "./src/test/v2.0/index.ts",
   },
   devtool: "source-map",
   output: {
-    library: {
-      name: "fdc3Compliance",
-      type: "umd",
-    },
-    filename: 'fdc3-compliance-[name].js',
-    globalObject: 'this',
+    filename: '[name].js',
+    //globalObject: 'this',
     path: path.resolve(__dirname, "./dist/lib"),
   },
   plugins: [

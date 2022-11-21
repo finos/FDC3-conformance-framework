@@ -1,4 +1,7 @@
-class Fdc3CommandExecutor1_2 {
+import { AppControlContext } from "../../test/v1.2/advanced/fdc3.broadcast";
+import { commands, channelType } from "./constants";
+
+export class Fdc3CommandExecutor1_2 {
   //execute commands in order
   async executeCommands(orderedCommands, config) {
     let channel;
@@ -74,7 +77,7 @@ class Fdc3CommandExecutor1_2 {
     broadcast: (contextType, historyItems, channel, testId) => {
       if (channel !== undefined) {
         for (let i = 0; i < historyItems; i++) {
-          let context = {
+          let context : AppControlContext = {
             type: contextType,
             name: `History-item-${i + 1}`,
           };
@@ -89,10 +92,10 @@ class Fdc3CommandExecutor1_2 {
   systemChannelBroadcastService = {
     broadcast: (contextType, historyItems, ignored, testId) => {
       for (let i = 0; i < historyItems; i++) {
-        let context = {
+        let context : AppControlContext = {
           type: contextType,
           name: `History-item-${i + 1}`,
-        };
+        } ;
         if(testId) context.testId = testId;
         window.fdc3.broadcast(context);
       }
@@ -111,7 +114,7 @@ class Fdc3CommandExecutor1_2 {
       console.log(
         Date.now() + ` Received closeWindow message`
       );
-      appControlChannel.broadcast({ type: "windowClosed", testId: testId });
+      appControlChannel.broadcast({ type: "windowClosed", testId: testId } as AppControlContext);
       setTimeout(()=>{ //yield to make sure the broadcast gets out before we close
         window.close();
       },1);
