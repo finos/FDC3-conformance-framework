@@ -9,8 +9,3 @@ const constants = {
 } as const;
 
 export default constants;
-
-export enum MetadataAppCommand {
-  sendGetInfoMetadataToTests = "sendGetInfoMetadataToTests",
-  confirmRaisedIntentReceived = "confirmRaisedIntentReceived",
-}

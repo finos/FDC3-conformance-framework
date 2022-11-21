@@ -5,7 +5,7 @@ import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
 import { MetadataContext } from "../metadata-shared";
-import { MetadataAppCommand } from "../../../constants";
+import { MetadataAppCommand } from "../metadata-shared";
 
 declare let fdc3: DesktopAgent;
 const findInstancesDocs =
