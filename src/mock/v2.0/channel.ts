@@ -7,7 +7,7 @@ declare let fdc3: DesktopAgent
 onFdc3Ready().then(() => {
     let firedOnce = false;
     //await commands from App A, then execute commands
-    window.fdc3.addContextListener(
+    fdc3.addContextListener(
         "channelsAppContext",
         (context: ChannelsAppContext) => {
             if (firedOnce === false) {

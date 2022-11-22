@@ -13,10 +13,8 @@ const config = {
     'intent-c-v1.2': "./src/mock/v1.2/intent-c.ts",
     'fdc3-compliance-v2.0': "./src/test/v2.0/index.ts",
     'channel-v2.0': "./src/mock/v2.0/channel.ts",
-    // 'general-v1.2': "./src/mock/v1.2/general.ts",
-    // 'intent-a-v1.2': "./src/mock/v1.2/intent-a.ts",
-    // 'intent-b-v1.2': "./src/mock/v1.2/intent-b.ts",
-    // 'intent-c-v1.2': "./src/mock/v1.2/intent-c.ts",
+    'general-v2.0': "./src/mock/v2.0/general.ts",
+    'metadata-v2.0': "./src/mock/v2.0/metadata.ts",
   },
   devtool: "source-map",
   output: {

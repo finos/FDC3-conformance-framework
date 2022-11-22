@@ -5,14 +5,14 @@ declare let fdc3: DesktopAgent
 
 onFdc3Ready().then(async () => {
     await closeWindowOnCompletion();
-    window.fdc3.addIntentListener('bTestingIntent', async (context) => {
+    fdc3.addIntentListener('bTestingIntent', async (context) => {
         return context;
     });
-    window.fdc3.addIntentListener('sharedTestingIntent1', async (context) => {
+    fdc3.addIntentListener('sharedTestingIntent1', async (context) => {
         return context;
     });
-    window.fdc3.joinChannel("fdc3.raiseIntent").then(() => {
-        window.fdc3.broadcast({
+    fdc3.joinChannel("fdc3.raiseIntent").then(() => {
+        fdc3.broadcast({
             type: "fdc3-intent-b-opened",
         });
     });

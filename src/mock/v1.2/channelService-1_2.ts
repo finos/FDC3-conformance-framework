@@ -110,7 +110,7 @@ export class Fdc3CommandExecutor1_2 {
   //close ChannelsApp on completion and respond to app A
   async closeWindowOnCompletion(testId) {
     console.log(Date.now() + ` Setting up closeWindow listener`);
-    const appControlChannel = await window.fdc3.getOrCreateChannel(
+    const appControlChannel = await fdc3.getOrCreateChannel(
       "app-control"
     );
     appControlChannel.addContextListener("closeWindow", async () => {
@@ -124,7 +124,7 @@ export class Fdc3CommandExecutor1_2 {
   }
 
   async notifyAppAOnCompletion(testId) {
-    const appControlChannel = await window.fdc3.getOrCreateChannel(
+    const appControlChannel = await fdc3.getOrCreateChannel(
       "app-control"
     );
     await this.broadcastContextItem(
