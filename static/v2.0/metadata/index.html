@@ -1,0 +1,44 @@
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <link rel="stylesheet" href="../lib/index.css" />
+</head>
+
+<body>
+  <p>Conformance Framework Metadata App</p>
+  <p>This app is only used by the conformance framework for intent test purposes.</p>
+  <script src="../lib/mock-functions.js"></script>
+  <!-- optional 2.0 support scripts -->
+
+  <script>
+    onFdc3Ready().then(async () => {
+      await closeWindowOnCompletion(window.fdc3);
+
+      //get context from tests
+      await window.fdc3.addContextListener(
+        "metadataAppContext",
+        async (context) => {
+          //execute command from test app and send back metadata
+          if (context.command === "sendGetInfoMetadataToTests") {
+            const implMetadata = await fdc3.getInfo();
+            const metadataContext = {
+              type: "metadataContext",
+              implMetadata: implMetadata
+            }
+            sendContextToTests(metadataContext);
+          } else if (context.command === "sendIntentMetadataToTests") {
+            await window.fdc3.addIntentListener("aTestingIntent", (context, metadata) => {
+              const metadataContext = {
+                type: "metadataContext",
+                contextMetadata: metadata
+              }
+              sendContextToTests(metadataContext);
+            });
+          }
+        });
+    });
+  </script>
+</body>
+
+</html>

@@ -7,40 +7,26 @@ A framework for testing whether desktop containers implement the [FDC3 standard]
 
 This project currently targets FDC3 v1.2.
 
-## Installation
+## Installation / Local Running
 
 This repository currently contains:
 
  - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
- - `app` - A simple application that hosts the tests, allowing them to be executed from within a desktop container.
- - `mock` - Multiple mock applications that are used to verify conformance - [details](./mock/README.md)
+ - `static` - HTML files used to create the static server
  - `directory` - Some JSON files in the FDC3 V2 Directory format that you can use to set up your desktop agent with either 1.2 or 2.0 test suites.
+ - 'terms-conditions' - [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.  Instructions for joining the program are [here](Instructions.md)
 
 In order to get started, install all the dependencies with:
 
 ```sh
-yarn
+npm install
 ```
 
-Then build all the components with:
+To run the conformance suite locally on port 3001:
 
 ```sh
-yarn build
+npm run start
 ```
-
-The server(s) can be started as follows:
-
-```sh
-// Start the app which runs the tests (on port 3500)
-cd app
-yarn start
-
-// Start all the mock apps which the tests will make use of (runs on port 3001)
-cd mock
-yarn start
-```
-
-Note that if you open any of the app's URLs in a webbrowser you will see any error. The reason is that the app does not have a Window.FDC3 object and should be ran through a Desktop Agent.
 
 Here is the setup steps for the following desktop agents:
 

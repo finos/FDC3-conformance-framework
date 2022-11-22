@@ -7,7 +7,7 @@
       "description": "Testing Conformance",
       "type": "web",
       "details": {
-        "url": "http://localhost:3500/index.html"
+        "url": "http://localhost:3001/v1.2/app/index.html"
       },
       "screenshots": [
         {

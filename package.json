@@ -1,11 +1,36 @@
 {
   "private": true,
-  "workspaces": [
-    "tests",
-    "app"
-  ],
   "scripts": {
-    "build": "yarn workspaces run build",
-    "bra": "yarn build; cd app; yarn build; yarn start"
+    "copy": "mkdir -p ./dist; cp -R static/v1.2 static/v2.0 ./dist; ",
+    "compile": "webpack build",
+    "replace-glue-core": "npm run copy; npx replace-in-file --configFile=options/glue-core-app.js; npx replace-in-file --configFile=options/glue-core-support.js",
+    "serve": "npx http-server ./dist -p 3001",
+    "start": "npm run compile; npm run copy; npm run serve",
+    "start-glue-core": "npm run compile; npm run copy; npm run replace-glue-core; npm run serve"
+  },
+  "dependencies": {
+    "buffer": "^6.0.3",
+    "chai": "^4.3.6",
+    "fdc3_1_2": "npm:@finos/fdc3@^1.2.0",
+    "fdc3_2_0": "npm:@finos/fdc3@^2.0.0-beta.4",
+    "mocha": "^10.0.0",
+    "process": "^0.11.10",
+    "source-map-support": "^0.5.21",
+    "stream-browserify": "^3.0.0",
+    "util": "^0.12.4",
+    "window": "^1.0.0"
+  },
+  "devDependencies": {
+    "@types/chai": "^4.3.0",
+    "@types/mocha": "^9.1.0",
+    "css-loader": "^6.7.2",
+    "http-server": "^14.1.1",
+    "prettier": "^2.5.1",
+    "replace-in-file": "^6.3.5",
+    "style-loader": "^3.3.1",
+    "ts-loader": "^9.2.7",
+    "typescript": "^4.6.2",
+    "webpack": "^5.69.1",
+    "webpack-cli": "^4.9.2"
   }
 }
