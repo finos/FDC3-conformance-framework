@@ -25,7 +25,7 @@ export default () =>
       }
     });
 
-    it("(GetAppMetadata) Valid metadata object", async () => {
+    it("(2.0-GetAppMetadata) Valid metadata object", async () => {
       try {
         //retrieve AppMetadata object
         const metadata = await fdc3.getAppMetadata({ appId: "MetadataAppId" });
