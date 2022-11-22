@@ -8,10 +8,9 @@
 <body>
   <p>Conformance Framework Metadata App</p>
   <p>This app is only used by the conformance framework for intent test purposes.</p>
-  <script src="lib/mock-functions.js"></script>
-  <script src="./Glue42-libraries/web.umd.js"></script>
-  <script src="./Glue42-libraries/fdc3.umd.js"></script>
-  <script src="./Glue42-libraries/startSupport.js"></script>
+  <script src="../lib/mock-functions.js"></script>
+  <!-- optional 2.0 support scripts -->
+
   <script>
     onFdc3Ready().then(async () => {
       await closeWindowOnCompletion(window.fdc3);

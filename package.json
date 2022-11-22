@@ -25,7 +25,6 @@
     "@types/mocha": "^9.1.0",
     "css-loader": "^6.7.2",
     "http-server": "^14.1.1",
-    "live-server": "^1.1.0",
     "prettier": "^2.5.1",
     "replace-in-file": "^6.3.5",
     "style-loader": "^3.3.1",

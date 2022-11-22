@@ -218,7 +218,37 @@
 						"height": 600,
 						"icon": "http://localhost:3000/scott-logic-icon-256.png"
 					}
-				}
+				},
+				{
+					"name": "MetadataAppId",
+					"title": "Mock App",
+					"version": "1.0.0",
+					"tooltip": "some string",
+					"icons": [
+					  {
+						"src": "http://localhost:3000/scott-logic-icon-256.png",
+					  },
+					],
+					"interop": {
+					  "intents": {
+						"listensFor": {
+						  "name": "aTestingIntent",
+						  "displayName": "A Testing Intent",
+						  "contexts": ["testContextX"],
+						},
+					  },
+					},
+					"description": "Testing spec conformance",
+					"type": "window",
+					"details": {
+					  "url": "http://localhost:3001/v2.0/metadata",
+					  "top": 100,
+					  "left": 100,
+					  "width": 800,
+					  "height": 600,
+					  "icon": "http://localhost:3000/scott-logic-icon-256.png",
+					},
+				  },
 			]
 		};
 
