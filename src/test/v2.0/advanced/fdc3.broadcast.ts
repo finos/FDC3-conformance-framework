@@ -9,8 +9,8 @@ declare let fdc3: DesktopAgent;
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
 
-interface AppControlContext extends Context {
-  testId: string;
+export interface AppControlContext extends Context {
+  testId?: string;
 }
 
 export default () =>
@@ -1226,7 +1226,7 @@ export default () =>
     };
   });
 
-type ChannelsAppContext = Context & {
+export type ChannelsAppContext = Context & {
   commands: string[];
   config: {
     testId: string;
@@ -1236,7 +1236,7 @@ type ChannelsAppContext = Context & {
   };
 };
 
-type ChannelsAppConfig = {
+export type ChannelsAppConfig = {
   fdc3ApiVersion: string;
   testId: string;
   notifyAppAOnCompletion?: boolean;
