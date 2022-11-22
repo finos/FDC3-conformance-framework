@@ -7,6 +7,10 @@ const config = {
   entry: {
     'fdc3-compliance-v1.2': "./src/test/v1.2/index.ts",
     'channel-v1.2': "./src/mock/v1.2/channel.ts",
+    'general-v1.2': "./src/mock/v1.2/general.ts",
+    'intent-a-v1.2': "./src/mock/v1.2/intent-a.ts",
+    'intent-b-v1.2': "./src/mock/v1.2/intent-b.ts",
+    'intent-c-v1.2': "./src/mock/v1.2/intent-c.ts",
     'fdc3-compliance-v2.0': "./src/test/v2.0/index.ts",
   },
   devtool: "source-map",
