@@ -4,13 +4,17 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
 
-function wrapPromise(): { promise: Promise<void>; resolve: () => void, reject: (reason?: any) => void } {
+function wrapPromise(): {
+  promise: Promise<void>;
+  resolve: () => void;
+  reject: (reason?: any) => void;
+} {
   let wrapperResolve;
   let wrapperReject;
 
   const promise = new Promise<void>((resolve, reject) => {
-      wrapperResolve = resolve;
-      wrapperReject = reject;
+    wrapperResolve = resolve;
+    wrapperReject = reject;
   });
 
   return { promise, resolve: wrapperResolve, reject: wrapperReject };
@@ -23,7 +27,7 @@ export default () =>
     });
 
     it("(2.0-BasicJC1) Can join channel and broadcast", async () => {
-      const wrapper = wrapPromise()
+      const wrapper = wrapPromise();
 
       const channels = await fdc3.getUserChannels();
 
@@ -36,28 +40,26 @@ export default () =>
           expect(currentChannel).to.not.be.null;
 
           const gotContext = (c) => {
-            console.log("Received" + c)
+            console.log("Received" + c);
             return true;
-          }
+          };
 
-          fdc3.addContextListener('someContext', (ctx) => {
-            if (ctx.type == 'someContext') {
-              console.log("resolved")
+          fdc3.addContextListener("someContext", (ctx) => {
+            if (ctx.type == "someContext") {
+              console.log("resolved");
               wrapper.resolve();
             } else {
-              wrapper.reject("wrong context type")
+              wrapper.reject("wrong context type");
             }
-
           });
 
           currentChannel.broadcast({
-            type: 'someContext',
-            id: { name: "hello" }
-          })
-          
-          await wrapper.promise
-          console.log("done")
+            type: "someContext",
+            id: { name: "hello" },
+          });
 
+          await wrapper.promise;
+          console.log("done");
         } catch (ex) {
           assert.fail("Error while joining channel: " + (ex.message ?? ex));
         }

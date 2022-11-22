@@ -4,7 +4,7 @@ export const channelType = {
   };
   
 export const commands = {
-    joinUserChannelOne: "joinUserChannelOne",
+    joinRetrievedUserChannel: "joinRetrievedUserChannel",
     retrieveTestAppChannel: "retrieveTestAppChannel",
     broadcastInstrumentContext: "broadcastInstrumentContext",
     broadcastContactContext: "broadcastContactContext",
