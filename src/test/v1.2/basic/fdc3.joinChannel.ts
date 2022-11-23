@@ -1,12 +1,16 @@
-import { assert, expect } from "chai";
-import { Context } from "fdc3_1_2";
+import { expect } from "chai";
+import { ChannelError } from "fdc3_1_2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+import APIDocumentation from "../../../apiDocuments";
 
-declare let fdc3: DesktopAgent;
+const joinChannelDocs =
+  "\r\nDocumentation: " + APIDocumentation.joinChannel + "\r\nCause: ";
+
+declare const fdc3: DesktopAgent;
 
 function wrapPromise(): {
   promise: Promise<void>;
-  resolve: () => void;
+  resolve: (reason?: any) => void;
   reject: (reason?: any) => void;
 } {
   let wrapperResolve;
@@ -26,41 +30,42 @@ export default () =>
       await fdc3.leaveCurrentChannel();
     });
 
-    it("(BasicJC1) Can join channel and broadcast", async () => {
-      const wrapper = wrapPromise();
+    it("(BasicJC1) Can join channel", async () => {
       const channels = await fdc3.getSystemChannels();
 
-      if (channels.length > 0) {
-        try {
-          await fdc3.joinChannel(channels[0].id);
+      await fdc3.joinChannel(channels[0].id);
 
-          const currentChannel = await fdc3.getCurrentChannel();
+      const current = await fdc3.getCurrentChannel();
 
-          expect(currentChannel).to.not.be.null;
+      expect(current).to.not.be.null;
+    });
 
-          const gotContext = (c) => {
-            return true;
-          };
+    it("(BasicJC2) Can join the correct system channel", async () => {
+      const [channel] = await fdc3.getSystemChannels();
 
-          fdc3.addContextListener("someContext", (ctx) => {
-            if (ctx.type == "someContext") {
-              wrapper.resolve();
-            } else {
-              wrapper.reject("wrong context type");
-            }
-          });
+      await fdc3.joinChannel(channel.id);
 
-          currentChannel.broadcast({
-            type: "someContext",
-            id: { name: "hello" },
-          });
+      const current = await fdc3.getCurrentChannel();
 
-          await wrapper.promise;
-        } catch (ex) {
-          assert.fail("Error while joining channel: " + (ex.message ?? ex));
-        }
-      } else {
-        assert.fail("No system channels available");
+      expect(current).to.eql(channel);
+    });
+
+    it("(BasicJC3) Receive NoChannelFound error when joining a non-existing channel", async () => {
+      const errorWrapper = wrapPromise();
+
+      try {
+        await fdc3.joinChannel("invalid-channel-name");
+        errorWrapper.reject("Should have rejected - there's no such channel");
+      } catch (error) {
+        errorWrapper.resolve(error);
       }
+
+      const err = await errorWrapper.promise;
+
+      expect(err).to.have.property(
+        "message",
+        ChannelError.NoChannelFound,
+        joinChannelDocs
+      );
     });
   });

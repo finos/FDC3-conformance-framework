@@ -18,12 +18,15 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.retrieveTestAppChannel: {
-          channel = await this.retrieveTestAppChannel();
+          channel = await this.retrieveTestAppChannel(config.appChannelId);
           break;
         }
         case commands.broadcastInstrumentContext: {
+
+          const context = config.ctxId ? `fdc3.instrument.${config.ctxId}` : "fdc3.instrument";
+
           await this.broadcastContextItem(
-            "fdc3.instrument",
+            context,
             channel,
             config.historyItems,
             config.testId
@@ -31,8 +34,10 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.broadcastContactContext: {
+          const context = config.ctxId ? `fdc3.contact.${config.ctxId}` : "fdc3.contact";
+
           await this.broadcastContextItem(
-            "fdc3.contact",
+            context,
             channel,
             config.historyItems,
             config.testId
@@ -58,14 +63,15 @@ export class Fdc3CommandExecutor1_2 {
   }
 
   //retrieve/create "test-channel" app channel
-  async retrieveTestAppChannel() {
-    return await fdc3.getOrCreateChannel("test-channel");
+  async retrieveTestAppChannel(channelId) {
+    return window.fdc3.getOrCreateChannel(channelId);
   }
 
   //get broadcast service and broadcast the given context type
   async broadcastContextItem(contextType, channel, historyItems, testId) {
     let broadcastService = this.getBroadcastService(channel.type);
     broadcastService.broadcast(contextType, historyItems, channel, testId);
+    await this.wait(100);
   }
 
   //get app/system channel broadcast service
@@ -85,8 +91,8 @@ export class Fdc3CommandExecutor1_2 {
           let context : AppControlContext = {
             type: contextType,
             name: `History-item-${i + 1}`,
+            testId
           };
-          if (testId) context.testId = testId;
           channel.broadcast(context);
         }
       }
@@ -100,12 +106,18 @@ export class Fdc3CommandExecutor1_2 {
         let context : AppControlContext = {
           type: contextType,
           name: `History-item-${i + 1}`,
+          testId
         };
-        if (testId) context.testId = testId;
-        fdc3.broadcast(context);
+        window.fdc3.broadcast(context);
       }
     },
   };
+
+  async wait(ms) {
+    return new Promise((resolve) => {
+      setTimeout(resolve, ms);
+    })
+  }
 
   //close ChannelsApp on completion and respond to app A
   async closeWindowOnCompletion(testId) {

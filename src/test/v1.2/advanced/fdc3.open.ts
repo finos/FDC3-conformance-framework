@@ -199,48 +199,6 @@ export default () =>
       );
       await closeAppWindows(AOpensBMultipleListenTest);
     });
-
-
-    const AOpensBNoListenTest =
-      "(AOpensBNoListen) Receive AppTimeout error when targeting app with no listeners";
-    it(AOpensBNoListenTest, async () => {
-      //fail the test just before it times out if no error is returned
-      let timeout = setTimeout(()=>{
-        assert.fail(openDocs + testTimeoutMessage);
-      }, constants.NoListenerTimeout);
-      try {
-        await fdc3.open(
-          { name: noListenerAppName, appId: noListenerAppId },
-          { name: "context", type: "fdc3.testReceiver" }
-        );
-        assert.fail(openDocs + "No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error.");
-      } catch (ex) {
-        expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-      } finally {
-        clearTimeout(timeout);
-      }
-    }).timeout(constants.NoListenerTimeout + 1000);
-
-    const AOpensBWithWrongContextTest =
-      "(AOpensBWithWrongContext) Receive AppTimeout error when targeting app with wrong context";
-    it(AOpensBWithWrongContextTest, async () => {
-      //fail the test just before it times out if no error is returned
-      let timeout = setTimeout(()=>{
-        assert.fail(openDocs + testTimeoutMessage);
-      }, constants.NoListenerTimeout);
-      try {
-        await fdc3.open(
-          { name: appBName },
-          { name: "context", type: "fdc3.thisContextDoesNotExist" }
-        );
-        assert.fail(openDocs + "No error was thrown - this app does not add a listener for the context type passed, which the Desktop Agent should detect and throw the relevant error.");
-      } catch (ex) {
-        expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-      } finally {
-        clearTimeout(timeout);
-      }
-      await closeAppWindows(AOpensBWithWrongContextTest);
-    }).timeout(constants.NoListenerTimeout + 1000);
   });
 
 // creates a channel and subscribes for broadcast contexts. This is
