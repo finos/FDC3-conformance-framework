@@ -1,5 +1,8 @@
+import { DesktopAgent } from "fdc3_1_2";
 import { AppControlContext } from "../../test/v1.2/advanced/fdc3.broadcast";
-import { commands, channelType } from "./constants";
+import { commands, channelType } from "../constants";
+declare let fdc3: DesktopAgent
+
 
 export class Fdc3CommandExecutor1_2 {
   //execute commands in order
@@ -46,17 +49,17 @@ export class Fdc3CommandExecutor1_2 {
   }
 
   async joinRetrievedUserChannel(channelId) {
-    const systemChannels = await window.fdc3.getSystemChannels();
+    const systemChannels = await fdc3.getSystemChannels();
     const joinedChannel = systemChannels.find((c) => c.id === channelId);
     if(joinedChannel){
-      await window.fdc3.joinChannel(channelId);
+      await fdc3.joinChannel(channelId);
       return joinedChannel;
     }
   }
 
   //retrieve/create "test-channel" app channel
   async retrieveTestAppChannel() {
-    return await window.fdc3.getOrCreateChannel("test-channel");
+    return await fdc3.getOrCreateChannel("test-channel");
   }
 
   //get broadcast service and broadcast the given context type
@@ -99,7 +102,7 @@ export class Fdc3CommandExecutor1_2 {
           name: `History-item-${i + 1}`,
         };
         if (testId) context.testId = testId;
-        window.fdc3.broadcast(context);
+        fdc3.broadcast(context);
       }
     },
   };
@@ -107,7 +110,7 @@ export class Fdc3CommandExecutor1_2 {
   //close ChannelsApp on completion and respond to app A
   async closeWindowOnCompletion(testId) {
     console.log(Date.now() + ` Setting up closeWindow listener`);
-    const appControlChannel = await window.fdc3.getOrCreateChannel(
+    const appControlChannel = await fdc3.getOrCreateChannel(
       "app-control"
     );
     appControlChannel.addContextListener("closeWindow", async () => {
@@ -121,7 +124,7 @@ export class Fdc3CommandExecutor1_2 {
   }
 
   async notifyAppAOnCompletion(testId) {
-    const appControlChannel = await window.fdc3.getOrCreateChannel(
+    const appControlChannel = await fdc3.getOrCreateChannel(
       "app-control"
     );
     await this.broadcastContextItem(
