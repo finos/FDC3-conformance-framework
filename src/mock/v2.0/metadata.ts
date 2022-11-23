@@ -1,4 +1,4 @@
-import { closeWindowOnCompletion, onFdc3Ready } from './mock-functions'
+import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests } from './mock-functions'
 import { Context, DesktopAgent } from 'fdc3_2_0';
 import { MetadataAppCommandContext } from '../../test/v2.0/advanced/fdc3.findInstances';
 declare let fdc3: DesktopAgent

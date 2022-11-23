@@ -27,3 +27,9 @@ export const closeWindowOnCompletion = async () => {
     }, 5);
   });
 };
+
+
+export const sendContextToTests = async (context) =>{
+  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  await appControlChannel.broadcast(context);
+};
