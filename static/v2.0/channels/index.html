@@ -10,32 +10,8 @@
   <p>This app is only used by the conformance framework for test purposes</p>
   <p></p>
   <p id="context"></p>
-  <script src="../lib/mock-functions.js"></script>
-  <script src="../lib/constants.js"></script>
-  <script src="lib/channelService-2_0.js"></script>
-
   <!-- optional 2.0 support scripts -->
-  
-  <script>
-    onFdc3Ready().then(() => {
-      let firedOnce = false;
-      //await commands from App A, then execute commands
-      window.fdc3.addContextListener(
-        "channelsAppContext",
-        (context) => {
-          if (firedOnce === false) {
-            firedOnce = true;
-             if(context.config.fdc3ApiVersion === "1.2"){
-              const commandExecutor = new Fdc3CommandExecutor1_2();
-              commandExecutor.executeCommands(context.commands, context.config);
-             }else if(context.config.fdc3ApiVersion === "2.0"){
-               const commandExecutor = new Fdc3CommandExecutor2_0();
-               commandExecutor.executeCommands(context.commands, context.config);
-             }
-          }
-        });
-    });
-  </script>
+  <script src="../../lib/channel-v2.0.js"></script>
 </body>
 
 </html>
