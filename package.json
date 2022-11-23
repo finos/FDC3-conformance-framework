@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "copy": "del-cli dist && mkdirp dist && cpy static/v1.2 static/v2.0 dist",
+    "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
     "compile": "webpack build",
     "replace-glue-core": "npm run copy && npx replace-in-file --configFile=options/glue-core-app.js && npx replace-in-file --configFile=options/glue-core-support.js",
     "serve": "npx http-server ./dist -p 3001 -c-1",
@@ -31,6 +31,7 @@
     "http-server": "^14.1.1",
     "prettier": "^2.5.1",
     "replace-in-file": "^6.3.5",
+    "shx": "^0.3.4",
     "style-loader": "^3.3.1",
     "ts-loader": "^9.2.7",
     "typescript": "^4.6.2",
