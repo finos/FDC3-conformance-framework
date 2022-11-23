@@ -1,18 +1,21 @@
 {
   "private": true,
   "scripts": {
-    "copy": "mkdir -p ./dist; cp -R static/v1.2 static/v2.0 ./dist; ",
+    "copy": "del-cli dist && mkdirp dist && cpy static/v1.2 static/v2.0 dist",
     "compile": "webpack build",
-    "replace-glue-core": "npm run copy; npx replace-in-file --configFile=options/glue-core-app.js; npx replace-in-file --configFile=options/glue-core-support.js",
-    "serve": "npx http-server ./dist -p 3001",
-    "start": "npm run compile; npm run copy; npm run serve",
-    "start-glue-core": "npm run compile; npm run copy; npm run replace-glue-core; npm run serve"
+    "replace-glue-core": "npm run copy && npx replace-in-file --configFile=options/glue-core-app.js && npx replace-in-file --configFile=options/glue-core-support.js",
+    "serve": "npx http-server ./dist -p 3001 -c-1",
+    "start": "npm run copy && npm run compile && npm run serve",
+    "start-glue-core": "npm run compile && npm run copy && npm run replace-glue-core && npm run serve"
   },
   "dependencies": {
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
+    "cpy-cli": "^4.2.0",
+    "del-cli": "^5.0.0",
     "fdc3_1_2": "npm:@finos/fdc3@^1.2.0",
     "fdc3_2_0": "npm:@finos/fdc3@^2.0.0-beta.4",
+    "mkdirp": "^1.0.4",
     "mocha": "^10.0.0",
     "process": "^0.11.10",
     "source-map-support": "^0.5.21",
