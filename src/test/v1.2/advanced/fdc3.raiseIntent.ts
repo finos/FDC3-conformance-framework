@@ -2,6 +2,7 @@ import {
   AppMetadata,
   Channel,
   Context,
+  getOrCreateChannel,
   IntentResolution,
   Listener,
   ResolveError,
@@ -21,11 +22,6 @@ const raiseIntentDocs =
  */
 export default () =>
   describe("fdc3.raiseIntent", () => {
-    before(async () => {
-      await fdc3.getOrCreateChannel("fdc3.raiseIntent");
-      await fdc3.joinChannel("fdc3.raiseIntent");
-    });
-
     afterEach(async function afterEach() {
       await closeIntentAppsWindows(this.currentTest.title);
     });
@@ -213,10 +209,11 @@ const broadcastCloseWindow = async (currentTest) => {
 
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
-const createReceiver = (contextType: string) => {
+const createReceiver = async (contextType: string) => {
   let timeout;
+  const appControlChannel = await getOrCreateChannel("app-control");
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const listener = fdc3.addContextListener(contextType, (context) => {
+    const listener = appControlChannel.addContextListener(contextType, (context) => {
       resolve(context);
       clearTimeout(timeout);
       listener.unsubscribe();
