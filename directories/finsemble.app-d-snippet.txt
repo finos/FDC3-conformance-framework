@@ -50,7 +50,7 @@
     "publisher": "Scott Logic",
     "icons": [
         {
-            "src": "http://localhost:3000/scott-logic-icon-256.png"
+            "src": "http://localhost:3001/scott-logic-icon-256.png"
         }
     ]
 },
