@@ -12,11 +12,8 @@
   "dependencies": {
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
-    "cpy-cli": "^4.2.0",
-    "del-cli": "^5.0.0",
     "fdc3_1_2": "npm:@finos/fdc3@^1.2.0",
     "fdc3_2_0": "npm:@finos/fdc3@^2.0.0-beta.4",
-    "mkdirp": "^1.0.4",
     "mocha": "^10.0.0",
     "process": "^0.11.10",
     "source-map-support": "^0.5.21",

@@ -1,4 +1,4 @@
-import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { AppControlContext } from "../../test/v1.2/advanced/fdc3.broadcast";
 
 declare let fdc3 : DesktopAgent
@@ -28,8 +28,9 @@ export const closeWindowOnCompletion = async () => {
   });
 };
 
-
-export const sendContextToTests = async (context) =>{
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+export const sendContextToTests = async(context) =>{
+  const appControlChannel = await fdc3.getOrCreateChannel(
+    "app-control"
+  );
   await appControlChannel.broadcast(context);
-};
+}
