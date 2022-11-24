@@ -1,5 +1,5 @@
 import { DesktopAgent } from "fdc3_1_2";
-import { AppControlContext } from "../../test/v1.2/advanced/fdc3.broadcast";
+import { AppControlContext } from "../../test/common/channel-control";
 import { commands, channelType } from "../constants";
 declare let fdc3: DesktopAgent
 

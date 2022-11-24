@@ -1241,6 +1241,7 @@ export type ChannelsAppConfig = {
   testId: string;
   notifyAppAOnCompletion?: boolean;
   historyItems?: number;
+  userChannelId?: string;
 };
 
 function buildChannelsAppContext(

@@ -1,7 +1,7 @@
 import { Fdc3CommandExecutor1_2 } from './channelService-1_2'
 import { onFdc3Ready } from './mock-functions'
-import { ChannelsAppContext } from '../../test/v1.2/advanced/fdc3.broadcast';
 import { DesktopAgent } from 'fdc3_1_2';
+import { ChannelsAppContext } from '../../test/common/channel-control';
 declare let fdc3 : DesktopAgent
 
 onFdc3Ready().then(() => {
