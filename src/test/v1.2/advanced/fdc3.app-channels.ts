@@ -1,10 +1,8 @@
-import { Listener, Channel, Context, getCurrentChannel } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
-import { sleep, wait } from "../../../utils";
-import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, openChannelApp, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels-support";
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, openChannelApp, retrieveAndJoinChannel, setupAndValidateListener1, setupContextChecker, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels-support";
+import { wait } from "../../../utils";
 
 declare let fdc3: DesktopAgent;
 const documentation =
@@ -12,12 +10,10 @@ const documentation =
 
 export default () =>
   describe("fdc3.app-channels", () => {
-    let listener: Listener;
-    let listener2: Listener;
 
     describe("App channels", () => {
       beforeEach(async () => {
-        await unsubscribeListeners(listener, listener2);
+        await unsubscribeListeners();
         await fdc3.leaveCurrentChannel();
       });
 
@@ -38,13 +34,7 @@ export default () =>
 
         let receivedContext = false;
 
-        //Add context listener
-        listener = testChannel.addContextListener(null, async (context) => {
-          expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-          receivedContext = true;
-        });
-
-        validateListenerObject(listener);
+        setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, () => { receivedContext = true })
 
         openChannelApp(acTestId, undefined, APP_CHANNEL_AND_BROADCAST )
 
@@ -75,11 +65,7 @@ export default () =>
 
         let receivedContext = false;
 
-        //Retrieve current context from channel
-        await testChannel.getCurrentContext().then(async (context) => {
-          expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-          receivedContext = true;
-        });
+        await setupContextChecker(testChannel, "fdc3.instrument", errorMessage, () => receivedContext = true);
 
         //Fail if no context received
         if (!receivedContext) {
@@ -100,16 +86,7 @@ export default () =>
 
         let receivedContext = false;
 
-        //Add context listener
-        listener = testChannel.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-            receivedContext = true;
-          }
-        );
-
-        validateListenerObject(listener);
+        setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, () => { receivedContext = true })
 
         openChannelApp(acTestId4, null, APP_CHANNEL_AND_BROADCAST_TWICE)
 
@@ -133,29 +110,17 @@ export default () =>
         const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Listen for when ChannelsApp execution is complete
-        const resolveExecutionCompleteListener = initCompleteListener(acTestId5)
+        const resolveExecutionCompleteListener = initCompleteListener(acTestId5);
 
-        //Add fdc3.instrument context listener
-        listener = testChannel.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            contextTypes.push(context.type);
-            checkIfBothContextsReceived();
-          }
-        );
+        setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, (context) => { {
+          contextTypes.push(context.type);
+          checkIfBothContextsReceived();
+        } })
 
-        validateListenerObject(listener);
-
-        //Add fdc3.contact context listener
-        listener2 = testChannel.addContextListener(
-          "fdc3.contact",
-          (context) => {
-            contextTypes.push(context.type);
-            checkIfBothContextsReceived();
-          }
-        );
-
-        validateListenerObject(listener2);
+        setupAndValidateListener1(testChannel, "fdc3.contact", errorMessage, (context) => { {
+          contextTypes.push(context.type);
+          checkIfBothContextsReceived();
+        } })
 
        openChannelApp(acTestId5, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
 
@@ -193,15 +158,10 @@ export default () =>
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener =initCompleteListener(acTestId6)
 
-        //Add context listener
-        listener = testChannel.addContextListener(null, (context) => {
-          assert.fail(`${errorMessage} ${context.type} context received`);
-        });
-
-        validateListenerObject(listener);
+        setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
 
         //Unsubscribe from app channel
-        listener.unsubscribe();
+        unsubscribeListeners()
 
         openChannelApp(acTestId6, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
 
@@ -219,15 +179,7 @@ export default () =>
           "a-different-test-channel"
         );
 
-        //Add context listener
-        listener = testChannel.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            assert.fail(`${errorMessage} ${context.type} context received`);
-          }
-        );
-
-        validateListenerObject(listener);
+        setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
 
         openChannelApp(acTestId7, undefined, APP_CHANNEL_AND_BROADCAST)
 
@@ -250,16 +202,7 @@ export default () =>
         //App A retrieves a different app channel
         testChannel = await fdc3.getOrCreateChannel("a-different-test-channel");
 
-        //Add context listener
-        listener = testChannel.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            assert.fail(`${errorMessage} ${context.type} context received`);
-          }
-        );
-
-        validateListenerObject(listener);
-
+        setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
         openChannelApp(acTestId8, undefined, APP_CHANNEL_AND_BROADCAST)
 
 
@@ -275,8 +218,7 @@ export default () =>
         //Retrieve an app channel
         const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
-        openChannelApp(acTestId9, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
-
+        await openChannelApp(acTestId9, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
 
         //get contexts from ChannelsApp
         const context = await testChannel.getCurrentContext("fdc3.instrument");

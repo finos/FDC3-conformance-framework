@@ -17,7 +17,7 @@ export default () =>
 
     describe("System channels", () => {
       beforeEach(async () => {
-        await unsubscribeListeners(listener, listener2);
+        await unsubscribeListeners();
         await fdc3.leaveCurrentChannel();
       });
 
