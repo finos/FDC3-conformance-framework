@@ -1,8 +1,8 @@
-import { assert, expect } from "chai";
-import { Channel, Context } from "fdc3_1_2";
+import { assert } from "chai";
 import APIDocumentation from "../../../apiDocuments";
-import { sleep, wait } from "../../../utils";
-import { ChannelControl1_2, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE} from "./channels-support";
+import { wait } from "../../../utils";
+import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../../common/channel-control";
+import { ChannelControl1_2 } from "./channels-support";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";

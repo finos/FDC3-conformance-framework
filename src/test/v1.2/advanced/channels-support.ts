@@ -3,66 +3,12 @@ import { Channel, Context, Listener } from "fdc3_1_2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
-import { ChannelControl } from "../common/channel-control";
+import { AppControlContext, ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/channel-control";
 
 
 declare let fdc3: DesktopAgent;
 
 let listener1, listener2: Listener
-
-export interface AppControlContext extends Context {
-  testId?: string;
-}
-
-export type ChannelsAppContext = Context & {
-  commands: string[];
-  config: {
-    testId: string;
-    notifyAppAOnCompletion: boolean;
-    historyItems: number;
-    fdc3ApiVersion: string;
-    userChannelId: string;
-  };
-};
-
-export type ChannelsAppConfig = {
-  fdc3ApiVersion: string;
-  testId: string;
-  userChannelId?: string;
-  notifyAppAOnCompletion?: boolean;
-  historyItems?: number;
-};
-
-
-export const commands = {
-  joinRetrievedUserChannel: "joinRetrievedUserChannel",
-  retrieveTestAppChannel: "retrieveTestAppChannel",
-  broadcastInstrumentContext: "broadcastInstrumentContext",
-  broadcastContactContext: "broadcastContactContext",
-};
-
-export const APP_CHANNEL_AND_BROADCAST = [
-  commands.retrieveTestAppChannel,
-  commands.broadcastInstrumentContext,
-]
-
-export const APP_CHANNEL_AND_BROADCAST_TWICE = [
-  commands.retrieveTestAppChannel,
-  commands.broadcastInstrumentContext,
-  commands.broadcastContactContext
-]
-
-
-export const JOIN_AND_BROADCAST = [
-  commands.joinRetrievedUserChannel,
-  commands.broadcastInstrumentContext,
-];
-
-export const JOIN_AND_BROADCAST_TWICE = [
-  commands.joinRetrievedUserChannel,
-  commands.broadcastInstrumentContext,
-  commands.broadcastContactContext
-];
 
 export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
 

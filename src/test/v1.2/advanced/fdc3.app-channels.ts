@@ -1,7 +1,8 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
-import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl1_2 } from "./channels-support";
+import { ChannelControl1_2 } from "./channels-support";
 import { wait } from "../../../utils";
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE } from "../../common/channel-control";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
