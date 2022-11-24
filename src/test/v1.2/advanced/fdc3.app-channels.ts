@@ -81,17 +81,13 @@ export default () =>
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId5);
 
         cc.setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, (context) => {
-          {
             contextTypes.push(context.type);
             checkIfBothContextsReceived();
-          }
         })
 
         cc.setupAndValidateListener1(testChannel, "fdc3.contact", errorMessage, (context) => {
-          {
             contextTypes.push(context.type);
             checkIfBothContextsReceived();
-          }
         })
 
         cc.openChannelApp(acTestId5, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
