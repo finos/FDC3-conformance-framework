@@ -1,12 +1,13 @@
 import { assert, expect } from "chai";
+import { Channel, Context } from "fdc3_1_2";
 import APIDocumentation from "../../../apiDocuments";
 import { sleep, wait } from "../../../utils";
-import { ChannelControl, ChannelControl1_2, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE} from "./channels-support";
+import { ChannelControl1_2, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE} from "./channels-support";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
 
-const cc : ChannelControl = new ChannelControl1_2()
+const cc = new ChannelControl1_2()
 
 export default () =>
   describe("fdc3.broadcast", () => {

@@ -3,6 +3,7 @@ import { Channel, Context, Listener } from "fdc3_1_2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
+import { ChannelControl } from "../common/channel-control";
 
 
 declare let fdc3: DesktopAgent;
@@ -63,31 +64,7 @@ export const JOIN_AND_BROADCAST_TWICE = [
   commands.broadcastContactContext
 ];
 
-export interface ChannelControl {
-
-  // channels
-  retrieveAndJoinChannel(channelNumber: number): Promise<Channel>
-  getSystemChannels(): Promise<Channel[]>
-  leaveChannel(): Promise<void>
-  getUserChannel(cn: number): Promise<Channel>
-  joinChannel(channel: Channel): Promise<void>
-  createTestChannel(name?: string): Promise<Channel>
-
-  // test control
-  closeChannelsAppWindow(testId: string)
-  channelCleanUp()
-  unsubscribeListeners()
-  openChannelApp(testId: string, channelId: string | undefined, commands: string[], historyItems?: number, notify?: boolean)
-
-  // listening
-  initCompleteListener(testId: string): Promise<Context>
-  setupAndValidateListener1(channel: Channel, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void)
-  setupAndValidateListener2(channel: Channel, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void)
-  setupContextChecker(channel: Channel, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void)
-
-}
-
-export class ChannelControl1_2 implements ChannelControl {
+export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
 
 
   retrieveAndJoinChannel = async (

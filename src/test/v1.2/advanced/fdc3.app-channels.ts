@@ -1,12 +1,12 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
-import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, ChannelControl1_2 } from "./channels-support";
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl1_2 } from "./channels-support";
 import { wait } from "../../../utils";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
 
-const cc : ChannelControl = new ChannelControl1_2()
+const cc = new ChannelControl1_2()
 
 
 export default () =>
