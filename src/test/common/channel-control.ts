@@ -1,4 +1,3 @@
-import { Context } from "fdc3_1_2"
 
 /**
  * This interface contains everything you need to do to control channels/context listeners in either 1.2 or 2.0 FDC3
