@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
-import { buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels";
+import { buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels-support";
 
 declare let fdc3: DesktopAgent;
 const documentation =
@@ -14,16 +14,6 @@ export default () =>
   describe("fdc3.broadcast", () => {
     let listener: Listener;
     let listener2: Listener;
-
-    
-
-    async function initCompleteListener(testId) : Promise<Context> {
-      return waitForContext(
-        "executionComplete",
-        testId,
-        await fdc3.getOrCreateChannel("app-control")
-      );
-    }
 
     async function openChannelApp(testId: string, channelId: string, commands: string[]) {
       const channelsAppConfig: ChannelsAppConfig = {
@@ -356,22 +346,7 @@ export default () =>
         //App A leaves channel 1
         await fdc3.leaveCurrentChannel();
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-        ];
-
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: scTestId9,
-          userChannelId: channel.id,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST)
 
         //Give listener time to receive context
         await wait();

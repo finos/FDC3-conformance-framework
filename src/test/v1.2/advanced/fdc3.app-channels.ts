@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
-import { buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels";
+import { buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels-support";
 
 declare let fdc3: DesktopAgent;
 const documentation =
@@ -14,31 +14,6 @@ export default () =>
   describe("fdc3.app-channels", () => {
     let listener: Listener;
     let listener2: Listener;
-
-    
-
-    async function initCompleteListener(testId) : Promise<Context> {
-      return waitForContext(
-        "executionComplete",
-        testId,
-        await fdc3.getOrCreateChannel("app-control")
-      );
-    }
-
-    async function openChannelApp(testId: string, channelId: string, commands: string[]) {
-      const channelsAppConfig: ChannelsAppConfig = {
-        fdc3ApiVersion: "1.2",
-        testId: testId,
-        userChannelId: channelId,
-        notifyAppAOnCompletion: true,
-      };
-
-      //Open ChannelsApp then execute commands in order
-      await fdc3.open(
-        "ChannelsApp",
-        buildChannelsAppContext(commands, channelsAppConfig)
-      );
-    }
 
     it("Broadcast method is callable", async () => {
       fdc3.broadcast({
@@ -131,6 +106,8 @@ export default () =>
           "ChannelsApp",
           buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
         );
+
+        // openChannelApp(acTestId2, null, JOIN_AND_BROADCAST)
 
         //Wait for ChannelsApp the finish executing
         await resolveExecutionCompleteListener;

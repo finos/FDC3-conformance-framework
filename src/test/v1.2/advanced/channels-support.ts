@@ -211,3 +211,12 @@ export function buildChannelsAppContext(
 }
 
 
+
+export async function initCompleteListener(testId) : Promise<Context> {
+  return waitForContext(
+    "executionComplete",
+    testId,
+    await fdc3.getOrCreateChannel("app-control")
+  );
+}
+

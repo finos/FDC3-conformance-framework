@@ -1,5 +1,5 @@
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
-import { AppControlContext } from "../../test/v1.2/advanced/channels";
+import { AppControlContext } from "../../test/v1.2/advanced/channels-support";
 
 declare let fdc3 : DesktopAgent
 
