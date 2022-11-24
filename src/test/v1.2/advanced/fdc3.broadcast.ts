@@ -31,6 +31,14 @@ export default () =>
         await fdc3.leaveCurrentChannel();
       });
 
+      async function initCompleteListener(testId) : Promise<Context> {
+        return waitForContext(
+          "executionComplete",
+          testId,
+          await fdc3.getOrCreateChannel("app-control")
+        );
+      }
+
       afterEach(async function afterEach() {
         await closeChannelsAppWindow(this.currentTest.title);
       });
@@ -41,11 +49,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
         //Listen for when ChannelsApp execution is complete
-        const resolveExecutionCompleteListener = waitForContext(
-          "executionComplete",
-          scTestId1,
-          await fdc3.getOrCreateChannel("app-control")
-        );
+        const resolveExecutionCompleteListener = initCompleteListener(scTestId1)
 
         //Add context listener
         let receivedContext = false;
@@ -92,11 +96,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- Add listener of type fdc3.instrument to App A\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
         //Listen for when ChannelsApp execution is complete
-        const resolveExecutionCompleteListener = waitForContext(
-          "executionComplete",
-          scTestId2,
-          await fdc3.getOrCreateChannel("app-control")
-        );
+        const resolveExecutionCompleteListener = initCompleteListener(scTestId2)
 
         //Join system channel 1
         const channel = await retrieveAndJoinChannel(1);
