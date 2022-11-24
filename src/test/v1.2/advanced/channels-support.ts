@@ -232,7 +232,7 @@ export async function initCompleteListener(testId) : Promise<Context> {
   );
 }
 
-export async function openChannelApp(testId: string, channelId: string | undefined, commands: string[]) {
+export async function openChannelApp(testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined) {
   const channelsAppConfig: ChannelsAppConfig = {
     fdc3ApiVersion: "1.2",
     testId: testId,
@@ -242,6 +242,10 @@ export async function openChannelApp(testId: string, channelId: string | undefin
 
   if (channelId) {
     channelsAppConfig.userChannelId = channelId;
+  }
+
+  if (historyItems) {
+    channelsAppConfig.historyItems = historyItems;
   }
 
   //Open ChannelsApp then execute commands in order
