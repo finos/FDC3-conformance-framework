@@ -4,36 +4,14 @@ import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
+import { buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels";
 
 declare let fdc3: DesktopAgent;
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
 
-export interface AppControlContext extends Context {
-  testId?: string;
-}
-
-
-const commands = {
-  joinRetrievedUserChannel: "joinRetrievedUserChannel",
-  retrieveTestAppChannel: "retrieveTestAppChannel",
-  broadcastInstrumentContext: "broadcastInstrumentContext",
-  broadcastContactContext: "broadcastContactContext",
-};
-
-const JOIN_AND_BROADCAST = [
-  commands.joinRetrievedUserChannel,
-  commands.broadcastInstrumentContext,
-];
-
-const JOIN_AND_BROADCAST_TWICE = [
-  commands.joinRetrievedUserChannel,
-  commands.broadcastInstrumentContext,
-  commands.broadcastContactContext
-];
-
 export default () =>
-  describe("fdc3.broadcast", () => {
+  describe("fdc3.user-channels", () => {
     let listener: Listener;
     let listener2: Listener;
 
@@ -71,7 +49,7 @@ export default () =>
 
     describe("System channels", () => {
       beforeEach(async () => {
-        await unsubscribeListeners();
+        await unsubscribeListeners(listener, listener2);
         await fdc3.leaveCurrentChannel();
       });
 
@@ -251,24 +229,8 @@ export default () =>
         //Join system channel 1
         const channel = await retrieveAndJoinChannel(1);
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-          commands.broadcastContactContext,
-        ];
+        openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE);
 
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: scTestId5,
-          userChannelId: channel.id,
-          notifyAppAOnCompletion: true,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -307,23 +269,8 @@ export default () =>
         //Join a different channel to the one passed to channelsApp
         await fdc3.joinChannel(channels[0].id);
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-          commands.broadcastContactContext,
-        ];
+        openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
 
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: scTestId6,
-          userChannelId: channels[1].id,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
 
         //Give listeners time to receive context
         await wait();
@@ -355,23 +302,8 @@ export default () =>
           assert.fail("Listener undefined", errorMessage);
         }
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-        ];
+        openChannelApp(scTestId7, channel.id, JOIN_AND_BROADCAST);
 
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: scTestId7,
-          userChannelId: channel.id,
-          notifyAppAOnCompletion: true,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -399,22 +331,8 @@ export default () =>
         await fdc3.joinChannel(channels[0].id);
         await fdc3.joinChannel(channels[1].id);
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-        ];
+        openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST_TWICE);
 
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: scTestId8,
-          userChannelId: channels[0].id,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
 
         //Give listener time to receive context
         await wait();
@@ -462,7 +380,7 @@ export default () =>
 
     describe("App channels", () => {
       beforeEach(async () => {
-        await unsubscribeListeners();
+        await unsubscribeListeners(listener, listener2);
         await fdc3.leaveCurrentChannel();
       });
 
@@ -944,185 +862,4 @@ export default () =>
         }
       });
     });
-
-    const retrieveAndJoinChannel = async (
-      channelNumber: number
-    ): Promise<Channel> => {
-      const channel = await getUserChannel(channelNumber);
-      await fdc3.joinChannel(channel.id);
-      return channel;
-    };
-
-    const getUserChannel = async (channel: number): Promise<Channel> => {
-      const channels = await fdc3.getSystemChannels();
-      if (channels.length > 0) {
-        return channels[channel - 1];
-      } else {
-        assert.fail("No system channels available for app A");
-      }
-    };
-
-    function validateListenerObject(listenerObject) {
-      assert.isTrue(
-        typeof listenerObject === "object",
-        "No listener object found"
-      );
-      expect(typeof listenerObject.unsubscribe).to.be.equals(
-        "function",
-        "Listener does not contain an unsubscribe method"
-      );
-    }
-
-    async function closeChannelsAppWindow(testId: string) {
-      //Tell ChannelsApp to close window
-      const appControlChannel = await broadcastAppChannelCloseWindow(testId);
-
-      //Wait for ChannelsApp to respond
-      await waitForContext("windowClosed", testId, appControlChannel);
-      await wait(constants.WindowCloseWaitTime);
-    }
-
-    const broadcastAppChannelCloseWindow = async (testId: string) => {
-      const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-      /* tslint:disable-next-line */
-      const closeContext: AppControlContext = {
-        type: "closeWindow",
-        testId: testId,
-      };
-      appControlChannel.broadcast(closeContext);
-      return appControlChannel;
-    };
-
-    async function unsubscribeListeners() {
-      if (listener !== undefined) {
-        await listener.unsubscribe();
-        listener = undefined;
-      }
-
-      if (listener2 !== undefined) {
-        await listener2.unsubscribe();
-        listener2 = undefined;
-      }
-    }
-
-    const waitForContext = (
-      contextType: string,
-      testId: string,
-      channel?: Channel
-    ): Promise<Context> => {
-      let executionListener: Listener;
-      return new Promise<Context>(async (resolve) => {
-        console.log(
-          Date.now() +
-            ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
-        );
-
-        const handler = (context: AppControlContext) => {
-          if (testId) {
-            if (testId == context.testId) {
-              console.log(
-                Date.now() + ` Received ${contextType} for test: ${testId}`
-              );
-              resolve(context);
-              if (executionListener) executionListener.unsubscribe();
-            } else {
-              console.warn(
-                Date.now() +
-                  ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
-              );
-            }
-          } else {
-            console.log(
-              Date.now() +
-                ` Received (without testId) "${contextType}" for test: "${testId}"`
-            );
-            resolve(context);
-            if (executionListener) executionListener.unsubscribe();
-          }
-        };
-
-        if (channel === undefined) {
-          executionListener = fdc3.addContextListener(contextType, handler);
-        } else {
-          executionListener = channel.addContextListener(contextType, handler);
-          //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
-          const ccHandler = async (context: AppControlContext) => {
-            if (context) {
-              if (testId) {
-                if (testId == context?.testId && context?.type == contextType) {
-                  console.log(
-                    Date.now() +
-                      ` Received "${contextType}" (from current context) for test: "${testId}"`
-                  );
-                  if (executionListener) executionListener.unsubscribe();
-                  resolve(context);
-                } //do not warn as it will be ignoring mismatches which will be common
-                else {
-                  console.log(
-                    Date.now() +
-                      ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
-                        context ? "" : "NOT "
-                      } exist, 
-    had testId: "${context?.testId}" (${
-                        testId == context?.testId
-                          ? "did match"
-                          : "did NOT match"
-                      }) 
-    and type "${context?.type}" (${
-                        context?.type == contextType
-                          ? "did match"
-                          : "did NOT match"
-                      })`
-                  );
-                }
-              } else {
-                console.log(
-                  Date.now() +
-                    ` Received "${contextType}" (from current context) for an unspecified test`
-                );
-                if (executionListener) executionListener.unsubscribe();
-                resolve(context);
-              }
-            }
-          };
-          channel.getCurrentContext().then(ccHandler);
-        }
-      });
-    };
   });
-
-export type ChannelsAppContext = Context & {
-  commands: string[];
-  config: {
-    testId: string;
-    notifyAppAOnCompletion: boolean;
-    historyItems: number;
-    fdc3ApiVersion: string;
-    userChannelId: string;
-  };
-};
-
-export type ChannelsAppConfig = {
-  fdc3ApiVersion: string;
-  testId: string;
-  userChannelId?: string;
-  notifyAppAOnCompletion?: boolean;
-  historyItems?: number;
-};
-
-function buildChannelsAppContext(
-  mockAppCommands: string[],
-  config: ChannelsAppConfig
-): ChannelsAppContext {
-  return {
-    type: "channelsAppContext",
-    commands: mockAppCommands,
-    config: {
-      fdc3ApiVersion: config.fdc3ApiVersion,
-      testId: config.testId,
-      notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
-      historyItems: config.historyItems ?? 1,
-      userChannelId: config.userChannelId ?? null,
-    },
-  };
-}
