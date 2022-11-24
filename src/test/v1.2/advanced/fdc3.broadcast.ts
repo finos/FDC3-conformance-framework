@@ -13,10 +13,31 @@ export interface AppControlContext extends Context {
   testId?: string;
 }
 
+
+const commands = {
+  joinRetrievedUserChannel: "joinRetrievedUserChannel",
+  retrieveTestAppChannel: "retrieveTestAppChannel",
+  broadcastInstrumentContext: "broadcastInstrumentContext",
+  broadcastContactContext: "broadcastContactContext",
+};
+
+const JOIN_AND_BROADCAST = [
+  commands.joinRetrievedUserChannel,
+  commands.broadcastInstrumentContext,
+];
+
+const JOIN_AND_BROADCAST_TWICE = [
+  commands.joinRetrievedUserChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext
+];
+
 export default () =>
   describe("fdc3.broadcast", () => {
     let listener: Listener;
     let listener2: Listener;
+
+    
 
     async function initCompleteListener(testId) : Promise<Context> {
       return waitForContext(
@@ -54,8 +75,6 @@ export default () =>
         await fdc3.leaveCurrentChannel();
       });
 
-     
-
       afterEach(async function afterEach() {
         await closeChannelsAppWindow(this.currentTest.title);
       });
@@ -80,14 +99,7 @@ export default () =>
         //Join system channel 1
         const channel = await retrieveAndJoinChannel(1);
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-        ];
-
-        openChannelApp(scTestId1, channel.id, channelsAppCommands);
-
-        
+        openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
 
         //wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -119,23 +131,7 @@ export default () =>
 
         validateListenerObject(listener);
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-        ];
-
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: scTestId2,
-          userChannelId: channel.id,
-          notifyAppAOnCompletion: true,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
 
         //wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -157,23 +153,7 @@ export default () =>
         //retrieve a user channel to pass to channels app
         const channel = await getUserChannel(1);
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-        ];
-
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: scTestId3,
-          userChannelId: channel.id,
-          notifyAppAOnCompletion: true,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
 
         //Join system channel 1
         await fdc3.joinChannel(channel.id);
@@ -217,24 +197,8 @@ export default () =>
         //Join system channel 1
         const channel = await retrieveAndJoinChannel(1);
 
-        const channelsAppCommands = [
-          commands.joinRetrievedUserChannel,
-          commands.broadcastInstrumentContext,
-          commands.broadcastContactContext,
-        ];
+        openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST);
 
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: scTestId4,
-          userChannelId: channel.id,
-          notifyAppAOnCompletion: true,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -1162,10 +1126,3 @@ function buildChannelsAppContext(
     },
   };
 }
-
-const commands = {
-  joinRetrievedUserChannel: "joinRetrievedUserChannel",
-  retrieveTestAppChannel: "retrieveTestAppChannel",
-  broadcastInstrumentContext: "broadcastInstrumentContext",
-  broadcastContactContext: "broadcastContactContext",
-};
