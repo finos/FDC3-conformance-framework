@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
-import { buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels-support";
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, openChannelApp, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels-support";
 
 declare let fdc3: DesktopAgent;
 const documentation =
@@ -14,13 +14,6 @@ export default () =>
   describe("fdc3.app-channels", () => {
     let listener: Listener;
     let listener2: Listener;
-
-    it("Broadcast method is callable", async () => {
-      fdc3.broadcast({
-        type: "fdc3.instrument",
-        id: { ticker: "AAPL" },
-      });
-    });
 
     describe("App channels", () => {
       beforeEach(async () => {
@@ -53,22 +46,7 @@ export default () =>
 
         validateListenerObject(listener);
 
-        const channelsAppCommands = [
-          commands.retrieveTestAppChannel,
-          commands.broadcastInstrumentContext,
-        ];
-
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: acTestId,
-          notifyAppAOnCompletion: true,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        openChannelApp(acTestId, undefined, APP_CHANNEL_AND_BROADCAST )
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -90,24 +68,7 @@ export default () =>
         //Listen for when ChannelsApp execution is complete
         const resolveExecutionCompleteListener = initCompleteListener(acTestId2)
 
-        const channelsAppCommands = [
-          commands.retrieveTestAppChannel,
-          commands.broadcastInstrumentContext,
-        ];
-
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: acTestId2,
-          notifyAppAOnCompletion: true,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
-
-        // openChannelApp(acTestId2, null, JOIN_AND_BROADCAST)
+        openChannelApp(acTestId2, null, APP_CHANNEL_AND_BROADCAST)
 
         //Wait for ChannelsApp the finish executing
         await resolveExecutionCompleteListener;
@@ -150,23 +111,8 @@ export default () =>
 
         validateListenerObject(listener);
 
-        const channelsAppCommands = [
-          commands.retrieveTestAppChannel,
-          commands.broadcastInstrumentContext,
-          commands.broadcastContactContext,
-        ];
+        openChannelApp(acTestId4, null, APP_CHANNEL_AND_BROADCAST_TWICE)
 
-        const channelsAppConfig: ChannelsAppConfig = {
-          fdc3ApiVersion: "1.2",
-          testId: acTestId4,
-          notifyAppAOnCompletion: true,
-        };
-
-        //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          "ChannelsApp",
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;

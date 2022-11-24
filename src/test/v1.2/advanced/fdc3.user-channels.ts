@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
-import { buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels-support";
+import { buildChannelsAppContext, ChannelsAppConfig, closeChannelsAppWindow, commands, getUserChannel, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, openChannelApp, retrieveAndJoinChannel, unsubscribeListeners, validateListenerObject, waitForContext } from "./channels-support";
 
 declare let fdc3: DesktopAgent;
 const documentation =
@@ -14,28 +14,6 @@ export default () =>
   describe("fdc3.broadcast", () => {
     let listener: Listener;
     let listener2: Listener;
-
-    async function openChannelApp(testId: string, channelId: string, commands: string[]) {
-      const channelsAppConfig: ChannelsAppConfig = {
-        fdc3ApiVersion: "1.2",
-        testId: testId,
-        userChannelId: channelId,
-        notifyAppAOnCompletion: true,
-      };
-
-      //Open ChannelsApp then execute commands in order
-      await fdc3.open(
-        "ChannelsApp",
-        buildChannelsAppContext(commands, channelsAppConfig)
-      );
-    }
-
-    it("Broadcast method is callable", async () => {
-      fdc3.broadcast({
-        type: "fdc3.instrument",
-        id: { ticker: "AAPL" },
-      });
-    });
 
     describe("System channels", () => {
       beforeEach(async () => {

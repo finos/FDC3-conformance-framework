@@ -38,6 +38,18 @@ export const commands = {
   broadcastContactContext: "broadcastContactContext",
 };
 
+export const APP_CHANNEL_AND_BROADCAST = [
+    commands.retrieveTestAppChannel,
+    commands.broadcastInstrumentContext,
+]
+
+export const APP_CHANNEL_AND_BROADCAST_TWICE = [
+  commands.retrieveTestAppChannel,
+  commands.broadcastInstrumentContext,
+  commands.broadcastContactContext
+]
+
+
 export const JOIN_AND_BROADCAST = [
   commands.joinRetrievedUserChannel,
   commands.broadcastInstrumentContext,
@@ -220,3 +232,21 @@ export async function initCompleteListener(testId) : Promise<Context> {
   );
 }
 
+export async function openChannelApp(testId: string, channelId: string | undefined, commands: string[]) {
+  const channelsAppConfig: ChannelsAppConfig = {
+    fdc3ApiVersion: "1.2",
+    testId: testId,
+    userChannelId: channelId,
+    notifyAppAOnCompletion: true,
+  };
+
+  if (channelId) {
+    channelsAppConfig.userChannelId = channelId;
+  }
+
+  //Open ChannelsApp then execute commands in order
+  await fdc3.open(
+    "ChannelsApp",
+    buildChannelsAppContext(commands, channelsAppConfig)
+  );
+}
