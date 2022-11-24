@@ -27,7 +27,7 @@ export interface ChannelControl<X, Y> {
   
   }
   
-/** same in 1.2 and 2.0 ? */  
+/** same in 1.2 and 2.0 */  
 export interface CommonContext {
     id?: {
         [key: string]: string;
