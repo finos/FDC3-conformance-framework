@@ -63,35 +63,49 @@ export const JOIN_AND_BROADCAST_TWICE = [
   commands.broadcastContactContext
 ];
 
+export interface ChannelControl {
 
-export const retrieveAndJoinChannel = async (
-  channelNumber: number
-): Promise<Channel> => {
-  const channel = await getUserChannel(channelNumber);
-  await fdc3.joinChannel(channel.id);
-  return channel;
-};
-
-export const getSystemChannels = async () => {
-  return await fdc3.getSystemChannels();
+  retrieveAndJoinChannel(channelNumber: number): Promise<Channel>
+  getSystemChannels() : Promise<Channel[]>
+  leaveChannel() : Promise<void>
+  getUserChannel(cn: number) : Promise<Channel>
+  joinChannel(channel: Channel) : Promise<void>
 }
 
-export const leaveChannel = async () => {
-  return await fdc3.leaveCurrentChannel();
-}
+export class ChannelControl1_2 implements ChannelControl {
 
-export const getUserChannel = async (channel: number): Promise<Channel> => {
-  const channels = await fdc3.getSystemChannels();
-  if (channels.length > 0) {
-    return channels[channel - 1];
-  } else {
-    assert.fail("No system channels available for app A");
+
+  retrieveAndJoinChannel = async (
+    channelNumber: number
+  ): Promise<Channel> => {
+    const channel = await this.getUserChannel(channelNumber);
+    await fdc3.joinChannel(channel.id);
+    return channel;
+  };
+
+  getSystemChannels = async () => {
+    return await fdc3.getSystemChannels();
   }
-};
 
-export const joinChannel = async (channel: Channel) => {
-  return fdc3.joinChannel(channel.id)
+  leaveChannel = async () => {
+    return await fdc3.leaveCurrentChannel();
+  }
+
+  getUserChannel = async (channel: number): Promise<Channel> => {
+    const channels = await fdc3.getSystemChannels();
+    if (channels.length > 0) {
+      return channels[channel - 1];
+    } else {
+      assert.fail("No system channels available for app A");
+    }
+  };
+
+  joinChannel = async (channel: Channel) => {
+    return fdc3.joinChannel(channel.id)
+  }
 }
+
+
 
 export function validateListenerObject(listenerObject) {
   assert.isTrue(

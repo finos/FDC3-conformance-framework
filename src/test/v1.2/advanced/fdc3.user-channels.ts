@@ -1,10 +1,12 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { sleep, wait } from "../../../utils";
-import { channelCleanUp, closeChannelsAppWindow, getSystemChannels, getUserChannel, initCompleteListener, joinChannel, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, leaveChannel, openChannelApp, retrieveAndJoinChannel, setupAndValidateListener1, setupAndValidateListener2, unsubscribeListeners } from "./channels-support";
+import { channelCleanUp, ChannelControl, ChannelControl1_2, closeChannelsAppWindow, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, openChannelApp, setupAndValidateListener1, setupAndValidateListener2, unsubscribeListeners } from "./channels-support";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
+
+const cc : ChannelControl = new ChannelControl1_2()
 
 export default () =>
   describe("fdc3.broadcast", () => {
@@ -24,7 +26,7 @@ export default () =>
         let receivedContext = false;
         setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
 
-        const channel = await retrieveAndJoinChannel(1);
+        const channel = await cc.retrieveAndJoinChannel(1);
         openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
 
         await resolveExecutionCompleteListener;
@@ -40,7 +42,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- Add listener of type fdc3.instrument to App A\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
         const resolveExecutionCompleteListener = initCompleteListener(scTestId2)
-        const channel = await retrieveAndJoinChannel(1);
+        const channel = await cc.retrieveAndJoinChannel(1);
 
         let receivedContext = false;
         setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
@@ -65,12 +67,12 @@ export default () =>
         const resolveExecutionCompleteListener = initCompleteListener(scTestId3)
 
         //retrieve a user channel to pass to channels app
-        const channel = await getUserChannel(1);
+        const channel = await cc.getUserChannel(1);
 
         openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
 
         //Join system channel 1
-        await joinChannel(channel);
+        await cc.joinChannel(channel);
 
         let receivedContext = false;
 
@@ -98,7 +100,7 @@ export default () =>
         setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
 
         //Join system channel 1
-        const channel = await retrieveAndJoinChannel(1);
+        const channel = await cc.retrieveAndJoinChannel(1);
 
         openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST);
 
@@ -147,7 +149,7 @@ export default () =>
         });
 
         //Join system channel 1
-        const channel = await retrieveAndJoinChannel(1);
+        const channel = await cc.retrieveAndJoinChannel(1);
 
         openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE);
 
@@ -171,12 +173,12 @@ export default () =>
         setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
         setupAndValidateListener2(null, "unexpected-context", errorMessage, () =>  {/* noop */});
 
-        const channels = await getSystemChannels();
+        const channels = await cc.getSystemChannels();
         if (channels.length < 1)
           assert.fail("No system channels available for app A");
 
         //Join a different channel to the one passed to channelsApp
-        await joinChannel(channels[0]) ; 
+        await cc.joinChannel(channels[0]) ; 
 
         openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
 
@@ -196,7 +198,7 @@ export default () =>
         setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
 
         //Join system channel 1
-        const channel = await retrieveAndJoinChannel(1);
+        const channel = await cc.retrieveAndJoinChannel(1);
 
         unsubscribeListeners();
         openChannelApp(scTestId7, channel.id, JOIN_AND_BROADCAST);
@@ -211,14 +213,14 @@ export default () =>
 
         setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
 
-        const channels = await getSystemChannels(); 
+        const channels = await cc.getSystemChannels(); 
         if (channels.length < 1) {
           assert.fail("No system channels available for app A");
         }
 
         //Join a channel before joining a different channel
-        joinChannel(channels[0]);
-        joinChannel(channels[1]);
+        cc.joinChannel(channels[0]);
+        cc.joinChannel(channels[1]);
 
         openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST_TWICE);
 
@@ -234,10 +236,10 @@ export default () =>
         setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
 
         //Join system channel 1
-        const channel = await retrieveAndJoinChannel(1);
+        const channel = await cc.retrieveAndJoinChannel(1);
 
         //App A leaves channel 1
-        await leaveChannel();
+        await cc.leaveChannel();
 
         openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST)
 
