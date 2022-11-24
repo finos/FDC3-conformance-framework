@@ -72,6 +72,14 @@ export const retrieveAndJoinChannel = async (
   return channel;
 };
 
+export const getSystemChannels = async () => {
+  return await fdc3.getSystemChannels();
+}
+
+export const leaveChannel = async () => {
+  return await fdc3.leaveCurrentChannel();
+}
+
 export const getUserChannel = async (channel: number): Promise<Channel> => {
   const channels = await fdc3.getSystemChannels();
   if (channels.length > 0) {
@@ -80,6 +88,10 @@ export const getUserChannel = async (channel: number): Promise<Channel> => {
     assert.fail("No system channels available for app A");
   }
 };
+
+export const joinChannel = async (channel: Channel) => {
+  return fdc3.joinChannel(channel.id)
+}
 
 export function validateListenerObject(listenerObject) {
   assert.isTrue(
@@ -258,19 +270,33 @@ export async function openChannelApp(testId: string, channelId: string | undefin
 }
 
 export function setupAndValidateListener1(channel: Channel, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void) {
-  listener1 = channel.addContextListener(null, async (context) => {
-    expect(context.type).to.be.equals(expectedContextType, errorMessage);
-    onComplete(context);
-  });
+  if (channel) {
+    listener1 = channel.addContextListener(null, async (context) => {
+      expect(context.type).to.be.equals(expectedContextType, errorMessage);
+      onComplete(context);
+    });
+  } else {
+    listener1 = fdc3.addContextListener(null, async (context) => {
+      expect(context.type).to.be.equals(expectedContextType, errorMessage);
+      onComplete(context);
+    });
+  }
 
   validateListenerObject(listener1);
 }
 
 export function setupAndValidateListener2(channel: Channel, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void) {
-  listener2 = channel.addContextListener(null, async (context) => {
-    expect(context.type).to.be.equals(expectedContextType, errorMessage);
-    onComplete(context);
-  });
+  if (channel) {
+    listener2 = channel.addContextListener(null, async (context) => {
+      expect(context.type).to.be.equals(expectedContextType, errorMessage);
+      onComplete(context);
+    });
+  } else {
+    listener2 = fdc3.addContextListener(null, async (context) => {
+      expect(context.type).to.be.equals(expectedContextType, errorMessage);
+      onComplete(context);
+    });
+  }
 
   validateListenerObject(listener2);
 }
@@ -287,7 +313,7 @@ export async function createTestChannel(name: string = "test-channel") {
   return fdc3.getOrCreateChannel(name);
 }
 
-export async function appChannelCleanUp() {
+export async function channelCleanUp() {
   await unsubscribeListeners();
   await fdc3.leaveCurrentChannel();
 }
