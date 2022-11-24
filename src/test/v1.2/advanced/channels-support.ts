@@ -258,7 +258,7 @@ const waitForContext = (
 };
 
 
-export function buildChannelsAppContext(
+function buildChannelsAppContext(
   mockAppCommands: string[],
   config: ChannelsAppConfig
 ): ChannelsAppContext {
