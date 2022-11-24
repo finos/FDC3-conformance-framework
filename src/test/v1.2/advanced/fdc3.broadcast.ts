@@ -848,7 +848,7 @@ export default () =>
           fdc3ApiVersion: "1.2",
           testId: acTestId7,
           notifyAppAOnCompletion: true,
-          appChannelId: testChannel.id,
+          appChannelId: `another-channel-${getId()}`,
         };
 
         //Open ChannelsApp then execute commands in order
@@ -992,12 +992,13 @@ export default () =>
 
         //Retrieve fdc3.instrument context
         const context = await testChannel.getCurrentContext("fdc3.instrument");
+
         expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-        expect(context.name).to.be.equals("History-item-1", errorMessage);
+        expect(context.name).to.be.equals("History-item-2", errorMessage);
 
         const context2 = await testChannel.getCurrentContext("fdc3.contact");
         expect(context2.type).to.be.equals("fdc3.contact", errorMessage);
-        expect(context2.name).to.be.equals("History-item-1", errorMessage);
+        expect(context2.name).to.be.equals("History-item-2", errorMessage);
       });
 
       const acTestId11 =

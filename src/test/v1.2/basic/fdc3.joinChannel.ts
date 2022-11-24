@@ -1,4 +1,4 @@
-import { expect } from "chai";
+import { assert, expect } from "chai";
 import { ChannelError } from "fdc3_1_2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import APIDocumentation from "../../../apiDocuments";
@@ -33,6 +33,10 @@ export default () =>
     it("(BasicJC1) Can join channel", async () => {
       const channels = await fdc3.getSystemChannels();
 
+      if (!channels.length) {
+        assert.fail("No system channels available");
+      }
+
       await fdc3.joinChannel(channels[0].id);
 
       const current = await fdc3.getCurrentChannel();
@@ -48,24 +52,5 @@ export default () =>
       const current = await fdc3.getCurrentChannel();
 
       expect(current).to.eql(channel);
-    });
-
-    it("(BasicJC3) Receive NoChannelFound error when joining a non-existing channel", async () => {
-      const errorWrapper = wrapPromise();
-
-      try {
-        await fdc3.joinChannel("invalid-channel-name");
-        errorWrapper.reject("Should have rejected - there's no such channel");
-      } catch (error) {
-        errorWrapper.resolve(error);
-      }
-
-      const err = await errorWrapper.promise;
-
-      expect(err).to.have.property(
-        "message",
-        ChannelError.NoChannelFound,
-        joinChannelDocs
-      );
     });
   });
