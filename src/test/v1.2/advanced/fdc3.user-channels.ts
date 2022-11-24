@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { sleep, wait } from "../../../utils";
-import { channelCleanUp, ChannelControl, ChannelControl1_2, closeChannelsAppWindow, initCompleteListener, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE, openChannelApp, setupAndValidateListener1, setupAndValidateListener2, unsubscribeListeners } from "./channels-support";
+import { ChannelControl, ChannelControl1_2, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE} from "./channels-support";
 
 const documentation =
   "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
@@ -11,10 +11,10 @@ const cc : ChannelControl = new ChannelControl1_2()
 export default () =>
   describe("fdc3.broadcast", () => {
     describe("System channels", () => {
-      beforeEach(channelCleanUp);
+      beforeEach(cc.channelCleanUp);
 
       afterEach(async function afterEach() {
-        await closeChannelsAppWindow(this.currentTest.title);
+        await cc.closeChannelsAppWindow(this.currentTest.title);
       });
 
       const scTestId1 =
@@ -22,12 +22,12 @@ export default () =>
       it(scTestId1, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
-        const resolveExecutionCompleteListener = initCompleteListener(scTestId1)
+        const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1)
         let receivedContext = false;
-        setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
 
         const channel = await cc.retrieveAndJoinChannel(1);
-        openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
+        cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
 
         await resolveExecutionCompleteListener;
 
@@ -41,13 +41,13 @@ export default () =>
       it(scTestId2, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- Add listener of type fdc3.instrument to App A\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
-        const resolveExecutionCompleteListener = initCompleteListener(scTestId2)
+        const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId2)
         const channel = await cc.retrieveAndJoinChannel(1);
 
         let receivedContext = false;
-        setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
 
-        openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
+        cc.openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
 
         //wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -64,19 +64,19 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
         //Listen for when ChannelsApp execution is complete
-        const resolveExecutionCompleteListener = initCompleteListener(scTestId3)
+        const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId3)
 
         //retrieve a user channel to pass to channels app
         const channel = await cc.getUserChannel(1);
 
-        openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
+        cc.openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
 
         //Join system channel 1
         await cc.joinChannel(channel);
 
         let receivedContext = false;
 
-        setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
 
 
         //Wait for ChannelsApp to execute
@@ -94,15 +94,15 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         //Listen for when ChannelsApp execution is complete
-        const resolveExecutionCompleteListener = initCompleteListener(scTestId4)
+        const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4)
         let receivedContext = false;
 
-        setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
 
         //Join system channel 1
         const channel = await cc.retrieveAndJoinChannel(1);
 
-        openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST);
+        cc.openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST);
 
 
         //Wait for ChannelsApp to execute
@@ -120,7 +120,7 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
         //Listen for when ChannelsApp execution is complete
-        const resolveExecutionCompleteListener = initCompleteListener(scTestId5)
+        const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId5)
         
         let contextTypes: string[] = [];
         let receivedContext = false;
@@ -138,12 +138,12 @@ export default () =>
           }
         }
 
-        setupAndValidateListener1(null, "fdc3.instrument", errorMessage, (context) => {
+        cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, (context) => {
           contextTypes.push(context.type);
           checkIfBothContextsReceived();
         });
 
-        setupAndValidateListener2(null, "fdc3.contact", errorMessage, (context) => {
+        cc.setupAndValidateListener2(null, "fdc3.contact", errorMessage, (context) => {
           contextTypes.push(context.type);
           checkIfBothContextsReceived();
         });
@@ -151,7 +151,7 @@ export default () =>
         //Join system channel 1
         const channel = await cc.retrieveAndJoinChannel(1);
 
-        openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE);
+        cc.openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE);
 
 
         //Wait for ChannelsApp to execute
@@ -170,8 +170,8 @@ export default () =>
       it(scTestId6, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
-        setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
-        setupAndValidateListener2(null, "unexpected-context", errorMessage, () =>  {/* noop */});
+        cc.setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
+        cc.setupAndValidateListener2(null, "unexpected-context", errorMessage, () =>  {/* noop */});
 
         const channels = await cc.getSystemChannels();
         if (channels.length < 1)
@@ -180,7 +180,7 @@ export default () =>
         //Join a different channel to the one passed to channelsApp
         await cc.joinChannel(channels[0]) ; 
 
-        openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
+        cc.openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
 
 
         //Give listeners time to receive context
@@ -193,15 +193,15 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
         //Listen for when ChannelsApp execution is complete
-        const resolveExecutionCompleteListener = initCompleteListener(scTestId7)
+        const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId7)
 
-        setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
+        cc.setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
 
         //Join system channel 1
         const channel = await cc.retrieveAndJoinChannel(1);
 
-        unsubscribeListeners();
-        openChannelApp(scTestId7, channel.id, JOIN_AND_BROADCAST);
+        cc.unsubscribeListeners();
+        cc.openChannelApp(scTestId7, channel.id, JOIN_AND_BROADCAST);
 
         await resolveExecutionCompleteListener;
       });
@@ -211,7 +211,7 @@ export default () =>
       it(scTestId8, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
-        setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
+        cc.setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
 
         const channels = await cc.getSystemChannels(); 
         if (channels.length < 1) {
@@ -222,7 +222,7 @@ export default () =>
         cc.joinChannel(channels[0]);
         cc.joinChannel(channels[1]);
 
-        openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST_TWICE);
+        cc.openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST_TWICE);
 
         //Give listener time to receive context
         await wait();
@@ -233,7 +233,7 @@ export default () =>
       it(scTestId9, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A leaves channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
-        setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
+        cc.setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
 
         //Join system channel 1
         const channel = await cc.retrieveAndJoinChannel(1);
@@ -241,7 +241,7 @@ export default () =>
         //App A leaves channel 1
         await cc.leaveChannel();
 
-        openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST)
+        cc.openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST)
 
         //Give listener time to receive context
         await wait();
