@@ -15,6 +15,6 @@ onFdc3Ready().then(async () => {
 
     //broadcast that intent-a has opened
     await sendContextToTests({
-        type: "fdc3-intent-a-opened"
+        type: "fdc3-intent-b-opened"
     });
 });
