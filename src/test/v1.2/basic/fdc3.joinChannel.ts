@@ -26,7 +26,7 @@ export default () =>
       await fdc3.leaveCurrentChannel();
     });
 
-    it("(BasicJC1) Can join channel and broadcast", async () => {
+    it("(BasicJC1) Can join channel", async () => {
       const channels = await fdc3.getSystemChannels();
 
       if (channels.length > 0) {
