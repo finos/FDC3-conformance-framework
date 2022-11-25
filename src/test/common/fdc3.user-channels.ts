@@ -5,8 +5,15 @@ import { ChannelControl } from "./channel-control";
 
 export function createUserChannelTests(cc: ChannelControl<any,any>, documentation: string, prefix: string): Mocha.Suite {
   return describe("fdc3.broadcast", () => {
-    describe("System channels", () => {
+    describe("User Channels Broadcast (Basic)", () => {
+      let resolveExecutionCompleteListener;
+      let receivedContext = false;
+
       beforeEach(cc.channelCleanUp);
+      beforeEach(() => {
+        receivedContext = false;
+        resolveExecutionCompleteListener = null;
+      })
 
       afterEach(async function afterEach() {
         await cc.closeChannelsAppWindow(this.currentTest.title);
@@ -17,8 +24,7 @@ export function createUserChannelTests(cc: ChannelControl<any,any>, documentatio
       it(scTestId1, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
-        const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1)
-        let receivedContext = false;
+        resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1)
         cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
         const channel = await cc.retrieveAndJoinChannel(1);
         cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);

@@ -25,6 +25,26 @@ export interface ChannelControl<X, Y> {
     setupContextChecker(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void)
   
   }
+
+export interface Step {
+
+  do() : void
+  describe() : string
+
+}  
+
+export function createStep(description: string, fn: () => void) {
+  return {
+    do() {
+      fn();
+    },
+
+    describe() {
+      return description;
+    }
+    
+  } as Step;
+}
   
 /** same in 1.2 and 2.0 */  
 export interface CommonContext {
