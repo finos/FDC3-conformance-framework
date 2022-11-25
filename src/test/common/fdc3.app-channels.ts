@@ -151,7 +151,11 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact\r\n- App A gets current context for types fdc3.instrument and fdc3.contact${documentation}`;
 
         const testChannel = await cc.createTestChannel()
+        const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId9)
+
         await cc.openChannelApp(acTestId9, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
+        await resolveExecutionCompleteListener;
+
         const context = await testChannel.getCurrentContext("fdc3.instrument");
         expect(context.name).to.be.equals("History-item-1", errorMessage);
 
