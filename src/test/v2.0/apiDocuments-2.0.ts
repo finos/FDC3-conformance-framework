@@ -31,5 +31,5 @@ export const APIDocumentation2_0 = {
     "https://fdc3.finos.org/docs/2.0/api/ref/DesktopAgent#raiseintentforcontext",
   appMetadata: "https://fdc3.finos.org/docs/api/ref/Metadata#appmetadata",
   findInstances:
-    "https://fdc3.finos.org/docs/api/ref/DesktopAgent#findinstances",
+    "https://fdc3.finos.org/docs/2.0/api/ref/DesktopAgent#findinstances",
 } 
