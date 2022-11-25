@@ -26,8 +26,7 @@ export default () =>
       await fdc3.leaveCurrentChannel();
     });
 
-    it("(BasicJC1) Can join channel and broadcast", async () => {
-      const wrapper = wrapPromise();
+    it("(BasicJC1) Can join channel", async () => {
       const channels = await fdc3.getSystemChannels();
 
       if (channels.length > 0) {
@@ -38,24 +37,6 @@ export default () =>
 
           expect(currentChannel).to.not.be.null;
 
-          const gotContext = (c) => {
-            return true;
-          };
-
-          fdc3.addContextListener("someContext", (ctx) => {
-            if (ctx.type == "someContext") {
-              wrapper.resolve();
-            } else {
-              wrapper.reject("wrong context type");
-            }
-          });
-
-          currentChannel.broadcast({
-            type: "someContext",
-            id: { name: "hello" },
-          });
-
-          await wrapper.promise;
         } catch (ex) {
           assert.fail("Error while joining channel: " + (ex.message ?? ex));
         }
