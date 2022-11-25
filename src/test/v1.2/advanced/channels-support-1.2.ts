@@ -85,7 +85,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
 
   openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true) => {
     const channelsAppConfig: ChannelsAppConfig = {
-      fdc3ApiVersion: "2.0",
+      fdc3ApiVersion: "1.2",
       testId: testId,
       userChannelId: channelId,
       notifyAppAOnCompletion: notify,
