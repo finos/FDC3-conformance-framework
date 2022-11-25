@@ -16,7 +16,7 @@ export const closeWindowOnCompletion = async () => {
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
   appControlChannel.addContextListener("closeWindow", async (context : AppControlContext) => {
     //notify app A that window was closed
-    appControlChannel.broadcast({
+    await appControlChannel.broadcast({
       type: "windowClosed",
       testId: context.testId,
     } as AppControlContext);
@@ -32,5 +32,5 @@ export const sendContextToTests = async(context) =>{
   const appControlChannel = await fdc3.getOrCreateChannel(
     "app-control"
   );
-  appControlChannel.broadcast(context);
+  await appControlChannel.broadcast(context);
 }

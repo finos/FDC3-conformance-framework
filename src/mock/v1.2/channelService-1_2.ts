@@ -65,7 +65,7 @@ export class Fdc3CommandExecutor1_2 {
   //get broadcast service and broadcast the given context type
   async broadcastContextItem(contextType, channel, historyItems, testId) {
     let broadcastService = this.getBroadcastService(channel.type);
-    broadcastService.broadcast(contextType, historyItems, channel, testId);
+    await broadcastService.broadcast(contextType, historyItems, channel, testId);
   }
 
   //get app/system channel broadcast service
@@ -79,7 +79,7 @@ export class Fdc3CommandExecutor1_2 {
 
   //app channel broadcast service
   appChannelBroadcastService = {
-    broadcast: (contextType, historyItems, channel, testId) => {
+    broadcast: async(contextType, historyItems, channel, testId) => {
       if (channel !== undefined) {
         for (let i = 0; i < historyItems; i++) {
           let context : AppControlContext = {
@@ -87,7 +87,7 @@ export class Fdc3CommandExecutor1_2 {
             name: `History-item-${i + 1}`,
           };
           if (testId) context.testId = testId;
-          channel.broadcast(context);
+          await channel.broadcast(context);
         }
       }
     },
@@ -95,14 +95,14 @@ export class Fdc3CommandExecutor1_2 {
 
   //system channel broadcast service
   systemChannelBroadcastService = {
-    broadcast: (contextType, historyItems, ignored, testId) => {
+    broadcast: async (contextType, historyItems, ignored, testId) => {
       for (let i = 0; i < historyItems; i++) {
         let context : AppControlContext = {
           type: contextType,
           name: `History-item-${i + 1}`,
         };
         if (testId) context.testId = testId;
-        fdc3.broadcast(context);
+        await fdc3.broadcast(context);
       }
     },
   };
@@ -115,7 +115,7 @@ export class Fdc3CommandExecutor1_2 {
     );
     appControlChannel.addContextListener("closeWindow", async () => {
       console.log(Date.now() + ` Received closeWindow message`);
-      appControlChannel.broadcast({ type: "windowClosed", testId: testId } as AppControlContext);
+      await appControlChannel.broadcast({ type: "windowClosed", testId: testId } as AppControlContext);
       setTimeout(() => {
         //yield to make sure the broadcast gets out before we close
         window.close();

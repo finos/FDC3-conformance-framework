@@ -169,7 +169,7 @@ const broadcastAppChannelCloseWindow = async (testId: string) => {
     type: "closeWindow",
     testId: testId,
   };
-  appControlChannel.broadcast(closeContext);
+  await appControlChannel.broadcast(closeContext);
   return appControlChannel;
 };
 
