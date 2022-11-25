@@ -25,41 +25,27 @@ export default () =>
       await fdc3.leaveCurrentChannel();
     });
 
-    it("(BasicJC1) Can join channel and broadcast", async () => {
-      const wrapper = wrapPromise();
+    it("(BasicJC1) Can join channel", async () => {
       const channels = await fdc3.getSystemChannels();
 
-      if (channels.length > 0) {
-        try {
-          await fdc3.joinChannel(channels[0].id);
-
-          const currentChannel = await fdc3.getCurrentChannel();
-
-          expect(currentChannel).to.not.be.null;
-
-          const gotContext = (c) => {
-            return true;
-          };
-
-          fdc3.addContextListener("someContext", (ctx) => {
-            if (ctx.type == "someContext") {
-              wrapper.resolve();
-            } else {
-              wrapper.reject("wrong context type");
-            }
-          });
-
-          currentChannel.broadcast({
-            type: "someContext",
-            id: { name: "hello" },
-          });
-
-          await wrapper.promise;
-        } catch (ex) {
-          assert.fail("Error while joining channel: " + (ex.message ?? ex));
-        }
-      } else {
+      if (!channels.length) {
         assert.fail("No system channels available");
       }
+
+      await fdc3.joinChannel(channels[0].id);
+
+      const current = await fdc3.getCurrentChannel();
+
+      expect(current).to.not.be.null;
     });
+
+    it("(BasicJC2) Can join the correct system channel", async () => {
+      const [channel] = await fdc3.getSystemChannels();
+
+      await fdc3.joinChannel(channel.id);
+
+      const current = await fdc3.getCurrentChannel();
+
+      expect(current).to.eql(channel);
+    })
   });
