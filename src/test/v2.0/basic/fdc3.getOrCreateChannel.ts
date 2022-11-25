@@ -1,10 +1,10 @@
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 const getOrCreateChannelDocs =
-  "\r\nDocumentation: " + APIDocumentation.getOrCreateChannel + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation2_0.getOrCreateChannel + "\r\nCause";
 
 export default () =>
   describe("fdc3.getOrCreateChannel", () => {

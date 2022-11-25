@@ -1,5 +1,4 @@
 import { assert, expect } from "chai";
-import { Context } from "fdc3_1_2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;

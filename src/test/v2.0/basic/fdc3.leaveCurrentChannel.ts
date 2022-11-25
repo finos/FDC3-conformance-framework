@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 
@@ -13,7 +13,7 @@ export default () =>
     } catch (ex) {
       assert.fail(
         "\r\nDocumentation: " +
-          APIDocumentation.leaveCurrentChannel +
+          APIDocumentation2_0.leaveCurrentChannel +
           "\r\nCause" +
           (ex.message ?? ex)
       );

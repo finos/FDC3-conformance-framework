@@ -1,13 +1,13 @@
 import { Listener, Channel, Context } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import constants from "../../../constants";
-import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 const documentation =
-  "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
+  "\r\nDocumentation: " + APIDocumentation2_0.desktopAgent + "\r\nCause:";
 
 export interface AppControlContext extends Context {
   testId?: string;
