@@ -3,7 +3,8 @@ import constants from "../../constants";
 
 import fdc3AddContextListener_2_0 from "../v2.0/basic/fdc3.addContextListener";
 import fdc3AddIntentListener_2_0 from "../v2.0/basic/fdc3.addIntentListener";
-import fdc3Broadcast_2_0 from "../v2.0/advanced/fdc3.broadcast";
+import fdc3AppChannels_2_0 from "./advanced/fdc3.app-channels";
+import fdc3UserChannels_2_0 from "./advanced/fdc3.user-channels";
 // import fdc3FindIntent_2_0 from "./v2.0/fdc3.findIntent";
 // import fdc3FindIntentsByContext_2_0 from "./v2.0/fdc3.findIntentsByContext";
 import fdc3GetCurrentChannel_2_0 from "../v2.0/basic/fdc3.getCurrentChannel";
@@ -34,10 +35,12 @@ const basicSuite_2_0: testSet = {
 
 const advancedSuite_2_0: testSet = {
   fdc3GetInfo_2_0: [fdc3GetInfo_2_0],
-  fdc3Broadcast_2_0: [fdc3Broadcast_2_0],
   fdc3FindInstances_2_0: [fdc3FindInstances_2_0],
   fdc3getAppMetadata_2_0: [fdc3getAppMetadata_2_0],
+  fdc3AppChannels_2_0: [fdc3AppChannels_2_0],
+  fdc3UserChannels_2_0: [fdc3UserChannels_2_0],
 };
+
 
 function stripSuites(ts: testSet[]): (() => void)[] {
   const out: (() => void)[] = [];
