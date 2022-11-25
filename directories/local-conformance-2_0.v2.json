@@ -23,7 +23,7 @@
       "publisher": "Scott Logic",
       "icons": [
         {
-          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+          "src": "https://localhost:3001/finos-icon-256.png"
         }
       ]
     },
@@ -46,7 +46,7 @@
       "publisher": "Scott Logic",
       "icons": [
         {
-          "src": "https://www.scottlogic.com/sites/default/files/scott-logic-favicon.jpg"
+          "src": "https://localhost:3001/finos-icon-256.png"
         }
       ]
     }
