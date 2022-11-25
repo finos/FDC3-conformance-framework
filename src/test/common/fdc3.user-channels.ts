@@ -1,6 +1,7 @@
 import { assert } from "chai";
+import { Channel } from "fdc3_1_2";
 import { wait } from "../../utils";
-import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
+import { createStep, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
 import { ChannelControl } from "./channel-control";
 
 export function createUserChannelTests(cc: ChannelControl<any,any>, documentation: string, prefix: string): Mocha.Suite {
@@ -8,11 +9,13 @@ export function createUserChannelTests(cc: ChannelControl<any,any>, documentatio
     describe("User Channels Broadcast (Basic)", () => {
       let resolveExecutionCompleteListener;
       let receivedContext = false;
+      let channel: Channel;
 
       beforeEach(cc.channelCleanUp);
       beforeEach(() => {
         receivedContext = false;
         resolveExecutionCompleteListener = null;
+        channel = null;
       })
 
       afterEach(async function afterEach() {
@@ -24,9 +27,15 @@ export function createUserChannelTests(cc: ChannelControl<any,any>, documentatio
       it(scTestId1, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
-        resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1)
-        cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
-        const channel = await cc.retrieveAndJoinChannel(1);
+        const step0 = createStep("0. Create Complete listener -> 5. Receive Context", () => { resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1) } );
+        await step0.do();   
+        const step1 = createStep("1. Add Context Listener", () => { cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true) });
+        await step1.do();     
+        
+        const step2 = createStep("2. Join Channel", async () => { channel = await cc.retrieveAndJoinChannel(1); });
+        await step2.do();
+
+        channel = await cc.retrieveAndJoinChannel(1);
         cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
         await resolveExecutionCompleteListener;
 

@@ -28,7 +28,7 @@ export interface ChannelControl<X, Y> {
 
 export interface Step {
 
-  do() : void
+  do() : Promise<void>
   describe() : string
 
 }  
