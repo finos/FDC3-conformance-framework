@@ -101,7 +101,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
 
     //Open ChannelsApp then execute commands in order
     await fdc3.open(
-      "ChannelsApp",
+      "ChannelsAppId",
       buildChannelsAppContext(commands, channelsAppConfig)
     );
   }
