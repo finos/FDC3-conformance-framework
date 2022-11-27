@@ -176,10 +176,12 @@
     {
       "appId": "MockAppId",
       "name": "MockApp",
+      "title": "Mock App",
       "description": "Testing spec conformance",
       "details": {
         "url": "http://localhost:3001/v1.2/general"
       },
+      "type": "web",
       "hostManifests": {
         "sail": {
           "inject-api": "1.2",
