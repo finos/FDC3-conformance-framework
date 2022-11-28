@@ -1,11 +1,10 @@
 import {
   closeWindowOnCompletion,
-  MockAppContext,
   onFdc3Ready,
 } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { ContextToSend } from "./general";
+import { MockAppContext } from "../../test/v2.0/advanced/open-support-2.0";
 declare let fdc3: DesktopAgent;
 console.log(`REACHED`);
 onFdc3Ready().then(async () => {

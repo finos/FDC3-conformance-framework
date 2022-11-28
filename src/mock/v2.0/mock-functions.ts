@@ -1,6 +1,6 @@
-import { Context } from "fdc3_2_0";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { AppControlContext } from "../../test/common/channel-control";
+import { MockAppContext } from "../../test/v2.0/advanced/open-support-2.0";
 
 declare let fdc3 : DesktopAgent
 
@@ -34,8 +34,4 @@ export const sendContextToTests = async(context: MockAppContext) =>{
     "app-control"
   );
   await appControlChannel.broadcast(context);
-}
-
-export interface MockAppContext extends Context {
-  errorMessage?: string;
 }

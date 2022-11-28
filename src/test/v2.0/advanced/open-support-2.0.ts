@@ -9,7 +9,6 @@ import {
 } from "fdc3_2_0";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
-import { MockAppContext } from "../../../mock/v2.0/mock-functions";
 import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 
@@ -200,3 +199,7 @@ const broadcastCloseWindow = async (currentTest) => {
     testId: currentTest,
   } as AppControlContext);
 };
+
+export interface MockAppContext extends Context {
+  errorMessage?: string;
+}
