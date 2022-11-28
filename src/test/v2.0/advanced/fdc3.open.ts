@@ -2,7 +2,7 @@ import { OpenError, Context, getOrCreateChannel, Channel, Listener } from "fdc3_
 import { assert, expect } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
-import { sleep, wait } from "../../../utils";
+import { sleep, wait, wrapPromise } from "../../../utils";
 import constants from "../../../constants";
 import { MockAppContext } from "../../../mock/v2.0/mock-functions";
 import { AppControlContext } from "../../common/channel-control";
@@ -75,29 +75,52 @@ export default () =>
     });
 
     const AOpensBWithWrongContext = "(2.0-AOpensBWithWrongContext) Received App time out when opening app B with fake context, app b listening for different context";
-    it.only(AOpensBWithWrongContext, async () => {
+    it(AOpensBWithWrongContext, async () => {
+      const appControlChannel = await getOrCreateChannel("app-control");
+      await appControlChannel.addContextListener("context-received", (context: MockAppContext)=>{
+        assert.fail(context.errorMessage);
+      });
+
+      let timeout;
+      const wrapper = wrapPromise();
       try {
         await fdc3.open(
-          { appId: appBId },
+          { appId: "OpenAppAId" },
           { type: "fdc3.contextDoesNotExist" }
         );
-        assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
         expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
+        wrapper.resolve();
+        clearTimeout(timeout);
       }
+
+      timeout = await window.setTimeout(() => {
+        wrapper.reject(new Error("Expected AppTimeout error. No rejection received from the open promise"));
+      }, 10000);
+
+      await wrapper.promise;
     });
 
     const AOpensBNoListen = "(2.0-AOpensBNoListen) Received App time out when opening app B with fake context, app b not listening for any context";
+    let timeout;
+      const wrapper = wrapPromise();
     it(AOpensBNoListen, async () => {
       try {
         await fdc3.open(
-          { appId: appBId },
+          { appId: "OpenAppBId" },
           { type: "fdc3.contextDoesNotExist" }
         );
-        assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
         expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
+        wrapper.resolve();
+        clearTimeout(timeout);
       }
+
+      timeout = await window.setTimeout(() => {
+        wrapper.reject(new Error("Expected AppTimeout error. No rejection received from the open promise"));
+      }, 10000);
+
+      await wrapper.promise;
     });
   });
 
