@@ -36,13 +36,6 @@ export const sendContextToTests = async(context: MockAppContext) =>{
   await appControlChannel.broadcast(context);
 }
 
-// export const sendErrorMessageToTests = async(context: ErrorMessageContext) =>{
-//   const appControlChannel = await fdc3.getOrCreateChannel(
-//     "app-control"
-//   );
-//   await appControlChannel.broadcast(context);
-// }
-
 export interface MockAppContext extends Context {
   errorMessage?: string;
 }

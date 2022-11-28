@@ -7,12 +7,12 @@ import { sleep, wait } from "../../../utils";
 
 declare let fdc3: DesktopAgent;
 
+const appAName = "IntentAppA";
 const appBName = "MockApp";
+const appCName = "IntentAppC";
+const appAId = "IntentAppAId";
 const appBId = "MockAppId";
-const noListenerAppId = "IntentAppAId";
-const noListenerAppName = "IntentAppA";
-const genericListenerAppId = "IntentAppCId";
-const genericListenerAppName = "IntentAppC";
+const appCId = "IntentAppCId";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause: ";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
@@ -118,9 +118,9 @@ export default () =>
       await closeAppWindows(AOpensBWithSpecificContext2Test);
     });
 
-    const AOpensBWithSpecificContext3Test =
-      "(AOpensBWithSpecificContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds specific listener";
-    it(AOpensBWithSpecificContext3Test, async () => {
+    const AOpensBWithSpecificContextTest =
+      "(AOpensBWithSpecificContext) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds specific listener";
+    it(AOpensBWithSpecificContextTest, async () => {
       const receiver = createReceiver("fdc3-conformance-context-received");
       await fdc3.open(
         { name: appBName, appId: appBId },
@@ -129,14 +129,14 @@ export default () =>
       const receivedValue = (await receiver) as any;
       expect(receivedValue.context.name).to.eq("context", openDocs);
       expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
-      await closeAppWindows(AOpensBWithSpecificContext3Test);
+      await closeAppWindows(AOpensBWithSpecificContextTest);
     });
 
     const AOpensBWithContext1Test =
       "(AOpensBWithContext1) Can open app B from app A with context and string as target, app B adds generic listener";
     it(AOpensBWithContext1Test, async () => {
       const receiver = createReceiver("fdc3-conformance-context-received");
-      await fdc3.open(genericListenerAppName, {
+      await fdc3.open(appCName, {
         name: "context",
         type: "fdc3.genericListener",
       });
@@ -154,7 +154,7 @@ export default () =>
     it(AOpensBWithContext2Test, async () => {
       const receiver = createReceiver("fdc3-conformance-context-received");
       await fdc3.open(
-        { name: genericListenerAppName },
+        { name: appCName },
         { name: "context", type: "fdc3.genericListener" }
       );
       const receivedValue = (await receiver) as any;
@@ -171,7 +171,7 @@ export default () =>
     it(AOpensBWithContext3Test, async () => {
       const receiver = createReceiver("fdc3-conformance-context-received");
       await fdc3.open(
-        { name: genericListenerAppName, appId: genericListenerAppId },
+        { name: appCName, appId: appCId },
         { name: "context", type: "fdc3.genericListener" }
       );
       const receivedValue = (await receiver) as any;
@@ -210,20 +210,21 @@ export default () =>
       }, constants.NoListenerTimeout);
       try {
         await fdc3.open(
-          { name: noListenerAppName, appId: noListenerAppId },
+          { name: appAName, appId: appAId },
           { name: "context", type: "fdc3.testReceiver" }
         );
         assert.fail(openDocs + "No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error.");
       } catch (ex) {
+        console.log("error thrown");
         expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
       } finally {
         clearTimeout(timeout);
       }
     }).timeout(constants.NoListenerTimeout + 1000);
 
-    const AOpensBWithWrongContextTest =
-      "(AOpensBWithWrongContext) Receive AppTimeout error when targeting app with wrong context";
-    it(AOpensBWithWrongContextTest, async () => {
+    const AOpensBMalformedContext =
+      "(AOpensBMalformedContext) Receive AppTimeout error when targeting app with wrong context";
+    it(AOpensBMalformedContext, async () => {
       //fail the test just before it times out if no error is returned
       let timeout = setTimeout(()=>{
         assert.fail(openDocs + testTimeoutMessage);
@@ -235,11 +236,12 @@ export default () =>
         );
         assert.fail(openDocs + "No error was thrown - this app does not add a listener for the context type passed, which the Desktop Agent should detect and throw the relevant error.");
       } catch (ex) {
+        console.log("error thrown");
         expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
       } finally {
         clearTimeout(timeout);
       }
-      await closeAppWindows(AOpensBWithWrongContextTest);
+      await closeAppWindows(AOpensBMalformedContext);
     }).timeout(constants.NoListenerTimeout + 1000);
   });
 
