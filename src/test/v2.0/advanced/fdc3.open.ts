@@ -4,8 +4,8 @@ import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
 import constants from "../../../constants";
-import { AppControlContext } from "./fdc3.broadcast";
 import { MockAppContext } from "../../../mock/v2.0/mock-functions";
+import { AppControlContext } from "../../common/channel-control";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
@@ -34,7 +34,7 @@ export default () =>
 
     const AOpensBWithContext = "(2.0-AOpensBWithContext) Can open app B from app A with context and AppIdentifier (appId) as target but app B listening for null context";
     it(AOpensBWithContext, async () => {
-      const receiver = createReceiver("fdc3.instrument-received");
+      const receiver = createReceiver("context-received");
       await fdc3.open(
         { appId: intentAppC },
         { type: "fdc3.instrument" }
@@ -74,12 +74,12 @@ export default () =>
       await closeAppWindows(AOpensBMultipleListen);
     });
 
-    const AOpensBNoListen = "(2.0-AOpensBNoListen) Received App time out when opening app B with fake context, app b not listening for any context";
-    it(AOpensBNoListen, async () => {
+    const AOpensBWithWrongContext = "(2.0-AOpensBWithWrongContext) Received App time out when opening app B with fake context, app b listening for different context";
+    it.only(AOpensBWithWrongContext, async () => {
       try {
         await fdc3.open(
           { appId: appBId },
-          { name: "context", type: "fdc3.contextDoesNotExist" }
+          { type: "fdc3.contextDoesNotExist" }
         );
         assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
@@ -87,12 +87,12 @@ export default () =>
       }
     });
 
-    const AOpensBWithWrongContext = "(2.0-AOpensBWithWrongContext) Received App time out when opening app B with fake context, app b listening for different context";
-    it(AOpensBWithWrongContext, async () => {
+    const AOpensBNoListen = "(2.0-AOpensBNoListen) Received App time out when opening app B with fake context, app b not listening for any context";
+    it(AOpensBNoListen, async () => {
       try {
         await fdc3.open(
           { appId: appBId },
-          { name: "context", type: "fdc3.contextDoesNotExist" }
+          { type: "fdc3.contextDoesNotExist" }
         );
         assert.fail("No error was not thrown", openDocs);
       } catch (ex) {

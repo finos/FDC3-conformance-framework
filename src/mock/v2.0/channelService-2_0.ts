@@ -1,9 +1,8 @@
 import { Channel, DesktopAgent } from "fdc3_2_0";
-import { AppControlContext, ChannelsAppConfig } from "../../test/v2.0/advanced/fdc3.broadcast";
+import { AppControlContext, ChannelsAppConfig } from "../../test/common/channel-control";
 import { commands, channelType } from "../constants";
 
 declare let fdc3: DesktopAgent
-
 
 export class Fdc3CommandExecutor2_0 {
   //execute commands in order
