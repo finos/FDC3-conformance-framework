@@ -1,7 +1,7 @@
 import { assert } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
-import { OpenControl2_0 } from "./open-support-1.2";
+import { OpenControl2_0 } from "./open-support-2.0";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 
