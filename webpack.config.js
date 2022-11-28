@@ -15,6 +15,9 @@ const config = {
     'channel-v2.0': "./src/mock/v2.0/channel.ts",
     'general-v2.0': "./src/mock/v2.0/general.ts",
     'metadata-v2.0': "./src/mock/v2.0/metadata.ts",
+    'intent-a-v2.0': "./src/mock/v2.0/intent-a.ts",
+    'intent-b-v2.0': "./src/mock/v2.0/intent-b.ts",
+    'intent-c-v2.0': "./src/mock/v2.0/intent-c.ts",
   },
   devtool: "source-map",
   output: {
