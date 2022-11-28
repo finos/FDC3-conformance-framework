@@ -18,7 +18,6 @@ onFdc3Ready().then(async () => {
   };
 
   if (appId !== "MockAppId") {
-    console.log("found error");
     appOpenedContext.errorMessage = `Incorrect appId retrieved from getInfo(). Expected MockAppId, got ${appId}`;
   }
 
