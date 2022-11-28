@@ -1,3 +1,4 @@
+import { Context } from "fdc3_2_0";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { AppControlContext } from "../../test/common/channel-control";
 
@@ -28,9 +29,20 @@ export const closeWindowOnCompletion = async () => {
   });
 };
 
-export const sendContextToTests = async(context) =>{
+export const sendContextToTests = async(context: MockAppContext) =>{
   const appControlChannel = await fdc3.getOrCreateChannel(
     "app-control"
   );
   await appControlChannel.broadcast(context);
+}
+
+// export const sendErrorMessageToTests = async(context: ErrorMessageContext) =>{
+//   const appControlChannel = await fdc3.getOrCreateChannel(
+//     "app-control"
+//   );
+//   await appControlChannel.broadcast(context);
+// }
+
+export interface MockAppContext extends Context {
+  errorMessage?: string;
 }

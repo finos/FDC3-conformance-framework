@@ -120,7 +120,7 @@
 		const applications = {
 			local: [
 				{
-					"name": "MockApp",
+					"name": "MockAppId",
 					"title": "Mock App",
 					"description": "Testing spec conformance",
 					"type": "window",

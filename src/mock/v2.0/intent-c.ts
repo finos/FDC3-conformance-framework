@@ -23,4 +23,15 @@ onFdc3Ready().then(async () => {
       context: context,
     } as ContextToSend);
   });
+
+  fdc3.addContextListener(null, async (context) => {
+    // broadcast that this app has received context
+
+    if(context.type === "fdc3.instrument"){
+      await sendContextToTests({
+        type: "fdc3.instrument-received",
+        context: context,
+      } as ContextToSend);
+    }
+  });
 });

@@ -1,31 +1,29 @@
-import { OpenError, Listener, Channel, Context, getOrCreateChannel } from "fdc3_2_0";
+import { OpenError, Context, getOrCreateChannel, Channel, Listener } from "fdc3_2_0";
 import { assert, expect } from "chai";
-import constants from "../../../constants";
 import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
+import constants from "../../../constants";
+import { AppControlContext } from "./fdc3.broadcast";
+import { MockAppContext } from "../../../mock/v2.0/mock-functions";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 
-interface AppControlContext extends Context {
-  testId: string;
-}
-
 const appBId = "MockAppId";
-const genericListenerAppId = "IntentAppCId";
+const intentAppC = "IntentAppCId";
 
 export default () =>
   describe("fdc3.open", () => {
-    it("(AOpensB1) Can open app B from app A with AppIdentifier (appId) as target", async () => {
+    const AOpensB1 = "(2.0-AOpensB1) Can open app B from app A with AppIdentifier (appId) as target";
+    it(AOpensB1, async () => {
       const result = createReceiver("fdc3-conformance-opened");
       await fdc3.open({ appId: appBId });
       await result;
-      await broadcastCloseWindow();
-      await waitForMockAppToClose();
+      await closeAppWindows(AOpensB1);
     });
 
-    it("(AFailsToOpenB) Receive AppNotFound error when targeting non-existent AppIdentifier (appId) as target", async () => {
+    it("(2.0-AFailsToOpenB) Receive AppNotFound error when targeting non-existent AppIdentifier (appId) as target", async () => {
       try {
         await fdc3.open({ appId: "ThisAppDoesNotExist" });
         assert.fail("No error was not thrown", openDocs);
@@ -34,55 +32,50 @@ export default () =>
       }
     });
 
-    it("(AOpensBWithContext) Can open app B from app A with context and AppIdentifier (appId) as target but app B listening for null context", async () => {
-      const receiver = createReceiver("fdc3-conformance-opened");
+    const AOpensBWithContext = "(2.0-AOpensBWithContext) Can open app B from app A with context and AppIdentifier (appId) as target but app B listening for null context";
+    it(AOpensBWithContext, async () => {
+      const receiver = createReceiver("fdc3.instrument-received");
       await fdc3.open(
-        { appId: genericListenerAppId },
-        { name: "context", type: "fdc3.testReceiver" }
+        { appId: intentAppC },
+        { type: "fdc3.instrument" }
       );
       const receivedValue = (await receiver) as any;
-      expect(receivedValue.context.name).to.eq("context", openDocs);
-      expect(receivedValue.context.type).to.eq("fdc3.testReceiver", openDocs);
-      await broadcastCloseWindow();
-      await waitForMockAppToClose();
+      expect(receivedValue.context.type).to.eq("fdc3.instrument", openDocs);
+      await closeAppWindows(AOpensBWithContext);
     });
 
-    it("(AOpensBWithSpecificContext) Can open app B from app A with context and AppIdentifier (appId) as target and app B is expecting context", async () => {
-      const receiver = createReceiver("fdc3-conformance-context-received");
-      await fdc3.open(
-        { appId: appBId },
-        { name: "context", type: "fdc3.testReceiver" }
-      );
-      const receivedValue = (await receiver) as any;
-      expect(receivedValue.context.name).to.eq("context", openDocs);
-      expect(receivedValue.context.type).to.eq(
-        "fdc3.testReceiver",
-        openDocs
-      );
-      await broadcastCloseWindow();
-      await waitForMockAppToClose();
-    });
-
-    it("(AOpensBMultipleListen) Can open app B from app A with context and AppIdentifier (appId) as target but app B add listener before correct one", async () => {
-      const receiver = createReceiver(
-        "fdc3-conformance-context-received-multiple"
-      );
+    const AOpensBWithSpecificContext = "(2.0-AOpensBWithSpecificContext) Can open app B from app A with context and AppIdentifier (appId) as target and app B is expecting context";
+    it(AOpensBWithSpecificContext, async () => {
+      const receiver = createReceiver("context-received");
       await fdc3.open(
         { appId: appBId },
-        { name: "context", type: "fdc3.testReceiverMultiple" }
+        { type: "fdc3.instrument" }
       );
-
       const receivedValue = (await receiver) as any;
-      expect(receivedValue.context.name).to.eq("context", openDocs);
       expect(receivedValue.context.type).to.eq(
-        "fdc3.testReceiverMultiple",
+        "fdc3.instrument",
         openDocs
       );
-      await broadcastCloseWindow();
-      await waitForMockAppToClose();
+      await closeAppWindows(AOpensBWithSpecificContext);
     });
 
-    it("(AOpensBNoListen) Received App time out when opening app B with fake context, app b not listening for any context", async () => {
+    const AOpensBMultipleListen = "(2.0-AOpensBMultipleListen) Can open app B from app A with context and AppIdentifier (appId) as target but app B add listener before correct one";
+    it(AOpensBMultipleListen, async () => {
+      const receiver = createReceiver("context-received");
+      await fdc3.open(
+        { appId: appBId },
+        { type: "fdc3.instrument" }
+      );
+      const receivedValue = (await receiver) as any;
+      expect(receivedValue.context.type).to.eq(
+        "fdc3.instrument",
+        openDocs
+      );
+      await closeAppWindows(AOpensBMultipleListen);
+    });
+
+    const AOpensBNoListen = "(2.0-AOpensBNoListen) Received App time out when opening app B with fake context, app b not listening for any context";
+    it(AOpensBNoListen, async () => {
       try {
         await fdc3.open(
           { appId: appBId },
@@ -94,7 +87,8 @@ export default () =>
       }
     });
 
-    it("(AOpensBWithWrongContext) Received App time out when opening app B with fake context, app b listening for different context", async () => {
+    const AOpensBWithWrongContext = "(2.0-AOpensBWithWrongContext) Received App time out when opening app B with fake context, app b listening for different context";
+    it(AOpensBWithWrongContext, async () => {
       try {
         await fdc3.open(
           { appId: appBId },
@@ -113,8 +107,15 @@ const createReceiver = async (contextType: string) => {
   const appControlChannel = await getOrCreateChannel("app-control");
   let timeout;
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const listener = await appControlChannel.addContextListener(contextType, async (context) => {
-      resolve(context);
+    const listener = await appControlChannel.addContextListener(contextType, async (context: MockAppContext) => {
+      console.log(context.errorMessage);
+      if(context.errorMessage !== undefined){
+        console.log("ERROR RECEIVED");
+        console.log(context.errorMessage);
+        reject(new Error(context.errorMessage));
+      }else{
+        resolve(context);
+      }
       clearTimeout(timeout);
       await listener.unsubscribe();
     });
@@ -128,30 +129,102 @@ const createReceiver = async (contextType: string) => {
   return messageReceived;
 };
 
-const broadcastCloseWindow = async () => {
+async function closeAppWindows(testId) {
+  await broadcastCloseWindow(testId);
   const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-  await appControlChannel.broadcast({ type: "closeWindow" });
+  await waitForContext("windowClosed", testId, appControlChannel);
+  await wait(constants.WindowCloseWaitTime);
+}
+
+const broadcastCloseWindow = async (currentTest) => {
+  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  appControlChannel.broadcast({
+    type: "closeWindow",
+    testId: currentTest,
+  } as AppControlContext);
 };
 
-async function waitForMockAppToClose() {
-  let timeout;
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-    const listener = await appControlChannel.addContextListener(
-      "windowClosed",
-      (context) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      }
+const waitForContext = (
+  contextType: string,
+  testId: string,
+  channel?: Channel
+): Promise<Context> => {
+  let executionListener: Listener;
+  return new Promise<Context>(async (resolve) => {
+    console.log(
+      Date.now() +
+        ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
     );
 
-    //if no context received reject promise
-    const { promise: sleepPromise, timeout: theTimeout } = sleep();
-    timeout = theTimeout;
-    await sleepPromise;
-    reject(new Error("windowClosed context not received from app B"));
-  });
+    const handler = (context: AppControlContext) => {
+      console.log(` waitforcontext hander reached`);
+      if (testId) {
+        console.log(` ${testId} VS ${context.testId}`);
+        if (testId == context.testId) {
+          console.log(
+            Date.now() + ` Received ${contextType} for test: ${testId}`
+          );
+          resolve(context);
+          if (executionListener) executionListener.unsubscribe();
+        } else {
+          console.warn(
+            Date.now() +
+              ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
+          );
+        }
+      } else {
+        console.log(
+          Date.now() +
+            ` Received (without testId) "${contextType}" for test: "${testId}"`
+        );
+        resolve(context);
+        if (executionListener) executionListener.unsubscribe();
+      }
+    };
 
-  return messageReceived;
-}
+    if (channel === undefined) {
+      executionListener = await fdc3.addContextListener(contextType, handler);
+    } else {
+      console.log("adding listener in waitforcontext");
+      executionListener = await channel.addContextListener(contextType, handler);
+      //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
+      const ccHandler = async (context: AppControlContext) => {
+        if (context) {
+          if (testId) {
+            if (testId == context?.testId && context?.type == contextType) {
+              console.log(
+                Date.now() +
+                  ` Received "${contextType}" (from current context) for test: "${testId}"`
+              );
+              if (executionListener) executionListener.unsubscribe();
+              resolve(context);
+            } //do not warn as it will be ignoring mismatches which will be common
+            else {
+              console.log(
+                Date.now() +
+                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
+                    context ? "" : "NOT "
+                  } exist,
+            had testId: "${context?.testId}" (${
+                    testId == context?.testId ? "did match" : "did NOT match"
+                  })
+            and type "${context?.type}" vs ${contextType} (${
+                    context?.type == contextType ? "did match" : "did NOT match"
+                  })`
+              );
+            }
+          } else {
+            console.log(
+              Date.now() +
+                ` Received "${contextType}" (from current context) for an unspecified test`
+            );
+            if (executionListener) executionListener.unsubscribe();
+            resolve(context);
+          }
+        }
+      };
+      channel.getCurrentContext().then(ccHandler);
+    }
+  });
+};
+
