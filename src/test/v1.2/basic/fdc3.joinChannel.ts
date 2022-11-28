@@ -42,12 +42,6 @@ export default () =>
       } else {
         assert.fail("No system channels available");
       }
-
-      await fdc3.joinChannel(channels[0].id);
-
-      const current = await fdc3.getCurrentChannel();
-
-      expect(current).to.not.be.null;
     });
 
     it("(BasicJC2) Can join the correct system channel", async () => {
@@ -57,6 +51,7 @@ export default () =>
 
       const current = await fdc3.getCurrentChannel();
 
-      expect(current).to.eql(channel);
+      expect(current.id).to.eql(channel.id);
+      expect(current.type).to.eql(channel.type);
     })
   });
