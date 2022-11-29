@@ -58,14 +58,14 @@ export default () =>
       "(2.0-AOpensBWithWrongContext) Received App time out when opening app B with fake context, app b listening for different context";
     it(AOpensBWithWrongContext, async () => {
       await control.addListenerAndFailIfReceived();
-      await control.expectAppTimeoutErrorOnOpen(openApp.a.id);
+      await control.expectAppTimeoutErrorOnOpen(openApp.d.id);
       await control.closeAppWindows(AOpensBWithWrongContext);
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const AOpensBNoListen =
       "(2.0-AOpensBNoListen) Received App time out when opening app B with fake context, app b not listening for any context";
     it(AOpensBNoListen, async () => {
-      await control.expectAppTimeoutErrorOnOpen(openApp.b.id);
+      await control.expectAppTimeoutErrorOnOpen(openApp.e.id);
       await control.closeAppWindows(AOpensBNoListen);
     }).timeout(constants.NoListenerTimeout + 1000);
   });

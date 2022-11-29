@@ -41,4 +41,10 @@ export const openApp = {
     name: "IntentAppC",
     id: "IntentAppCId",
   },
+  d: {
+    id: "OpenAppAId",
+  },
+  e:{
+    id: "OpenAppBId",
+  }
 };
