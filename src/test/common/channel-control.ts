@@ -9,7 +9,7 @@ export interface ChannelControl<X, Y> {
     leaveChannel(): Promise<void>
     getUserChannel(cn: number): Promise<X>
     joinChannel(channel: X): Promise<void>
-    createTestChannel(name?: string): Promise<X>
+    createTestChannel(): Promise<X>
   
     // test control
     closeChannelsAppWindow(testId: string): Promise<void>;
@@ -22,6 +22,9 @@ export interface ChannelControl<X, Y> {
     setupAndValidateListener1(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
     setupAndValidateListener2(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
     setupContextChecker(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): Promise<void>;
+
+    // helpers
+    getRandomId(): string;
 }
   
 /** same in 1.2 and 2.0 */  
@@ -45,16 +48,16 @@ export interface AppControlContext extends CommonContext {
       notifyAppAOnCompletion: boolean;
       historyItems: number;
       fdc3ApiVersion: string;
-      userChannelId: string;
+      channelId: string;
     };
   };
   
   export type ChannelsAppConfig = {
     fdc3ApiVersion: string;
     testId: string;
-    userChannelId?: string;
     notifyAppAOnCompletion?: boolean;
     historyItems?: number;
+    channelId: string;
   };
   
   

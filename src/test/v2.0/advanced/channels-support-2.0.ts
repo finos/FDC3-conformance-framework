@@ -87,13 +87,9 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     const channelsAppConfig: ChannelsAppConfig = {
       fdc3ApiVersion: "2.0",
       testId: testId,
-      userChannelId: channelId,
+      channelId,
       notifyAppAOnCompletion: notify,
     };
-
-    if (channelId) {
-      channelsAppConfig.userChannelId = channelId;
-    }
 
     if (historyItems) {
       channelsAppConfig.historyItems = historyItems;
@@ -101,7 +97,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
 
     //Open ChannelsApp then execute commands in order
     await fdc3.open(
-      "ChannelsAppId",
+      { appId: "ChannelsAppId" },
       buildChannelsAppContext(commands, channelsAppConfig)
     );
   }
@@ -146,7 +142,11 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     });
   }
 
+  getRandomId(): string {
+    const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
 
+    return uint32.toString(16);
+  }
 
 }
 
@@ -269,7 +269,7 @@ function buildChannelsAppContext(
       testId: config.testId,
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
-      userChannelId: config.userChannelId ?? null,
+      channelId: config.channelId,
     },
   };
 }

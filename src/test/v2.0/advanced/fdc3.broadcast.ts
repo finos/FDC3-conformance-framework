@@ -1233,6 +1233,7 @@ export type ChannelsAppContext = Context & {
     notifyAppAOnCompletion: boolean;
     historyItems: number;
     fdc3ApiVersion: string;
+    channelId?: string
   };
 };
 
@@ -1241,7 +1242,7 @@ export type ChannelsAppConfig = {
   testId: string;
   notifyAppAOnCompletion?: boolean;
   historyItems?: number;
-  userChannelId?: string;
+  channelId?: string;
 };
 
 function buildChannelsAppContext(
@@ -1256,6 +1257,7 @@ function buildChannelsAppContext(
       testId: config.testId,
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
+      channelId: config.channelId
     },
   };
 }

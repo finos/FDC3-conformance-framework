@@ -14,11 +14,11 @@ export class Fdc3CommandExecutor1_2 {
     for (const command of orderedCommands) {
       switch (command) {
         case commands.joinRetrievedUserChannel: {
-          channel = await this.joinRetrievedUserChannel(config.userChannelId);
+          channel = await this.joinRetrievedUserChannel(config.channelId);
           break;
         }
         case commands.retrieveTestAppChannel: {
-          channel = await this.retrieveTestAppChannel();
+          channel = await this.retrieveTestAppChannel(config.channelId);
           break;
         }
         case commands.broadcastInstrumentContext: {
@@ -57,9 +57,9 @@ export class Fdc3CommandExecutor1_2 {
     }
   }
 
-  //retrieve/create "test-channel" app channel
-  async retrieveTestAppChannel() {
-    return await fdc3.getOrCreateChannel("test-channel");
+  // retrieve the passed app channel
+  async retrieveTestAppChannel(channelId?: string): Promise<Channel> {
+    return fdc3.getOrCreateChannel(channelId);
   }
 
   //get broadcast service and broadcast the given context type
@@ -85,8 +85,8 @@ export class Fdc3CommandExecutor1_2 {
           let context : AppControlContext = {
             type: contextType,
             name: `History-item-${i + 1}`,
+            testId
           };
-          if (testId) context.testId = testId;
           channel.broadcast(context);
         }
       }
@@ -100,8 +100,8 @@ export class Fdc3CommandExecutor1_2 {
         let context : AppControlContext = {
           type: contextType,
           name: `History-item-${i + 1}`,
+          testId
         };
-        if (testId) context.testId = testId;
         fdc3.broadcast(context);
       }
     },

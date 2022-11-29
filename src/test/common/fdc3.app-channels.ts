@@ -21,7 +21,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId)
         let receivedContext = false;
         await cc.setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, () => { receivedContext = true })
-        await cc.openChannelApp(acTestId, undefined, APP_CHANNEL_AND_BROADCAST)
+        await cc.openChannelApp(acTestId, testChannel.id, APP_CHANNEL_AND_BROADCAST)
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -36,7 +36,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
 
         const testChannel = await cc.createTestChannel();
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId2)
-        await cc.openChannelApp(acTestId2, null, APP_CHANNEL_AND_BROADCAST)
+        await cc.openChannelApp(acTestId2, testChannel.id, APP_CHANNEL_AND_BROADCAST)
         await resolveExecutionCompleteListener;
         let receivedContext = false;
         await cc.setupContextChecker(testChannel, "fdc3.instrument", errorMessage, () => receivedContext = true);
@@ -55,7 +55,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId4)
         let receivedContext = false;
         await cc.setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, () => { receivedContext = true })
-        await cc.openChannelApp(acTestId4, null, APP_CHANNEL_AND_BROADCAST_TWICE)
+        await cc.openChannelApp(acTestId4, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE)
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -82,7 +82,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
           checkIfBothContextsReceived();
         })
 
-        await cc.openChannelApp(acTestId5, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
+        await cc.openChannelApp(acTestId5, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE)
 
         let receivedContext = false;
         function checkIfBothContextsReceived() {
@@ -116,7 +116,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         await cc.setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
         await cc.unsubscribeListeners()
 
-        await cc.openChannelApp(acTestId6, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
+        await cc.openChannelApp(acTestId6, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE)
 
         await resolveExecutionCompleteListener;
       });
@@ -126,7 +126,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
       it(acTestId7, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves a different app channel\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
-        const testChannel = await cc.createTestChannel("a-different-test-channel");
+        const testChannel = await cc.createTestChannel();
         await cc.setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
         await cc.openChannelApp(acTestId7, undefined, APP_CHANNEL_AND_BROADCAST)
         await wait();
@@ -137,11 +137,11 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
       it(acTestId8, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
-        let testChannel = await cc.createTestChannel()
+        const testChannel = await cc.createTestChannel()
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId8)
-        testChannel = await cc.createTestChannel("a-different-test-channel");
+        const differentTestChannel = await cc.createTestChannel();
         await cc.setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
-        await cc.openChannelApp(acTestId8, undefined, APP_CHANNEL_AND_BROADCAST)
+        await cc.openChannelApp(acTestId8, differentTestChannel.id, APP_CHANNEL_AND_BROADCAST)
         await resolveExecutionCompleteListener;
       });
 
@@ -153,7 +153,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const testChannel = await cc.createTestChannel()
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId9)
 
-        await cc.openChannelApp(acTestId9, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
+        await cc.openChannelApp(acTestId9, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE)
         await resolveExecutionCompleteListener;
 
         const context = await testChannel.getCurrentContext("fdc3.instrument");
@@ -177,7 +177,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const testChannel = await cc.createTestChannel()
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId10)
 
-        await cc.openChannelApp(acTestId10, undefined, APP_CHANNEL_AND_BROADCAST_TWICE, 2)
+        await cc.openChannelApp(acTestId10, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE, 2)
         await resolveExecutionCompleteListener;
 
         const context = await testChannel.getCurrentContext("fdc3.instrument");
@@ -196,7 +196,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
 
         const testChannel = await cc.createTestChannel()
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId11)
-        await cc.openChannelApp(acTestId11, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
+        await cc.openChannelApp(acTestId11, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE)
         await resolveExecutionCompleteListener;
 
         const context = await testChannel.getCurrentContext();

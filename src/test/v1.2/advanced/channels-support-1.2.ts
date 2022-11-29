@@ -10,6 +10,8 @@ declare let fdc3: DesktopAgent;
 let listener1: Listener, listener2: Listener
 
 export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
+  private readonly testAppChannelName = "test-channel";
+
   retrieveAndJoinChannel = async (
     channelNumber: number
   ): Promise<Channel> => {
@@ -39,8 +41,9 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     return fdc3.joinChannel(channel.id)
   }
 
-  createTestChannel = async (name: string = "test-channel"): Promise<Channel> => {
-    return fdc3.getOrCreateChannel(name);
+  createTestChannel = async (): Promise<Channel> => {
+    const channelName = `${this.testAppChannelName}.${this.getRandomId()}`;
+    return fdc3.getOrCreateChannel(channelName);
   }
 
   unsubscribeListeners = (): void => {
@@ -84,13 +87,9 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     const channelsAppConfig: ChannelsAppConfig = {
       fdc3ApiVersion: "1.2",
       testId: testId,
-      userChannelId: channelId,
+      channelId,
       notifyAppAOnCompletion: notify,
     };
-
-    if (channelId) {
-      channelsAppConfig.userChannelId = channelId;
-    }
 
     if (historyItems) {
       channelsAppConfig.historyItems = historyItems;
@@ -143,8 +142,11 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     onComplete(context);
   }
 
+  getRandomId(): string {
+    const uint32 = window.crypto.getRandomValues(new Uint32Array(1))[0];
 
-
+    return uint32.toString(16);
+  }
 }
 
 
@@ -265,7 +267,7 @@ function buildChannelsAppContext(
       testId: config.testId,
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
-      userChannelId: config.userChannelId ?? null,
+      channelId: config.channelId,
     },
   };
 }
