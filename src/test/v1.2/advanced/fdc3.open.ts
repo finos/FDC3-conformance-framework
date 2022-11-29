@@ -1,6 +1,5 @@
 import { assert } from "chai";
 import APIDocumentation from "../../../apiDocuments";
-import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { OpenControl1_2 } from "./open-support-1.2";
 import { openApp } from "../../common/open-control";
@@ -160,18 +159,4 @@ export default () =>
       await control.validateReceivedContext(receiver, "fdc3.testReceiverMultiple");
       await control.closeAppWindows(AOpensBMultipleListenTest);
     });
-
-    const AOpensBNoListenTest =
-      "(AOpensBNoListen) Receive AppTimeout error when targeting app with no listeners";
-    it(AOpensBNoListenTest, async () => {
-      await control.expectAppTimeoutErrorOnOpen({ name: "context", type: "fdc3.testReceiver" }, openApp.a.id, openApp.a.name);
-      await control.closeAppWindows(AOpensBNoListenTest);
-    }).timeout(constants.NoListenerTimeout + 1000);
-
-    const AOpensBMalformedContext =
-      "(AOpensBMalformedContext) Receive AppTimeout error when targeting app with wrong context";
-    it(AOpensBMalformedContext, async () => {
-      await control.expectAppTimeoutErrorOnOpen({ name: "context", type: "fdc3.thisContextDoesNotExist"}, undefined, openApp.b.name);
-      await control.closeAppWindows(AOpensBMalformedContext);
-    }).timeout(constants.NoListenerTimeout + 1000);
   });

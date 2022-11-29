@@ -2,11 +2,6 @@ export interface OpenControl<X> {
   //test control
   openIntentApp(appId: string, contextType?: string): void;
   closeAppWindows(testId: string): Promise<void>;
-  expectAppTimeoutErrorOnOpen(
-    context: X,
-    appId?: string,
-    appName?: string
-  ): Promise<void>;
 
   //listening
   contextReceiver(contextType: string): Promise<X>;

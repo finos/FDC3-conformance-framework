@@ -71,13 +71,13 @@ export class OpenControl2_0 implements OpenControl<Context> {
     await wait(constants.WindowCloseWaitTime);
   };
 
-  expectAppTimeoutErrorOnOpen = async (context: Context, appId: string, unused?: string) => {
+  expectAppTimeoutErrorOnOpen = async (appId: string) => {
     const testTimeout = setTimeout(() => {
       assert.fail(openDocs + testTimeoutMessage);
     }, constants.NoListenerTimeout);
 
     try {
-      await fdc3.open({ appId: appId }, context);
+      await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
       assert.fail(`No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error.${openDocs}`);
     } catch (ex) {
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
