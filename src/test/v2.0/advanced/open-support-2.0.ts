@@ -46,7 +46,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
   openIntentApp = async (appId: string, contextType?: string) => {
     let context;
-
     if (contextType) {
       context = { type: contextType };
       await fdc3.open({ appId: appId }, context);
@@ -79,10 +78,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
     try {
       await fdc3.open({ appId: appId }, context);
-      assert.fail(
-        openDocs +
-          "No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error."
-      );
+      assert.fail(`No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error.${openDocs}`);
     } catch (ex) {
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
     } finally {

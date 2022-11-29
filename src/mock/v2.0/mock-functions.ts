@@ -1,6 +1,6 @@
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { AppControlContext } from "../../test/common/channel-control";
-import { MockAppContext } from "../../test/v2.0/advanced/open-support-2.0";
+import { MockAppContext } from "../../test/common/open-control";
 
 declare let fdc3 : DesktopAgent
 
