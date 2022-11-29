@@ -75,15 +75,15 @@ This step is vendor-dependent, but examples of `AppD` records can be found in th
 
 You can load up the conformance app and select the tests you wish to run:
 
-<img src="static/selecting.png" title="Selecting Tests" width="400px" />
+<img src="static/selecting.png" alt="Selecting Tests" width="400px" />
 
 The tests run and produce an output in the window.  Failure are shown with a stack trace in red:
 
-<img src="static/failing.png" title="Running Tests" width="400px" />
+<img src="static/failing.png" alt="Running Tests" width="400px" />
 
 Successful runs look something like this:
 
-<img src="static/running.png" title="Success" width="400px" />
+<img src="static/running.png" alt="Success" width="400px" />
 
 ### Joining The Conformance Program
 
@@ -93,7 +93,7 @@ If you've had a clean run of all the tests locally, why not join the conformance
 
 Once you have followed these steps, you will be allowed to display the FDC3 Compliance Badges within your marketing literature.
 
-<img src="terms-conditions/graphics/1.2/2022_FDC3_CompliantBadge_1.2.png" width="100px"><img src="terms-conditions/graphics/2.0/2022_FDC3_CompliantBadge_2.0.png" width="100px">
+<img src="terms-conditions/graphics/1.2/2022_FDC3_CompliantBadge_1.2.png" alt="Conformance with FDC3 1.2" width="100px"><img src="terms-conditions/graphics/2.0/2022_FDC3_CompliantBadge_2.0.png" alt="Conformance with FDC3 2.0"  width="100px">
 
 
 ## Contributing
