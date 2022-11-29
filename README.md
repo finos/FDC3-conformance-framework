@@ -22,19 +22,15 @@ A framework for testing whether desktop containers implement the [FDC3 standard]
 
 ✔️ **Multiple Platforms**
 
-It can be annoying for users to find that features in their apps that they rely on don't work when changing between Desktop Agents.  
-Hopefully these conformance tests will add security around that.
+It can be annoying for users to find that features in their apps that they rely on don't work when changing between Desktop Agents.  Hopefully these conformance tests will add security around that.
 
 ✔️ **Marketing**
 
-FINOS has created _badges_ to indicate conformance with the FDC3 standard.   
-By passing the conformance tests and joining the conformance program, firms are able to use those badges in their own marketing materials.
+FINOS has created _badges_ to indicate conformance with the FDC3 standard.   By passing the conformance tests and joining the conformance program, firms are able to use those badges in their own marketing materials.
 
 ✔️ **Backwards Compatibility**
 
-There are multiple versions of the FDC3 standard.  
-A Desktop Agent could host apps written in _any one of these versions_.  
-For that reason, it's important that Desktop Agents are tested to make sure that they keep on supporting apps written against older versions of FDC3.
+There are multiple versions of the FDC3 standard.  A Desktop Agent could host apps written in _any one of these versions_.  For that reason, it's important that Desktop Agents are tested to make sure that they keep on supporting apps written against older versions of FDC3.
 
 ## How Does It Work?
 
