@@ -214,7 +214,7 @@ export default () =>
         validateListenerObject(listener);
 
         //Join user channel 1
-        joinChannel(1);
+        await joinChannel(1);
 
         const channelsAppCommands = [
           commands.joinUserChannelOne,
@@ -256,7 +256,7 @@ export default () =>
         );
 
         //Join user channel 1
-        joinChannel(1);
+        await joinChannel(1);
 
         let receivedContext = false;
 
@@ -345,7 +345,7 @@ export default () =>
         validateListenerObject(listener);
 
         //Join user channel 1
-        joinChannel(1);
+        await joinChannel(1);
 
         //reject if no context received
         if (!receivedContext) {
@@ -387,7 +387,7 @@ export default () =>
         await resolveExecutionCompleteListener;
 
         //Join user channel 1
-        joinChannel(1);
+        await joinChannel(1);
 
         let receivedContext = false;
 

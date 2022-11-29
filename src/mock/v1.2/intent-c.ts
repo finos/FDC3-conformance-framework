@@ -6,7 +6,7 @@ declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
-  fdc3.addIntentListener("cTestingIntent", async (context) => {
+  fdc3.addIntentListener("cTestingIntent", (context) => {
     return context;
   });
 

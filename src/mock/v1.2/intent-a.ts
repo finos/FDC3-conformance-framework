@@ -5,10 +5,10 @@ declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
-  fdc3.addIntentListener("aTestingIntent", async (context) => {
+  fdc3.addIntentListener("aTestingIntent", (context) => {
     return context;
   });
-  fdc3.addIntentListener("sharedTestingIntent1", async (context) => {
+  fdc3.addIntentListener("sharedTestingIntent1", (context) => {
     return context;
   });
 
