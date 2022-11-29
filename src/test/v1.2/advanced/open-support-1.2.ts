@@ -6,7 +6,7 @@ import {
   getOrCreateChannel,
   Listener,
   OpenError,
-} from "fdc3_2_0";
+} from "fdc3_1_2";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
@@ -17,12 +17,12 @@ declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
 
-export class OpenControl2_0 implements OpenControl<Context> {
+export class OpenControl1_2 implements OpenControl<Context> {
   contextReceiver = async (contextType: string): Promise<Context> => {
     const appControlChannel = await getOrCreateChannel("app-control");
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      const listener = await appControlChannel.addContextListener(
+      const listener = appControlChannel.addContextListener(
         contextType,
         async (context: MockAppContext) => {
           if (context.errorMessage !== undefined) {
@@ -31,7 +31,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
             resolve(context);
           }
           clearTimeout(timeout);
-          await listener.unsubscribe();
+          listener.unsubscribe();
         }
       );
       //if no context received reject promise
@@ -44,14 +44,16 @@ export class OpenControl2_0 implements OpenControl<Context> {
     return messageReceived;
   };
 
-  openIntentApp = async (appId: string, contextType?: string) => {
-    let context;
-
-    if (contextType) {
-      context = { type: contextType };
-      await fdc3.open({ appId: appId }, context);
-    } else {
-      await fdc3.open({ appId: appId });
+  openIntentApp = async (appName: string, appId?: string, context?: Context) => {
+    if(appId){
+        if(context){
+            await fdc3.open({ name: appName, appId: appId }, context);
+        }
+        await fdc3.open({ name: appName, appId: appId });
+    } else if (context){
+        await fdc3.open({ name: appName }, context);
+    }else{
+        await fdc3.open({ name: appName });
     }
   };
 
@@ -65,24 +67,24 @@ export class OpenControl2_0 implements OpenControl<Context> {
     );
   };
 
-  closeAppWindows = async (testId: string) => {
+  closeAppWindows = async (testId) => {
     await broadcastCloseWindow(testId);
     const appControlChannel = await fdc3.getOrCreateChannel("app-control");
     await waitForContext("windowClosed", testId, appControlChannel);
     await wait(constants.WindowCloseWaitTime);
   };
 
-  expectAppTimeoutErrorOnOpen = async (context: Context, appId: string, unused?: string) => {
+  expectAppTimeoutErrorOnOpen = async (context: Context, appId?: string, appName?: string) => {
     const testTimeout = setTimeout(() => {
       assert.fail(openDocs + testTimeoutMessage);
     }, constants.NoListenerTimeout);
 
     try {
-      await fdc3.open({ appId: appId }, context);
-      assert.fail(
-        openDocs +
-          "No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error."
-      );
+        await this.openIntentApp(appName, appId, context);
+        assert.fail(
+            openDocs +
+              "No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error."
+          );
     } catch (ex) {
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
     } finally {
@@ -100,7 +102,8 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
   validateReceivedContext = async (contextReceiver: Promise<Context>, expectedContextType: string) => {
     const receivedValue = (await contextReceiver) as any;
-    expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
+      expect(receivedValue.context.name).to.eq("context", openDocs);
+      expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
   };
 }
 
@@ -143,10 +146,10 @@ const waitForContext = (
     };
 
     if (channel === undefined) {
-      executionListener = await fdc3.addContextListener(contextType, handler);
+      executionListener = fdc3.addContextListener(contextType, handler);
     } else {
       console.log("adding listener in waitforcontext");
-      executionListener = await channel.addContextListener(
+      executionListener = channel.addContextListener(
         contextType,
         handler
       );
@@ -198,4 +201,5 @@ const broadcastCloseWindow = async (currentTest) => {
     testId: currentTest,
   } as AppControlContext);
 };
+
 

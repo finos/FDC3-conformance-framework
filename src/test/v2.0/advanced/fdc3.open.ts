@@ -1,13 +1,10 @@
 import { assert } from "chai";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
+import { openApp } from "../../common/open-control";
 import { OpenControl2_0 } from "./open-support-2.0";
 
-const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
-
-const appBId = "MockAppId";
-const intentAppC = "IntentAppCId";
-
+const openDocs = "\r\nDocumentation: " + APIDocumentation.open2_0 + "\r\nCause:";
 const control = new OpenControl2_0();
 
 export default () =>
@@ -16,7 +13,7 @@ export default () =>
       "(2.0-AOpensB1) Can open app B from app A with AppIdentifier (appId) as target";
     it(AOpensB1, async () => {
       const result = control.contextReceiver("fdc3-conformance-opened");
-      await control.openIntentApp(appBId);
+      await control.openIntentApp(openApp.b.id);
       await result;
       await control.closeAppWindows(AOpensB1);
     });
@@ -34,8 +31,8 @@ export default () =>
       "(2.0-AOpensBWithContext) Can open app B from app A with context and AppIdentifier (appId) as target but app B listening for null context";
     it(AOpensBWithContext, async () => {
       const receiver = control.contextReceiver("context-received");
-      await control.openIntentApp(intentAppC, "fdc3.instrument");
-      await control.validateReceivedContextType(receiver);
+      await control.openIntentApp(openApp.c.id, "fdc3.instrument");
+      await control.validateReceivedContext(receiver, "fdc3.instrument");
       await control.closeAppWindows(AOpensBWithContext);
     });
 
@@ -43,8 +40,8 @@ export default () =>
       "(2.0-AOpensBWithSpecificContext) Can open app B from app A with context and AppIdentifier (appId) as target and app B is expecting context";
     it(AOpensBWithSpecificContext, async () => {
       const receiver = control.contextReceiver("context-received");
-      await control.openIntentApp(appBId, "fdc3.instrument");
-      await control.validateReceivedContextType(receiver);
+      await control.openIntentApp(openApp.b.id, "fdc3.instrument");
+      await control.validateReceivedContext(receiver, "fdc3.instrument");
       await control.closeAppWindows(AOpensBWithSpecificContext);
     });
 
@@ -52,8 +49,8 @@ export default () =>
       "(2.0-AOpensBMultipleListen) Can open app B from app A with context and AppIdentifier (appId) as target but app B add listener before correct one";
     it(AOpensBMultipleListen, async () => {
       const receiver = control.contextReceiver("context-received");
-      await control.openIntentApp(appBId, "fdc3.instrument");
-      await control.validateReceivedContextType(receiver);
+      await control.openIntentApp(openApp.b.id, "fdc3.instrument");
+      await control.validateReceivedContext(receiver, "fdc3.instrument");
       await control.closeAppWindows(AOpensBMultipleListen);
     });
 
@@ -61,12 +58,14 @@ export default () =>
       "(2.0-AOpensBWithWrongContext) Received App time out when opening app B with fake context, app b listening for different context";
     it(AOpensBWithWrongContext, async () => {
       await control.addListenerAndFailIfReceived();
-      await control.expectAppTimeoutErrorOnOpen("OpenAppAId");
+      await control.expectAppTimeoutErrorOnOpen({ type: "fdc3.contextDoesNotExist" }, openApp.a.id);
+      await control.closeAppWindows(AOpensBWithWrongContext);
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const AOpensBNoListen =
       "(2.0-AOpensBNoListen) Received App time out when opening app B with fake context, app b not listening for any context";
     it(AOpensBNoListen, async () => {
-      await control.expectAppTimeoutErrorOnOpen("OpenAppBId");
+      await control.expectAppTimeoutErrorOnOpen({ type: "fdc3.contextDoesNotExist" }, openApp.b.id);
+      await control.closeAppWindows(AOpensBNoListen);
     }).timeout(constants.NoListenerTimeout + 1000);
   });

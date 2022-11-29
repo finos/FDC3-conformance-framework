@@ -4,11 +4,10 @@ import {
 } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { MockAppContext } from "../../test/v2.0/advanced/open-support-2.0";
+import { MockAppContext } from "../../test/common/open-control";
+
 declare let fdc3: DesktopAgent;
-console.log(`REACHED`);
 onFdc3Ready().then(async () => {
-  console.log(`REACHED`);
   await closeWindowOnCompletion();
   await fdc3.addContextListener("shouldNotReceiveThisContext", async (context) => {
     // broadcast that this app has received context
