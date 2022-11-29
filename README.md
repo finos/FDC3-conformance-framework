@@ -91,6 +91,11 @@ If you've had a clean run of all the tests locally, why not join the conformance
 
 [Instructions to join the Certified FDC3 Desktop Agent Conformance Program](instructions.md)
 
+Once you have followed these steps, you will be allowed to display the FDC3 Compliance Badges within your marketing literature.
+
+<img src="terms-conditions/graphics/1.2/2022_FDC3_CompliantBadge_1.2.png" width="100px"><img src="terms-conditions/graphics/2.0/2022_FDC3_CompliantBadge_2.0.png" width="100px">
+
+
 ## Contributing
 
 Please see [CONTRIBUTING](CONTRIBUTING.md) page.
