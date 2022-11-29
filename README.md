@@ -80,21 +80,21 @@ This step is vendor-dependent, but examples of `AppD` records can be found in th
 
 You can load up the conformance app and select the tests you wish to run:
 
-![Selecting Tests](static/selecting.png)
+<img src="static/selecting.png" title="Selecting Tests" width="400px" />
 
 The tests run and produce an output in the window.  Failure are shown with a stack trace in red:
 
-![Running Tests](static/failing.png)
+<img src="static/failing.png" title="Running Tests" width="400px" />
 
 Successful runs look something like this:
 
-![Success Tests](static/running.png)
+<img src="static/running.png" title="Success" width="400px" />
 
 ### Joining The Conformance Program
 
 If you've had a clean run of all the tests locally, why not join the conformance program?
 
-[Instructions here](instructions.md)
+[Instructions to join the Certified FDC3 Desktop Agent Conformance Program](instructions.md)
 
 ## Contributing
 
