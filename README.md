@@ -1,16 +1,15 @@
+<img align="right"  title="FDC3 Conformance Framework" width="200px" src="https://landscape.finos.org/logos/fdc3-conformance-framework.svg">
+
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6456/badge)](https://bestpractices.coreinfrastructure.org/projects/6456)
 
-![FDC3 Conformance Framework](https://landscape.finos.org/logos/fdc3-conformance-framework.svg)
 
-## Status
+### Status
 
 |Version    | Release | Specification |
 |-----------|---------|--------|
 |[FDC3 1.2](https://fdc3.finos.org/docs/1.2/fdc3-intro)   | _unreleased_ | [1.2 Tests Specification](https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/FDC3-1.2-Conformance-Test-Cases.md) |
 |[FDC3 2.0](https://fdc3.finos.org/docs/fdc3-intro) | _in development_ | [2.0 Tests Specification](https://github.com/finos/FDC3/blob/8166c0e6aa872b2fc7b755384e5b2eeeaf88c732/toolbox/fdc3-conformance/FDC3-2.0-Conformance-Test-Cases.md) |
-
-# FDC3 Conformance Framework
 
 A framework for testing whether desktop containers implement the [FDC3 standard](https://fdc3.finos.org/).
 
@@ -54,7 +53,7 @@ This repository currently contains:
  - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
  - `static` - HTML files used to create the static server
  - `directory` - Some JSON files in the FDC3 V2 Directory format that you can use to set up your desktop agent with either 1.2 or 2.0 test suites.
- - 'terms-conditions' - [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.  Instructions for joining the program are [here](Instructions.md)
+ - `terms-conditions` - [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.  Instructions for joining the program are [here](Instructions.md)
 
 2. **Install Dependencies**
 
@@ -81,15 +80,15 @@ This step is vendor-dependent, but examples of `AppD` records can be found in th
 
 You can load up the conformance app and select the tests you wish to run:
 
-![Selecting Tests[static/selecting.png]
+![Selecting Tests](static/selecting.png)
 
 The tests run and produce an output in the window.  Failure are shown with a stack trace in red:
 
-![Running Tests[static/failing.png]
+![Running Tests](static/failing.png)
 
 Successful runs look something like this:
 
-![Success Tests[static/running.png]
+![Success Tests](static/running.png)
 
 ### Joining The Conformance Program
 
