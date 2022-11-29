@@ -3,13 +3,12 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6456/badge)](https://bestpractices.coreinfrastructure.org/projects/6456)
 
-
-### Status
-
 |Version    | Release | Specification |
 |-----------|---------|--------|
 |[FDC3 1.2](https://fdc3.finos.org/docs/1.2/fdc3-intro)   | _unreleased_ | [1.2 Tests Specification](https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/FDC3-1.2-Conformance-Test-Cases.md) |
 |[FDC3 2.0](https://fdc3.finos.org/docs/fdc3-intro) | _in development_ | [2.0 Tests Specification](https://github.com/finos/FDC3/blob/8166c0e6aa872b2fc7b755384e5b2eeeaf88c732/toolbox/fdc3-conformance/FDC3-2.0-Conformance-Test-Cases.md) |
+
+# FDC3 Conformance Framework
 
 A framework for testing whether desktop containers implement the [FDC3 standard](https://fdc3.finos.org/).
 
@@ -37,11 +36,11 @@ There are multiple versions of the FDC3 standard.
 A Desktop Agent could host apps written in _any one of these versions_.  
 For that reason, it's important that Desktop Agents are tested to make sure that they keep on supporting apps written against older versions of FDC3.
 
-## How Does It Work
+## How Does It Work?
 
 There are two main parts to conformance:
   
-  - Running the tests _locally_ (described below), then
+  - Running the tests _locally_, then
   - Joining the Conformance Program
 
 ### Installation / Local Running
