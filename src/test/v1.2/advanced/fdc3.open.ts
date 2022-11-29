@@ -23,7 +23,7 @@ export default () =>
       const result = control.contextReceiver("fdc3-conformance-opened");
       await control.openIntentApp(openApp.b.name);
       await result;
-      await control.closeAppWindows(AOpensB3Test);
+      await control.closeAppWindows(AOpensB1Test);
     });
 
     const AOpensB2Test =
