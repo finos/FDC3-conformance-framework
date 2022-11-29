@@ -1,11 +1,30 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6456/badge)](https://bestpractices.coreinfrastructure.org/projects/6456)
 
+![FDC3 Conformance Framework](https://landscape.finos.org/logos/fdc3-conformance-framework.svg)
+
+## Status
+
+|Version    | Release | Specification |
+|-----------|---------|--------|
+|[FDC3 1.2](https://fdc3.finos.org/docs/1.2/fdc3-intro)   | _unreleased_ | [1.2 Tests Specification](https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/FDC3-1.2-Conformance-Test-Cases.md) |
+|[FDC3 2.0](https://fdc3.finos.org/docs/fdc3-intro) | _in development_ | [2.0 Tests Specification](https://github.com/finos/FDC3/blob/8166c0e6aa872b2fc7b755384e5b2eeeaf88c732/toolbox/fdc3-conformance/FDC3-2.0-Conformance-Test-Cases.md) |
+
 # FDC3 Conformance Framework
 
 A framework for testing whether desktop containers implement the [FDC3 standard](https://fdc3.finos.org/).
 
-This project currently targets FDC3 v1.2.
+## What Is It?
+
+- There are many vendors implementing Desktop Agents for the FDC3 standard.
+- Developers building apps interoperating with the FDC3 standard want to be sure that their apps will work with every Desktop Agent.
+- This suite of conformance tests allows for programmatic verification of an FDC3 Desktop Agent implementation.
+
+## Why Is This Important?
+
+🧑🏽‍🤝‍🧑🏽 Multiple Platforms
+
+Like it or not, most of us find ourselves working in environments with multiple chat platforms. As bot developers, we need to be able to reach users irrespective of which platform they are on.
 
 ## Installation / Local Running
 
