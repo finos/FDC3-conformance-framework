@@ -9,13 +9,14 @@ import {
 } from "fdc3_2_0";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
-import { sleep, wait } from "../../../utils";
+import { sleep, wait, wrapPromise } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 import { MockAppContext, OpenControl } from "../../common/open-control";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
+let timeout;
 
 export class OpenControl2_0 implements OpenControl<Context> {
   contextReceiver = async (contextType: string): Promise<Context> => {
@@ -72,18 +73,17 @@ export class OpenControl2_0 implements OpenControl<Context> {
   };
 
   expectAppTimeoutErrorOnOpen = async (appId: string) => {
-    const testTimeout = setTimeout(() => {
-      assert.fail(openDocs + testTimeoutMessage);
-    }, constants.NoListenerTimeout);
+    giveTestTimeToRejectPromise();
 
     try {
       await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
-      assert.fail(`No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error.${openDocs}`);
     } catch (ex) {
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
     } finally {
-      clearTimeout(testTimeout);
+      clearTimeout(timeout);
     }
+
+    await giveTestTimeToRejectPromise();
   };
 
   confirmAppNotFoundErrorReceived = (exception: DOMException) => {
@@ -98,6 +98,14 @@ export class OpenControl2_0 implements OpenControl<Context> {
     const receivedValue = (await contextReceiver) as any;
     expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
   };
+}
+
+const giveTestTimeToRejectPromise = () => {
+  return new Promise(function (resolve) {
+    timeout = setTimeout(function () {
+      resolve(assert.fail(openDocs + testTimeoutMessage));
+    }, constants.NoListenerTimeout);
+  });
 }
 
 const waitForContext = (
