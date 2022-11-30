@@ -86,7 +86,8 @@ export class OpenControl2_0 implements OpenControl<Context> {
 }
 
 export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
-  const {timeout, promise} = giveTestTimeToRejectPromise();
+  //allow open t
+  const {timeout, promise} = sleep(constants.NoListenerTimeout);
   let promiseRejected;
 
   //wait for the open promise to be rejected
@@ -103,16 +104,6 @@ export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
     assert.fail(testTimeoutMessage + openDocs);
   }
 };
-
-const giveTestTimeToRejectPromise = () => {
-    let timeout;
-    const promise = new Promise(function (resolve) {
-      timeout = setTimeout(function () {
-        resolve("Timeout reached");
-      }, constants.NoListenerTimeout);
-    });
-    return {timeout, promise};
-}
 
 const waitForContext = (
   contextType: string,
