@@ -1,11 +1,11 @@
 import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
+import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
 const findIntentDocs =
-  "\r\nDocumentation: " + APIDocumentation.findIntent + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation1_2.findIntent + "\r\nCause";
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md

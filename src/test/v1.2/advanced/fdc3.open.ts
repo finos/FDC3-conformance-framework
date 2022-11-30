@@ -1,9 +1,9 @@
 import { OpenError, Context, Channel, Listener, getOrCreateChannel } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
+import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
 declare let fdc3: DesktopAgent;
 
@@ -14,7 +14,7 @@ const noListenerAppName = "IntentAppA";
 const genericListenerAppId = "IntentAppCId";
 const genericListenerAppName = "IntentAppC";
 
-const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause: ";
+const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
 
 /**
@@ -199,48 +199,6 @@ export default () =>
       );
       await closeAppWindows(AOpensBMultipleListenTest);
     });
-
-
-    const AOpensBNoListenTest =
-      "(AOpensBNoListen) Receive AppTimeout error when targeting app with no listeners";
-    it(AOpensBNoListenTest, async () => {
-      //fail the test just before it times out if no error is returned
-      let timeout = setTimeout(()=>{
-        assert.fail(openDocs + testTimeoutMessage);
-      }, constants.NoListenerTimeout);
-      try {
-        await fdc3.open(
-          { name: noListenerAppName, appId: noListenerAppId },
-          { name: "context", type: "fdc3.testReceiver" }
-        );
-        assert.fail(openDocs + "No error was thrown - this app does not add a context listener and cannot receive the context passed, which the Desktop Agent should detect and throw the relevant error.");
-      } catch (ex) {
-        expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-      } finally {
-        clearTimeout(timeout);
-      }
-    }).timeout(constants.NoListenerTimeout + 1000);
-
-    const AOpensBWithWrongContextTest =
-      "(AOpensBWithWrongContext) Receive AppTimeout error when targeting app with wrong context";
-    it(AOpensBWithWrongContextTest, async () => {
-      //fail the test just before it times out if no error is returned
-      let timeout = setTimeout(()=>{
-        assert.fail(openDocs + testTimeoutMessage);
-      }, constants.NoListenerTimeout);
-      try {
-        await fdc3.open(
-          { name: appBName },
-          { name: "context", type: "fdc3.thisContextDoesNotExist" }
-        );
-        assert.fail(openDocs + "No error was thrown - this app does not add a listener for the context type passed, which the Desktop Agent should detect and throw the relevant error.");
-      } catch (ex) {
-        expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-      } finally {
-        clearTimeout(timeout);
-      }
-      await closeAppWindows(AOpensBWithWrongContextTest);
-    }).timeout(constants.NoListenerTimeout + 1000);
   });
 
 // creates a channel and subscribes for broadcast contexts. This is
@@ -288,7 +246,7 @@ const waitForContext = (
   return new Promise<Context>(async (resolve) => {
     console.log(
       Date.now() +
-        ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
+      ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
     );
 
     const handler = (context: AppControlContext) => {
@@ -304,13 +262,13 @@ const waitForContext = (
         } else {
           console.warn(
             Date.now() +
-              ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
+            ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
           );
         }
       } else {
         console.log(
           Date.now() +
-            ` Received (without testId) "${contextType}" for test: "${testId}"`
+          ` Received (without testId) "${contextType}" for test: "${testId}"`
         );
         resolve(context);
         if (executionListener) executionListener.unsubscribe();
@@ -329,7 +287,7 @@ const waitForContext = (
             if (testId == context?.testId && context?.type == contextType) {
               console.log(
                 Date.now() +
-                  ` Received "${contextType}" (from current context) for test: "${testId}"`
+                ` Received "${contextType}" (from current context) for test: "${testId}"`
               );
               if (executionListener) executionListener.unsubscribe();
               resolve(context);
@@ -337,21 +295,19 @@ const waitForContext = (
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
-                    context ? "" : "NOT "
-                  } exist,
-            had testId: "${context?.testId}" (${
-                    testId == context?.testId ? "did match" : "did NOT match"
-                  })
-            and type "${context?.type}" vs ${contextType} (${
-                    context?.type == contextType ? "did match" : "did NOT match"
-                  })`
+                ` Checking for current context of type "${contextType}" for test: "${testId}"
+            Current context did ${context ? "" : "NOT "
+                } exist,
+            had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"
+                })
+            and type "${context?.type}" vs ${contextType} (${context?.type == contextType ? "did match" : "did NOT match"
+                })`
               );
             }
           } else {
             console.log(
               Date.now() +
-                ` Received "${contextType}" (from current context) for an unspecified test`
+              ` Received "${contextType}" (from current context) for an unspecified test`
             );
             if (executionListener) executionListener.unsubscribe();
             resolve(context);

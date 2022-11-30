@@ -1,13 +1,13 @@
 import { Listener, Channel, Context } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import constants from "../../../constants";
-import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 const documentation =
-  "\r\nDocumentation: " + APIDocumentation.desktopAgent + "\r\nCause:";
+  "\r\nDocumentation: " + APIDocumentation2_0.desktopAgent + "\r\nCause:";
 
 export interface AppControlContext extends Context {
   testId?: string;
@@ -214,7 +214,7 @@ export default () =>
         validateListenerObject(listener);
 
         //Join user channel 1
-        joinChannel(1);
+        await joinChannel(1);
 
         const channelsAppCommands = [
           commands.joinUserChannelOne,
@@ -256,7 +256,7 @@ export default () =>
         );
 
         //Join user channel 1
-        joinChannel(1);
+        await joinChannel(1);
 
         let receivedContext = false;
 
@@ -345,7 +345,7 @@ export default () =>
         validateListenerObject(listener);
 
         //Join user channel 1
-        joinChannel(1);
+        await joinChannel(1);
 
         //reject if no context received
         if (!receivedContext) {
@@ -387,7 +387,7 @@ export default () =>
         await resolveExecutionCompleteListener;
 
         //Join user channel 1
-        joinChannel(1);
+        await joinChannel(1);
 
         let receivedContext = false;
 
@@ -1233,6 +1233,7 @@ export type ChannelsAppContext = Context & {
     notifyAppAOnCompletion: boolean;
     historyItems: number;
     fdc3ApiVersion: string;
+    channelId?: string
   };
 };
 
@@ -1241,7 +1242,7 @@ export type ChannelsAppConfig = {
   testId: string;
   notifyAppAOnCompletion?: boolean;
   historyItems?: number;
-  userChannelId?: string;
+  channelId?: string;
 };
 
 function buildChannelsAppContext(
@@ -1256,6 +1257,7 @@ function buildChannelsAppContext(
       testId: config.testId,
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
+      channelId: config.channelId
     },
   };
 }
