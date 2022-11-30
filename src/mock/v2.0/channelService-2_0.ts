@@ -1,4 +1,5 @@
 import { Channel, DesktopAgent } from "fdc3_2_0";
+import constants from "../../constants";
 import { AppControlContext, ChannelsAppConfig } from "../../test/common/channel-control";
 import { commands, channelType } from "../constants";
 
@@ -116,7 +117,7 @@ export class Fdc3CommandExecutor2_0 {
   async closeWindowOnCompletion(testId) {
     console.log(Date.now() + ` Setting up closeWindow listener`);
     const appControlChannel = await fdc3.getOrCreateChannel(
-      "app-control"
+      constants.ControlChannel
     );
     await appControlChannel.addContextListener("closeWindow", async () => {
       console.log(Date.now() + ` Received closeWindow message`);
@@ -133,7 +134,7 @@ export class Fdc3CommandExecutor2_0 {
 
   async notifyAppAOnCompletion(testId) {
     const appControlChannel = await fdc3.getOrCreateChannel(
-      "app-control"
+      constants.ControlChannel
     );
     await this.broadcastContextItem(
       "executionComplete",

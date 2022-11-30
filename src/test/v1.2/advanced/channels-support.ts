@@ -80,7 +80,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     return waitForContext(
       "executionComplete",
       testId,
-      await fdc3.getOrCreateChannel("app-control")
+      await fdc3.getOrCreateChannel(constants.ControlChannel)
     );
   }
 
@@ -164,7 +164,7 @@ function validateListenerObject(listenerObject) {
 }
 
 const broadcastAppChannelCloseWindow = async (testId: string) => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   /* tslint:disable-next-line */
   const closeContext: AppControlContext = {
     type: "closeWindow",
