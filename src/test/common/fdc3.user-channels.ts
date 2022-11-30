@@ -10,6 +10,7 @@ export function createUserChannelTests(cc: ChannelControl<any,any>, documentatio
 
       afterEach(async function afterEach() {
         await cc.closeChannelsAppWindow(this.currentTest.title);
+        await cc.leaveChannel();
       });
 
       const scTestId1 =
