@@ -22,6 +22,7 @@ export interface ChannelControl<X, Y> {
     setupAndValidateListener1(channel: X | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
     setupAndValidateListener2(channel: X | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
     setupContextChecker(channel: X, requestedContextType: string, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): Promise<void>;
+    validateContextIsNotReceived(channel: X | null, unexpectedContextType: string | null, errorMessage: string): void | Promise<void>;
 
     // helpers
     getRandomId(): string;

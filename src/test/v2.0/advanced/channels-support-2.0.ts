@@ -157,6 +157,19 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     return uint32.toString(16);
   }
 
+  validateContextIsNotReceived = async(channel: Channel | null, unexpectedContextType: string, errorMessage: string): Promise<void> => {
+    if (channel) {
+      listener1 = await channel.addContextListener(unexpectedContextType, (context) => {
+        assert.fail(errorMessage);
+      });
+    } else {
+      listener1 = await fdc3.addContextListener(unexpectedContextType, (context) => {
+        assert.fail(errorMessage);
+      });
+    }
+    validateListenerObject(listener1);
+  }
+
 }
 
 
