@@ -9,14 +9,13 @@ import {
 } from "fdc3_2_0";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
-import { sleep, wait, wrapPromise } from "../../../utils";
+import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 import { MockAppContext, OpenControl } from "../../common/open-control";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
-let timeout;
 
 export class OpenControl2_0 implements OpenControl<Context> {
   contextReceiver = async (contextType: string): Promise<Context> => {
@@ -89,7 +88,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
     if(!promiseRejected){
       assert.fail(testTimeoutMessage + openDocs);
     }
-
   };
 
   confirmAppNotFoundErrorReceived = (exception: DOMException) => {
