@@ -20,13 +20,8 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const testChannel = await cc.createTestChannel()
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId)
         let receivedContext = false;
-<<<<<<< HEAD
-        await cc.setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, () => { receivedContext = true })
-        await cc.openChannelApp(acTestId, testChannel.id, APP_CHANNEL_AND_BROADCAST)
-=======
         await cc.setupAndValidateListener1(testChannel, null, errorMessage, () => { receivedContext = true })
         await cc.openChannelApp(acTestId, undefined, APP_CHANNEL_AND_BROADCAST)
->>>>>>> 5509d56a07227f63820059a4c7826f612d0ee74c
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
