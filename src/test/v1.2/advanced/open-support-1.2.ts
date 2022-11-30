@@ -20,7 +20,7 @@ const testTimeoutMessage = `Test timeout - An error was not thrown within the al
 
 export class OpenControl1_2 implements OpenControl<Context> {
   contextReceiver = async (contextType: string, expectNotToReceiveContext: boolean): Promise<Context> => {
-    const appControlChannel = await getOrCreateChannel("app-control");
+    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = appControlChannel.addContextListener(
@@ -80,7 +80,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
   };
 
   addListenerAndFailIfReceived = async () => {
-    const appControlChannel = await getOrCreateChannel("app-control");
+    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     await appControlChannel.addContextListener(
       "context-received",
       (context: MockAppContext) => {
@@ -91,7 +91,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
 
   closeAppWindows = async (testId) => {
     await broadcastCloseWindow(testId);
-    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     await waitForContext("windowClosed", testId, appControlChannel);
     await wait(constants.WindowCloseWaitTime);
   };
@@ -199,7 +199,7 @@ const waitForContext = (
 };
 
 const broadcastCloseWindow = async (currentTest) => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   appControlChannel.broadcast({
     type: "closeWindow",
     testId: currentTest,

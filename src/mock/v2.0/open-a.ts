@@ -11,7 +11,7 @@ onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
   await fdc3.addContextListener("shouldNotReceiveThisContext", async (context) => {
     // broadcast that this app has received context
-    if (context.type === "fdc3.instrument") {
+    if (context.type !== "shouldNotReceiveThisContext") {
       await sendContextToTests({
         type: "context-received",
         errorMessage: `Listener received incorrect context type. Listener listening for 'shouldNotReceiveThisContext' type received '${context.type}' type`,
