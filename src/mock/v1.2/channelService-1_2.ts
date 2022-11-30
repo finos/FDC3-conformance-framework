@@ -18,6 +18,9 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.retrieveTestAppChannel: {
+          if (!config.channelId) {
+            throw new Error("Provide `channelId` of an app channel in the config");
+          }
           channel = await this.retrieveTestAppChannel(config.channelId);
           break;
         }
@@ -58,7 +61,7 @@ export class Fdc3CommandExecutor1_2 {
   }
 
   // retrieve the passed app channel
-  async retrieveTestAppChannel(channelId?: string): Promise<Channel> {
+  async retrieveTestAppChannel(channelId: string): Promise<Channel> {
     return fdc3.getOrCreateChannel(channelId);
   }
 

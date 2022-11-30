@@ -21,7 +21,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId)
         let receivedContext = false;
         await cc.setupAndValidateListener1(testChannel, null, errorMessage, () => { receivedContext = true })
-        await cc.openChannelApp(acTestId, undefined, APP_CHANNEL_AND_BROADCAST)
+        await cc.openChannelApp(acTestId, testChannel.id, APP_CHANNEL_AND_BROADCAST)
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -128,7 +128,8 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
 
         const testChannel = await cc.createRandomTestChannel();
         await cc.setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
-        await cc.openChannelApp(acTestId7, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
+        const differentTestChannel = await cc.createRandomTestChannel();
+        await cc.openChannelApp(acTestId7, differentTestChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE)
         await wait();
       });
 
@@ -137,14 +138,14 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
       it(acTestId8, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
-        let testChannel1 = await cc.createRandomTestChannel()
+        let testChannel = await cc.createRandomTestChannel()
         let receivedContext = false;
 
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId8)
-        const testChannel2 = await cc.createRandomTestChannel();
-        await cc.setupAndValidateListener1(testChannel1, "fdc3.instrument", errorMessage, () => { receivedContext = true })
-        await cc.setupAndValidateListener2(testChannel2, "unexpected-context", errorMessage, () => { /*noop*/ })
-        await cc.openChannelApp(acTestId8, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
+        const differentAppChannel = await cc.createRandomTestChannel();
+        await cc.setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, () => { receivedContext = true })
+        await cc.setupAndValidateListener2(differentAppChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
+        await cc.openChannelApp(acTestId8, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE)
         await resolveExecutionCompleteListener;
         if (!receivedContext) {
           assert.fail(`No context received!\n${errorMessage}`);
