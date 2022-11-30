@@ -1,10 +1,10 @@
 export interface OpenControl<X> {
   //test control
-  openIntentApp(appId: string, contextType?: string): void;
+  openMockApp(appName?: string, appId?: string, contextType?: string, targetAppAsString?: boolean, malformedContext?: boolean): void;
   closeAppWindows(testId: string): Promise<void>;
 
   //listening
-  contextReceiver(contextType: string): Promise<X>;
+  contextReceiver(contextType: string, expectNotToReceiveContext?: boolean): Promise<X>;
   addListenerAndFailIfReceived(): Promise<void>;
 
   //validation
@@ -26,6 +26,7 @@ export interface CommonContext {
 
 export interface MockAppContext extends CommonContext {
   errorMessage?: string;
+  ContextToSend?: CommonContext;
 }
 
 export const openApp = {
@@ -46,5 +47,9 @@ export const openApp = {
   },
   e:{
     id: "OpenAppBId",
+  },
+  f: {
+    name: "IntentAppB",
+    id: "IntentAppBId"
   }
 };

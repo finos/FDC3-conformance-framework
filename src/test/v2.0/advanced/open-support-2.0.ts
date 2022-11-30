@@ -26,8 +26,9 @@ export class OpenControl2_0 implements OpenControl<Context> {
       const listener = await appControlChannel.addContextListener(
         contextType,
         async (context: MockAppContext) => {
-          if (context.errorMessage !== undefined) {
+          if (context.errorMessage) {
             reject(new Error(context.errorMessage));
+            assert.fail(context.errorMessage);
           } else {
             resolve(context);
           }
@@ -40,12 +41,14 @@ export class OpenControl2_0 implements OpenControl<Context> {
       timeout = theTimeout;
       await thePromise;
       reject(new Error("No context received from app B"));
+      assert.fail("No context received from app B");
     });
 
     return messageReceived;
   };
 
-  openIntentApp = async (appId: string, contextType?: string) => {
+  openMockApp = async (appName: string, appId?: string, contextType?: string) => {
+    appId = `${appName}Id`;
     let context;
     if (contextType) {
       context = { type: contextType };
@@ -72,20 +75,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
     await wait(constants.WindowCloseWaitTime);
   };
 
-  expectAppTimeoutErrorOnOpen = async (appId: string) => {
-    giveTestTimeToRejectPromise();
-
-    try {
-      await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
-    } catch (ex) {
-      expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-    } finally {
-      clearTimeout(timeout);
-    }
-
-    await giveTestTimeToRejectPromise();
-  };
-
   confirmAppNotFoundErrorReceived = (exception: DOMException) => {
     expect(exception).to.have.property(
       "message",
@@ -99,6 +88,20 @@ export class OpenControl2_0 implements OpenControl<Context> {
     expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
   };
 }
+
+export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
+  giveTestTimeToRejectPromise();
+
+  try {
+    await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
+  } catch (ex) {
+    expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
+  } finally {
+    clearTimeout(timeout);
+  }
+
+  await giveTestTimeToRejectPromise();
+};
 
 const giveTestTimeToRejectPromise = () => {
   return new Promise(function (resolve) {
