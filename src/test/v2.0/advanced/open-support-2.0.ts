@@ -101,11 +101,13 @@ export class OpenControl2_0 implements OpenControl<Context> {
 }
 
 const giveTestTimeToRejectPromise = () => {
-  return new Promise(function (resolve) {
+  let timeout;
+  const promise = new Promise(function (resolve) {
     timeout = setTimeout(function () {
       resolve(assert.fail(openDocs + testTimeoutMessage));
     }, constants.NoListenerTimeout);
   });
+  return {timeout, promise};
 }
 
 const waitForContext = (
