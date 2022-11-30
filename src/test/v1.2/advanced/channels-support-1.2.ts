@@ -83,12 +83,13 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     );
   }
 
-  openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true): Promise<void> => {
+  openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true, contextId?: string): Promise<void> => {
     const channelsAppConfig: ChannelsAppConfig = {
       fdc3ApiVersion: "1.2",
       testId: testId,
       channelId,
       notifyAppAOnCompletion: notify,
+      contextId
     };
 
     if (historyItems) {
@@ -268,6 +269,7 @@ function buildChannelsAppContext(
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
       channelId: config.channelId,
+      contextId: config.contextId
     },
   };
 }
