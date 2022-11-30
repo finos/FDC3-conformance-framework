@@ -9,7 +9,7 @@ import {
 } from "fdc3_2_0";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
-import { sleep, wait, wrapPromise } from "../../../utils";
+import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 import { MockAppContext, OpenControl } from "../../common/open-control";
 
@@ -31,7 +31,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
             resolve(context);
           }
           clearTimeout(timeout);
-          await listener.unsubscribe();
+          listener.unsubscribe();
         }
       );
       //if no context received reject promise
@@ -46,9 +46,8 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
   openMockApp = async (appName: string, appId?: string, contextType?: string) => {
     appId = `${appName}Id`;
-    let context;
     if (contextType) {
-      context = { type: contextType };
+      const context = { type: contextType };
       await fdc3.open({ appId: appId }, context);
     } else {
       await fdc3.open({ appId: appId });
@@ -88,23 +87,28 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
 export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
   const {timeout, promise} = giveTestTimeToRejectPromise();
+  let promiseRejected;
 
+  //wait for the open promise to be rejected
   try {
     await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
+    await promise;
   } catch (ex) {
     expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-  } finally {
+    promiseRejected = true;
     clearTimeout(timeout);
-  }
+  } 
 
-  await promise;
+  if(!promiseRejected){
+    assert.fail(testTimeoutMessage + openDocs);
+  }
 };
 
 const giveTestTimeToRejectPromise = () => {
     let timeout;
     const promise = new Promise(function (resolve) {
       timeout = setTimeout(function () {
-        resolve(new Error(openDocs + testTimeoutMessage));
+        resolve("Timeout reached");
       }, constants.NoListenerTimeout);
     });
     return {timeout, promise};

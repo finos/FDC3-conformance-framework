@@ -1,16 +1,14 @@
 import { assert } from "chai";
-import { DesktopAgent } from "fdc3_1_2";
 import constants from "../../constants";
 import { expectAppTimeoutErrorOnOpen } from "../v2.0/advanced/open-support-2.0";
 import { openApp, OpenControl } from "./open-control";
-declare let fdc3: DesktopAgent;
 
 export function createOpenTests(
   control: OpenControl<any>,
   documentation: string,
   fdc3Version: string
 ): Mocha.Suite {
-  let prefix;
+  let prefix = "";
   let target;
   let target2;
 
@@ -19,7 +17,6 @@ export function createOpenTests(
     target = "AppIdentifier";
     target2 = "AppIdentifier";
   } else {
-    prefix = "";
     target = "app name";
     target2 = "both app name and appId";
   }
