@@ -1,8 +1,6 @@
 import { assert } from "chai";
-import constants from "../../constants";
 import { runOpenTestsV1_2 } from "../v1.2/advanced/fdc3.open";
 import { runOpenTestsV2_0 } from "../v2.0/advanced/fdc3.open";
-import { expectAppTimeoutErrorOnOpen } from "../v2.0/advanced/open-support-2.0";
 import { openApp, OpenControl } from "./open-control";
 
 export function createOpenTests(

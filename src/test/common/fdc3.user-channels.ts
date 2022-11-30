@@ -1,5 +1,4 @@
 import { assert } from "chai";
-import APIDocumentation from "../../apiDocuments";
 import { wait } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
 import { ChannelControl } from "./channel-control";
