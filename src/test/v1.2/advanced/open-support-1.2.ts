@@ -128,6 +128,7 @@ const waitForContext = (
     };
 
     if (channel === undefined) {
+      console.log("adding system channel listener in waitForContext");
       executionListener = fdc3.addContextListener(contextType, handler);
     } else {
       console.log("adding listener in waitforcontext");
