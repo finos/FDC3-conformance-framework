@@ -102,7 +102,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     );
   }
 
-  setupAndValidateListener1 = (channel: Channel, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void): void => {
+  setupAndValidateListener1 = (channel: Channel, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void): void => {
     if (channel) {
       listener1 = channel.addContextListener(expectedContextType, (context) => {
         if (expectedContextType != null) {

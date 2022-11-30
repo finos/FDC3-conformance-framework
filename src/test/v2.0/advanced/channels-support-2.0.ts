@@ -103,7 +103,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     );
   }
 
-  setupAndValidateListener1 = async (channel: Channel, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void) => {
+  setupAndValidateListener1 = async (channel: Channel, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void) => {
     if (channel) {
       listener1 = await channel.addContextListener(expectedContextType, (context) => {
         if (expectedContextType != null) {
