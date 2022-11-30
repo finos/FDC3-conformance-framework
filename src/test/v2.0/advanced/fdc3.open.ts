@@ -6,8 +6,11 @@ import { expectAppTimeoutErrorOnOpen, OpenControl2_0 } from "./open-support-2.0"
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open2_0 + "\r\nCause:";
 const control = new OpenControl2_0();
+
+//run common open tests
 export default () => createOpenTests(control, openDocs, "2.0");
 
+//run v2.0-only open tests
 export function runOpenTestsV2_0() {
     const AOpensBWithWrongContext =
       "(2.0-AOpensBWithWrongContext) Received App timeout when opening app B with fake context, app b listening for different context";

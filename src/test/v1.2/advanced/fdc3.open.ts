@@ -6,8 +6,11 @@ import { assert } from "chai";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause: ";
 const control = new OpenControl1_2();
+
+//run common open tests
 export default () => createOpenTests(control, openDocs, "1.2");
 
+//run v1.2-only tests
 export function runOpenTestsV1_2() {
     const AOpensB2Test =
       "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
