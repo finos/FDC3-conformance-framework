@@ -153,9 +153,10 @@ const waitForContext = (
     };
 
     if (channel === undefined) {
+      console.log("adding system channel listener in waitForContext");
       executionListener = fdc3.addContextListener(contextType, handler);
     } else {
-      console.log("adding listener in waitforcontext");
+      console.log(`adding app channel (${channel.id}) listener in waitforcontext`);
       executionListener = channel.addContextListener(contextType, handler);
       //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
       const ccHandler = async (context: AppControlContext) => {
@@ -172,7 +173,7 @@ const waitForContext = (
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
+                `Checking for current context of type "${contextType}" for test: "${testId}" Current context did ${
                     context ? "" : "NOT "
                   } exist,
               had testId: "${context?.testId}" (${

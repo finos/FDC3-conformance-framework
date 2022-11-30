@@ -16,7 +16,6 @@ import { MockAppContext, OpenControl } from "../../common/open-control";
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
-let timeout;
 
 export class OpenControl2_0 implements OpenControl<Context> {
   contextReceiver = async (contextType: string): Promise<Context> => {
@@ -28,7 +27,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
         async (context: MockAppContext) => {
           if (context.errorMessage) {
             reject(new Error(context.errorMessage));
-            assert.fail(context.errorMessage);
           } else {
             resolve(context);
           }
@@ -41,7 +39,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
       timeout = theTimeout;
       await thePromise;
       reject(new Error("No context received from app B"));
-      assert.fail("No context received from app B");
     });
 
     return messageReceived;
@@ -90,7 +87,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
 }
 
 export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
-  giveTestTimeToRejectPromise();
+  const {timeout, promise} = giveTestTimeToRejectPromise();
 
   try {
     await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
@@ -100,15 +97,17 @@ export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
     clearTimeout(timeout);
   }
 
-  await giveTestTimeToRejectPromise();
+  await promise;
 };
 
 const giveTestTimeToRejectPromise = () => {
-  return new Promise(function (resolve) {
-    timeout = setTimeout(function () {
-      resolve(assert.fail(openDocs + testTimeoutMessage));
-    }, constants.NoListenerTimeout);
-  });
+    let timeout;
+    const promise = new Promise(function (resolve) {
+      timeout = setTimeout(function () {
+        resolve(new Error(openDocs + testTimeoutMessage));
+      }, constants.NoListenerTimeout);
+    });
+    return {timeout, promise};
 }
 
 const waitForContext = (
