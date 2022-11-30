@@ -131,7 +131,7 @@ const waitForContext = (
       console.log("adding system channel listener in waitForContext");
       executionListener = fdc3.addContextListener(contextType, handler);
     } else {
-      console.log("adding listener in waitforcontext");
+      console.log(`adding app channel (${channel.id}) listener in waitforcontext`);
       executionListener = channel.addContextListener(
         contextType,
         handler
