@@ -151,7 +151,7 @@ const waitForContext = (
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
+                  ` Checking for current context of type "${contextType}" for test: "${testId}" Current context did ${
                     context ? "" : "NOT "
                   } exist,
               had testId: "${context?.testId}" (${
