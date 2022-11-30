@@ -74,16 +74,22 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
   expectAppTimeoutErrorOnOpen = async (appId: string) => {
     const {timeout, promise} = giveTestTimeToRejectPromise();
-
+    let promiseRejected;
+  
+    //wait for the open promise to be rejected
     try {
       await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
+      await promise;
     } catch (ex) {
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-    } finally {
+      promiseRejected = true;
       clearTimeout(timeout);
+    } 
+  
+    if(!promiseRejected){
+      assert.fail(testTimeoutMessage + openDocs);
     }
 
-    await promise;
   };
 
   confirmAppNotFoundErrorReceived = (exception: DOMException) => {
@@ -104,7 +110,7 @@ const giveTestTimeToRejectPromise = () => {
   let timeout;
   const promise = new Promise(function (resolve) {
     timeout = setTimeout(function () {
-      resolve(assert.fail(openDocs + testTimeoutMessage));
+      resolve("Timeout reached");
     }, constants.NoListenerTimeout);
   });
   return {timeout, promise};
