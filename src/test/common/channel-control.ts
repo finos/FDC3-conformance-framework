@@ -19,9 +19,9 @@ export interface ChannelControl<X, Y> {
   
     // listening
     initCompleteListener(testId: string): Promise<Y>
-    setupAndValidateListener1(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
-    setupAndValidateListener2(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
-    setupContextChecker(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): Promise<void>;
+    setupAndValidateListener1(channel: X | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
+    setupAndValidateListener2(channel: X | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
+    setupContextChecker(channel: X, requestedContextType: string, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): Promise<void>;
 }
   
 /** same in 1.2 and 2.0 */  

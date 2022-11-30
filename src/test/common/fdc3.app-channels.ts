@@ -20,7 +20,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const testChannel = await cc.createTestChannel()
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId)
         let receivedContext = false;
-        await cc.setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, () => { receivedContext = true })
+        await cc.setupAndValidateListener1(testChannel, null, errorMessage, () => { receivedContext = true })
         await cc.openChannelApp(acTestId, undefined, APP_CHANNEL_AND_BROADCAST)
         await resolveExecutionCompleteListener;
 
@@ -39,7 +39,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         await cc.openChannelApp(acTestId2, null, APP_CHANNEL_AND_BROADCAST)
         await resolveExecutionCompleteListener;
         let receivedContext = false;
-        await cc.setupContextChecker(testChannel, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        await cc.setupContextChecker(testChannel, null, "fdc3.instrument", errorMessage, () => receivedContext = true);
 
         if (!receivedContext) {
           assert.fail(`No context received!\n${errorMessage}`);
@@ -128,7 +128,7 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
 
         const testChannel = await cc.createTestChannel("a-different-test-channel");
         await cc.setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
-        await cc.openChannelApp(acTestId7, undefined, APP_CHANNEL_AND_BROADCAST)
+        await cc.openChannelApp(acTestId7, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
         await wait();
       });
 
@@ -137,12 +137,18 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
       it(acTestId8, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
-        let testChannel = await cc.createTestChannel()
+        let testChannel1 = await cc.createTestChannel()
+        let receivedContext = false;
+
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId8)
-        testChannel = await cc.createTestChannel("a-different-test-channel");
-        await cc.setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
-        await cc.openChannelApp(acTestId8, undefined, APP_CHANNEL_AND_BROADCAST)
+        let testChannel2 = await cc.createTestChannel("a-different-test-channel");
+        await cc.setupAndValidateListener1(testChannel1, "fdc3.instrument", errorMessage, () => { receivedContext = true })
+        await cc.setupAndValidateListener2(testChannel2, "unexpected-context", errorMessage, () => { /*noop*/ })
+        await cc.openChannelApp(acTestId8, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
         await resolveExecutionCompleteListener;
+        if (!receivedContext) {
+          assert.fail(`No context received!\n${errorMessage}`);
+        }
       });
 
       const acTestId9 =
@@ -156,17 +162,12 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         await cc.openChannelApp(acTestId9, undefined, APP_CHANNEL_AND_BROADCAST_TWICE)
         await resolveExecutionCompleteListener;
 
-        const context = await testChannel.getCurrentContext("fdc3.instrument");
-        expect(context.name).to.be.equals("History-item-1", errorMessage);
-
-        const contactContext = await testChannel.getCurrentContext(
-          "fdc3.contact"
-        );
-
-        expect(contactContext.name).to.be.equals(
-          "History-item-1",
-          errorMessage
-        );
+        await cc.setupContextChecker(testChannel, "fdc3.instrument", "fdc3.instrument", errorMessage, (context) => {
+          expect(context.name).to.be.equals("History-item-1", errorMessage);
+        })
+        await cc.setupContextChecker(testChannel, "fdc3.contact", "fdc3.contact", errorMessage, (context) => {
+          expect(context.name).to.be.equals("History-item-1", errorMessage);
+        })
       });
 
       const acTestId10 =
@@ -180,13 +181,12 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         await cc.openChannelApp(acTestId10, undefined, APP_CHANNEL_AND_BROADCAST_TWICE, 2)
         await resolveExecutionCompleteListener;
 
-        const context = await testChannel.getCurrentContext("fdc3.instrument");
-        expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-        expect(context.name).to.be.equals("History-item-2", errorMessage);
-
-        const context2 = await testChannel.getCurrentContext("fdc3.contact");
-        expect(context2.type).to.be.equals("fdc3.contact", errorMessage);
-        expect(context2.name).to.be.equals("History-item-2", errorMessage);
+        await cc.setupContextChecker(testChannel, "fdc3.instrument", "fdc3.instrument", errorMessage, (context) => {
+          expect(context.name).to.be.equals("History-item-2", errorMessage);
+        })
+        await cc.setupContextChecker(testChannel, "fdc3.contact", "fdc3.contact", errorMessage, (context) => {
+          expect(context.name).to.be.equals("History-item-2", errorMessage);
+        })
       });
 
       const acTestId11 =

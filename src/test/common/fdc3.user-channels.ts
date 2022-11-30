@@ -19,7 +19,7 @@ export function createUserChannelTests(cc: ChannelControl<any,any>, documentatio
 
         const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1)
         let receivedContext = false;
-        await cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        await cc.setupAndValidateListener1(null, null, errorMessage, () => receivedContext = true);
         const channel = await cc.retrieveAndJoinChannel(1);
         await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
         await resolveExecutionCompleteListener;
@@ -37,7 +37,7 @@ export function createUserChannelTests(cc: ChannelControl<any,any>, documentatio
         const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId2)
         const channel = await cc.retrieveAndJoinChannel(1);
         let receivedContext = false;
-        await cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        await cc.setupAndValidateListener1(null, null, errorMessage, () => receivedContext = true);
         await cc.openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
         await resolveExecutionCompleteListener;
 
@@ -56,7 +56,7 @@ export function createUserChannelTests(cc: ChannelControl<any,any>, documentatio
         await cc.openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
         await cc.joinChannel(channel);
         let receivedContext = false;
-        await cc.setupAndValidateListener1(null, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        await cc.setupAndValidateListener1(null, null, errorMessage, () => receivedContext = true);
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -171,17 +171,6 @@ export function createUserChannelTests(cc: ChannelControl<any,any>, documentatio
         await wait();
       });
 
-      const scTestId9 =
-        "("+prefix+"UCFilteredContext5) Should not receive context when joining and then leaving a user channel before app B broadcasts the listened type to the same channel";
-      it(scTestId9, async () => {
-        const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A leaves channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
-
-        await cc.setupAndValidateListener1(null, "unexpected-context", errorMessage, () =>  {/* noop */});
-        const channel = await cc.retrieveAndJoinChannel(1);
-        await cc.leaveChannel();
-        await cc.openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST)
-        await wait();
-      });
     });
   });
 }
