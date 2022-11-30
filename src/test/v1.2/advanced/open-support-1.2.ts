@@ -18,7 +18,7 @@ declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 
 export class OpenControl1_2 implements OpenControl<Context> {
-  contextReceiver = async (contextType: string, expectNotToReceiveContext: boolean): Promise<Context> => {
+  contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
