@@ -75,6 +75,7 @@ export function createOpenTests(
       await control.closeAppWindows(AOpensBMultipleListen);
     });
 
+    //run v1.2-only and v2.0-only tests respectivally, depending on which is being tested
     if (fdc3Version === "2.0") {
       runOpenTestsV2_0();
     } else if (fdc3Version === "1.2") {
