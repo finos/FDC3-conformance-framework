@@ -9,7 +9,7 @@ export interface ChannelControl<X, Y> {
     leaveChannel(): Promise<void>
     getUserChannel(cn: number): Promise<X>
     joinChannel(channel: X): Promise<void>
-    createTestChannel(): Promise<X>
+    createRandomTestChannel(): Promise<X>
   
     // test control
     closeChannelsAppWindow(testId: string): Promise<void>;

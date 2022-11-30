@@ -41,7 +41,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     return fdc3.joinChannel(channel.id)
   }
 
-  createTestChannel = async (): Promise<Channel> => {
+  createRandomTestChannel = async (): Promise<Channel> => {
     const channelName = `${this.testAppChannelName}.${this.getRandomId()}`;
     return fdc3.getOrCreateChannel(channelName);
   }

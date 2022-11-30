@@ -10,7 +10,7 @@ declare let fdc3: DesktopAgent;
 let listener1: Listener, listener2: Listener
 
 export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
-
+  private readonly testAppChannelName = "test-channel";
 
   retrieveAndJoinChannel = async (
     channelNumber: number
@@ -42,8 +42,9 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
   }
 
 
-  createTestChannel = async (name: string = "test-channel") => {
-    return fdc3.getOrCreateChannel(name);
+  createRandomTestChannel = async (name: string = "test-channel") => {
+    const channelName = `${this.testAppChannelName}.${this.getRandomId()}`;
+    return fdc3.getOrCreateChannel(channelName);
   }
 
   unsubscribeListeners = async () => {
