@@ -156,13 +156,13 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     return uint32.toString(16);
   }
 
-  validateContextIsNotReceived = (channel: Channel | null, unexpectedContextType: string, errorMessage: string): void => {
+  validateContextIsNotReceived = (channel: Channel | null, errorMessage: string): void => {
     if (channel) {
-      listener1 = channel.addContextListener(unexpectedContextType, (context) => {
+      listener1 = channel.addContextListener(null, (context) => {
         assert.fail(errorMessage);
       });
     } else {
-      listener1 = fdc3.addContextListener(unexpectedContextType, (context) => {
+      listener1 = fdc3.addContextListener(null, (context) => {
         assert.fail(errorMessage);
       });
     }
