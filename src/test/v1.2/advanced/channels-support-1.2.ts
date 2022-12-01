@@ -73,14 +73,16 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     await wait(constants.WindowCloseWaitTime);
   }
 
-
-
-  initCompleteListener = async (testId: string): Promise<Context> => {
-    return waitForContext(
+  initCompleteListener = async (testId: string) : Promise<Context>  => {
+    const receivedContext = await waitForContext(
       "executionComplete",
       testId,
       await fdc3.getOrCreateChannel("app-control")
     );
+    
+    await wait(constants.ShortWait)
+
+    return receivedContext;
   }
 
   openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true): Promise<void> => {
