@@ -3,7 +3,6 @@ import {
   Channel,
   Context,
   DesktopAgent,
-  getOrCreateChannel,
   Listener,
   OpenError,
   TargetApp,
@@ -19,7 +18,7 @@ const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 
 export class OpenControl1_2 implements OpenControl<Context> {
   contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
-    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = appControlChannel.addContextListener(
@@ -78,7 +77,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
   };
 
   addListenerAndFailIfReceived = async () => {
-    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     await appControlChannel.addContextListener(
       "context-received",
       (context: MockAppContext) => {
