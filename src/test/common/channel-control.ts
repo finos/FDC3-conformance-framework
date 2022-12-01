@@ -9,7 +9,7 @@ export interface ChannelControl<X, Y> {
     leaveChannel(): Promise<void>
     getUserChannel(cn: number): Promise<X>
     joinChannel(channel: X): Promise<void>
-    createTestChannel(): Promise<X>
+    createRandomTestChannel(): Promise<X>
   
     // test control
     closeChannelsAppWindow(testId: string): Promise<void>;
@@ -19,9 +19,9 @@ export interface ChannelControl<X, Y> {
   
     // listening
     initCompleteListener(testId: string): Promise<Y>
-    setupAndValidateListener1(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
-    setupAndValidateListener2(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
-    setupContextChecker(channel: X, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): Promise<void>;
+    setupAndValidateListener1(channel: X | null, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
+    setupAndValidateListener2(channel: X | null, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
+    setupContextChecker(channel: X, requestedContextType: string, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): Promise<void>;
 
     // helpers
     getRandomId(): string;
