@@ -141,7 +141,7 @@ export default () =>
 
     //NEEDS FIXING!
     // const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
-    // it.only(AOpensBMalformedContext, async () => {
+    // it(AOpensBMalformedContext, async () => {
     //   const receiver = control.contextReceiver("context-received", true);
     //   await control.openMockApp(
     //     openApp.f.name,

@@ -4,7 +4,7 @@ export interface OpenControl<X> {
   closeAppWindows(testId: string): Promise<void>;
 
   //listening
-  contextReceiver(contextType: string): Promise<X>;
+  contextReceiver(contextType: string): Promise<X | void>;
   addListenerAndFailIfReceived(): Promise<void>;
 
   //validation

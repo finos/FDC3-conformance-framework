@@ -18,10 +18,10 @@ declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 
 export class OpenControl1_2 implements OpenControl<Context> {
-  contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
+  contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context | void>  => {
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     let timeout;
-    const messageReceived = new Promise<Context>(async (resolve, reject) => {
+    const messageReceived = new Promise<Context | void>(async (resolve, reject) => {
       const listener = appControlChannel.addContextListener(
         contextType,
         async (context: MockAppContext) => {
@@ -38,8 +38,11 @@ export class OpenControl1_2 implements OpenControl<Context> {
       const { promise: thePromise, timeout: theTimeout } = sleep();
       timeout = theTimeout;
       await thePromise;
-      if (!expectNotToReceiveContext)
+      if (!expectNotToReceiveContext){
         reject(new Error("No context received from app B"));
+      }else {
+        resolve();
+      }
     });
     return messageReceived;
   };
@@ -102,7 +105,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
     );
   };
 
-  validateReceivedContext = async (contextReceiver: Promise<Context>, expectedContextType: string) => {
+  validateReceivedContext = async (contextReceiver: Promise<Context | void>, expectedContextType: string) => {
     const receivedValue = (await contextReceiver) as any;
       expect(receivedValue.context.name).to.eq("context", openDocs);
       expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
