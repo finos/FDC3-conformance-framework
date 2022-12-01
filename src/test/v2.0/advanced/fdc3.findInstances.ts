@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
+import { APIDocumentation2_0 } from "../../v2.0/apiDocuments-2.0";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context, ContextMetadata, ImplementationMetadata } from "fdc3_2_0";
 import constants from "../../../constants";
@@ -7,7 +7,7 @@ import { sleep, wait, wrapPromise } from "../../../utils";
 
 declare let fdc3: DesktopAgent;
 const findInstancesDocs =
-  "\r\nDocumentation: " + APIDocumentation.findInstances + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause";
 
 export default () =>
   describe("fdc3.findInstances", () => {

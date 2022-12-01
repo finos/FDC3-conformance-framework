@@ -1,10 +1,10 @@
-import APIDocumentation from "../../../apiDocuments";
 import { OpenControl1_2 } from "./open-support-1.2";
 import { createOpenTests} from "../../common/fdc3.open"
 import { openApp } from "../../common/open-control";
 import { assert } from "chai";
+import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
-const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause: ";
+const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
 
 //run common open tests

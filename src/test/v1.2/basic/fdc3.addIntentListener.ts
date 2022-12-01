@@ -1,7 +1,7 @@
 import { Listener } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
+import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
 declare let fdc3: DesktopAgent;
 
@@ -28,7 +28,7 @@ export default () =>
       } catch (ex) {
         assert.fail(
           "\r\nDocumentation: " +
-            APIDocumentation.addIntentListener +
+            APIDocumentation1_2.addIntentListener +
             "\r\nCause" +
             (ex.message ?? ex)
         );

@@ -8,14 +8,14 @@ import {
   ResolveError,
 } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
+import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs =
-  "\r\nDocumentation: " + APIDocumentation.raiseIntent + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md

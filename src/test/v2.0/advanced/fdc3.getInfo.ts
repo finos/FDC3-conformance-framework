@@ -1,5 +1,4 @@
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
@@ -12,12 +11,13 @@ import {
   MetadataContext,
   MetadataAppCommand,
 } from "./fdc3.findInstances";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 const getInfoDocs =
-  "\r\nDocumentation: " + APIDocumentation.getInfo2_0 + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation2_0.getInfo2_0 + "\r\nCause";
 const getMetadataDocs =
-  "\r\nDocumentation: " + APIDocumentation.appMetadata + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause";
 
 export default () =>
   describe("fdc3.getInfo", () => {
@@ -32,7 +32,7 @@ export default () =>
       } catch (ex) {
         assert.fail(
           "\r\nDocumentation: " +
-            APIDocumentation.getInfo +
+            APIDocumentation2_0.getInfo +
             "\r\nCause" +
             (ex.message ?? ex)
         );

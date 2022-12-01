@@ -1,11 +1,11 @@
 import { Listener } from "fdc3_1_2";
 import { assert, expect } from "chai";
-import APIDocumentation from "../../../apiDocuments";
+import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
 const documentation =
-  "\r\nDocumentation: " + APIDocumentation.addContextListener + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation1_2.addContextListener + "\r\nCause";
 
 export default () =>
   describe("fdc3.addContextListener", () => {

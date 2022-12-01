@@ -1,5 +1,4 @@
 import { assert, expect } from "chai";
-import { Context } from "fdc3_1_2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
@@ -43,5 +42,16 @@ export default () =>
       } else {
         assert.fail("No system channels available");
       }
+
     });
+
+    it("(BasicJC2) Can join the correct system channel", async () => {
+      const [channel] = await fdc3.getSystemChannels();
+
+      await fdc3.joinChannel(channel.id);
+
+      const current = await fdc3.getCurrentChannel();
+
+      expect(current).to.eql(channel);
+    })
   });
