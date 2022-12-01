@@ -55,7 +55,6 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId4)
         let receivedContext = false;
         await cc.setupAndValidateListener1(testChannel, "fdc3.instrument", errorMessage, () => { receivedContext = true })
-        await cc.validateContextIsNotReceived(testChannel, "fdc3.contact",  `Should not have received "fdc3.contact" context. ${errorMessage}`);
         await cc.openChannelApp(acTestId4, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE)
         await resolveExecutionCompleteListener;
 
@@ -111,14 +110,12 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
       it(acTestId6, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type null\r\n- App A unsubscribes the app channel\r\n- App B retrieves the same app channel\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
 
-        const testChannel = await cc.createRandomTestChannel()
-        const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId6)
-
-        await cc.setupAndValidateListener1(testChannel, "unexpected-context", errorMessage, () => { /*noop*/ })
-        await cc.unsubscribeListeners()
+        const testChannel = await cc.createRandomTestChannel();
+        const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId6);
 
         await cc.validateContextIsNotReceived(testChannel, "fdc3.instrument", `Should not have received "fdc3.instrument" context. ${errorMessage}`);
-        await cc.openChannelApp(acTestId6, testChannel.id, APP_CHANNEL_AND_BROADCAST)
+        await cc.unsubscribeListeners();
+        await cc.openChannelApp(acTestId6, testChannel.id, APP_CHANNEL_AND_BROADCAST);
 
         await resolveExecutionCompleteListener;
       });
