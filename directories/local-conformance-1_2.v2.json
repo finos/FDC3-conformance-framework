@@ -189,6 +189,7 @@
       },
       "version": "1.0.0",
       "publisher": "Scott Logic",
+      "type": "web",
       "icons": [
         {
           "src": "https://localhost:3001/finos-icon-256.png"
