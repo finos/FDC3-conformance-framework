@@ -56,7 +56,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
 
     if (malformedContext) {
       // @ts-ignore
-      return await fdc3.open(appName, { name: "this is a malformed context" });
+      await fdc3.open(appName, { name: "this is a malformed context" });
     } else {
       //set TargetApp parameter
       if (appId) {
@@ -70,9 +70,9 @@ export class OpenControl1_2 implements OpenControl<Context> {
       //set context parameter
       if (contextType) {
         context = { type: contextType, name: "context" };
-        return await fdc3.open(targetApp, context);
+        await fdc3.open(targetApp, context);
       } else {
-        return await fdc3.open(targetApp);
+        await fdc3.open(targetApp);
       }
     }
   };
