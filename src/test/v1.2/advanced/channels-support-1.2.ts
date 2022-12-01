@@ -38,7 +38,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
   };
 
   joinChannel = async (channel: Channel): Promise<void> => {
-    return fdc3.joinChannel(channel.id)
+    return await fdc3.joinChannel(channel.id)
   }
 
   createRandomTestChannel = async (): Promise<Channel> => {
@@ -157,16 +157,16 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
   }
 
   validateContextIsNotReceived = (channel: Channel | null, unexpectedContextType: string, errorMessage: string): void => {
-    if (channel) {
-      listener1 = channel.addContextListener(unexpectedContextType, (context) => {
-        assert.fail(errorMessage);
-      });
-    } else {
-      listener1 = fdc3.addContextListener(unexpectedContextType, (context) => {
-        assert.fail(errorMessage);
-      });
-    }
-    validateListenerObject(listener1);
+    // if (channel) {
+    //   listener1 = channel.addContextListener(unexpectedContextType, (context) => {
+    //     assert.fail(errorMessage);
+    //   });
+    // } else {
+    //   listener1 = fdc3.addContextListener(unexpectedContextType, (context) => {
+    //     assert.fail(errorMessage);
+    //   });
+    // }
+    // validateListenerObject(listener1);
   }
 }
 
@@ -276,7 +276,7 @@ const waitForContext = (
 };
 
 
-function buildChannelsAppContext(
+export function buildChannelsAppContext(
   mockAppCommands: string[],
   config: ChannelsAppConfig
 ): ChannelsAppContext {
