@@ -21,12 +21,11 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
       it(scTestId1, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
-        const contextId = cc.getRandomId();
         const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1)
         let receivedContext = false;
-        await cc.setupAndValidateListener1(null, null, `fdc3.instrument.${contextId}`, errorMessage, () => receivedContext = true);
+        await cc.setupAndValidateListener1(null, null, "fdc3.instrument", errorMessage, () => receivedContext = true);
         const channel = await cc.retrieveAndJoinChannel(1);
-        await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST, undefined, true, contextId);
+        await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -42,9 +41,8 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
         const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId2)
         const channel = await cc.retrieveAndJoinChannel(1);
         let receivedContext = false;
-        const contextId = cc.getRandomId();
-        await cc.setupAndValidateListener1(null, null, `fdc3.instrument.${contextId}`, errorMessage, () => receivedContext = true);
-        await cc.openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST, undefined, true, contextId);
+        await cc.setupAndValidateListener1(null, null, "fdc3.instrument", errorMessage, () => receivedContext = true);
+        await cc.openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -59,11 +57,10 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
 
         const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId3)
         const channel = await cc.getUserChannel(1);
-        const contextId = cc.getRandomId();
-        await cc.openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST, undefined, true, contextId);
+        await cc.openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
         await cc.joinChannel(channel);
         let receivedContext = false;
-        await cc.setupAndValidateListener1(null, null, `fdc3.instrument.${contextId}`, errorMessage, () => receivedContext = true);
+        await cc.setupAndValidateListener1(null, null, "fdc3.instrument", errorMessage, () => receivedContext = true);
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -78,10 +75,9 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
 
         const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4)
         let receivedContext = false;
-        const contextId = cc.getRandomId();
-        await cc.setupAndValidateListener1(null, `fdc3.instrument.${contextId}`, `fdc3.instrument.${contextId}`, errorMessage, () => receivedContext = true);
+        await cc.setupAndValidateListener1(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => receivedContext = true);
         const channel = await cc.retrieveAndJoinChannel(1);
-        await cc.openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST, undefined, true, contextId);
+        await cc.openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST);
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -171,8 +167,9 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
       it(scTestId8, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
-        await cc.setupAndValidateListener1(null, "fdc3.instrument", "unexpected-context", errorMessage, async () => {/* noop */ });
-        await cc.setupAndValidateListener2(null, "fdc3.contact",  "unexpected-context", errorMessage, () =>  {/* noop */});
+        const contextId = cc.getRandomId();
+        await cc.setupAndValidateListener1(null, `fdc3.instrument.${contextId}`, "unexpected-context", errorMessage, async () => {/* noop */ });
+        await cc.setupAndValidateListener2(null, `fdc3.contact.${contextId}`,  "unexpected-context", errorMessage, () =>  {/* noop */});
         
         const channels = await cc.getSystemChannels();
         if (channels.length < 1) {
@@ -181,8 +178,8 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
 
         await cc.joinChannel(channels[0]);
         await cc.joinChannel(channels[1]);
-        await cc.openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST);
-        await wait();
+        await cc.openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST, undefined, true, contextId);
+        await wait(3000);
       });
     });
   });
