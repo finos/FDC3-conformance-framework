@@ -1,17 +1,26 @@
 import { OpenControl1_2 } from "./open-support-1.2";
-import { createOpenTests} from "../../common/fdc3.open"
-import { openApp } from "../../common/open-control";
+import { getCommonOpenTests } from "../../common/fdc3.open";
+import { openApp, OpenCommonConfig } from "../../common/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
-const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
+const openDocs =
+  "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
 
-//run common open tests
-export default () => createOpenTests(control, openDocs, "1.2");
+const config: OpenCommonConfig = {
+  fdc3Version: "1.2",
+  prefix: "",
+  target: "app name",
+  targetMultiple: "both app name and appId",
+};
 
-//run v1.2-only tests
-export function runOpenTestsV1_2() {
+export default () =>
+  describe("fdc3.open", () => {
+    //run common open tests
+    getCommonOpenTests(control, openDocs, config);
+
+    //run 1.2-only tests
     const AOpensB2Test =
       "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
     it(AOpensB2Test, async () => {
@@ -45,10 +54,7 @@ export function runOpenTestsV1_2() {
       "(AFailsToOpenB3) Receive AppNotFound error when targeting non-existent app AppMetadata (name and appId) as target";
     it(AFailsToOpenB3, async () => {
       try {
-        await control.openMockApp(
-          "ThisAppDoesNotExist",
-          "ThisIdDoesNotExist"
-        );
+        await control.openMockApp("ThisAppDoesNotExist", "ThisIdDoesNotExist");
         assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
         control.confirmAppNotFoundErrorReceived(ex);
@@ -68,7 +74,11 @@ export function runOpenTestsV1_2() {
       "(AOpensBWithContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds generic listener";
     it(AOpensBWithContext3Test, async () => {
       const receiver = control.contextReceiver("context-received");
-      await control.openMockApp(openApp.c.name, openApp.c.id, "fdc3.instrument");
+      await control.openMockApp(
+        openApp.c.name,
+        openApp.c.id,
+        "fdc3.instrument"
+      );
       await control.validateReceivedContext(receiver, "fdc3.instrument");
       await control.closeAppWindows(AOpensBWithContext3Test);
     });
@@ -86,4 +96,4 @@ export function runOpenTestsV1_2() {
       await receiver;
       await control.closeAppWindows(AOpensBMalformedContext);
     });
-  }
+  });

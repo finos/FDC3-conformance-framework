@@ -1,17 +1,28 @@
 import constants from "../../../constants";
-import { createOpenTests } from "../../common/fdc3.open";
-import { openApp } from "../../common/open-control";
+import { getCommonOpenTests } from "../../common/fdc3.open";
+import { openApp, OpenCommonConfig } from "../../common/open-control";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { expectAppTimeoutErrorOnOpen, OpenControl2_0 } from "./open-support-2.0";
+import {
+  expectAppTimeoutErrorOnOpen,
+  OpenControl2_0,
+} from "./open-support-2.0";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_0 + "\r\nCause:";
 const control = new OpenControl2_0();
 
-//run common open tests
-export default () => createOpenTests(control, openDocs, "2.0");
+const config: OpenCommonConfig = {
+  fdc3Version: "2.0",
+  prefix: "2.0-",
+  target: "AppIdentifier",
+  targetMultiple: "AppIdentifier",
+};
 
-//run v2.0-only open tests
-export function runOpenTestsV2_0() {
+export default () =>
+  describe("fdc3.open", () => {
+    //run common open tests
+    getCommonOpenTests(control, openDocs, config);
+
+    //run v2.0-only open tests
     const AOpensBWithWrongContext =
       "(2.0-AOpensBWithWrongContext) Received App timeout when opening app B with fake context, app b listening for different context";
     it(AOpensBWithWrongContext, async () => {
@@ -26,4 +37,4 @@ export function runOpenTestsV2_0() {
       await expectAppTimeoutErrorOnOpen(openApp.e.id);
       await control.closeAppWindows(AOpensBNoListen);
     }).timeout(constants.NoListenerTimeout + 1000);
-  }
+  });

@@ -53,3 +53,10 @@ export const openApp = {
     id: "IntentAppBId"
   }
 };
+
+export type OpenCommonConfig = {
+  fdc3Version: string,
+  prefix: string,
+  target: string,
+  targetMultiple: string
+}
