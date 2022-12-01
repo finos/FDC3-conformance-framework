@@ -6,6 +6,7 @@ import {
   getOrCreateChannel,
   Listener,
   OpenError,
+  TargetApp,
 } from "fdc3_1_2";
 import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
@@ -18,14 +19,14 @@ const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
 
 export class OpenControl1_2 implements OpenControl<Context> {
-  contextReceiver = async (contextType: string): Promise<Context> => {
+  contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = appControlChannel.addContextListener(
         contextType,
         async (context: MockAppContext) => {
-          if (context.errorMessage !== undefined) {
+          if (context.errorMessage) {
             reject(new Error(context.errorMessage));
           } else {
             resolve(context);
@@ -38,22 +39,43 @@ export class OpenControl1_2 implements OpenControl<Context> {
       const { promise: thePromise, timeout: theTimeout } = sleep();
       timeout = theTimeout;
       await thePromise;
-      reject(new Error("No context received from app B"));
+      if (!expectNotToReceiveContext)
+        reject(new Error("No context received from app B"));
     });
-
+    console.log(JSON.stringify(messageReceived));
     return messageReceived;
   };
 
-  openIntentApp = async (appName: string, appId?: string, context?: Context) => {
-    if(appId){
-        if(context){
-            await fdc3.open({ name: appName, appId: appId }, context);
-        }
-        await fdc3.open({ name: appName, appId: appId });
-    } else if (context){
-        await fdc3.open({ name: appName }, context);
-    }else{
-        await fdc3.open({ name: appName });
+  openMockApp = async (
+    appName: string,
+    appId?: string,
+    contextType?: string,
+    targetAppAsString?: boolean,
+    malformedContext?: boolean
+  ) => {
+    let targetApp: TargetApp;
+    let context: Context;
+
+    if (malformedContext) {
+      // @ts-ignore
+      await fdc3.open(appName, { name: "this is a malformed context" });
+    } else {
+      //set TargetApp parameter
+      if (appId) {
+        targetApp = { name: appName, appId: appId };
+      } else if (targetAppAsString) {
+        targetApp = appName;
+      } else {
+        targetApp = { name: appName };
+      }
+
+      //set context parameter
+      if (contextType) {
+        context = { type: contextType, name: "context" };
+        await fdc3.open(targetApp, context);
+      } else {
+        await fdc3.open(targetApp);
+      }
     }
   };
 

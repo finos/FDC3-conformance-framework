@@ -1,6 +1,6 @@
 export interface OpenControl<X> {
   //test control
-  openIntentApp(appId: string, contextType?: string): void;
+  openMockApp(appId: string, contextType?: string): void;
   closeAppWindows(testId: string): Promise<void>;
 
   //listening
@@ -46,5 +46,9 @@ export const openApp = {
   },
   e:{
     id: "OpenAppBId",
+  },
+  f: {
+    name: "IntentAppB",
+    id: "IntentAppBId"
   }
 };

@@ -44,7 +44,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
     return messageReceived;
   };
 
-  openIntentApp = async (appId: string, contextType?: string) => {
+  openMockApp = async (appId: string, contextType?: string) => {
     let context;
     if (contextType) {
       context = { type: contextType };
