@@ -39,7 +39,13 @@ There are two main parts to conformance:
   - Running the tests _locally_, then
   - Joining the Conformance Program
 
-### Installation / Local Running
+### Running The Conformance Tests
+
+#### Using The FINOS App Directory
+
+If you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos.org/docs/app-directory/spec), you can point it at [The FINOS App Directory](https://directory.fdc3.finos.org) which contains not only the current conformance suite but also many other sample FDC3 applications.  
+
+#### Local Installation
 
 1.  **Check Out The Repo**
 
@@ -71,9 +77,9 @@ npm run start
 You will need to set up your desktop agent so that it has an _App Directory containing all the conformance apps_.   
 This step is vendor-dependent, but examples of `AppD` records can be found in the `directory` folder.
 
-5.  **Run the tests**
+### Running The Tests
 
-You can load up the conformance app and select the tests you wish to run:
+Once you have configured your desktop agent correctly, open the conformance app and select the tests you wish to run:
 
 <img src="static/selecting.png" alt="Selecting Tests" width="400px" />
 
