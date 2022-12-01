@@ -16,7 +16,6 @@ import { MockAppContext, OpenControl } from "../../common/open-control";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
-const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
 
 export class OpenControl1_2 implements OpenControl<Context> {
   contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
@@ -27,11 +26,11 @@ export class OpenControl1_2 implements OpenControl<Context> {
         contextType,
         async (context: MockAppContext) => {
           if (context.errorMessage) {
-            reject(new Error(context.errorMessage));
+            reject(context.errorMessage);
           } else {
             resolve(context);
           }
-          clearTimeout(timeout);
+          //clearTimeout(timeout);
           listener.unsubscribe();
         }
       );
@@ -42,7 +41,6 @@ export class OpenControl1_2 implements OpenControl<Context> {
       if (!expectNotToReceiveContext)
         reject(new Error("No context received from app B"));
     });
-    console.log(JSON.stringify(messageReceived));
     return messageReceived;
   };
 
@@ -58,7 +56,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
 
     if (malformedContext) {
       // @ts-ignore
-      await fdc3.open(appName, { name: "this is a malformed context" });
+      return await fdc3.open(appName, { name: "this is a malformed context" });
     } else {
       //set TargetApp parameter
       if (appId) {
@@ -72,9 +70,9 @@ export class OpenControl1_2 implements OpenControl<Context> {
       //set context parameter
       if (contextType) {
         context = { type: contextType, name: "context" };
-        await fdc3.open(targetApp, context);
+        return await fdc3.open(targetApp, context);
       } else {
-        await fdc3.open(targetApp);
+        return await fdc3.open(targetApp);
       }
     }
   };

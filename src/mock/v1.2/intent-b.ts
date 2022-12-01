@@ -15,7 +15,7 @@ onFdc3Ready().then(async () => {
           if (context.name === "this is a malformed context") {
             await sendContextToTests({
               type: "context-received",
-              errorMessage: "App B listener received a malformed context",
+              errorMessage: `App B listener received a malformed context. Context received = ${JSON.stringify(context)}`,
             } as MockAppContext);
           }
         });
