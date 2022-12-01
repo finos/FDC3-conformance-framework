@@ -7,14 +7,14 @@ import {
   Listener,
   OpenError,
 } from "fdc3_2_0";
-import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 import { MockAppContext, OpenControl } from "../../common/open-control";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
-const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
+const openDocs = "\r\nDocumentation: " + APIDocumentation2_0.open + "\r\nCause:";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
 
 export class OpenControl2_0 implements OpenControl<Context> {

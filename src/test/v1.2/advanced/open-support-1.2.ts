@@ -8,14 +8,14 @@ import {
   OpenError,
   TargetApp,
 } from "fdc3_1_2";
-import APIDocumentation from "../../../apiDocuments";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 import { MockAppContext, OpenControl } from "../../common/open-control";
+import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
 declare let fdc3: DesktopAgent;
-const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
+const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause:";
 
 export class OpenControl1_2 implements OpenControl<Context> {
   contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
