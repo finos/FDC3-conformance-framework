@@ -15,11 +15,11 @@ export class Fdc3CommandExecutor2_0 {
     for (const command of orderedCommands) {
       switch (command) {
         case commands.joinUserChannelOne: {
-          channel = await this.joinRetrievedUserChannel(config.userChannelId);
+          channel = await this.joinRetrievedUserChannel(config.channelId);
           break;
         }
         case commands.retrieveTestAppChannel: {
-          channel = await this.retrieveTestAppChannel();
+          channel = await this.retrieveTestAppChannel(config.channelId);
           break;
         }
         case commands.broadcastInstrumentContext: {
@@ -59,8 +59,8 @@ export class Fdc3CommandExecutor2_0 {
   }
 
   //retrieve/create "test-channel" app channel
-  async retrieveTestAppChannel() {
-    return await fdc3.getOrCreateChannel("test-channel");
+  async retrieveTestAppChannel(channelId?: string): Promise<Channel> {
+    return fdc3.getOrCreateChannel(channelId || "test-channel");
   }
 
   //get broadcast service and broadcast the given context type

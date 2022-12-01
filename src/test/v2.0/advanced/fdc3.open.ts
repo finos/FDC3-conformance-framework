@@ -1,10 +1,10 @@
 import { assert } from "chai";
-import APIDocumentation from "../../../apiDocuments";
+import {APIDocumentation2_0} from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { openApp } from "../../common/open-control";
 import { OpenControl2_0 } from "./open-support-2.0";
 
-const openDocs = "\r\nDocumentation: " + APIDocumentation.open2_0 + "\r\nCause:";
+const openDocs = "\r\nDocumentation: " + APIDocumentation2_0.open + "\r\nCause:";
 const control = new OpenControl2_0();
 
 export default () =>

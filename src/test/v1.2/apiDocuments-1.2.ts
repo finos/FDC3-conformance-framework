@@ -2,7 +2,7 @@
  * Links to API documentation
  */
 
-const APIDocumentation = {
+export const APIDocumentation1_2 = {
   desktopAgent: "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent",
   addContextListener:
     "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#addcontextlistener",
@@ -32,7 +32,5 @@ const APIDocumentation = {
     "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#raiseintentforcontext",
   appMetadata: "https://fdc3.finos.org/docs/api/ref/Metadata#appmetadata",
   findInstances:
-    "https://fdc3.finos.org/docs/api/ref/DesktopAgent#findinstances",
-} as const;
-
-export default APIDocumentation;
+    "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#findinstances",
+} 

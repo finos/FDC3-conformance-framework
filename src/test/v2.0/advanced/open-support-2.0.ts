@@ -1,24 +1,21 @@
 import { assert, expect } from "chai";
-import {
-  Channel,
-  Context,
-  DesktopAgent,
-  Listener,
-  OpenError,
-} from "fdc3_2_0";
-import APIDocumentation from "../../../apiDocuments";
+import { Channel, Context, DesktopAgent, Listener, OpenError } from "fdc3_2_0";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 import { MockAppContext, OpenControl } from "../../common/open-control";
 
 declare let fdc3: DesktopAgent;
-const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause:";
+const openDocs =
+  "\r\nDocumentation: " + APIDocumentation2_0.open + "\r\nCause:";
 const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
 
 export class OpenControl2_0 implements OpenControl<Context> {
   contextReceiver = async (contextType: string): Promise<Context> => {
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(
+      constants.ControlChannel
+    );
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(
@@ -54,7 +51,9 @@ export class OpenControl2_0 implements OpenControl<Context> {
   };
 
   addListenerAndFailIfReceived = async () => {
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(
+      constants.ControlChannel
+    );
     await appControlChannel.addContextListener(
       "context-received",
       (context: MockAppContext) => {
@@ -65,16 +64,18 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
   closeAppWindows = async (testId: string) => {
     await broadcastCloseWindow(testId);
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(
+      constants.ControlChannel
+    );
     await waitForContext("windowClosed", testId, appControlChannel);
     await wait(constants.WindowCloseWaitTime);
   };
 
   expectAppTimeoutErrorOnOpen = async (appId: string) => {
     //give promise time to reject test
-    const {timeout, promise} = sleep(constants.NoListenerTimeout);
+    const { timeout, promise } = sleep(constants.NoListenerTimeout);
     let promiseRejected;
-  
+
     //wait for the open promise to be rejected
     try {
       await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
@@ -83,9 +84,9 @@ export class OpenControl2_0 implements OpenControl<Context> {
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
       promiseRejected = true;
       clearTimeout(timeout);
-    } 
-  
-    if(!promiseRejected){
+    }
+
+    if (!promiseRejected) {
       assert.fail(testTimeoutMessage + openDocs);
     }
   };
@@ -98,7 +99,10 @@ export class OpenControl2_0 implements OpenControl<Context> {
     );
   };
 
-  validateReceivedContext = async (contextReceiver: Promise<Context>, expectedContextType: string) => {
+  validateReceivedContext = async (
+    contextReceiver: Promise<Context>,
+    expectedContextType: string
+  ) => {
     const receivedValue = (await contextReceiver) as any;
     expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
   };
@@ -192,10 +196,11 @@ const waitForContext = (
 };
 
 const broadcastCloseWindow = async (currentTest) => {
-  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+  const appControlChannel = await fdc3.getOrCreateChannel(
+    constants.ControlChannel
+  );
   appControlChannel.broadcast({
     type: "closeWindow",
     testId: currentTest,
   } as AppControlContext);
 };
-

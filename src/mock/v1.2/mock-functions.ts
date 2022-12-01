@@ -16,9 +16,7 @@ export const onFdc3Ready = () =>
 export const closeWindowOnCompletion = async () => {
   console.log("Setting up closeWindow listener on app-control channel");
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  console.log("ADDING LISTENER")
-  appControlChannel.addContextListener("closeWindow", async (context : AppControlContext) => {
-    console.log("CONTEXT RECEIVED")
+  appControlChannel.addContextListener("closeWindow", (context : AppControlContext) => {
     //notify app A that window was closed
     appControlChannel.broadcast({
       type: "windowClosed",
@@ -29,7 +27,6 @@ export const closeWindowOnCompletion = async () => {
       window.close();
       return;
     }, 5);
-    console.log("BROADCAST SENT")
   });
 };
 

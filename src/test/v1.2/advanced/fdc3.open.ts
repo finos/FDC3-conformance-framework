@@ -1,11 +1,11 @@
 import { assert } from "chai";
-import APIDocumentation from "../../../apiDocuments";
+import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { OpenControl1_2 } from "./open-support-1.2";
 import { openApp } from "../../common/open-control";
 
 declare let fdc3: DesktopAgent;
-const openDocs = "\r\nDocumentation: " + APIDocumentation.open + "\r\nCause: ";
+const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
 
 /**
@@ -139,20 +139,19 @@ export default () =>
       await control.closeAppWindows(AOpensBMultipleListenTest);
     });
 
-    //NEEDS FIXING!
-    // const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
-    // it(AOpensBMalformedContext, async () => {
-    //   const receiver = control.contextReceiver("context-received", true);
-    //   await control.openMockApp(
-    //     openApp.f.name,
-    //     undefined,
-    //     undefined,
-    //     true,
-    //     true
-    //   );
-    //   console.log("before receiver")
-    //   await receiver;
-    //   console.log("after receiver")
-    //   await control.closeAppWindows(AOpensBMalformedContext);
-    // });
+    const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
+    it(AOpensBMalformedContext, async () => {
+      const receiver = control.contextReceiver("context-received", true);
+      await control.openMockApp(
+        openApp.f.name,
+        undefined,
+        undefined,
+        true,
+        true
+      );
+      console.log("before receiver")
+      await receiver;
+      console.log("after receiver")
+      await control.closeAppWindows(AOpensBMalformedContext);
+    });
   });
