@@ -3,7 +3,6 @@ import {
   Channel,
   Context,
   DesktopAgent,
-  getOrCreateChannel,
   Listener,
   OpenError,
 } from "fdc3_2_0";
@@ -19,7 +18,7 @@ const testTimeoutMessage = `Test timeout - An error was not thrown within the al
 
 export class OpenControl2_0 implements OpenControl<Context> {
   contextReceiver = async (contextType: string): Promise<Context> => {
-    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(
@@ -55,7 +54,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
   };
 
   addListenerAndFailIfReceived = async () => {
-    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     await appControlChannel.addContextListener(
       "context-received",
       (context: MockAppContext) => {

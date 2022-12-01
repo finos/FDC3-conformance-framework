@@ -2,7 +2,6 @@ import {
   AppMetadata,
   Channel,
   Context,
-  getOrCreateChannel,
   IntentResolution,
   Listener,
   ResolveError,
@@ -211,7 +210,7 @@ const broadcastCloseWindow = async (currentTest) => {
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = async (contextType: string) => {
   let timeout;
-  const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const listener = appControlChannel.addContextListener(contextType, (context) => {
       resolve(context);
