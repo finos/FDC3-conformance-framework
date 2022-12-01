@@ -41,6 +41,8 @@ There are two main parts to conformance:
 
 ### Running The Conformance Tests
 
+You can either run the hosted conformance tests listed in the FINOS App Directory, or run them on your local machine (useful if you are making changes).  Instructions for doing either of those things are here:
+
 #### Using The FINOS App Directory
 
 If you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos.org/docs/app-directory/spec), you can point it at [The FINOS App Directory](https://directory.fdc3.finos.org) which contains not only the current conformance suite but also many other sample FDC3 applications.  
