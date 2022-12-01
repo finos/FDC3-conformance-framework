@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { Channel, Context, DesktopAgent, Listener } from "fdc3_1_2";
 import constants from "../../../constants";
-import { sleep, wait } from "../../../utils";
+import { wait } from "../../../utils";
 import { AppControlContext, ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/channel-control";
 
 
@@ -79,7 +79,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     return waitForContext(
       "executionComplete",
       testId,
-      await fdc3.getOrCreateChannel("app-control")
+      await fdc3.getOrCreateChannel(constants.ControlChannel)
     );
   }
 
@@ -182,8 +182,8 @@ function validateListenerObject(listenerObject) {
   );
 }
 
-const broadcastAppChannelCloseWindow = async (testId: string): Promise<Channel> => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+const broadcastAppChannelCloseWindow = async (testId: string) => {
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   /* tslint:disable-next-line */
   const closeContext: AppControlContext = {
     type: "closeWindow",

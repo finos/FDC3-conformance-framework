@@ -78,7 +78,7 @@ export default () =>
     it("(2.0-GetInfo2) Returns a valid ImplementationMetadata object", async () => {
       console.log("startstart");
       let implMetadata: ImplementationMetadata;
-      const appControlChannel = await getOrCreateChannel("app-control");
+      const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
 
       //set command for metadata app
       const metadataAppContext: MetadataAppCommandContext = {
@@ -154,7 +154,7 @@ export default () =>
     async function waitForMockAppToClose() {
       let timeout;
       const messageReceived = new Promise<Context>(async (resolve, reject) => {
-        const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+        const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
         const listener = await appControlChannel.addContextListener(
           "windowClosed",
           (context) => {
@@ -175,7 +175,7 @@ export default () =>
     }
 
     const broadcastCloseWindow = async () => {
-      const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+      const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
       await appControlChannel.broadcast({ type: "closeWindow" });
     };
   });
