@@ -52,6 +52,6 @@ export default () =>
 
       const current = await fdc3.getCurrentChannel();
 
-      expect(current).to.eql(channel);
+      expect(current.id).to.eql(channel.id);
     })
   });
