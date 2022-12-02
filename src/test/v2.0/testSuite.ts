@@ -1,12 +1,12 @@
 import mocha, { Suite } from "mocha";
 import constants from "../../constants";
 
-import fdc3AddContextListener_2_0 from "../v2.0/basic/fdc3.addContextListener";
-import fdc3AddIntentListener_2_0 from "../v2.0/basic/fdc3.addIntentListener";
+import fdc3AddContextListener_2_0 from "./basic/fdc3.addContextListener";
+import fdc3AddIntentListener_2_0 from "./basic/fdc3.addIntentListener";
 import fdc3AppChannels_2_0 from "./advanced/fdc3.app-channels";
 import fdc3UserChannels_2_0 from "./advanced/fdc3.user-channels";
-// import fdc3FindIntent_2_0 from "./v2.0/fdc3.findIntent";
-// import fdc3FindIntentsByContext_2_0 from "./v2.0/fdc3.findIntentsByContext";
+import fdc3FindIntent_2_0 from "./advanced/fdc3.findIntent";
+import fdc3FindIntentsByContext_2_0 from "./advanced/fdc3.findIntentsByContext";
 import fdc3GetCurrentChannel_2_0 from "./basic/fdc3.getCurrentChannel";
 import fdc3GetInfo_2_0 from "./advanced/fdc3.getInfo";
 import fdc3GetInstances_2_0 from "./advanced/fdc3.findInstances";
@@ -17,7 +17,7 @@ import fdc3FindInstances_2_0 from "./advanced/fdc3.findInstances";
 import fdc3JoinUserChannel_2_0 from "./basic/fdc3.joinUserChannel";
 import fdc3LeaveCurrentChannel_2_0 from "./basic/fdc3.leaveCurrentChannel";
 import fdc3Open_2_0 from "./advanced/fdc3.open";
-// import fdc3RaiseIntent_2_0 from "./v2.0/fdc3.raiseIntent";
+import fdc3RaiseIntent_2_0 from "./advanced/fdc3.raiseIntent";
 import fdc3RaiseIntentForContext_2_0 from "./basic/fdc3.raiseIntentForContext";
 
 type testSet = { [key: string]: (() => void)[] };
@@ -40,6 +40,9 @@ const advancedSuite_2_0: testSet = {
   fdc3getAppMetadata_2_0: [fdc3getAppMetadata_2_0],
   fdc3AppChannels_2_0: [fdc3AppChannels_2_0],
   fdc3UserChannels_2_0: [fdc3UserChannels_2_0],
+  fdc3FindIntent_2_0: [fdc3FindIntent_2_0],
+  fdc3FindIntentsByContext_2_0: [fdc3FindIntentsByContext_2_0],
+  fdc3RaiseIntent_2_0 : [fdc3RaiseIntent_2_0]
 };
 
 

@@ -10,11 +10,6 @@ onFdc3Ready().then(async () => {
     return context;
   });
 
-  //broadcast that intent-a has opened
-  await sendContextToTests({
-    type: "fdc3-intent-c-opened",
-  });
-
   fdc3.addContextListener("fdc3.genericListener", async (context) => {
     // broadcast that this app has received context
     await sendContextToTests({

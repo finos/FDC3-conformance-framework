@@ -6,9 +6,15 @@ declare let fdc3: DesktopAgent;
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
   fdc3.addIntentListener("aTestingIntent", async (context) => {
+    if(context.type !== "testContextX"){
+      sendContextToTests({type: "error", errorMessage: `Incorrect context received for intent 'aTestingIntent. Expected testContextX, got ${context.type}`})
+    }
     return context;
   });
   fdc3.addIntentListener("sharedTestingIntent1", async (context) => {
+    if(context.type !== "testContextX"){
+      sendContextToTests({type: "error", errorMessage: `Incorrect context received for intent 'aTestingIntent. Expected testContextX, got ${context.type}`})
+    }
     return context;
   });
 
