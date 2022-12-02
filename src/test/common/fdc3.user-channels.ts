@@ -1,9 +1,7 @@
 import { assert } from "chai";
 import { DesktopAgent } from "fdc3_1_2";
 import { wait } from "../../utils";
-import { commands, JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
-import { buildChannelsAppContext } from "../v1.2/advanced/channels-support-1.2";
-import { ChannelsAppConfig } from "../v2.0/advanced/fdc3.broadcast";
+import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
 import { ChannelControl } from "./channel-control";
 
 declare let fdc3: DesktopAgent
@@ -96,11 +94,14 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
         let contextTypes: string[] = [];
         let receivedContext = false;
 
+        const contextId = cc.getRandomId();
+
         function checkIfBothContextsReceived() {
           if (contextTypes.length === 2) {
+            console.warn(JSON.stringify(contextTypes));
             if (
-              !contextTypes.includes("fdc3.contact") ||
-              !contextTypes.includes("fdc3.instrument")
+              !contextTypes.includes(`fdc3.contact.${contextId}`) ||
+              !contextTypes.includes(`fdc3.instrument.${contextId}`)
             ) {
               assert.fail("Incorrect context received", errorMessage);
             } else {
@@ -109,18 +110,18 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
           }
         }
 
-        await cc.setupAndValidateListener1(null, "fdc3.instrument", "fdc3.instrument", errorMessage, (context) => {
+        await cc.setupAndValidateListener1(null, `fdc3.instrument.${contextId}`, `fdc3.instrument.${contextId}`, errorMessage, (context) => {
           contextTypes.push(context.type);
           checkIfBothContextsReceived();
         });
 
-        await cc.setupAndValidateListener2(null, "fdc3.contact", "fdc3.contact", errorMessage, (context) => {
+        await cc.setupAndValidateListener2(null, `fdc3.contact.${contextId}`, `fdc3.contact.${contextId}`, errorMessage, (context) => {
           contextTypes.push(context.type);
           checkIfBothContextsReceived();
         });
 
         const channel = await cc.retrieveAndJoinChannel(1);
-        await cc.openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE);
+        await cc.openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
         await resolveExecutionCompleteListener;
 
         if (!receivedContext) {
@@ -166,8 +167,9 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
       it(scTestId8, async () => {
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A joins channel 1\r\n- App A joins channel 2\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
 
-        await cc.setupAndValidateListener1(null, "fdc3.instrument", "unexpected-context", errorMessage, async () => {/* noop */ });
-        await cc.setupAndValidateListener2(null, "fdc3.contact",  "unexpected-context", errorMessage, () =>  {/* noop */});
+        const contextId = cc.getRandomId();
+        await cc.setupAndValidateListener1(null, `fdc3.instrument.${contextId}`, "unexpected-context", errorMessage, async () => {/* noop */ });
+        await cc.setupAndValidateListener2(null, `fdc3.contact.${contextId}`,  "unexpected-context", errorMessage, () =>  {/* noop */});
         
         const channels = await cc.getSystemChannels();
         if (channels.length < 1) {
@@ -176,11 +178,9 @@ export function createUserChannelTests(cc: ChannelControl<any, any>, documentati
 
         await cc.joinChannel(channels[0]);
         await cc.joinChannel(channels[1]);
-        await cc.openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST);
-        await wait();
+        await cc.openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST, undefined, true, contextId);
+        await wait(3000);
       });
-
     });
-
   });
 }
