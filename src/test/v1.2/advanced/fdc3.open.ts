@@ -139,19 +139,20 @@ export default () =>
       await control.closeAppWindows(AOpensBMultipleListenTest);
     });
 
-    const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
-    it(AOpensBMalformedContext, async () => {
-      const receiver = control.contextReceiver("context-received", true);
-      await control.openMockApp(
-        openApp.f.name,
-        undefined,
-        undefined,
-        true,
-        true
-      );
-      console.log("before receiver")
-      await receiver;
-      console.log("after receiver")
-      await control.closeAppWindows(AOpensBMalformedContext);
-    });
+    //Correct behaviour needs to be clarified before we can implement this test
+    // const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
+    // it(AOpensBMalformedContext, async () => {
+    //   const receiver = control.contextReceiver("context-received", true);
+    //   await control.openMockApp(
+    //     openApp.f.name,
+    //     undefined,
+    //     undefined,
+    //     true,
+    //     true
+    //   );
+    //   console.log("before receiver")
+    //   await receiver;
+    //   console.log("after receiver")
+    //   await control.closeAppWindows(AOpensBMalformedContext);
+    // });
   });
