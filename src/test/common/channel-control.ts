@@ -15,7 +15,7 @@ export interface ChannelControl<X, Y> {
     closeChannelsAppWindow(testId: string): Promise<void>;
     channelCleanUp(): Promise<void>;
     unsubscribeListeners(): void | Promise<void>;
-    openChannelApp(testId: string, channelId: string | undefined, commands: string[], historyItems?: number, notify?: boolean): Promise<void>;
+    openChannelApp(testId: string, channelId: string | undefined, commands: string[], historyItems?: number, notify?: boolean, contextId?: string): Promise<void>;
   
     // listening
     initCompleteListener(testId: string): Promise<Y>
@@ -49,6 +49,7 @@ export interface AppControlContext extends CommonContext {
       historyItems: number;
       fdc3ApiVersion: string;
       channelId: string;
+      contextId?: string;
     };
   };
   
@@ -58,6 +59,7 @@ export interface AppControlContext extends CommonContext {
     notifyAppAOnCompletion?: boolean;
     historyItems?: number;
     channelId: string;
+    contextId?: string;
   };
   
   
