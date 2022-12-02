@@ -2,6 +2,7 @@ import { closeWindowOnCompletion, onFdc3Ready } from './mock-functions'
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from '../v2.0/mock-functions';
 import { wait, wrapPromise } from '../../utils';
+import { IntentAppBContext } from '../../test/v2.0/advanced/intent-support-2.0';
 declare let fdc3: DesktopAgent
 
 onFdc3Ready().then(async () => {
@@ -29,6 +30,7 @@ onFdc3Ready().then(async () => {
         }else if(receivedContext.type === "testContextX"){
           return receivedContext;
         }
+    }
 
     //broadcast that intent-a has opened
     await sendContextToTests({
