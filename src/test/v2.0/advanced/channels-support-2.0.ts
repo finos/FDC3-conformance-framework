@@ -78,7 +78,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     const receivedContext = await waitForContext(
       "executionComplete",
       testId,
-      await fdc3.getOrCreateChannel("app-control")
+      await fdc3.getOrCreateChannel(constants.ControlChannel)
     );
     
     await wait(constants.ShortWait)
@@ -174,7 +174,7 @@ function validateListenerObject(listenerObject) {
 }
 
 const broadcastAppChannelCloseWindow = async (testId: string) => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   /* tslint:disable-next-line */
   const closeContext: AppControlContext = {
     type: "closeWindow",

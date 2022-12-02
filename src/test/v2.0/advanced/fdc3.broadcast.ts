@@ -45,7 +45,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId1,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
         let receivedContext = false;
 
@@ -95,7 +95,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId2,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         //Join user channel 1
@@ -146,7 +146,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId3,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         const channelsAppCommands = [
@@ -197,7 +197,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId4,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         let receivedContext = false;
@@ -252,7 +252,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId5,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         //Join user channel 1
@@ -307,7 +307,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId6,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         const channelsAppCommands = [
@@ -362,7 +362,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId7,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         const channelsAppCommands = [
@@ -417,7 +417,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           scTestId8,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
         let contextTypes: string[] = [];
 
@@ -544,7 +544,7 @@ export default () =>
       const resolveExecutionCompleteListener = waitForContext(
         "executionComplete",
         scTestId10,
-        await fdc3.getOrCreateChannel("app-control")
+        await fdc3.getOrCreateChannel(constants.ControlChannel)
       );
 
       //Add fdc3.instrument context listener
@@ -686,7 +686,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         //Retrieve an app channel
@@ -741,7 +741,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId2,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         //Retrieve an app channel
@@ -790,7 +790,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId4,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         let receivedContext = false;
@@ -890,7 +890,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId6,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         //Add context listener
@@ -934,7 +934,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId10,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         //Retrieve an app channel
@@ -1038,7 +1038,7 @@ export default () =>
         const resolveExecutionCompleteListener = waitForContext(
           "executionComplete",
           acTestId13,
-          await fdc3.getOrCreateChannel("app-control")
+          await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
         const channelsAppCommands = [
@@ -1107,7 +1107,7 @@ export default () =>
     }
 
     const broadcastAppChannelCloseWindow = async (testId: string) => {
-      const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+      const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
       /* tslint:disable-next-line */
       const closeContext: AppControlContext = {
         type: "closeWindow",

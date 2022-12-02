@@ -2,7 +2,6 @@ import {
   AppMetadata,
   Channel,
   Context,
-  getOrCreateChannel,
   IntentResolution,
   Listener,
   ResolveError,
@@ -200,7 +199,7 @@ const validateIntentResolution = (
 };
 
 const broadcastCloseWindow = async (currentTest) => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   appControlChannel.broadcast({
     type: "closeWindow",
     testId: currentTest,
@@ -211,7 +210,7 @@ const broadcastCloseWindow = async (currentTest) => {
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = async (contextType: string) => {
   let timeout;
-  const appControlChannel = await getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
     const listener = appControlChannel.addContextListener(contextType, (context) => {
       resolve(context);
@@ -231,7 +230,7 @@ const createReceiver = async (contextType: string) => {
 
 async function closeIntentAppsWindows(testId) {
   await broadcastCloseWindow(testId);
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await waitForContext("windowClosed", testId, appControlChannel);
   await wait(constants.WindowCloseWaitTime);
 }

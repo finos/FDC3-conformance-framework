@@ -4,7 +4,6 @@ import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
 import { ImplementationMetadata } from "fdc3_2_0";
-import { getOrCreateChannel } from "fdc3_2_0";
 import { validateAppMetadata } from "./fdc3.getAppMetadata";
 import {
   MetadataAppCommandContext,
@@ -15,7 +14,7 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 const getInfoDocs =
-  "\r\nDocumentation: " + APIDocumentation2_0.getInfo2_0 + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
 const getMetadataDocs =
   "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause";
 
@@ -78,7 +77,7 @@ export default () =>
     it("(2.0-GetInfo2) Returns a valid ImplementationMetadata object", async () => {
       console.log("startstart");
       let implMetadata: ImplementationMetadata;
-      const appControlChannel = await getOrCreateChannel("app-control");
+      const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
 
       //set command for metadata app
       const metadataAppContext: MetadataAppCommandContext = {
@@ -154,7 +153,7 @@ export default () =>
     async function waitForMockAppToClose() {
       let timeout;
       const messageReceived = new Promise<Context>(async (resolve, reject) => {
-        const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+        const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
         const listener = await appControlChannel.addContextListener(
           "windowClosed",
           (context) => {
@@ -175,7 +174,7 @@ export default () =>
     }
 
     const broadcastCloseWindow = async () => {
-      const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+      const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
       await appControlChannel.broadcast({ type: "closeWindow" });
     };
   });

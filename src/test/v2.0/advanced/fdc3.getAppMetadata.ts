@@ -3,6 +3,7 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { AppMetadata, Context } from "fdc3_2_0";
 import { sleep } from "../../../utils";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
+import constants from "../../../constants";
 
 declare let fdc3: DesktopAgent;
 const getMetadataDocs =
@@ -104,7 +105,7 @@ export default () =>
 async function waitForMockAppToClose() {
   let timeout;
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     const listener = await appControlChannel.addContextListener(
       "windowClosed",
       (context) => {
@@ -201,7 +202,7 @@ export function validateAppMetadata(metadata: AppMetadata) {
 }
 
 const broadcastCloseWindow = async () => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
 
