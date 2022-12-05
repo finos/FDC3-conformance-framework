@@ -49,7 +49,7 @@ export default () =>
           },
           { name: "IntentAppA", appId: "IntentAppAId" }
         );
-        assert.fail("Error was not thrown", raiseIntentDocs);
+        assert.fail("Error was not thrown");
       } catch (ex) {
         expect(ex).to.have.property(
           "message",
@@ -70,7 +70,7 @@ export default () =>
           },
           { name: "IntentAppA" }
         );
-        assert.fail("Error was not thrown", raiseIntentDocs);
+        assert.fail("Error was not thrown");
       } catch (ex) {
         expect(ex).to.have.property(
           "message",
@@ -91,7 +91,7 @@ export default () =>
           },
           "IntentAppC"
         );
-        assert.fail("Error was not thrown", raiseIntentDocs);
+        assert.fail("Error was not thrown");
       } catch (ex) {
         expect(ex).to.have.property(
           "message",
