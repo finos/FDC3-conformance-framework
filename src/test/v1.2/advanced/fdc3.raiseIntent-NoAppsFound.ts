@@ -4,7 +4,6 @@ import {
   Context,
   IntentResolution,
   Listener,
-  ResolveError,
 } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import constants from "../../../constants";
@@ -20,85 +19,68 @@ const raiseIntentDocs =
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 export default () =>
-  describe("fdc3.raiseIntent (bad)", () => {
-
-    const test5 =
-      "(FailedResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
-    it(test5, async () => {
-      try {
-        await fdc3.raiseIntent(
-          "aTestingIntent",
-          {
-            type: "testContextY",
-          },
-          "IntentAppA"
-        );
-        assert.fail("Error was not thrown");
-      } catch (ex) {
-        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
-      }
-    });
-    const test6 =
-      "(FailedResolve2) Should fail to raise intent when targeted app intent-a (name and appId), context 'testContextY' and intent 'aTestingIntent' do not correlate";
-    it(test6, async () => {
-      try {
-        await fdc3.raiseIntent(
-          "aTestingIntent",
-          {
-            type: "testContextY",
-          },
-          { name: "IntentAppA", appId: "IntentAppAId" }
-        );
-        assert.fail("Error was not thrown");
-      } catch (ex) {
-        expect(ex).to.have.property(
-          "message",
-          ResolveError.NoAppsFound,
-          raiseIntentDocs
-        );
-      }
+  describe("fdc3.raiseIntent", () => {
+    afterEach(async function afterEach() {
+      await closeIntentAppsWindows(this.currentTest.title);
     });
 
-    const test7 =
-      "(FailedResolve3) Should fail to raise intent when targeted app intent-a (name), context 'testContextY' and intent 'aTestingIntent' do not correlate";
-    it(test7, async () => {
-      try {
-        await fdc3.raiseIntent(
-          "aTestingIntent",
-          {
-            type: "testContextY",
-          },
-          { name: "IntentAppA" }
-        );
-        assert.fail("Error was not thrown");
-      } catch (ex) {
-        expect(ex).to.have.property(
-          "message",
-          ResolveError.NoAppsFound,
-          raiseIntentDocs
-        );
-      }
+    const test1 =
+      "(SingleResolve1) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextY'";
+    it(test1, async () => {
+      const result = createReceiver("fdc3-intent-b-opened");
+      console.log("receiver added");
+      const intentResolution = await fdc3.raiseIntent("sharedTestingIntent1", {
+        type: "testContextY",
+      });
+
+      validateIntentResolution("IntentAppB", intentResolution);
+      await result;
     });
 
-    const test8 =
-      "(FailedResolve4) Should fail to raise intent when targeted app intent-c, context 'testContextX' and intent 'aTestingIntent' do not correlate";
-    it(test8, async () => {
-      try {
-        await fdc3.raiseIntent(
-          "aTestingIntent",
-          {
-            type: "testContextX",
-          },
-          "IntentAppC"
-        );
-        assert.fail("Error was not thrown");
-      } catch (ex) {
-        expect(ex).to.have.property(
-          "message",
-          ResolveError.NoAppsFound,
-          raiseIntentDocs
-        );
-      }
+    const test2 =
+      "(TargetedResolve1) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
+    it(test2, async () => {
+      const result = createReceiver("fdc3-intent-a-opened");
+      const intentResolution = await fdc3.raiseIntent(
+        "aTestingIntent",
+        {
+          type: "testContextX",
+        },
+        "IntentAppA"
+      );
+      validateIntentResolution("IntentAppA", intentResolution);
+      await result;
+    });
+
+    const test3 =
+      "(TargetedResolve2) Should start app intent-a when targeted (name) by raising intent 'aTestingIntent' with context 'testContextX'";
+    it(test3, async () => {
+      const result = createReceiver("fdc3-intent-a-opened");
+      const intentResolution = await fdc3.raiseIntent(
+        "aTestingIntent",
+        {
+          type: "testContextX",
+        },
+        { name: "IntentAppA" }
+      );
+
+      validateIntentResolution("IntentAppA", intentResolution);
+      await result;
+    });
+
+    const test4 =
+      "(TargetedResolve3) Should start app intent-a when targeted (name and appId) by raising intent 'aTestingIntent' with context 'testContextX'";
+    it(test4, async () => {
+      const result = createReceiver("fdc3-intent-a-opened");
+      const intentResolution = await fdc3.raiseIntent(
+        "aTestingIntent",
+        {
+          type: "testContextX",
+        },
+        { name: "IntentAppA", appId: "IntentAppAId" }
+      );
+      validateIntentResolution("IntentAppA", intentResolution);
+      await result;
     });
   });
 
