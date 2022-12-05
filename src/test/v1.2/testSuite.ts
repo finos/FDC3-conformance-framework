@@ -14,8 +14,8 @@ import fdc3GetSystemChannels_1_2 from "./basic/fdc3.getSystemChannels";
 import fdc3JoinChannel_1_2 from "./basic/fdc3.joinChannel";
 import fdc3LeaveCurrentChannel_1_2 from "./basic/fdc3.leaveCurrentChannel";
 import fdc3Open_1_2 from "./advanced/fdc3.open";
-import fdc3RaiseIntent_1_2_Bad from "./advanced/fdc3.raiseIntent";
-import fdc3RaiseIntent_1_2_Good from "./advanced/fdc3.raiseIntent-NoAppsFound";
+import fdc3RaiseIntent_1_2_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
+import fdc3RaiseIntent_1_2 from "./advanced/fdc3.raiseIntent";
 import fdc3RaiseIntentForContext_1_2 from "./basic/fdc3.raiseIntentForContext";
 
 type testSet = { [key: string]: (() => void)[] };
@@ -37,8 +37,8 @@ const advancedSuite_1_2: testSet = {
   fdc3AppChannels_1_2: [fdc3AppChannels_1_2],
   fdc3SystemChannels_1_2: [fdc3UserChannels_1_2],
   fdc3FindIntent_1_2: [fdc3FindIntent_1_2],
-  "fdc3RaiseIntent_1_2 (NoAppsFound)": [fdc3RaiseIntent_1_2_Bad],
-  fdc3RaiseIntent_1_2: [fdc3RaiseIntent_1_2_Good],
+  fdc3RaiseIntent_1_2: [fdc3RaiseIntent_1_2],
+  "fdc3RaiseIntent_1_2 (NoAppsFound)": [fdc3RaiseIntent_1_2_NoAppsFound],
   fdc3FindIntentsByContext_1_2: [fdc3FindIntentsByContext_1_2],
 };
 
