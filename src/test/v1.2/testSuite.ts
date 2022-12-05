@@ -35,7 +35,7 @@ const basicSuite_1_2: testSet = {
 const advancedSuite_1_2: testSet = {
   fdc3Open_1_2: [fdc3Open_1_2],
   fdc3AppChannels_1_2: [fdc3AppChannels_1_2],
-  fdc3UserChannels_1_2: [fdc3UserChannels_1_2],
+  fdc3SystemChannels_1_2: [fdc3UserChannels_1_2],
   fdc3FindIntent_1_2: [fdc3FindIntent_1_2],
   "fdc3RaiseIntent_1_2 (NoAppsFound)": [fdc3RaiseIntent_1_2_Bad],
   fdc3RaiseIntent_1_2: [fdc3RaiseIntent_1_2_Good],

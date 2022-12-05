@@ -1,14 +1,12 @@
 import { assert } from "chai";
-import { DesktopAgent } from "fdc3_1_2";
 import { wait } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
 import { ChannelControl } from "./channel-control";
 
-declare let fdc3: DesktopAgent
-
 export function createUserChannelTests(cc: ChannelControl<any, any>, documentation: string, prefix: string): Mocha.Suite {
+  const channelName = prefix === "" ? "System channels" : "User channels";
   return describe("fdc3.broadcast", () => {
-    describe("System channels", () => {
+    describe(channelName, () => {
       beforeEach(cc.channelCleanUp);
 
       afterEach(async function afterEach() {
