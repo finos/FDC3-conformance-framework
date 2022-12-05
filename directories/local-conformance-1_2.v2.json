@@ -16,7 +16,7 @@
       ],
       "hostManifests": {
         "sail": {
-          "inject-api": "1.2"
+          "injectApi": "1.2"
         }
       },
       "version": "1.0.0",
@@ -38,7 +38,7 @@
       },
       "hostManifests": {
         "sail": {
-          "inject-api": "1.2",
+          "injectApi": "1.2",
           "searchable": false,
           "forceNewWindow": true
         }
@@ -62,7 +62,7 @@
       },
       "hostManifests": {
         "sail": {
-          "inject-api": "1.2",
+          "injectApi": "1.2",
           "searchable": false,
           "forceNewWindow": true
         }
@@ -105,7 +105,7 @@
       },
       "hostManifests": {
         "sail": {
-          "inject-api": "1.2",
+          "injectApi": "1.2",
           "searchable": false,
           "forceNewWindow": true
         }
@@ -148,7 +148,7 @@
       },
       "hostManifests": {
         "sail": {
-          "inject-api": "1.2",
+          "injectApi": "1.2",
           "searchable": false,
           "forceNewWindow": true
         }
@@ -182,7 +182,7 @@
       },
       "hostManifests": {
         "sail": {
-          "inject-api": "1.2",
+          "injectApi": "1.2",
           "searchable": false,
           "forceNewWindow": true
         }
