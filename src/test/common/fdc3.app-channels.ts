@@ -3,9 +3,7 @@ import { wait } from "../../utils";
 import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl } from "./channel-control";
 
 export function createAppChannelTests(cc: ChannelControl<any,any>, documentation: string, prefix: string): Mocha.Suite {
-  return describe("fdc3.broadcast", () => {
-
-    describe("App channels", () => {
+  return describe("App channels", () => {
       beforeEach(cc.channelCleanUp);
 
       afterEach(async function afterEach() {
@@ -214,5 +212,4 @@ export function createAppChannelTests(cc: ChannelControl<any,any>, documentation
         }
       });
     });
-  });
 }
