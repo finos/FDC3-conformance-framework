@@ -11,7 +11,7 @@ const raiseIntentDocs =
   "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class IntentControl2_0 {
-  async receiveContext(contextType: string) {
+  async receiveContext(contextType: string): Promise<Context> {
     let timeout;
     const appControlChannel = await getOrCreateChannel("app-control");
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
@@ -28,16 +28,24 @@ export class IntentControl2_0 {
       const { promise: sleepPromise, timeout: theTimeout } = sleep();
       timeout = theTimeout;
       await sleepPromise;
-      reject(new Error("No context received from app B"));
+      reject("No context received from app B");
     });
 
     return messageReceived;
   }
 
+  async openIntentApp(appId): Promise<AppIdentifier> {
+    try{
+      return await fdc3.open({ appId: appId });
+    }catch(ex){
+      assert.fail(`Error while attempting to open the mock app: ${ex.message ?? ex}`);
+    }
+  }
+
   async raiseIntent(
     intent: string,
     contextType: string,
-    appId?: string,
+    appIdentifier?: AppIdentifier,
     delayBeforeReturn?: number
   ): Promise<IntentResolution> {
     let context;
@@ -48,11 +56,41 @@ export class IntentControl2_0 {
       }
     }
 
-    if(appId){
-      return await fdc3.raiseIntent(intent, context, {appId: appId});
-    }else{
-      return await fdc3.raiseIntent(intent, context);
+    try{
+      if(appIdentifier){
+        return await fdc3.raiseIntent(intent, context, appIdentifier);
+      }else{
+        return await fdc3.raiseIntent(intent, context);
+      }
+    } catch(ex){
+      assert.fail(`Error while attempting to raise intent: ${ex.message ?? ex}`);
     }
+  }
+
+  async findInstances(appId: string): Promise<AppIdentifier[]>{
+    try{
+      return await fdc3.findInstances({ appId: appId });
+    }catch(ex){
+      assert.fail(`Error while attempting to find instances: ${ex.message ?? ex}`);
+    }
+  }
+
+  async getIntentResult(intentResolution: IntentResolution){
+    return await intentResolution.getResult().catch((ex) => {
+      assert.fail(
+        `Error while attempting to retrieve the IntentResult from the IntentResolution object: ${ex.message ?? ex}`
+      );
+    });
+  }
+
+  validateIntentResult(intentResult){
+    expect(typeof intentResult).to.be.equal("object");
+    expect(intentResult).to.be.empty;
+  }
+
+  validateInstances(instances: AppIdentifier[], expectedInstances: number, expectedInstanceId: string): void{
+    expect(instances.length).to.be.equal(expectedInstances);
+    expect(instances[0].instanceId).to.be.equal(expectedInstanceId);
   }
 
   validateIntentResolution = (
@@ -81,10 +119,10 @@ export class IntentControl2_0 {
   }
 
   async closeIntentAppWindow(testId) {
-    await broadcastCloseWindow(testId);
-    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-    await waitForContext("windowClosed", testId, appControlChannel);
-    await wait(constants.WindowCloseWaitTime);
+      await broadcastCloseWindow(testId);
+      const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+      await waitForContext("windowClosed", testId, appControlChannel);
+      await wait(constants.WindowCloseWaitTime);
   }
 }
 

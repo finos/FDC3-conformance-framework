@@ -35,10 +35,10 @@ const basicSuite_2_0: testSet = {
 const advancedSuite_2_0: testSet = {
   fdc3Open_2_0: [fdc3Open_2_0],
   fdc3GetInfo_2_0: [fdc3GetInfo_2_0],
-  fdc3FindInstances_2_0: [fdc3FindInstances_2_0],
   fdc3getAppMetadata_2_0: [fdc3getAppMetadata_2_0],
-
   channels_2_0: [channels_2_0],
+  fdc3FindInstances_2_0: [fdc3FindInstances_2_0],
+  fdc3RaiseIntent_2_0: [fdc3RaiseIntent_2_0]
 };
 
 
