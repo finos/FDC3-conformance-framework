@@ -11,7 +11,7 @@ const raiseIntentDocs =
   "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class IntentControl2_0 {
-  async receiveContext(contextType: string): Promise<Context> {
+  async receiveContext(contextType: string, waitTime?: number): Promise<Context> {
     let timeout;
     const appControlChannel = await getOrCreateChannel("app-control");
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
@@ -25,7 +25,7 @@ export class IntentControl2_0 {
       );
 
       //if no context received reject promise
-      const { promise: sleepPromise, timeout: theTimeout } = sleep();
+      const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? undefined);
       timeout = theTimeout;
       await sleepPromise;
       reject("No context received from app B");

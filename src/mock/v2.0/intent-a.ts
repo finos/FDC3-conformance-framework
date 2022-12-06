@@ -15,9 +15,14 @@ onFdc3Ready().then(async () => {
     if(context.delayBeforeReturn){
       await wait(context.delayBeforeReturn);
     }
-    
+
+    sendContextToTests({
+      type: "context-received",
+    });
+
     return;
   });
+  
   fdc3.addIntentListener("sharedTestingIntent1", async (context) => {
     validateContext(context.type, "testContextX");
     return context;
