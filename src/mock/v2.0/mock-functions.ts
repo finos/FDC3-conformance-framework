@@ -36,3 +36,9 @@ export const sendContextToTests = async(context: MockAppContext) =>{
   );
   await appControlChannel.broadcast(context);
 }
+
+export const validateContext = (receivedContextType: string, expectedContextType: string): void => {
+  if(expectedContextType !== receivedContextType){
+    sendContextToTests({type: "error", errorMessage: `Incorrect context received for intent 'aTestingIntent. Expected ${expectedContextType}, got ${receivedContextType}`})
+  }
+}

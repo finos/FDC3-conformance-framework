@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { AppIdentifier, Channel, IntentResolution, Listener } from "fdc3_2_0";
+import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener } from "fdc3_2_0";
 import { Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
@@ -35,10 +35,12 @@ export class IntentControl2_0 {
   }
 
   async openIntentApp(appId): Promise<AppIdentifier> {
-    try{
+    try {
       return await fdc3.open({ appId: appId });
-    }catch(ex){
-      assert.fail(`Error while attempting to open the mock app: ${ex.message ?? ex}`);
+    } catch (ex) {
+      assert.fail(
+        `Error while attempting to open the mock app: ${ex.message ?? ex}`
+      );
     }
   }
 
@@ -49,46 +51,66 @@ export class IntentControl2_0 {
     delayBeforeReturn?: number
   ): Promise<IntentResolution> {
     let context;
-    if(delayBeforeReturn){
+    if (delayBeforeReturn) {
       context = {
         type: contextType,
-        delayBeforeReturn: delayBeforeReturn
-      }
+        delayBeforeReturn: delayBeforeReturn,
+      };
     }
 
-    try{
-      if(appIdentifier){
+    try {
+      if (appIdentifier) {
         return await fdc3.raiseIntent(intent, context, appIdentifier);
-      }else{
+      } else {
         return await fdc3.raiseIntent(intent, context);
       }
-    } catch(ex){
-      assert.fail(`Error while attempting to raise intent: ${ex.message ?? ex}`);
-    }
-  }
-
-  async findInstances(appId: string): Promise<AppIdentifier[]>{
-    try{
-      return await fdc3.findInstances({ appId: appId });
-    }catch(ex){
-      assert.fail(`Error while attempting to find instances: ${ex.message ?? ex}`);
-    }
-  }
-
-  async getIntentResult(intentResolution: IntentResolution){
-    return await intentResolution.getResult().catch((ex) => {
+    } catch (ex) {
       assert.fail(
-        `Error while attempting to retrieve the IntentResult from the IntentResolution object: ${ex.message ?? ex}`
+        `Error while attempting to raise intent: ${ex.message ?? ex}`
+      );
+    }
+  }
+
+  async findInstances(appId: string): Promise<AppIdentifier[]> {
+    try {
+      return await fdc3.findInstances({ appId: appId });
+    } catch (ex) {
+      assert.fail(
+        `Error while attempting to find instances: ${ex.message ?? ex}`
+      );
+    }
+  }
+
+  getIntentResult(intentResolution: IntentResolution): Promise<IntentResult> {
+    return intentResolution.getResult().catch((ex) => {
+      assert.fail(
+        `Error while attempting to retrieve the IntentResult from the IntentResolution object: ${
+          ex.message ?? ex
+        }`
       );
     });
   }
 
-  validateIntentResult(intentResult){
+  failIfIntentResultPromiseNotReceived() {
+    let timeout = window.setTimeout(() => {
+      assert.fail(
+        "When running getIntentResult() the promise should be returned immediately unless it is being awaited"
+      );
+    }, 500);
+
+    return timeout;
+  }
+
+  validateIntentResult(intentResult) {
     expect(typeof intentResult).to.be.equal("object");
     expect(intentResult).to.be.empty;
   }
 
-  validateInstances(instances: AppIdentifier[], expectedInstances: number, expectedInstanceId: string): void{
+  validateInstances(
+    instances: AppIdentifier[],
+    expectedInstances: number,
+    expectedInstanceId: string
+  ): void {
     expect(instances.length).to.be.equal(expectedInstances);
     expect(instances[0].instanceId).to.be.equal(expectedInstanceId);
   }
@@ -98,7 +120,9 @@ export class IntentControl2_0 {
     intentResolution: IntentResolution
   ) => {
     if (typeof intentResolution.source === "object") {
-      expect(intentResolution.source as AppIdentifier).to.have.property("appId");
+      expect(intentResolution.source as AppIdentifier).to.have.property(
+        "appId"
+      );
       expect(intentResolution.source as AppIdentifier).to.have.property(
         "instanceId"
       );
@@ -110,19 +134,22 @@ export class IntentControl2_0 {
       );
     } else assert.fail("Invalid intent resolution object");
   };
-  
-  async listenForError(){
+
+  async listenForError() {
     const appControlChannel = await getOrCreateChannel("app-control");
-    appControlChannel.addContextListener("error", (context: contextWithErrorMessage) => {
-      assert.fail(context.errorMessage);
-    });
+    appControlChannel.addContextListener(
+      "error",
+      (context: contextWithErrorMessage) => {
+        assert.fail(context.errorMessage);
+      }
+    );
   }
 
   async closeIntentAppWindow(testId) {
-      await broadcastCloseWindow(testId);
-      const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-      await waitForContext("windowClosed", testId, appControlChannel);
-      await wait(constants.WindowCloseWaitTime);
+    await broadcastCloseWindow(testId);
+    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+    await waitForContext("windowClosed", testId, appControlChannel);
+    await wait(constants.WindowCloseWaitTime);
   }
 }
 
@@ -222,6 +249,10 @@ export interface contextWithErrorMessage extends Context {
     errorMessage?: string;
   }
   
+  export interface DelayedReturnContext extends Context {
+    delayBeforeReturn?: number;
+  }
+
   export interface IntentAppBContext extends Context {
     delayBeforeReturn: number;
   }

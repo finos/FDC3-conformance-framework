@@ -81,43 +81,22 @@ import {
         expect(instances2.length).to.be.equal(1);
       });
   
-      const RaiseIntentVoidResult5secs = "(2.0-RaiseIntentVoidResult5secs) ";
-      it(RaiseIntentVoidResult5secs, async () => {
+      const RaiseIntentVoidResult5secs = "(2.0-RaiseIntentVoidResult5secs) when retrieving the intent result from a raised intent, the promise is returned before the listening app returns";
+      it.only(RaiseIntentVoidResult5secs, async () => {
         await control.listenForError();
         const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", undefined, 5)
         control.validateIntentResolution("IntentAppAId", intentResolution);
-        let intentResult = await control.getIntentResult(intentResolution);
-        control.validateIntentResult(intentResult);
-  
-        let timeout;
-        const appControlChannel = await getOrCreateChannel("app-control");
-        const wrapper = wrapPromise();
-  
-        //receive context from intent app b
-        await appControlChannel.addContextListener(
-          "testContextY",
-          async (context) => {
-            expect(typeof intentResult).to.be.equal("object");
-            expect(intentResult).to.be.empty;
-            wrapper.resolve();
-            clearTimeout(timeout);
-          }
-        );
-  
-        timeout = window.setTimeout(() => {
-          wrapper.reject("Did not receive testContextY back from intent app b");
-        }, 10000);
-  
-        await wrapper.promise;
-  
-        //result should still be void
-        expect(typeof intentResult).to.be.equal("object");
-        expect(intentResult).to.be.empty;
-  
+
+        //ensure getIntentResult immediately returns a promise that can be awaited
+        let timeout = control.failIfIntentResultPromiseNotReceived();
+        let intentResult = control.getIntentResult(intentResolution);
+        clearTimeout(timeout);
+
+        control.validateIntentResult(intentResult);  
         await closeIntentAppsWindows(RaiseIntentVoidResult5secs);
       });
   
-      const RaiseIntentVoidResult0secs = "(2.0-RaiseIntentVoidResult0secs) ";
+      const RaiseIntentVoidResult0secs = "(2.0-RaiseIntentVoidResult0secs) App A receives a void IntentResult after a 5 second delay";
       it(RaiseIntentVoidResult0secs, async () => {
         const intentResolution = await fdc3.raiseIntent("sharedTestingIntent1", {
           type: "testContextY",
