@@ -48,15 +48,13 @@ export class IntentControl2_0 {
     intent: string,
     contextType: string,
     appIdentifier?: AppIdentifier,
-    delayBeforeReturn?: number
+    delayBeforeReturn: number = 0
   ): Promise<IntentResolution> {
     let context;
-    if (delayBeforeReturn) {
-      context = {
-        type: contextType,
-        delayBeforeReturn: delayBeforeReturn,
-      };
-    }
+    context = {
+      type: contextType,
+      delayBeforeReturn: delayBeforeReturn,
+    };
 
     try {
       if (appIdentifier) {
@@ -101,9 +99,14 @@ export class IntentControl2_0 {
     return timeout;
   }
 
-  validateIntentResult(intentResult) {
+  validateIntentResult(intentResult, expectedContextType?: string) {
     expect(typeof intentResult).to.be.equal("object");
-    expect(intentResult).to.be.empty;
+    if (expectedContextType) {
+      expect(intentResult, `The promise received by Test from resolution.getResult() should resolve to the ${expectedContextType} instance`).to.have.property("type");
+      expect(intentResult.type, `The promise received by Test from resolution.getResult() should resolve to the ${expectedContextType} instance. Instead resolved to ${intentResult.type}`).to.be.equal(expectedContextType);
+    } else {
+      expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be.empty;
+    }
   }
 
   validateInstances(

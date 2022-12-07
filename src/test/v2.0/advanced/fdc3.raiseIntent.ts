@@ -31,25 +31,25 @@ import {
         await control.closeIntentAppWindow(this.currentTest.title);
       });
   
-      // const RaiseIntentSingleResolve =
-      //   "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
-      // it(RaiseIntentSingleResolve, async () => {
-      //     await control.listenForError();
-      //     const result = control.receiveContext("fdc3-intent-a-opened");
-      //     const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX");
-      //     control.validateIntentResolution("IntentAppAId", intentResolution);
-      //     await result;
-      // });
+      const RaiseIntentSingleResolve =
+        "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
+      it(RaiseIntentSingleResolve, async () => {
+          await control.listenForError();
+          const result = control.receiveContext("fdc3-intent-a-opened");
+          const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX");
+          control.validateIntentResolution("IntentAppAId", intentResolution);
+          await result;
+      });
   
-      // const RaiseIntentTargetedAppResolve =
-      //   "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
-      // it(RaiseIntentTargetedAppResolve, async () => {
-      //   await control.listenForError();
-      //   const result = control.receiveContext("fdc3-intent-a-opened");
-      //   const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextX", { appId: "IntentAppBId"});
-      //   control.validateIntentResolution("IntentAppBId", intentResolution);
-      //   await result;
-      // });
+      const RaiseIntentTargetedAppResolve =
+        "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
+      it(RaiseIntentTargetedAppResolve, async () => {
+        await control.listenForError();
+        const result = control.receiveContext("fdc3-intent-a-opened");
+        const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextX", { appId: "IntentAppBId"});
+        control.validateIntentResolution("IntentAppBId", intentResolution);
+        await result;
+      });
   
       const RaiseIntentTargetedInstanceResolveOpen =
         "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent' with context 'testContextX' after opening intent-a app";
@@ -86,7 +86,7 @@ import {
         await control.listenForError();
         const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX")
         control.validateIntentResolution("IntentAppAId", intentResolution);
-        let intentResult = control.getIntentResult(intentResolution);
+        let intentResult = await control.getIntentResult(intentResolution);
         control.validateIntentResult(intentResult);  
       });
   
@@ -129,105 +129,41 @@ import {
         await intentResult;
         control.validateIntentResult(intentResult);  
       }).timeout(64000);
-  
-      const RaiseIntentContextResult5secs =
-        "(2.0-RaiseIntentContextResult5secs) ";
-      it(RaiseIntentContextResult5secs, async () => {
-        //raise intent
-        const intentResolution = await fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextX",
-          delayBeforeReturn: 5,
-        } as IntentAppBContext);
-  
+
+      const RaiseIntentContextResult0secs =
+        "(2.0-RaiseIntentContextResult0secs) IntentResult resolves to testContextY";
+      it.only(RaiseIntentContextResult0secs, async () => {
+        await control.listenForError();
+        const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY");
         validateIntentResolution("IntentAppAId", intentResolution);
-  
-        let intentResult = await intentResolution.getResult().catch((ex) => {
-          assert.fail(
-            `Error when calling IntentResolution.getResult() ${ex.message ?? ex}`
-          );
-        });
-  
-        let timeout;
-        const appControlChannel = await getOrCreateChannel("app-control");
-        const wrapper = wrapPromise();
-  
-        //receive context from intent app b
-        await appControlChannel.addContextListener(
-          "testContextX",
-          async (context) => {
-            wrapper.resolve();
-            clearTimeout(timeout);
-          }
-        );
-  
-        timeout = window.setTimeout(() => {
-          wrapper.reject("Did not receive testContextX back from intent app b");
-        }, 10000);
-  
-        await wrapper.promise;
-  
-        //intentResult should resolve to the testContextX instance
-        console.log(JSON.stringify(intentResult));
-        expect(
-          intentResult,
-          "IntentResolution did not resolve to the testContextX instance"
-        ).to.have.property("type");
-        expect(
-          intentResult.type,
-          "IntentResolution did not resolve to the testContextX instance"
-        ).to.be.equal("testContextX");
-  
-        await closeIntentAppsWindows(RaiseIntentContextResult5secs);
+
+        //ensure getIntentResult immediately returns a promise that can be awaited
+        let timeout = control.failIfIntentResultPromiseNotReceived();
+        let intentResult = control.getIntentResult(intentResolution);
+        clearTimeout(timeout);
+
+        await intentResult;
+        control.validateIntentResult(intentResult, "testcontextY");  
       });
   
-      const RaiseIntentContextResult0secs =
-        "(2.0-RaiseIntentContextResult0secs) ";
-      it(RaiseIntentContextResult0secs, async () => {
-        //raise intent
-        const intentResolution = await fdc3.raiseIntent("sharedTestingIntent1", {
-          type: "testContextX",
-          delayBeforeReturn: 0,
-        } as IntentAppBContext);
-  
+      const RaiseIntentContextResult5secs =
+        "(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay";
+      it.only(RaiseIntentContextResult5secs, async () => {
+        await control.listenForError();
+        let receiver = control.receiveContext("context-received", 8000);
+        const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY", undefined, 5000);
         validateIntentResolution("IntentAppAId", intentResolution);
-  
-        let intentResult = await intentResolution.getResult().catch((ex) => {
-          assert.fail(
-            `Error when calling IntentResolution.getResult() ${ex.message ?? ex}`
-          );
-        });
-  
-        let timeout;
-        const appControlChannel = await getOrCreateChannel("app-control");
-        const wrapper = wrapPromise();
-  
-        //receive context from intent app b
-        await appControlChannel.addContextListener(
-          "testContextX",
-          async (context) => {
-            wrapper.resolve();
-            clearTimeout(timeout);
-          }
-        );
-  
-        timeout = window.setTimeout(() => {
-          wrapper.reject("Did not receive testContextX back from intent app b");
-        }, 10000);
-  
-        await wrapper.promise;
-  
-        //intentResult should resolve to the testContextX instance
-        console.log(JSON.stringify(intentResult));
-        expect(
-          intentResult,
-          "IntentResolution did not resolve to the testContextX instance"
-        ).to.have.property("type");
-        expect(
-          intentResult.type,
-          "IntentResolution did not resolve to the testContextX instance"
-        ).to.be.equal("testContextX");
-  
-        await closeIntentAppsWindows(RaiseIntentContextResult0secs);
+
+        //ensure getIntentResult immediately returns a promise that can be awaited
+        let timeout = control.failIfIntentResultPromiseNotReceived();
+        let intentResult = control.getIntentResult(intentResolution);
+        clearTimeout(timeout);
+        //await receiver;
+
+        //give app b time to return
+        await wait(300);
+        await intentResult;
+        control.validateIntentResult(intentResult, "testcontextY");  
       });
   
       const RaiseIntentContextResult61secs =
