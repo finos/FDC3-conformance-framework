@@ -5,6 +5,7 @@ import {
   validateContext,
 } from "./mock-functions";
 import { Context, DesktopAgent } from "fdc3_2_0";
+import { wait } from "../../utils";
 declare let fdc3: DesktopAgent;
 
 //used in '2.0-PrivateChannelsLifecycleEvents'
@@ -26,6 +27,8 @@ onFdc3Ready().then(async () => {
 
         contextStreamNumber++;
 
+        //give broadcast time to fire
+        await wait(50);
         await sendContextToTests(intentKContext);
       }
     });

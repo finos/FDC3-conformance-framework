@@ -235,6 +235,7 @@ export class IntentControl2_0 {
       "testContextZ",
       (context: IntentKContext) => {
         expect(context.number).to.be.equal(streamedNumberStart);
+        console.log("STREAM NUMBER: " + streamedNumberStart)
         streamedNumberStart += 1;
         expect(context.type).to.be.equal("testContextZ");
 
@@ -247,7 +248,7 @@ export class IntentControl2_0 {
 
     timeout = await window.setTimeout(() => {
       wrapper.reject(
-        "test timed-out while listening for five context streams to be broadcast from the mock app in short succession"
+        "Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered"
       );
     }, constants.WaitTime);
 
@@ -255,7 +256,7 @@ export class IntentControl2_0 {
     return listener;
   }
 
-  unsubscribeListener(listener): void{
+  unsubscribeListener(listener: Listener): void{
     listener.unsubscribe();
   }
 
@@ -376,9 +377,9 @@ export interface contextWithErrorMessage extends Context {
   }
 
   export enum IntentResultType {
-    Channel,
-    PrivateChannel,
-    Context,
-    Void
+    Channel = "Channel",
+    PrivateChannel = "PrivateChannel",
+    Context = "Context",
+    Void = "Void"
   }
   

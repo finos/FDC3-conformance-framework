@@ -138,7 +138,7 @@ export default () =>
 
     const RaiseIntentContextResult0secs =
       "(2.0-RaiseIntentContextResult0secs) IntentResult resolves to testContextY";
-    it.only(RaiseIntentContextResult0secs, async () => {
+    it(RaiseIntentContextResult0secs, async () => {
       await control.listenForError();
       const intentResolution = await control.raiseIntent(
         "sharedTestingIntent1",
@@ -149,13 +149,13 @@ export default () =>
       control.validateIntentResult(
         intentResult,
         IntentResultType.Context,
-        "testcontextY"
+        "testContextY"
       );
     });
 
     const RaiseIntentContextResult5secs =
       "(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay";
-    it.only(RaiseIntentContextResult5secs, async () => {
+    it(RaiseIntentContextResult5secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("context-received", 8000);
       const intentResolution = await control.raiseIntent(
@@ -171,10 +171,11 @@ export default () =>
       //give app b time to return
       await wait(300);
       await intentResult;
+      console.log("INTENT RESULT: " + JSON.stringify(intentResult))
       control.validateIntentResult(
         intentResult,
         IntentResultType.Context,
-        "testcontextY"
+        "testContextY"
       );
     });
 
@@ -199,7 +200,7 @@ export default () =>
       control.validateIntentResult(
         intentResult,
         IntentResultType.Context,
-        "testcontextY"
+        "testContextY"
       );
     }).timeout(64000);
 
@@ -286,8 +287,8 @@ export default () =>
     });
 
     const PrivateChannelsLifecycleEvents =
-      "(2.0-PrivateChannelsLifecycleEvents) ";
-    it(PrivateChannelsLifecycleEvents, async () => {
+      "(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected";
+    it.only(PrivateChannelsLifecycleEvents, async () => {
       await control.listenForError();
       let onUnsubscribeReceiver = control.receiveContext(
         "onUnsubscribeTriggered"
@@ -297,10 +298,10 @@ export default () =>
         "testContextX",
         { appId: "IntentAppKId" }
       );
-      control.validateIntentResolution("IntentAppFId", intentResolution);
+      control.validateIntentResolution("IntentAppKId", intentResolution);
       let result = await control.getIntentResult(intentResolution);
       control.validateIntentResult(result, IntentResultType.PrivateChannel);
-      let listener = control.receiveContextStreamFromMockApp(
+      let listener = await control.receiveContextStreamFromMockApp(
         <PrivateChannel>result,
         1,
         5
@@ -316,11 +317,12 @@ export default () =>
       let onDisconnectReceiver = control.receiveContext(
         "onDisconnectTriggered"
       );
-      control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
+      let listener2 = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
       control.disconnectPrivateChannel(<PrivateChannel>result);
 
       //confirm that onUnsubscribe and onDisconnect were triggered in intent-k
       await onUnsubscribeReceiver2;
       await onDisconnectReceiver;
+      control.unsubscribeListener(listener2);
     });
   });
