@@ -11,13 +11,16 @@ const raiseIntentDocs =
   "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class IntentControl2_0 {
-  async receiveContext(contextType: string, waitTime?: number): Promise<Context> {
+  async receiveContext(contextType: string, waitTime?: number, expectedId?: string): Promise<Context> {
     let timeout;
     const appControlChannel = await getOrCreateChannel("app-control");
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(
         contextType,
         (context) => {
+          if(expectedId){
+            expect(context.id).to.be.equal(expectedId);
+          }
           resolve(context);
           clearTimeout(timeout);
           listener.unsubscribe();
@@ -80,13 +83,17 @@ export class IntentControl2_0 {
   }
 
   getIntentResult(intentResolution: IntentResolution): Promise<IntentResult> {
-    return intentResolution.getResult().catch((ex) => {
+    //ensure getIntentResult immediately returns a promise that can be awaited
+    let timeout = this.failIfIntentResultPromiseNotReceived();
+    let intentResult = intentResolution.getResult().catch((ex) => {
       assert.fail(
         `Error while attempting to retrieve the IntentResult from the IntentResolution object: ${
           ex.message ?? ex
         }`
       );
     });
+    clearTimeout(timeout);
+    return intentResult;
   }
 
   failIfIntentResultPromiseNotReceived() {
@@ -99,13 +106,30 @@ export class IntentControl2_0 {
     return timeout;
   }
 
-  validateIntentResult(intentResult, expectedContextType?: string) {
+  validateIntentResult(intentResult, expectedIntentResultType: IntentResultType, expectedContextType?: string) {
     expect(typeof intentResult).to.be.equal("object");
-    if (expectedContextType) {
-      expect(intentResult, `The promise received by Test from resolution.getResult() should resolve to the ${expectedContextType} instance`).to.have.property("type");
-      expect(intentResult.type, `The promise received by Test from resolution.getResult() should resolve to the ${expectedContextType} instance. Instead resolved to ${intentResult.type}`).to.be.equal(expectedContextType);
-    } else {
-      expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be.empty;
+    if (
+      expectedContextType &&
+      expectedIntentResultType === IntentResultType.Context
+    ) {
+      expect(
+        intentResult,
+        `The promise received by Test from resolution.getResult() should resolve to the ${expectedContextType} instance`
+      ).to.have.property("type");
+      expect(
+        intentResult.type,
+        `The promise received by Test from resolution.getResult() should resolve to the ${expectedContextType} instance. Instead resolved to ${intentResult.type}`
+      ).to.be.equal(expectedContextType);
+    } else if (expectedIntentResultType === IntentResultType.Void) {
+      expect(
+        intentResult,
+        "The promise received by Test from resolution.getResult() should resolve to void"
+      ).to.be.empty;
+    } else if (expectedIntentResultType === IntentResultType.Channel) {
+      expect(intentResult).to.have.property("id");
+      expect(intentResult).to.have.property("type");
+      expect(intentResult.type).to.be.equal("app");
+      expect(intentResult.id).to.be.equal("test-channel");
     }
   }
 
@@ -258,5 +282,11 @@ export interface contextWithErrorMessage extends Context {
 
   export interface IntentAppBContext extends Context {
     delayBeforeReturn: number;
+  }
+
+  export enum IntentResultType {
+    Channel,
+    Context,
+    Void
   }
   
