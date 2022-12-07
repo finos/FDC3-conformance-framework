@@ -1,5 +1,7 @@
 {
-  "applications": [
+	"comment": "Finsemble apps config in AppD v2.0 format - replace your public/configs/application/apps.json file with this (or merge in the appd entries) to run the conformance tests",
+	"$schema": "../../../node_modules/@finsemble/finsemble-core/configs/schemas/fileBasedSchemas/appsConfigFile.schema.json",
+	"apps": [
     {
       "appId": "Conformance1",
       "name": "Conformance1",
@@ -16,7 +18,7 @@
       ],
       "hostManifests": {
         "sail": {
-          "injectApi": "1.2"
+          "inject-api": "1.2"
         },
         "Finsemble": {
           "window": {
@@ -60,7 +62,7 @@
       },
       "hostManifests": {
         "sail": {
-          "injectApi": "1.2",
+          "inject-api": "1.2",
           "searchable": false,
           "forceNewWindow": true
         },
@@ -106,7 +108,7 @@
       },
       "hostManifests": {
         "sail": {
-          "injectApi": "1.2",
+          "inject-api": "1.2",
           "searchable": false,
           "forceNewWindow": true
         },
@@ -168,7 +170,7 @@
       },
       "hostManifests": {
         "sail": {
-          "injectApi": "1.2",
+          "inject-api": "1.2",
           "searchable": false,
           "forceNewWindow": true
         },
@@ -230,7 +232,7 @@
       },
       "hostManifests": {
         "sail": {
-          "injectApi": "1.2",
+          "inject-api": "1.2",
           "searchable": false,
           "forceNewWindow": true
         },
@@ -283,7 +285,7 @@
       },
       "hostManifests": {
         "sail": {
-          "injectApi": "1.2",
+          "inject-api": "1.2",
           "searchable": false,
           "forceNewWindow": true
         },
@@ -319,6 +321,5 @@
         }
       ]
     }
-  ],
-  "message": "OK"
+  ]
 }

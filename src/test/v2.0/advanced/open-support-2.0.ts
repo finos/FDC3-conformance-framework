@@ -19,7 +19,7 @@ const testTimeoutMessage = `Test timeout - An error was not thrown within the al
 
 export class OpenControl2_0 implements OpenControl<Context> {
   contextReceiver = async (contextType: string): Promise<Context> => {
-    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(
@@ -55,7 +55,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
   };
 
   addListenerAndFailIfReceived = async () => {
-    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     await appControlChannel.addContextListener(
       "context-received",
       (context: MockAppContext) => {
@@ -79,7 +79,10 @@ export class OpenControl2_0 implements OpenControl<Context> {
     );
   };
 
-  validateReceivedContext = async (contextReceiver: Promise<Context>, expectedContextType: string) => {
+  validateReceivedContext = async (
+    contextReceiver: Promise<Context>,
+    expectedContextType: string
+  ) => {
     const receivedValue = (await contextReceiver) as any;
     expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
   };
@@ -199,4 +202,3 @@ const broadcastCloseWindow = async (currentTest) => {
     testId: currentTest,
   } as AppControlContext);
 };
-
