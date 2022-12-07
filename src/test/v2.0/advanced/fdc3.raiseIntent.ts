@@ -1,398 +1,326 @@
-import {
-    Channel,
-    Context,
-    getOrCreateChannel,
-    IntentResolution,
-    Listener,
-    AppIdentifier,
-    ResolveError,
-    DesktopAgent,
-    ChannelError,
-    PrivateChannel,
-  } from "fdc3_2_0";
-  import { assert, expect } from "chai";
-  import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-  import constants from "../../../constants";
-  import { sleep, wait, wrapPromise } from "../../../utils";
-  import { IntentKContext } from "../../../mock/v2.0/intent-k";
-  import { IntentControl2_0, IntentResultType } from "./intent-support-2.0";
-  
-  declare let fdc3: DesktopAgent;
-  const raiseIntentDocs =
-    "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
-    const control = new IntentControl2_0();
-  
-  /**
-   * Details on the mock apps used in these tests can be found in /mock/README.md
-   */
-  export default () =>
-    describe("fdc3.raiseIntent", () => {
-      afterEach(async function afterEach() {
-        await control.closeIntentAppWindow(this.currentTest.title);
-      });
-  
-      const RaiseIntentSingleResolve =
-        "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
-      it(RaiseIntentSingleResolve, async () => {
-          await control.listenForError();
-          const result = control.receiveContext("fdc3-intent-a-opened");
-          const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX");
-          control.validateIntentResolution("IntentAppAId", intentResolution);
-          await result;
-      });
-  
-      const RaiseIntentTargetedAppResolve =
-        "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
-      it(RaiseIntentTargetedAppResolve, async () => {
-        await control.listenForError();
-        const result = control.receiveContext("fdc3-intent-a-opened");
-        const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextX", { appId: "IntentAppBId"});
-        control.validateIntentResolution("IntentAppBId", intentResolution);
-        await result;
-      });
-  
-      const RaiseIntentTargetedInstanceResolveOpen =
-        "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent' with context 'testContextX' after opening intent-a app";
-      it(RaiseIntentTargetedInstanceResolveOpen, async () => {
-        await control.listenForError();
-        const appIdentifier = await control.openIntentApp("IntentAppAId");
-        const result = control.receiveContext("fdc3-intent-a-opened");
-        const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);  
-        control.validateIntentResolution("IntentAppAId", intentResolution);
-        await result;
-        const instances = await control.findInstances("IntentAppAId");
-        control.validateInstances(instances, 1, appIdentifier.instanceId);
-      });
-  
-      const RaiseIntentTargetedInstanceResolveFindInstances =
-        "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
-      it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
-        await control.listenForError();
-        const appIdentifier = await control.openIntentApp("IntentAppAId");
-        const instances = await control.findInstances("IntentAppAId");
-        control.validateInstances(instances, 1, appIdentifier.instanceId);
-        const result = control.receiveContext("fdc3-intent-a-opened");
-        const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);  
-        control.validateIntentResolution("IntentAppAId", intentResolution);
-        await result;
+import { ChannelError, PrivateChannel } from "fdc3_2_0";
+import { assert, expect } from "chai";
+import { wait } from "../../../utils";
+import { IntentControl2_0, IntentResultType } from "./intent-support-2.0";
 
-        //make sure no other instance is started
-        const instances2 = await control.findInstances("IntentAppAId");
-        expect(instances2.length).to.be.equal(1);
-      });
+const control = new IntentControl2_0();
 
-      const RaiseIntentVoidResult0secs = "(2.0-RaiseIntentVoidResult0secs) App A receives a void IntentResult";
-      it(RaiseIntentVoidResult0secs, async () => {
-        await control.listenForError();
-        const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX")
-        control.validateIntentResolution("IntentAppAId", intentResolution);
-        let intentResult = await control.getIntentResult(intentResolution);
-        control.validateIntentResult(intentResult, IntentResultType.Void);  
-      });
-  
-      // THIS TEST DOESN'T MAKE SENSE: The returned intentResult is always void/an empty object. therefore its state never changes, either before or after the intent listener returns
-      const RaiseIntentVoidResult5secs = "(2.0-RaiseIntentVoidResult5secs) App A receives a void IntentResult after a 5 second delay";
-      it(RaiseIntentVoidResult5secs, async () => {
-        await control.listenForError();
-        let receiver = control.receiveContext("context-received", 8000);
-        const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", undefined, 5000)
-        control.validateIntentResolution("IntentAppAId", intentResolution);
-        let intentResult = control.getIntentResult(intentResolution);
-        await receiver;
-
-        //give app b time to return
-        await wait(300);
-        await intentResult;
-        control.validateIntentResult(intentResult, IntentResultType.Void);  
-      });
-  
-      //TEST DOESN'T MAKE SENSE: see test above
-      const RaiseIntentVoidResult61secs = "(2.0-RaiseIntentVoidResult61secs) App A receives a void IntentResult after a 61 second delay";
-      it(RaiseIntentVoidResult61secs, async () => {
-        await control.listenForError();
-        let receiver = control.receiveContext("context-received", 64000);
-        const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", undefined, 61000)
-        control.validateIntentResolution("IntentAppAId", intentResolution);
-        let intentResult = control.getIntentResult(intentResolution);
-        await receiver;
-
-        //give app b time to return
-        await wait(300);
-        await intentResult;
-        control.validateIntentResult(intentResult, IntentResultType.Void);  
-      }).timeout(64000);
-
-      const RaiseIntentContextResult0secs =
-        "(2.0-RaiseIntentContextResult0secs) IntentResult resolves to testContextY";
-      it.only(RaiseIntentContextResult0secs, async () => {
-        await control.listenForError();
-        const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY");
-        validateIntentResolution("IntentAppAId", intentResolution);
-        let intentResult = await control.getIntentResult(intentResolution);
-        control.validateIntentResult(intentResult, IntentResultType.Context, "testcontextY");  
-      });
-  
-      const RaiseIntentContextResult5secs =
-        "(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay";
-      it.only(RaiseIntentContextResult5secs, async () => {
-        await control.listenForError();
-        let receiver = control.receiveContext("context-received", 8000);
-        const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY", undefined, 5000);
-        validateIntentResolution("IntentAppAId", intentResolution);
-        let intentResult = control.getIntentResult(intentResolution);
-        await receiver;
-
-        //give app b time to return
-        await wait(300);
-        await intentResult;
-        control.validateIntentResult(intentResult, IntentResultType.Context, "testcontextY");  
-      });
-  
-      const RaiseIntentContextResult61secs =
-        "(2.0-RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay";
-      it(RaiseIntentContextResult61secs, async () => {
-        await control.listenForError();
-        let receiver = control.receiveContext("context-received", 64000);
-        const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY", undefined, 61000);
-        validateIntentResolution("IntentAppAId", intentResolution);
-        let intentResult = control.getIntentResult(intentResolution);
-        await receiver;
-
-        //give app b time to return
-        await wait(300);
-        await intentResult;
-        control.validateIntentResult(intentResult, IntentResultType.Context, "testcontextY");  
-      }).timeout(64000);
-  
-      const RaiseIntentChannelResult = "(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object";
-      it(RaiseIntentChannelResult, async () => {
-        await control.listenForError();
-        let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");
-        const intentResolution = await control.raiseIntent("sharedTestingIntent2", "testContextY", {appId: "IntentAppEId"});
-        control.validateIntentResolution("IntentAppEId", intentResolution);
-        let intentResult = control.getIntentResult(intentResolution);
-  
-        //wait for intent-e to return channel
-        await wait(300);
-        await intentResult;
-        control.validateIntentResult(intentResult, IntentResultType.Channel);  
-        await receiver;
-      });
-  
-      const RaiseIntentPrivateChannelResult = "(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object";
-      it(RaiseIntentPrivateChannelResult, async () => {
-        await control.listenForError();
-        let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");
-        const intentResolution = await control.raiseIntent("sharedTestingIntent2", "testContextY", {appId: "IntentAppFId"});
-        control.validateIntentResolution("IntentAppFId", intentResolution);
-        let intentResult = control.getIntentResult(intentResolution);
-  
-        //wait for intent-e to return private channel
-        await wait(300);
-        await intentResult;
-        control.validateIntentResult(intentResult, IntentResultType.PrivateChannel);  
-        await receiver;
-      });
-  
-      const PrivateChannelsAreNotAppChannels = "(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id";
-      it(PrivateChannelsAreNotAppChannels, async () => {
-        await control.listenForError();
-        const privChan = await control.createPrivateChannel();
-        control.validatePrivateChannel(privChan);
-        const privChan2 = await fdc3.createPrivateChannel();
-        control.validatePrivateChannel(privChan2);
-  
-        //confirm that the ids of both private channels are different
-        expect(privChan.id).to.not.be.equal(privChan2.id);
-  
-        try {
-          await control.createAppChannel(privChan.id);
-          assert.fail("No error was not thrown when calling fdc3.getOrCreateChannel(privateChannel.id)");
-        } catch (ex) {
-          expect(ex).to.have.property("message", ChannelError.AccessDenied, `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${ex.message}`);
-        }
-
-        const intentResolution = await control.raiseIntent("privateChanneliIsPrivate", "privateChannelId", undefined, undefined, {key: privChan2.id});
-        control.validateIntentResolution("IntentAppFId", intentResolution);
-        let result = control.getIntentResult(intentResolution);
-        await wait(300);
-        await result;
-        control.validateIntentResult(result, IntentResultType.PrivateChannel);  
-      });
-  
-      const PrivateChannelsLifecycleEvents = "(2.0-PrivateChannelsLifecycleEvents) ";
-      it(PrivateChannelsLifecycleEvents, async () => {
-        await control.listenForError();
-        let onUnsubscribeReceiver = control.receiveContext("onUnsubscribeTriggered");
-        const intentResolution = await control.raiseIntent("kTestingIntent", "testContextX", {appId: "IntentAppKId"});
-        control.validateIntentResolution("IntentAppFId", intentResolution);
-        let result = await control.getIntentResult(intentResolution);
-        control.validateIntentResult(result, IntentResultType.PrivateChannel);
-        let listener = control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5); 
-        control.unsubscribeListener(listener);       
-        await onUnsubscribeReceiver; //should receive context from privChannel.onUnsubscribe in mock app
-        let textContextXReceiver = control.receiveContext("testContextX");
-        control.privateChannelBroadcast(<PrivateChannel>result, "testContextX");
-        await textContextXReceiver;
-        let onUnsubscribeReceiver2 = control.receiveContext("onUnsubscribeTriggered");
-        let onDisconnectReceiver = control.receiveContext("onDisconnectTriggered");
-        control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);  
-        control.disconnectPrivateChannel(<PrivateChannel>result);
-
-        //confirm that onUnsubscribe and onDisconnect were triggered in intent-k
-        await onUnsubscribeReceiver2;
-        await onDisconnectReceiver;
-      });
+/**
+ * Details on the mock apps used in these tests can be found in /mock/README.md
+ */
+export default () =>
+  describe("fdc3.raiseIntent", () => {
+    afterEach(async function afterEach() {
+      await control.closeIntentAppWindow(this.currentTest.title);
     });
-  
-  const validateIntentResolution = (
-    appId: string,
-    intentResolution: IntentResolution
-  ) => {
-    if (typeof intentResolution.source === "object") {
-      expect(intentResolution.source as AppIdentifier).to.have.property("appId");
-      expect(intentResolution.source as AppIdentifier).to.have.property(
-        "instanceId"
+
+    const RaiseIntentSingleResolve =
+      "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
+    it(RaiseIntentSingleResolve, async () => {
+      await control.listenForError();
+      const result = control.receiveContext("fdc3-intent-a-opened");
+      const intentResolution = await control.raiseIntent(
+        "aTestingIntent",
+        "testContextX"
       );
-      expect(typeof intentResolution.source.instanceId).to.be.equal("string");
-      expect(intentResolution.source.instanceId).to.not.be.equal("");
-      expect((intentResolution.source as AppIdentifier).appId).to.eq(
-        appId,
-        raiseIntentDocs
-      );
-    } else assert.fail("Invalid intent resolution object");
-  };
-  
-  const broadcastCloseWindow = async (currentTest) => {
-    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-    appControlChannel.broadcast({
-      type: "closeWindow",
-      testId: currentTest,
-    } as AppControlContext);
-  };
-  
-  // creates a channel and subscribes for broadcast contexts. This is
-  // used by the 'mock app' to send messages back to the test runner for validation
-  const createReceiver = async (contextType: string) => {
-    let timeout;
-    const appControlChannel = await getOrCreateChannel("app-control");
-    const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      const listener = await appControlChannel.addContextListener(
-        contextType,
-        (context) => {
-          resolve(context);
-          clearTimeout(timeout);
-          listener.unsubscribe();
-        }
-      );
-  
-      //if no context received reject promise
-      const { promise: sleepPromise, timeout: theTimeout } = sleep();
-      timeout = theTimeout;
-      await sleepPromise;
-      reject(new Error("No context received from app B"));
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      await result;
     });
-  
-    console.log("listener added");
-  
-    return messageReceived;
-  };
-  
-  async function closeIntentAppsWindows(testId) {
-    await broadcastCloseWindow(testId);
-    const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-    await waitForContext("windowClosed", testId, appControlChannel);
-    await wait(constants.WindowCloseWaitTime);
-  }
-  
-  const waitForContext = (
-    contextType: string,
-    testId: string,
-    channel?: Channel
-  ): Promise<Context> => {
-    let executionListener: Listener;
-    return new Promise<Context>(async (resolve) => {
-      console.log(
-        Date.now() +
-          ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
+
+    const RaiseIntentTargetedAppResolve =
+      "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
+    it(RaiseIntentTargetedAppResolve, async () => {
+      await control.listenForError();
+      const result = control.receiveContext("fdc3-intent-a-opened");
+      const intentResolution = await control.raiseIntent(
+        "sharedTestingIntent1",
+        "testContextX",
+        { appId: "IntentAppBId" }
       );
-  
-      const handler = (context: AppControlContext) => {
-        if (testId) {
-          if (testId == context.testId) {
-            console.log(
-              Date.now() + ` Received ${contextType} for test: ${testId}`
-            );
-            resolve(context);
-            if (executionListener) executionListener.unsubscribe();
-          } else {
-            console.warn(
-              Date.now() +
-                ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
-            );
-          }
-        } else {
-          console.log(
-            Date.now() +
-              ` Received (without testId) "${contextType}" for test: "${testId}"`
-          );
-          resolve(context);
-          if (executionListener) executionListener.unsubscribe();
-        }
-      };
-  
-      if (channel === undefined) {
-        executionListener = await fdc3.addContextListener(contextType, handler);
-      } else {
-        executionListener = await channel.addContextListener(
-          contextType,
-          handler
+      control.validateIntentResolution("IntentAppBId", intentResolution);
+      await result;
+    });
+
+    const RaiseIntentTargetedInstanceResolveOpen =
+      "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent' with context 'testContextX' after opening intent-a app";
+    it(RaiseIntentTargetedInstanceResolveOpen, async () => {
+      await control.listenForError();
+      const appIdentifier = await control.openIntentApp("IntentAppAId");
+      const result = control.receiveContext("fdc3-intent-a-opened");
+      const intentResolution = await control.raiseIntent(
+        "aTestingIntent",
+        "testContextX",
+        appIdentifier
+      );
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      await result;
+      const instances = await control.findInstances("IntentAppAId");
+      control.validateInstances(instances, 1, appIdentifier.instanceId);
+    });
+
+    const RaiseIntentTargetedInstanceResolveFindInstances =
+      "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
+    it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
+      await control.listenForError();
+      const appIdentifier = await control.openIntentApp("IntentAppAId");
+      const instances = await control.findInstances("IntentAppAId");
+      control.validateInstances(instances, 1, appIdentifier.instanceId);
+      const result = control.receiveContext("fdc3-intent-a-opened");
+      const intentResolution = await control.raiseIntent(
+        "aTestingIntent",
+        "testContextX",
+        appIdentifier
+      );
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      await result;
+
+      //make sure no other instance is started
+      const instances2 = await control.findInstances("IntentAppAId");
+      expect(instances2.length).to.be.equal(1);
+    });
+
+    const RaiseIntentVoidResult0secs =
+      "(2.0-RaiseIntentVoidResult0secs) App A receives a void IntentResult";
+    it(RaiseIntentVoidResult0secs, async () => {
+      await control.listenForError();
+      const intentResolution = await control.raiseIntent(
+        "aTestingIntent",
+        "testContextX"
+      );
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      let intentResult = await control.getIntentResult(intentResolution);
+      control.validateIntentResult(intentResult, IntentResultType.Void);
+    });
+
+    // THIS TEST DOESN'T MAKE SENSE: The returned intentResult is always void/an empty object. therefore its state never changes, either before or after the intent listener returns
+    const RaiseIntentVoidResult5secs =
+      "(2.0-RaiseIntentVoidResult5secs) App A receives a void IntentResult after a 5 second delay";
+    it(RaiseIntentVoidResult5secs, async () => {
+      await control.listenForError();
+      let receiver = control.receiveContext("context-received", 8000);
+      const intentResolution = await control.raiseIntent(
+        "aTestingIntent",
+        "testContextX",
+        undefined,
+        5000
+      );
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      let intentResult = control.getIntentResult(intentResolution);
+      await receiver;
+
+      //give app b time to return
+      await wait(300);
+      await intentResult;
+      control.validateIntentResult(intentResult, IntentResultType.Void);
+    });
+
+    //TEST DOESN'T MAKE SENSE: see test above
+    const RaiseIntentVoidResult61secs =
+      "(2.0-RaiseIntentVoidResult61secs) App A receives a void IntentResult after a 61 second delay";
+    it(RaiseIntentVoidResult61secs, async () => {
+      await control.listenForError();
+      let receiver = control.receiveContext("context-received", 64000);
+      const intentResolution = await control.raiseIntent(
+        "aTestingIntent",
+        "testContextX",
+        undefined,
+        61000
+      );
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      let intentResult = control.getIntentResult(intentResolution);
+      await receiver;
+
+      //give app b time to return
+      await wait(300);
+      await intentResult;
+      control.validateIntentResult(intentResult, IntentResultType.Void);
+    }).timeout(64000);
+
+    const RaiseIntentContextResult0secs =
+      "(2.0-RaiseIntentContextResult0secs) IntentResult resolves to testContextY";
+    it.only(RaiseIntentContextResult0secs, async () => {
+      await control.listenForError();
+      const intentResolution = await control.raiseIntent(
+        "sharedTestingIntent1",
+        "testContextY"
+      );
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      let intentResult = await control.getIntentResult(intentResolution);
+      control.validateIntentResult(
+        intentResult,
+        IntentResultType.Context,
+        "testcontextY"
+      );
+    });
+
+    const RaiseIntentContextResult5secs =
+      "(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay";
+    it.only(RaiseIntentContextResult5secs, async () => {
+      await control.listenForError();
+      let receiver = control.receiveContext("context-received", 8000);
+      const intentResolution = await control.raiseIntent(
+        "sharedTestingIntent1",
+        "testContextY",
+        undefined,
+        5000
+      );
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      let intentResult = control.getIntentResult(intentResolution);
+      await receiver;
+
+      //give app b time to return
+      await wait(300);
+      await intentResult;
+      control.validateIntentResult(
+        intentResult,
+        IntentResultType.Context,
+        "testcontextY"
+      );
+    });
+
+    const RaiseIntentContextResult61secs =
+      "(2.0-RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay";
+    it(RaiseIntentContextResult61secs, async () => {
+      await control.listenForError();
+      let receiver = control.receiveContext("context-received", 64000);
+      const intentResolution = await control.raiseIntent(
+        "sharedTestingIntent1",
+        "testContextY",
+        undefined,
+        61000
+      );
+      control.validateIntentResolution("IntentAppAId", intentResolution);
+      let intentResult = control.getIntentResult(intentResolution);
+      await receiver;
+
+      //give app b time to return
+      await wait(300);
+      await intentResult;
+      control.validateIntentResult(
+        intentResult,
+        IntentResultType.Context,
+        "testcontextY"
+      );
+    }).timeout(64000);
+
+    const RaiseIntentChannelResult =
+      "(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object";
+    it(RaiseIntentChannelResult, async () => {
+      await control.listenForError();
+      let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");
+      const intentResolution = await control.raiseIntent(
+        "sharedTestingIntent2",
+        "testContextY",
+        { appId: "IntentAppEId" }
+      );
+      control.validateIntentResolution("IntentAppEId", intentResolution);
+      let intentResult = control.getIntentResult(intentResolution);
+
+      //wait for intent-e to return channel
+      await wait(300);
+      await intentResult;
+      control.validateIntentResult(intentResult, IntentResultType.Channel);
+      await receiver;
+    });
+
+    const RaiseIntentPrivateChannelResult =
+      "(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object";
+    it(RaiseIntentPrivateChannelResult, async () => {
+      await control.listenForError();
+      let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");
+      const intentResolution = await control.raiseIntent(
+        "sharedTestingIntent2",
+        "testContextY",
+        { appId: "IntentAppFId" }
+      );
+      control.validateIntentResolution("IntentAppFId", intentResolution);
+      let intentResult = control.getIntentResult(intentResolution);
+
+      //wait for intent-e to return private channel
+      await wait(300);
+      await intentResult;
+      control.validateIntentResult(
+        intentResult,
+        IntentResultType.PrivateChannel
+      );
+      await receiver;
+    });
+
+    const PrivateChannelsAreNotAppChannels =
+      "(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id";
+    it(PrivateChannelsAreNotAppChannels, async () => {
+      await control.listenForError();
+      const privChan = await control.createPrivateChannel();
+      control.validatePrivateChannel(privChan);
+      const privChan2 = await control.createPrivateChannel();
+      control.validatePrivateChannel(privChan2);
+
+      //confirm that the ids of both private channels are different
+      expect(privChan.id).to.not.be.equal(privChan2.id);
+
+      try {
+        await control.createAppChannel(privChan.id);
+        assert.fail(
+          "No error was not thrown when calling fdc3.getOrCreateChannel(privateChannel.id)"
         );
-        //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
-        const ccHandler = async (context: AppControlContext) => {
-          if (context) {
-            if (testId) {
-              if (testId == context?.testId && context?.type == contextType) {
-                console.log(
-                  Date.now() +
-                    ` Received "${contextType}" (from current context) for test: "${testId}"`
-                );
-                if (executionListener) executionListener.unsubscribe();
-                resolve(context);
-              } //do not warn as it will be ignoring mismatches which will be common
-              else {
-                console.log(
-                  Date.now() +
-                    ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
-                      context ? "" : "NOT "
-                    } exist, 
-  had testId: "${context?.testId}" (${
-                      testId == context?.testId ? "did match" : "did NOT match"
-                    }) 
-  and type "${context?.type}" (${
-                      context?.type == contextType ? "did match" : "did NOT match"
-                    })`
-                );
-              }
-            } else {
-              console.log(
-                Date.now() +
-                  ` Received "${contextType}" (from current context) for an unspecified test`
-              );
-              if (executionListener) executionListener.unsubscribe();
-              resolve(context);
-            }
-          }
-        };
-        channel.getCurrentContext().then(ccHandler);
+      } catch (ex) {
+        expect(ex).to.have.property(
+          "message",
+          ChannelError.AccessDenied,
+          `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${ex.message}`
+        );
       }
+
+      const intentResolution = await control.raiseIntent(
+        "privateChanneliIsPrivate",
+        "privateChannelId",
+        undefined,
+        undefined,
+        { key: privChan2.id }
+      );
+      control.validateIntentResolution("IntentAppFId", intentResolution);
+      let result = control.getIntentResult(intentResolution);
+      await wait(300);
+      await result;
+      control.validateIntentResult(result, IntentResultType.PrivateChannel);
     });
-  };
-  
-  interface AppControlContext extends Context {
-    testId: string;
-  }
-  
-  export interface IntentAppBContext extends Context {
-    delayBeforeReturn: number;
-  }
+
+    const PrivateChannelsLifecycleEvents =
+      "(2.0-PrivateChannelsLifecycleEvents) ";
+    it(PrivateChannelsLifecycleEvents, async () => {
+      await control.listenForError();
+      let onUnsubscribeReceiver = control.receiveContext(
+        "onUnsubscribeTriggered"
+      );
+      const intentResolution = await control.raiseIntent(
+        "kTestingIntent",
+        "testContextX",
+        { appId: "IntentAppKId" }
+      );
+      control.validateIntentResolution("IntentAppFId", intentResolution);
+      let result = await control.getIntentResult(intentResolution);
+      control.validateIntentResult(result, IntentResultType.PrivateChannel);
+      let listener = control.receiveContextStreamFromMockApp(
+        <PrivateChannel>result,
+        1,
+        5
+      );
+      control.unsubscribeListener(listener);
+      await onUnsubscribeReceiver; //should receive context from privChannel.onUnsubscribe in mock app
+      let textContextXReceiver = control.receiveContext("testContextX");
+      control.privateChannelBroadcast(<PrivateChannel>result, "testContextX");
+      await textContextXReceiver;
+      let onUnsubscribeReceiver2 = control.receiveContext(
+        "onUnsubscribeTriggered"
+      );
+      let onDisconnectReceiver = control.receiveContext(
+        "onDisconnectTriggered"
+      );
+      control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
+      control.disconnectPrivateChannel(<PrivateChannel>result);
+
+      //confirm that onUnsubscribe and onDisconnect were triggered in intent-k
+      await onUnsubscribeReceiver2;
+      await onDisconnectReceiver;
+    });
+  });
