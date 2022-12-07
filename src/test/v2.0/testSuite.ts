@@ -4,11 +4,10 @@ import constants from "../../constants";
 import fdc3AddContextListener_2_0 from "../v2.0/basic/fdc3.addContextListener";
 import fdc3AddIntentListener_2_0 from "../v2.0/basic/fdc3.addIntentListener";
 import channels_2_0 from "./advanced/channels";
-// import fdc3FindIntent_2_0 from "./v2.0/fdc3.findIntent";
-// import fdc3FindIntentsByContext_2_0 from "./v2.0/fdc3.findIntentsByContext";
+import fdc3FindIntent_2_0 from "./advanced/fdc3.findIntent";
+import fdc3FindIntentsByContext_2_0 from "./advanced/fdc3.findIntentsByContext";
 import fdc3GetCurrentChannel_2_0 from "./basic/fdc3.getCurrentChannel";
 import fdc3GetInfo_2_0 from "./advanced/fdc3.getInfo";
-import fdc3GetInstances_2_0 from "./advanced/fdc3.findInstances";
 import fdc3GetOrCreateChannel_2_0 from "./basic/fdc3.getOrCreateChannel";
 import fdc3GetUserChannels_2_0 from "./basic/fdc3.getUserChannels";
 import fdc3getAppMetadata_2_0 from "./advanced/fdc3.getAppMetadata";
@@ -40,6 +39,8 @@ const advancedSuite_2_0: testSet = {
   fdc3getAppMetadata_2_0: [fdc3getAppMetadata_2_0],
   channels_2_0: [channels_2_0],
   fdc3FindInstances_2_0: [fdc3FindInstances_2_0],
+  fdc3FindIntent_2_0: [fdc3FindIntent_2_0],
+  fdc3FindIntentsByContext_2_0: [fdc3FindIntentsByContext_2_0],
   fdc3RaiseIntent_2_0: [fdc3RaiseIntent_2_0],
   "fdc3RaiseIntent_2_0 (Result)": [fdc3RaiseIntent_2_0_Result],
   "fdc3RaiseIntent_2_0 (NoAppsFound)": [fdc3RaiseIntent_2_0_NoAppsFound]
