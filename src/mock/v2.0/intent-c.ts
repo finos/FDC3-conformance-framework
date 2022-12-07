@@ -4,7 +4,7 @@ import {
 } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { ContextToSend } from "./general";
+import { ContextSender } from "./general";
 import { MockAppContext } from "../../test/common/open-control";
 declare let fdc3: DesktopAgent;
 onFdc3Ready().then(async () => {
@@ -17,7 +17,7 @@ onFdc3Ready().then(async () => {
         await sendContextToTests({
           type: "context-received",
           context: context,
-        } as ContextToSend);
+        } as ContextSender);
       }
     });
   } catch (ex) {

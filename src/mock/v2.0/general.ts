@@ -32,10 +32,10 @@ onFdc3Ready().then(async () => {
     await sendContextToTests({
       type: "context-received",
       context: context,
-    } as ContextToSend);
+    } as ContextSender);
   });
 });
 
-export interface ContextToSend extends Context {
-  context: Context;
+export interface ContextSender extends Context {
+  context?: Context;
 }

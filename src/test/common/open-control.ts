@@ -26,7 +26,7 @@ export interface CommonContext {
 
 export interface MockAppContext extends CommonContext {
   errorMessage?: string;
-  ContextToSend?: CommonContext;
+  ContextSender?: CommonContext;
 }
 
 export const openApp = {

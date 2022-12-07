@@ -8,6 +8,7 @@ import {
   TargetApp,
 } from "fdc3_1_2";
 import constants from "../../../constants";
+import { ContextSender } from "../../../mock/v1.2/general";
 import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 import { MockAppContext, OpenControl } from "../../common/open-control";
@@ -24,7 +25,6 @@ export class OpenControl1_2 implements OpenControl<Context> {
     const appControlChannel = await fdc3.getOrCreateChannel(
       constants.ControlChannel
     );
-    let timeout;
     const messageReceived = new Promise<Context>(
       async (resolve, reject) => {
         const listener = appControlChannel.addContextListener(
@@ -40,8 +40,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
           }
         );
         //if no context received reject promise
-        const { promise: thePromise, timeout: theTimeout } = sleep();
-        timeout = theTimeout;
+        const { promise: thePromise } = sleep();
         await thePromise;
         if (!expectNotToReceiveContext) {
           reject(new Error("No context received from app B"));
@@ -112,11 +111,11 @@ export class OpenControl1_2 implements OpenControl<Context> {
   };
 
   validateReceivedContext = async (
-    contextReceiver: Context,
+    context: ContextSender,
     expectedContextType: string
   ): Promise<void> => {
-      expect(contextReceiver.name).to.eq("context", openDocs);
-      expect(contextReceiver.type).to.eq(expectedContextType, openDocs);
+      expect(context.context.name).to.eq("context", openDocs);
+      expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
 }
 

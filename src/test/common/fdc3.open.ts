@@ -37,7 +37,7 @@ export function getCommonOpenTests(
       "fdc3.instrument",
       true
     );
-    await control.validateReceivedContext(receiver, "fdc3.instrument");
+    await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeAppWindows(AOpensBWithContext);
   });
 
@@ -46,7 +46,7 @@ export function getCommonOpenTests(
     const receiver = control.contextReceiver("context-received");
     await control.openMockApp(openApp.b.name, undefined, "fdc3.instrument");
 
-    await control.validateReceivedContext(receiver, "fdc3.instrument");
+    await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeAppWindows(AOpensBWithSpecificContext);
   });
 
@@ -59,7 +59,9 @@ export function getCommonOpenTests(
       "fdc3.instrument",
       true
     );
-    await control.validateReceivedContext(receiver, "fdc3.instrument");
+
+    await receiver;
+    await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeAppWindows(AOpensBMultipleListen);
   });
 }

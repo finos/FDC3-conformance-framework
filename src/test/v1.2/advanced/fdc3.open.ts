@@ -3,6 +3,7 @@ import { getCommonOpenTests } from "../../common/fdc3.open";
 import { openApp, OpenCommonConfig } from "../../common/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
+import { ContextSender } from "../../../mock/v1.2/general";
 
 const openDocs =
   "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";

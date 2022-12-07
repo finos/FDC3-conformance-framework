@@ -8,6 +8,7 @@ import {
   OpenError,
 } from "fdc3_2_0";
 import constants from "../../../constants";
+import { ContextSender } from "../../../mock/v2.0/general";
 import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
 import { MockAppContext, OpenControl } from "../../common/open-control";
@@ -80,11 +81,10 @@ export class OpenControl2_0 implements OpenControl<Context> {
   };
 
   validateReceivedContext = async (
-    contextReceiver: Promise<Context>,
+    context: ContextSender,
     expectedContextType: string
   ) => {
-    const receivedValue = (await contextReceiver) as any;
-    expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
+    expect(context.type).to.eq(expectedContextType, openDocs);
   };
 }
 
