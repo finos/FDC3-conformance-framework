@@ -173,7 +173,7 @@ function validateListenerObject(listenerObject) {
   );
 }
 
-const broadcastAppChannelCloseWindow = async (testId: string) => {
+const broadcastAppChannelCloseWindow = async (testId: string): Promise<Channel> => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   /* tslint:disable-next-line */
   const closeContext: AppControlContext = {

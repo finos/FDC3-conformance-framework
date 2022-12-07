@@ -66,7 +66,7 @@ export default () =>
     it(AOpensBWithContext2Test, async () => {
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(openApp.c.name, undefined, "fdc3.instrument");
-      await control.validateReceivedContext(receiver, "fdc3.instrument");
+      await control.validateReceivedContext(await receiver, "fdc3.instrument");
       await control.closeAppWindows(AOpensBWithContext2Test);
     });
 
@@ -79,7 +79,8 @@ export default () =>
         openApp.c.id,
         "fdc3.instrument"
       );
-      await control.validateReceivedContext(receiver, "fdc3.instrument");
+
+      await control.validateReceivedContext(await receiver, "fdc3.instrument");
       await control.closeAppWindows(AOpensBWithContext3Test);
     });
 

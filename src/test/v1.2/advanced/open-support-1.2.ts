@@ -17,30 +17,39 @@ declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause:";
 
 export class OpenControl1_2 implements OpenControl<Context> {
-  contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+  contextReceiver = async (
+    contextType: string,
+    expectNotToReceiveContext?: boolean
+  ): Promise<Context> => {
+    const appControlChannel = await fdc3.getOrCreateChannel(
+      constants.ControlChannel
+    );
     let timeout;
-    const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      const listener = appControlChannel.addContextListener(
-        contextType,
-        async (context: MockAppContext) => {
-          if (context.errorMessage) {
-            reject(new Error(context.errorMessage));
-          } else {
-            resolve(context);
+    const messageReceived = new Promise<Context>(
+      async (resolve, reject) => {
+        const listener = appControlChannel.addContextListener(
+          contextType,
+          async (context: MockAppContext) => {
+            if (context.errorMessage) {
+              reject(context.errorMessage);
+            } else {
+              resolve(context);
+            }
+            //clearTimeout(timeout);
+            listener.unsubscribe();
           }
-          clearTimeout(timeout);
-          listener.unsubscribe();
+        );
+        //if no context received reject promise
+        const { promise: thePromise, timeout: theTimeout } = sleep();
+        timeout = theTimeout;
+        await thePromise;
+        if (!expectNotToReceiveContext) {
+          reject(new Error("No context received from app B"));
+        } else {
+          resolve({type: "noContextReceived"});
         }
-      );
-      //if no context received reject promise
-      const { promise: thePromise, timeout: theTimeout } = sleep();
-      timeout = theTimeout;
-      await thePromise;
-      if (!expectNotToReceiveContext)
-        reject(new Error("No context received from app B"));
-    });
-    console.log(JSON.stringify(messageReceived));
+      }
+    );
     return messageReceived;
   };
 
@@ -103,12 +112,11 @@ export class OpenControl1_2 implements OpenControl<Context> {
   };
 
   validateReceivedContext = async (
-    contextReceiver: Promise<Context>,
+    contextReceiver: Context,
     expectedContextType: string
-  ) => {
-    const receivedValue = (await contextReceiver) as any;
-    expect(receivedValue.context.name).to.eq("context", openDocs);
-    expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
+  ): Promise<void> => {
+      expect(contextReceiver.name).to.eq("context", openDocs);
+      expect(contextReceiver.type).to.eq(expectedContextType, openDocs);
   };
 }
 

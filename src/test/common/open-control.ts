@@ -10,7 +10,7 @@ export interface OpenControl<X> {
   //validation
   confirmAppNotFoundErrorReceived(exception: DOMException): void;
   validateReceivedContext(
-    contextReceiver: Promise<X>,
+    contextReceiver: X,
     expectedContextType: string
   ): Promise<void>;
 }
