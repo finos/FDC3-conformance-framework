@@ -164,7 +164,7 @@ import {
         control.validateIntentResult(intentResult, IntentResultType.Context, "testcontextY");  
       }).timeout(64000);
   
-      const RaiseIntentChannelResult = "(2.0-RaiseIntentChannelResult) ";
+      const RaiseIntentChannelResult = "(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object";
       it(RaiseIntentChannelResult, async () => {
         await control.listenForError();
         let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");
@@ -179,146 +179,69 @@ import {
         await receiver;
       });
   
-      const RaiseIntentPrivateChannelResult = "(2.0-RaiseIntentPrivateChannelResult) ";
+      const RaiseIntentPrivateChannelResult = "(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object";
       it(RaiseIntentPrivateChannelResult, async () => {
-        //raise intent
-        const intentResolution = await fdc3.raiseIntent("sharedTestingIntent2", {
-          type: "testContextY",
-        }, {appId: "IntentAppFId"});
+        await control.listenForError();
+        let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");
+        const intentResolution = await control.raiseIntent("sharedTestingIntent2", "testContextY", {appId: "IntentAppFId"});
+        control.validateIntentResolution("IntentAppFId", intentResolution);
+        let intentResult = control.getIntentResult(intentResolution);
   
-        validateIntentResolution("IntentAppFId", intentResolution);
-  
-        let intentResult = await intentResolution.getResult().catch((ex) => {
-          assert.fail(
-            `Error when calling IntentResolution.getResult() ${ex.message ?? ex}`
-          );
-        });
-  
-        //wait for intent-e to return channel
-        await wait();
-  
-        expect(intentResult).to.have.property("type");
-        expect(intentResult).to.have.property("onAddContextListener");
-        expect(intentResolution).to.have.property("onUnsubscribe");
-        expect(intentResolution).to.have.property("onDisconnect");
-        expect(intentResolution).to.have.property("disconnect");
-  
-        expect(intentResult.type).to.be.equal("private");
-  
-        const channel = <Channel>intentResult;
-  
-        let timeout;
-        const wrapper = wrapPromise();
-        await channel.addContextListener("testContextZ", (context)=>{
-          expect(context.id).to.be.equal({key: "uniqueId"});
-          wrapper.resolve();
-          clearTimeout(timeout);
-        });
-  
-        timeout = window.setTimeout(() => {
-          wrapper.reject("Did not receive testContextZ back from intent app e");
-        }, 10000);
-  
-        await wrapper.promise;
-        await closeIntentAppsWindows(RaiseIntentPrivateChannelResult);
+        //wait for intent-e to return private channel
+        await wait(300);
+        await intentResult;
+        control.validateIntentResult(intentResult, IntentResultType.PrivateChannel);  
+        await receiver;
       });
   
-      const PrivateChannelsAreNotAppChannels = "(2.0-PrivateChannelsAreNotAppChannels) ";
+      const PrivateChannelsAreNotAppChannels = "(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id";
       it(PrivateChannelsAreNotAppChannels, async () => {
-        const privChan = await fdc3.createPrivateChannel();
-        expect(privChan).to.have.property("id");
+        await control.listenForError();
+        const privChan = await control.createPrivateChannel();
+        control.validatePrivateChannel(privChan);
         const privChan2 = await fdc3.createPrivateChannel();
-        expect(privChan2).to.have.property("id");
+        control.validatePrivateChannel(privChan2);
   
         //confirm that the ids of both private channels are different
         expect(privChan.id).to.not.be.equal(privChan2.id);
   
         try {
-          await fdc3.getOrCreateChannel(privChan.id);
+          await control.createAppChannel(privChan.id);
           assert.fail("No error was not thrown when calling fdc3.getOrCreateChannel(privateChannel.id)");
         } catch (ex) {
           expect(ex).to.have.property("message", ChannelError.AccessDenied, `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${ex.message}`);
         }
-  
-        const intentResolution = await fdc3.raiseIntent("privateChanneliIsPrivate", {type: "privateChannelId", id: {key: privChan2.id}});
-  
-        let result = await intentResolution.getResult();
-  
-        await wait();
-  
-        expect(result).to.have.property("id");
-        expect(result.id).to.be.equal("privateChanneliIsPrivate");
-        expect(result).to.have.property("type");
-        expect(result.type).to.be.equal("private");
-  
-        await closeIntentAppsWindows(PrivateChannelsAreNotAppChannels);
+
+        const intentResolution = await control.raiseIntent("privateChanneliIsPrivate", "privateChannelId", undefined, undefined, {key: privChan2.id});
+        control.validateIntentResolution("IntentAppFId", intentResolution);
+        let result = control.getIntentResult(intentResolution);
+        await wait(300);
+        await result;
+        control.validateIntentResult(result, IntentResultType.PrivateChannel);  
       });
   
       const PrivateChannelsLifecycleEvents = "(2.0-PrivateChannelsLifecycleEvents) ";
       it(PrivateChannelsLifecycleEvents, async () => {
-        const intentResolution = await fdc3.raiseIntent("kTestingIntent", {type: "testContextX"}, {appId: "IntentAppKId"});
-  
-        expect(intentResolution.source).to.have.property("appId");
-        expect(intentResolution.source.appId).to.be.equal("IntentAppKId");
-        expect(intentResolution.source).to.have.property("instanceId");
-        expect(intentResolution.source.instanceId).to.not.be.null;
-        expect(intentResolution.source.instanceId).to.not.be.equal("");
-  
-        let result = await intentResolution.getResult();
-  
-        await wait();
-        expect(result).to.have.property("type");
-        expect(result).to.have.property("onAddContextListener");
-        expect(result).to.have.property("onUnsubscribe");
-        expect(result).to.have.property("onDisconnect");
-        expect(result).to.have.property("disconnect");
-        expect(result).to.have.property("id");
-        expect(result).to.have.property("type");
-        expect(result.type).to.be.equal("private");
-  
-        const privChannel = <PrivateChannel>result;
-  
-        let numberStream = 1;
-        let timeout;
-        const wrapper = wrapPromise();
-  
-        //receive multiple contexts in succession from intent-k
-        const listener = await privChannel.addContextListener("testContextZ", (context: IntentKContext)=>{
-          expect(context.number).to.be.equal(numberStream);
-          numberStream += 1;
-          expect(context.type).to.be.equal("testContextZ");
-  
-          if(numberStream === 5){
-            wrapper.resolve;
-            clearTimeout(timeout);
-          }
-        });
-  
-        timeout = await window.setTimeout(() => {
-          wrapper.reject("test timed-out while listening for five contexts to be broadcast from the intent-k app in short succession");
-        }, constants.WaitTime);
-  
-        await wrapper.promise;
-  
-        //unsubscribe the listener
-        listener.unsubscribe();
-        let timeout2;
-        const wrapper2 = wrapPromise();
-  
-        const listener2 = await privChannel.addContextListener("testContextZ", (context: IntentKContext)=>{
-          expect(context.onUnsubscribedTriggered).to.be.equal(true);
-          wrapper2.resolve;
-          clearTimeout(timeout2);
-        });
-  
-        timeout2 = await window.setTimeout(() => {
-          wrapper.reject("test timed-out while awaiting confirmation that onUnsubscribe was triggered");
-        }, constants.WaitTime);
-  
-        await wrapper.resolve;
-  
-        //step 14
-  
+        await control.listenForError();
+        let onUnsubscribeReceiver = control.receiveContext("onUnsubscribeTriggered");
+        const intentResolution = await control.raiseIntent("kTestingIntent", "testContextX", {appId: "IntentAppKId"});
+        control.validateIntentResolution("IntentAppFId", intentResolution);
+        let result = await control.getIntentResult(intentResolution);
+        control.validateIntentResult(result, IntentResultType.PrivateChannel);
+        let listener = control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5); 
+        control.unsubscribeListener(listener);       
+        await onUnsubscribeReceiver; //should receive context from privChannel.onUnsubscribe in mock app
+        let textContextXReceiver = control.receiveContext("testContextX");
+        control.privateChannelBroadcast(<PrivateChannel>result, "testContextX");
+        await textContextXReceiver;
+        let onUnsubscribeReceiver2 = control.receiveContext("onUnsubscribeTriggered");
+        let onDisconnectReceiver = control.receiveContext("onDisconnectTriggered");
+        control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);  
+        control.disconnectPrivateChannel(<PrivateChannel>result);
+
+        //confirm that onUnsubscribe and onDisconnect were triggered in intent-k
+        await onUnsubscribeReceiver2;
+        await onDisconnectReceiver;
       });
     });
   

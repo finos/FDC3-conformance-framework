@@ -9,7 +9,7 @@ import { wait } from "../../utils";
 
 declare let fdc3: DesktopAgent;
 
-//used in 'Raise Intent Result (Channel results)'
+//used in '2.0-RaiseIntentChannelResult'
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
   fdc3.addIntentListener("sharedTestingIntent2", async (context) => {

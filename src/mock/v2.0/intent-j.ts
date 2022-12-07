@@ -2,28 +2,28 @@ import {
     closeWindowOnCompletion,
     onFdc3Ready,
     sendContextToTests,
+    validateContext,
   } from "./mock-functions";
-  import { ChannelError, Context, DesktopAgent } from "fdc3_2_0";
+  import { ChannelError, DesktopAgent } from "fdc3_2_0";
   declare let fdc3: DesktopAgent;
-  
-  let stats = document.getElementById("context");
-  stats.innerHTML = "I'm here/ ";
   
   onFdc3Ready().then(async () => {
     await closeWindowOnCompletion();
+
+    //used in '2.0-PrivateChannelsAreNotAppChannels'
     fdc3.addIntentListener("privateChanneliIsPrivate", async (context) => {
-      stats.innerHTML = "I'm here/ ";
+      validateContext(context.type, "privateChannelId");
+
       try {
         await fdc3.getOrCreateChannel(context.id.key);
-        throw new Error(
-          "No error thrown when calling fdc3.getOrCreateChannel('<idPassedInContext>')"
-        );
+        await sendContextToTests({type: "error", errorMessage: "No error thrown when calling fdc3.getOrCreateChannel('<idPassedInContext>') from the mock app"});
       } catch (ex) {
         if (ex.message !== ChannelError.AccessDenied) {
-          `Incorrect error received when calling fdc3.getOrCreateChannel('<idPassedInContext>'). Expected AccessDenied, got ${ex.message}`;
+          await sendContextToTests({type: "error", errorMessage: `Incorrect error received when calling fdc3.getOrCreateChannel('<idPassedInContext>'). Expected AccessDenied, got ${ex.message}`});
         }
       }
   
-      return context;
+      const privateChannel = await fdc3.createPrivateChannel();
+      return privateChannel;
     });
   });
