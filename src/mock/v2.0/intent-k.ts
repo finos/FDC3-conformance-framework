@@ -6,6 +6,7 @@ import {
 } from "./mock-functions";
 import { Context, DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
+import { IntentUtilityContext } from "../../test/v2.0/common-types";
 declare let fdc3: DesktopAgent;
 
 //used in '2.0-PrivateChannelsLifecycleEvents'
@@ -20,7 +21,7 @@ onFdc3Ready().then(async () => {
     privChan.onAddContextListener(async (contextType) => {
       //stream multiple contexts to test in short succession
       for (let i = 0; i < 4; i++) {
-        let intentKContext: IntentKContext = {
+        let intentKContext: IntentUtilityContext = {
           type: contextType,
           number: contextStreamNumber,
         };
@@ -50,8 +51,3 @@ onFdc3Ready().then(async () => {
     return privChan;
   });
 });
-
-export interface IntentKContext extends Context {
-  number?: number;
-  onUnsubscribedTriggered?: boolean;
-}

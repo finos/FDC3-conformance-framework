@@ -5,7 +5,8 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
-import { IntentKContext } from "../../../mock/v2.0/intent-k";
+import { IntentUtilityContext } from "../../v2.0/common-types"
+import { ContextWithError } from "../common-types";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs =
@@ -73,7 +74,7 @@ export class IntentControl2_0 {
     delayBeforeReturn: number = 0,
     contextId?: { [key: string]: string }
   ): Promise<IntentResolution> {
-    let context: DelayedReturnContext = {
+    let context: IntentUtilityContext = {
       type: contextType,
       delayBeforeReturn: delayBeforeReturn,
     };
@@ -214,7 +215,7 @@ export class IntentControl2_0 {
     const appControlChannel = await getOrCreateChannel("app-control");
     appControlChannel.addContextListener(
       "error",
-      (context: contextWithErrorMessage) => {
+      (context: ContextWithError) => {
         assert.fail(context.errorMessage);
       }
     );
@@ -227,7 +228,7 @@ export class IntentControl2_0 {
     //receive multiple contexts in succession from intent-k
     const listener = await privChannel.addContextListener(
       "testContextZ",
-      (context: IntentKContext) => {
+      (context: IntentUtilityContext) => {
         expect(context.number).to.be.equal(streamedNumberStart);
         streamedNumberStart += 1;
         expect(context.type).to.be.equal("testContextZ");
@@ -357,22 +358,11 @@ and type "${context?.type}" (${
   });
 };
 
-export interface contextWithErrorMessage extends Context {
-    errorMessage?: string;
-  }
-  
-  export interface DelayedReturnContext extends Context {
-    delayBeforeReturn?: number;
-  }
-
-  export interface IntentAppBContext extends Context {
-    delayBeforeReturn: number;
-  }
 
   export enum IntentResultType {
     Channel = "Channel",
     PrivateChannel = "PrivateChannel",
     Context = "Context",
-    Void = "Void"
+    Void = "Void",
   }
   

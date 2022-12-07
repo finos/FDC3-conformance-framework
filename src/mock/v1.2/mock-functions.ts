@@ -31,7 +31,6 @@ export const closeWindowOnCompletion = async () => {
 };
 
 export const sendContextToTests = async(context) =>{
-  console.log("Sending context to app-control channel: ", context);
   const appControlChannel = await fdc3.getOrCreateChannel(
     constants.ControlChannel
   );

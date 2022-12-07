@@ -2,19 +2,16 @@ import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
 import { wait, wrapPromise } from "../../utils";
-import { IntentAppBContext } from "../../test/v2.0/advanced/intent-support-2.0";
+import { IntentUtilityContext } from "../../test/v2.0/common-types";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
-  // await fdc3.addIntentListener('bTestingIntent', async (context) => {
-  //     return context;
-  // });
   const wrapper = wrapPromise();
-  let receivedContext: IntentAppBContext;
+  let receivedContext: IntentUtilityContext;
   await fdc3.addIntentListener(
     "sharedTestingIntent1",
-    (context: IntentAppBContext) => {
+    (context: IntentUtilityContext) => {
       receivedContext = context;
       wrapper.resolve();
     }

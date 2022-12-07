@@ -24,10 +24,6 @@ export interface CommonContext {
   type: string;
 }
 
-export interface MockAppContext extends CommonContext {
-  errorMessage?: string;
-}
-
 export const openApp = {
   a: {
     name: "IntentAppA",

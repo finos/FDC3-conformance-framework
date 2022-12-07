@@ -11,7 +11,8 @@ import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
-import { MockAppContext, OpenControl } from "../../common/open-control";
+import { OpenControl } from "../../common/open-control";
+import { ContextWithError } from "../common-types";
 
 declare let fdc3: DesktopAgent;
 const openDocs =
@@ -30,7 +31,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
       async (resolve, reject) => {
         const listener = appControlChannel.addContextListener(
           contextType,
-          async (context: MockAppContext) => {
+          async (context: ContextWithError) => {
             if (context.errorMessage) {
               reject(context.errorMessage);
             } else {
@@ -93,7 +94,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
     );
     await appControlChannel.addContextListener(
       "context-received",
-      (context: MockAppContext) => {
+      (context: ContextWithError) => {
         assert.fail(context.errorMessage);
       }
     );

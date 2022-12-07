@@ -5,7 +5,7 @@ import {
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { MockAppContext } from "../../test/common/open-control";
+import { ContextWithError, IntentUtilityContext } from "../../test/v2.0/common-types";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
@@ -13,7 +13,7 @@ onFdc3Ready().then(async () => {
   const implementationMetadata = await fdc3.getInfo();
   let { appId } = implementationMetadata.appMetadata;
 
-  let appOpenedContext: MockAppContext = {
+  let appOpenedContext: ContextWithError = {
     type: "fdc3-conformance-opened",
   };
 
@@ -22,7 +22,7 @@ onFdc3Ready().then(async () => {
   }
 
   // broadcast that this app has opened
-  await sendContextToTests(appOpenedContext as MockAppContext);
+  await sendContextToTests(appOpenedContext as ContextWithError);
 
   // Context listeners used by tests.
   await fdc3.addContextListener("fdc3.testReceiver", async (context) => {
@@ -35,12 +35,12 @@ onFdc3Ready().then(async () => {
 
   // Context listeners used by tests.
   await fdc3.addContextListener("fdc3.contact", async (context) => {
-    let errorMessageContext: MockAppContext = {
+    let errorMessageContext: ContextWithError = {
       type: "context-received",
       errorMessage: "Listener for fdc3.contact received fdc3.instrument context"
     };
     // broadcast that this app has received context
-    await sendContextToTests(errorMessageContext as MockAppContext);
+    await sendContextToTests(errorMessageContext as ContextWithError);
   });
 
   // Context listeners used by tests.
