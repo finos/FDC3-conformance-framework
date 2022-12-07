@@ -203,7 +203,7 @@ export default () =>
     it("(2.0-FindIntentAppDByResultSingleNullContext) Should find intent 'cTestingIntent' belonging only to app intent-c with a null context and result type 'testContextZ'", async () => {
       const appIntent = await fdc3.findIntent(
         "cTestingIntent",
-        null,
+        undefined,
         "testContextZ"
       );
       expect(appIntent.intent).to.deep.eq(

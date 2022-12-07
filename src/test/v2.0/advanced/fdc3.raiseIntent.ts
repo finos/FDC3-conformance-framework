@@ -120,7 +120,7 @@ export default () =>
 
     const PrivateChannelsLifecycleEvents =
       "(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected";
-    it.only(PrivateChannelsLifecycleEvents, async () => {
+    it(PrivateChannelsLifecycleEvents, async () => {
       await control.listenForError();
       let onUnsubscribeReceiver = control.receiveContext(
         "onUnsubscribeTriggered"

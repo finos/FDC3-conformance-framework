@@ -123,12 +123,6 @@ export class IntentControl2_0 {
     await privateChannel.broadcast({type: contextType});
   }
 
-  // async addPrivateChannelListener(privChan: PrivateChannel){
-  //   await privChan.addContextListener("testContextZ", () => {
-
-  //   });
-  // }
-
   failIfIntentResultPromiseNotReceived() {
     let timeout = window.setTimeout(() => {
       assert.fail(
@@ -190,7 +184,7 @@ export class IntentControl2_0 {
   validateInstances(
     instances: AppIdentifier[],
     expectedInstances: number,
-    expectedInstanceId: string
+    expectedInstanceId?: string
   ): void {
     expect(instances.length).to.be.equal(expectedInstances);
     expect(instances[0].instanceId).to.be.equal(expectedInstanceId);
@@ -235,7 +229,6 @@ export class IntentControl2_0 {
       "testContextZ",
       (context: IntentKContext) => {
         expect(context.number).to.be.equal(streamedNumberStart);
-        console.log("STREAM NUMBER: " + streamedNumberStart)
         streamedNumberStart += 1;
         expect(context.type).to.be.equal("testContextZ");
 
