@@ -1,10 +1,13 @@
 import { ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
-import { APIDocumentation2_0 } from "../apiDocuments-2.0";import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
+import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
 const findIntentsByContextDocs =
-  "\r\nDocumentation: " + APIDocumentation2_0.findIntentsByContext + "\r\nCause";
+  "\r\nDocumentation: " +
+  APIDocumentation2_0.findIntentsByContext +
+  "\r\nCause";
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
@@ -20,7 +23,12 @@ export default () =>
 
         const intentNames = intents.map((appIntent) => appIntent.intent.name);
         expect(intentNames).to.have.all.members(
-          ["aTestingIntent", "sharedTestingIntent1", "cTestingIntent", "kTestingIntent"],
+          [
+            "aTestingIntent",
+            "sharedTestingIntent1",
+            "cTestingIntent",
+            "kTestingIntent",
+          ],
           findIntentsByContextDocs
         );
 

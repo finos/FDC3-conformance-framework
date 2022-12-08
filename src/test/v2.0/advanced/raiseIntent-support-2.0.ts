@@ -1,11 +1,18 @@
 import { assert, expect } from "chai";
-import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, PrivateChannel } from "fdc3_2_0";
+import {
+  AppIdentifier,
+  Channel,
+  IntentResolution,
+  IntentResult,
+  Listener,
+  PrivateChannel,
+} from "fdc3_2_0";
 import { Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
 import { AppControlContext } from "../../common/channel-control";
-import { IntentUtilityContext } from "../../v2.0/common-types"
+import { IntentUtilityContext } from "../../v2.0/common-types";
 import { ContextWithError } from "../common-types";
 
 declare let fdc3: DesktopAgent;
@@ -120,8 +127,11 @@ export class IntentControl2_0 {
     return intentResult;
   }
 
-  async privateChannelBroadcast(privateChannel: PrivateChannel, contextType: string): Promise<void>{
-    await privateChannel.broadcast({type: contextType});
+  async privateChannelBroadcast(
+    privateChannel: PrivateChannel,
+    contextType: string
+  ): Promise<void> {
+    await privateChannel.broadcast({ type: contextType });
   }
 
   failIfIntentResultPromiseNotReceived() {
@@ -221,7 +231,11 @@ export class IntentControl2_0 {
     );
   }
 
-  async receiveContextStreamFromMockApp(privChannel: PrivateChannel, streamedNumberStart: number, streamedNumberEnd: number): Promise<Listener> {
+  async receiveContextStreamFromMockApp(
+    privChannel: PrivateChannel,
+    streamedNumberStart: number,
+    streamedNumberEnd: number
+  ): Promise<Listener> {
     let timeout;
     const wrapper = wrapPromise();
 
@@ -250,11 +264,11 @@ export class IntentControl2_0 {
     return listener;
   }
 
-  unsubscribeListener(listener: Listener): void{
+  unsubscribeListener(listener: Listener): void {
     listener.unsubscribe();
   }
 
-  disconnectPrivateChannel(privateChannel: PrivateChannel): void{
+  disconnectPrivateChannel(privateChannel: PrivateChannel): void {
     privateChannel.disconnect();
   }
 
@@ -358,11 +372,9 @@ and type "${context?.type}" (${
   });
 };
 
-
-  export enum IntentResultType {
-    Channel = "Channel",
-    PrivateChannel = "PrivateChannel",
-    Context = "Context",
-    Void = "Void",
-  }
-  
+export enum IntentResultType {
+  Channel = "Channel",
+  PrivateChannel = "PrivateChannel",
+  Context = "Context",
+  Void = "Void",
+}
