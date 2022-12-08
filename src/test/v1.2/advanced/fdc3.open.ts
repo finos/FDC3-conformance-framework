@@ -3,10 +3,8 @@ import { getCommonOpenTests } from "../../common/fdc3.open";
 import { openApp, OpenCommonConfig } from "../../common/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { ContextSender } from "../../../mock/v1.2/general";
 
-const openDocs =
-  "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
+const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
 
 const config: OpenCommonConfig = {
@@ -22,8 +20,7 @@ export default () =>
     getCommonOpenTests(control, openDocs, config);
 
     //run 1.2-only tests
-    const AOpensB2Test =
-      "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
+    const AOpensB2Test = "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
     it(AOpensB2Test, async () => {
       const result = control.contextReceiver("fdc3-conformance-opened");
       await control.openMockApp(openApp.b.name);
@@ -75,11 +72,7 @@ export default () =>
       "(AOpensBWithContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds generic listener";
     it(AOpensBWithContext3Test, async () => {
       const receiver = control.contextReceiver("context-received");
-      await control.openMockApp(
-        openApp.c.name,
-        openApp.c.id,
-        "fdc3.instrument"
-      );
+      await control.openMockApp(openApp.c.name, openApp.c.id, "fdc3.instrument");
 
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
       await control.closeAppWindows(AOpensBWithContext3Test);
@@ -88,13 +81,7 @@ export default () =>
     const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
     it(AOpensBMalformedContext, async () => {
       const receiver = control.contextReceiver("context-received", true);
-      await control.openMockApp(
-        openApp.f.name,
-        undefined,
-        undefined,
-        true,
-        true
-      );
+      await control.openMockApp(openApp.f.name, undefined, undefined, true, true);
       await receiver;
       await control.closeAppWindows(AOpensBMalformedContext);
     });

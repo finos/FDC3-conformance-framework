@@ -1,11 +1,7 @@
 import { assert } from "chai";
 import { openApp, OpenCommonConfig, OpenControl } from "./open-control";
 
-export function getCommonOpenTests(
-  control: OpenControl<any>,
-  documentation: string,
-  config: OpenCommonConfig
-) {
+export function getCommonOpenTests(control: OpenControl<any>, documentation: string, config: OpenCommonConfig) {
   const AOpensB1 = `(${config.prefix}AOpensB1) Can open app B from app A with ${config.target} as config.target`;
   it(AOpensB1, async () => {
     const result = control.contextReceiver("fdc3-conformance-opened");
@@ -16,12 +12,7 @@ export function getCommonOpenTests(
 
   it(`(${config.prefix}AFailsToOpenB) Receive AppNotFound error when config.targeting non-existent ${config.target} as config.target`, async () => {
     try {
-      await control.openMockApp(
-        "ThisAppDoesNotExist",
-        undefined,
-        undefined,
-        true
-      );
+      await control.openMockApp("ThisAppDoesNotExist", undefined, undefined, true);
       assert.fail("No error was thrown", documentation);
     } catch (ex) {
       control.confirmAppNotFoundErrorReceived(ex);
@@ -31,12 +22,7 @@ export function getCommonOpenTests(
   const AOpensBWithContext = `(${config.prefix}AOpensBWithContext) Can open app B from app A with context and ${config.target} as config.target but app B listening for null context`;
   it(AOpensBWithContext, async () => {
     const receiver = control.contextReceiver("context-received");
-    await control.openMockApp(
-      openApp.c.name,
-      undefined,
-      "fdc3.instrument",
-      true
-    );
+    await control.openMockApp(openApp.c.name, undefined, "fdc3.instrument", true);
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeAppWindows(AOpensBWithContext);
   });
@@ -45,7 +31,6 @@ export function getCommonOpenTests(
   it(AOpensBWithSpecificContext, async () => {
     const receiver = control.contextReceiver("context-received");
     await control.openMockApp(openApp.b.name, undefined, "fdc3.instrument");
-
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeAppWindows(AOpensBWithSpecificContext);
   });
@@ -53,13 +38,7 @@ export function getCommonOpenTests(
   const AOpensBMultipleListen = `(${config.prefix}AOpensBMultipleListen) Can open app B from app A with context and ${config.targetMultiple} as config.target but app B has multiple listeners added before the correct one`;
   it(AOpensBMultipleListen, async () => {
     const receiver = control.contextReceiver("context-received");
-    await control.openMockApp(
-      openApp.f.name,
-      undefined,
-      "fdc3.instrument",
-      true
-    );
-
+    await control.openMockApp(openApp.f.name, undefined, "fdc3.instrument", true);
     await receiver;
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeAppWindows(AOpensBMultipleListen);
