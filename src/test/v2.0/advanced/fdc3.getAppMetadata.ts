@@ -6,8 +6,7 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 
 declare let fdc3: DesktopAgent;
-const getMetadataDocs =
-  "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
+const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
 
 export default () =>
   describe("fdc3.getAppMetadata", () => {
@@ -105,17 +104,12 @@ export default () =>
 async function waitForMockAppToClose() {
   let timeout;
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await fdc3.getOrCreateChannel(
-      constants.ControlChannel
-    );
-    const listener = await appControlChannel.addContextListener(
-      "windowClosed",
-      (context) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      }
-    );
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+    const listener = await appControlChannel.addContextListener("windowClosed", (context) => {
+      resolve(context);
+      clearTimeout(timeout);
+      listener.unsubscribe();
+    });
 
     //if no context received reject promise
     const { promise: sleepPromise, timeout: theTimeout } = sleep();
@@ -128,67 +122,46 @@ async function waitForMockAppToClose() {
 }
 
 export function validateAppMetadata(metadata: AppMetadata) {
-  expect(
-    metadata,
-    `no name property found on AppMetadata object${getMetadataDocs}`
-  ).to.have.property("name");
+  expect(metadata, `no name property found on AppMetadata object${getMetadataDocs}`).to.have.property("name");
   if (typeof metadata.name !== "string") {
-    assert.fail(
-      `Incorrect type detected for AppMetadata.name. Expected a string, got ${typeof metadata.name}`
-    );
+    assert.fail(`Incorrect type detected for AppMetadata.name. Expected a string, got ${typeof metadata.name}`);
   }
-  expect(
-    metadata,
-    `no version property found on AppMetadata object${getMetadataDocs}`
-  ).to.have.property("version");
+  expect(metadata, `no version property found on AppMetadata object${getMetadataDocs}`).to.have.property("version");
   expect(
     typeof metadata.version,
     `Incorrect type detected for AppMetadata.version. Expected a string, got ${typeof metadata.version}`
   ).to.be.equal("string");
 
-  expect(
-    metadata,
-    `no title property found on AppMetadata object${getMetadataDocs}`
-  ).to.have.property("title");
+  expect(metadata, `no title property found on AppMetadata object${getMetadataDocs}`).to.have.property("title");
   expect(
     typeof metadata.title,
     `Incorrect type detected for AppMetadata.title. Expected a string, got ${typeof metadata.title}`
   ).to.be.equal("string");
 
-  expect(
-    metadata,
-    `no tooltip property found on AppMetadata object${getMetadataDocs}`
-  ).to.have.property("tooltip");
+  expect(metadata, `no tooltip property found on AppMetadata object${getMetadataDocs}`).to.have.property("tooltip");
   expect(
     typeof metadata.tooltip,
     `Incorrect type detected for AppMetadata.tooltip. Expected a string, got ${typeof metadata.tooltip}`
   ).to.be.equal("string");
 
-  expect(
-    metadata,
-    `no description property found on AppMetadata object${getMetadataDocs}`
-  ).to.have.property("description");
+  expect(metadata, `no description property found on AppMetadata object${getMetadataDocs}`).to.have.property(
+    "description"
+  );
   expect(
     typeof metadata.description,
     `Incorrect type detected for AppMetadata.description. Expected a string, got ${typeof metadata.description}`
   ).to.be.equal("string");
 
-  expect(
-    metadata,
-    `no icons property found on AppMetadata object${getMetadataDocs}`
-  ).to.have.property("icons");
+  expect(metadata, `no icons property found on AppMetadata object${getMetadataDocs}`).to.have.property("icons");
 
   if (!Array.isArray(metadata.icons)) {
-    assert.fail(
-      `Incorrect type detected for AppMetadata.icons. Expected an Array, got ${typeof metadata.description}`
-    );
+    assert.fail(`Incorrect type detected for AppMetadata.icons. Expected an Array, got ${typeof metadata.description}`);
   }
 
   //ensure icons property contains an array of objects
   const isObjectArray = isArrayOfObjects(metadata.icons);
 
-  if (!isObjectArray)
-    assert.fail("AppMetadata.icons should contain an Array of objects");
+  if (!isObjectArray) assert.fail("AppMetadata.icons should contain an Array of objects");
 
   expect(metadata, getMetadataDocs).to.have.property("screenshots");
   expect(
@@ -199,14 +172,11 @@ export function validateAppMetadata(metadata: AppMetadata) {
   //ensure screenshots property contains an array of objects
   const isObjectArray2 = isArrayOfObjects(metadata.screenshots);
 
-  if (!isObjectArray2)
-    assert.fail("AppMetadata.screenshots should contain an Array of objects");
+  if (!isObjectArray2) assert.fail("AppMetadata.screenshots should contain an Array of objects");
 }
 
 const broadcastCloseWindow = async () => {
-  const appControlChannel = await fdc3.getOrCreateChannel(
-    constants.ControlChannel
-  );
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
 

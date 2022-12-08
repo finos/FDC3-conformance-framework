@@ -6,8 +6,7 @@ import { sleep, wait } from "../../../utils";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
-const documentation =
-  "\r\nDocumentation: " + APIDocumentation2_0.desktopAgent + "\r\nCause:";
+const documentation = "\r\nDocumentation: " + APIDocumentation2_0.desktopAgent + "\r\nCause:";
 
 export interface AppControlContext extends Context {
   testId?: string;
@@ -60,10 +59,7 @@ export default () =>
         //Join user channel 1
         await joinChannel(1);
 
-        const channelsAppCommands = [
-          commands.joinUserChannelOne,
-          commands.broadcastInstrumentContext,
-        ];
+        const channelsAppCommands = [commands.joinUserChannelOne, commands.broadcastInstrumentContext];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
@@ -72,10 +68,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -111,10 +104,7 @@ export default () =>
 
         validateListenerObject(listener);
 
-        const channelsAppCommands = [
-          commands.joinUserChannelOne,
-          commands.broadcastInstrumentContext,
-        ];
+        const channelsAppCommands = [commands.joinUserChannelOne, commands.broadcastInstrumentContext];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
@@ -123,10 +113,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -149,10 +136,7 @@ export default () =>
           await fdc3.getOrCreateChannel(constants.ControlChannel)
         );
 
-        const channelsAppCommands = [
-          commands.joinUserChannelOne,
-          commands.broadcastInstrumentContext,
-        ];
+        const channelsAppCommands = [commands.joinUserChannelOne, commands.broadcastInstrumentContext];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
@@ -161,10 +145,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Join user channel 1
         await joinChannel(1);
@@ -203,13 +184,10 @@ export default () =>
         let receivedContext = false;
 
         //Add context listener
-        listener = await fdc3.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-            receivedContext = true;
-          }
-        );
+        listener = await fdc3.addContextListener("fdc3.instrument", (context) => {
+          expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
+          receivedContext = true;
+        });
 
         validateListenerObject(listener);
 
@@ -229,10 +207,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -261,13 +236,10 @@ export default () =>
         let receivedContext = false;
 
         //Add context listener
-        listener = await fdc3.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-            receivedContext = true;
-          }
-        );
+        listener = await fdc3.addContextListener("fdc3.instrument", (context) => {
+          expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
+          receivedContext = true;
+        });
 
         validateListenerObject(listener);
 
@@ -284,10 +256,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -323,10 +292,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -334,13 +300,10 @@ export default () =>
         let receivedContext = false;
 
         //Add context listener
-        listener = await fdc3.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-            receivedContext = true;
-          }
-        );
+        listener = await fdc3.addContextListener("fdc3.instrument", (context) => {
+          expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
+          receivedContext = true;
+        });
 
         validateListenerObject(listener);
 
@@ -378,10 +341,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -392,13 +352,10 @@ export default () =>
         let receivedContext = false;
 
         //Add context listener
-        listener = await fdc3.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-            receivedContext = true;
-          }
-        );
+        listener = await fdc3.addContextListener("fdc3.instrument", (context) => {
+          expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
+          receivedContext = true;
+        });
 
         validateListenerObject(listener);
 
@@ -425,10 +382,7 @@ export default () =>
 
         function checkIfBothContextsReceived() {
           if (contextTypes.length === 2) {
-            if (
-              !contextTypes.includes("fdc3.contact") ||
-              !contextTypes.includes("fdc3.instrument")
-            ) {
+            if (!contextTypes.includes("fdc3.contact") || !contextTypes.includes("fdc3.instrument")) {
               assert.fail("Incorrect context received", errorMessage);
             } else {
               receivedContext = true;
@@ -437,13 +391,10 @@ export default () =>
         }
 
         //Add context listener
-        listener = await fdc3.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            contextTypes.push(context.type);
-            checkIfBothContextsReceived();
-          }
-        );
+        listener = await fdc3.addContextListener("fdc3.instrument", (context) => {
+          contextTypes.push(context.type);
+          checkIfBothContextsReceived();
+        });
 
         validateListenerObject(listener);
 
@@ -471,10 +422,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -492,13 +440,10 @@ export default () =>
         let timeout;
 
         //Add fdc3.instrument context listener
-        listener = await fdc3.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            clearTimeout(timeout);
-            assert.fail(`${errorMessage} ${context.type} context received`);
-          }
-        );
+        listener = await fdc3.addContextListener("fdc3.instrument", (context) => {
+          clearTimeout(timeout);
+          assert.fail(`${errorMessage} ${context.type} context received`);
+        });
 
         validateListenerObject(listener);
 
@@ -524,10 +469,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Give listener time to receive context
         const { promise: sleepPromise, timeout: theTimeout } = sleep();
@@ -565,10 +507,7 @@ export default () =>
         assert.fail("Listener undefined", errorMessage);
       }
 
-      const channelsAppCommands = [
-        commands.joinUserChannelOne,
-        commands.broadcastInstrumentContext,
-      ];
+      const channelsAppCommands = [commands.joinUserChannelOne, commands.broadcastInstrumentContext];
 
       const channelsAppConfig: ChannelsAppConfig = {
         fdc3ApiVersion: "2.0",
@@ -577,10 +516,7 @@ export default () =>
       };
 
       //Open ChannelsApp then execute commands in order
-      await fdc3.open(
-        { appId: "ChannelsAppId" },
-        buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-      );
+      await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
       //Wait for ChannelsApp to execute
       await resolveExecutionCompleteListener;
@@ -593,21 +529,15 @@ export default () =>
       let timeout;
 
       //Add fdc3.instrument context listener
-      listener = await fdc3.addContextListener(
-        "fdc3.instrument",
-        async (context) => {
-          assert.fail(`${errorMessage} ${context.type} context received`);
-        }
-      );
+      listener = await fdc3.addContextListener("fdc3.instrument", async (context) => {
+        assert.fail(`${errorMessage} ${context.type} context received`);
+      });
 
       //ChannelsApp joins a channel and then joins another
       await joinChannel(1);
       await joinChannel(2);
 
-      const channelsAppCommands = [
-        commands.joinUserChannelOne,
-        commands.broadcastInstrumentContext,
-      ];
+      const channelsAppCommands = [commands.joinUserChannelOne, commands.broadcastInstrumentContext];
 
       const channelsAppConfig: ChannelsAppConfig = {
         fdc3ApiVersion: "2.0",
@@ -615,10 +545,7 @@ export default () =>
       };
 
       //Open ChannelsApp then execute commands in order
-      await fdc3.open(
-        { appId: "ChannelsAppId" },
-        buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-      );
+      await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
       //Give listener time to receive context
       const { promise: sleepPromise, timeout: theTimeout } = sleep();
@@ -644,10 +571,7 @@ export default () =>
       //App A leaves channel 1
       await fdc3.leaveCurrentChannel();
 
-      const channelsAppCommands = [
-        commands.joinUserChannelOne,
-        commands.broadcastInstrumentContext,
-      ];
+      const channelsAppCommands = [commands.joinUserChannelOne, commands.broadcastInstrumentContext];
 
       const channelsAppConfig: ChannelsAppConfig = {
         fdc3ApiVersion: "2.0",
@@ -656,10 +580,7 @@ export default () =>
       };
 
       //Open ChannelsApp then execute commands in order
-      await fdc3.open(
-        { appId: "ChannelsAppId" },
-        buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-      );
+      await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
       //Give listener time to receive context
       const { promise: sleepPromise, timeout: theTimeout } = sleep();
@@ -694,20 +615,14 @@ export default () =>
         let receivedContext = false;
 
         //Add context listener
-        listener = await testChannel.addContextListener(
-          null,
-          async (context) => {
-            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-            receivedContext = true;
-          }
-        );
+        listener = await testChannel.addContextListener(null, async (context) => {
+          expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
+          receivedContext = true;
+        });
 
         validateListenerObject(listener);
 
-        const channelsAppCommands = [
-          commands.retrieveTestAppChannel,
-          commands.broadcastInstrumentContext,
-        ];
+        const channelsAppCommands = [commands.retrieveTestAppChannel, commands.broadcastInstrumentContext];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
@@ -716,19 +631,14 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
 
         //Fail if no context received
         if (!receivedContext) {
-          assert.fail(
-            `At least one context was not received!\n${errorMessage}`
-          );
+          assert.fail(`At least one context was not received!\n${errorMessage}`);
         }
       });
 
@@ -747,10 +657,7 @@ export default () =>
         //Retrieve an app channel
         const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
-        const channelsAppCommands = [
-          commands.retrieveTestAppChannel,
-          commands.broadcastInstrumentContext,
-        ];
+        const channelsAppCommands = [commands.retrieveTestAppChannel, commands.broadcastInstrumentContext];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
@@ -759,10 +666,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         let receivedContext = false;
 
@@ -799,13 +703,10 @@ export default () =>
         const testChannel = await fdc3.getOrCreateChannel("test-channel");
 
         //Add context listener
-        listener = await testChannel.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
-            receivedContext = true;
-          }
-        );
+        listener = await testChannel.addContextListener("fdc3.instrument", (context) => {
+          expect(context.type).to.be.equals("fdc3.instrument", errorMessage);
+          receivedContext = true;
+        });
 
         validateListenerObject(listener);
 
@@ -822,10 +723,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -842,24 +740,16 @@ export default () =>
         const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves a different app channel\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
         let timeout;
         //Retrieve an app channel
-        const testChannel = await fdc3.getOrCreateChannel(
-          "a-different-test-channel"
-        );
+        const testChannel = await fdc3.getOrCreateChannel("a-different-test-channel");
 
         //Add context listener
-        listener = await testChannel.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            assert.fail(`${errorMessage} ${context.type} context received`);
-          }
-        );
+        listener = await testChannel.addContextListener("fdc3.instrument", (context) => {
+          assert.fail(`${errorMessage} ${context.type} context received`);
+        });
 
         validateListenerObject(listener);
 
-        const channelsAppCommands = [
-          commands.retrieveTestAppChannel,
-          commands.broadcastInstrumentContext,
-        ];
+        const channelsAppCommands = [commands.retrieveTestAppChannel, commands.broadcastInstrumentContext];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
@@ -867,10 +757,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Give listener time to receive context
         const { promise: sleepPromise, timeout: theTimeout } = sleep();
@@ -916,10 +803,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -940,34 +824,23 @@ export default () =>
         //Retrieve an app channel
         let testChannel = await fdc3.getOrCreateChannel("test-channel");
 
-        listener = await testChannel.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            assert.fail(`${errorMessage} ${context.type} context received`);
-          }
-        );
+        listener = await testChannel.addContextListener("fdc3.instrument", (context) => {
+          assert.fail(`${errorMessage} ${context.type} context received`);
+        });
 
         validateListenerObject(listener);
 
         //App A retrieves a different app channel
-        let testChannel2 = await fdc3.getOrCreateChannel(
-          "a-different-test-channel"
-        );
+        let testChannel2 = await fdc3.getOrCreateChannel("a-different-test-channel");
 
         //Add context listener
-        listener2 = await testChannel2.addContextListener(
-          "fdc3.instrument",
-          (context) => {
-            assert.fail(`${errorMessage} ${context.type} context received`);
-          }
-        );
+        listener2 = await testChannel2.addContextListener("fdc3.instrument", (context) => {
+          assert.fail(`${errorMessage} ${context.type} context received`);
+        });
 
         validateListenerObject(listener2);
 
-        const channelsAppCommands = [
-          commands.retrieveTestAppChannel,
-          commands.broadcastInstrumentContext,
-        ];
+        const channelsAppCommands = [commands.retrieveTestAppChannel, commands.broadcastInstrumentContext];
 
         const channelsAppConfig: ChannelsAppConfig = {
           fdc3ApiVersion: "2.0",
@@ -976,10 +849,7 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsAppId" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -1005,22 +875,14 @@ export default () =>
         };
 
         //Open ChannelsApp then execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsApp" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsApp" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //get contexts from ChannelsApp
         const context = await testChannel.getCurrentContext("fdc3.instrument");
         expect(context.name).to.be.equals("History-item-1", errorMessage);
 
-        const contactContext = await testChannel.getCurrentContext(
-          "fdc3.contact"
-        );
-        expect(contactContext.name).to.be.equals(
-          "History-item-1",
-          errorMessage
-        );
+        const contactContext = await testChannel.getCurrentContext("fdc3.contact");
+        expect(contactContext.name).to.be.equals("History-item-1", errorMessage);
 
         const contextLatest = await testChannel.getCurrentContext();
         expect(contextLatest.type).to.be.equals("fdc3.contact", errorMessage);
@@ -1054,10 +916,7 @@ export default () =>
         };
 
         //Open ChannelsApp and execute commands in order
-        await fdc3.open(
-          { appId: "ChannelsApp" },
-          buildChannelsAppContext(channelsAppCommands, channelsAppConfig)
-        );
+        await fdc3.open({ appId: "ChannelsApp" }, buildChannelsAppContext(channelsAppCommands, channelsAppConfig));
 
         //Wait for ChannelsApp to execute
         await resolveExecutionCompleteListener;
@@ -1087,10 +946,7 @@ export default () =>
     };
 
     function validateListenerObject(listenerObject) {
-      assert.isTrue(
-        typeof listenerObject === "object",
-        "No listener object found"
-      );
+      assert.isTrue(typeof listenerObject === "object", "No listener object found");
       expect(typeof listenerObject.unsubscribe).to.be.equals(
         "function",
         "Listener does not contain an unsubscribe method"
@@ -1134,24 +990,17 @@ export default () =>
       }
     }
 
-    const waitForContext = (
-      contextType: string,
-      testId: string,
-      channel?: Channel
-    ): Promise<Context> => {
+    const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<Context> => {
       let executionListener: Listener;
       return new Promise<Context>(async (resolve) => {
         console.log(
-          Date.now() +
-            ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
+          Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
         );
 
         const handler = (context: AppControlContext) => {
           if (testId) {
             if (testId == context.testId) {
-              console.log(
-                Date.now() + ` Received ${contextType} for test: ${testId}`
-              );
+              console.log(Date.now() + ` Received ${contextType} for test: ${testId}`);
               resolve(context);
               if (executionListener) executionListener.unsubscribe();
             } else {
@@ -1161,34 +1010,22 @@ export default () =>
               );
             }
           } else {
-            console.log(
-              Date.now() +
-                ` Received (without testId) "${contextType}" for test: "${testId}"`
-            );
+            console.log(Date.now() + ` Received (without testId) "${contextType}" for test: "${testId}"`);
             resolve(context);
             if (executionListener) executionListener.unsubscribe();
           }
         };
 
         if (channel === undefined) {
-          executionListener = await fdc3.addContextListener(
-            contextType,
-            handler
-          );
+          executionListener = await fdc3.addContextListener(contextType, handler);
         } else {
-          executionListener = await channel.addContextListener(
-            contextType,
-            handler
-          );
+          executionListener = await channel.addContextListener(contextType, handler);
           //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
           const ccHandler = async (context: AppControlContext) => {
             if (context) {
               if (testId) {
                 if (testId == context?.testId && context?.type == contextType) {
-                  console.log(
-                    Date.now() +
-                      ` Received "${contextType}" (from current context) for test: "${testId}"`
-                  );
+                  console.log(Date.now() + ` Received "${contextType}" (from current context) for test: "${testId}"`);
                   if (executionListener) executionListener.unsubscribe();
                   resolve(context);
                 } //do not warn as it will be ignoring mismatches which will be common
@@ -1198,23 +1035,12 @@ export default () =>
                       ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
                         context ? "" : "NOT "
                       } exist, 
-    had testId: "${context?.testId}" (${
-                        testId == context?.testId
-                          ? "did match"
-                          : "did NOT match"
-                      }) 
-    and type "${context?.type}" (${
-                        context?.type == contextType
-                          ? "did match"
-                          : "did NOT match"
-                      })`
+    had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"}) 
+    and type "${context?.type}" (${context?.type == contextType ? "did match" : "did NOT match"})`
                   );
                 }
               } else {
-                console.log(
-                  Date.now() +
-                    ` Received "${contextType}" (from current context) for an unspecified test`
-                );
+                console.log(Date.now() + ` Received "${contextType}" (from current context) for an unspecified test`);
                 if (executionListener) executionListener.unsubscribe();
                 resolve(context);
               }
@@ -1233,7 +1059,7 @@ export type ChannelsAppContext = Context & {
     notifyAppAOnCompletion: boolean;
     historyItems: number;
     fdc3ApiVersion: string;
-    channelId?: string
+    channelId?: string;
   };
 };
 
@@ -1245,10 +1071,7 @@ export type ChannelsAppConfig = {
   channelId?: string;
 };
 
-function buildChannelsAppContext(
-  mockAppCommands: string[],
-  config: ChannelsAppConfig
-): ChannelsAppContext {
+function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppConfig): ChannelsAppContext {
   return {
     type: "channelsAppContext",
     commands: mockAppCommands,
@@ -1257,7 +1080,7 @@ function buildChannelsAppContext(
       testId: config.testId,
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
-      channelId: config.channelId
+      channelId: config.channelId,
     },
   };
 }

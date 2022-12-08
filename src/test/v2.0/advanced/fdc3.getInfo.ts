@@ -5,18 +5,12 @@ import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
 import { ImplementationMetadata } from "fdc3_2_0";
 import { validateAppMetadata } from "./fdc3.getAppMetadata";
-import {
-  MetadataAppCommandContext,
-  MetadataContext,
-  MetadataAppCommand,
-} from "./fdc3.findInstances";
+import { MetadataAppCommandContext, MetadataContext, MetadataAppCommand } from "./fdc3.findInstances";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
-const getInfoDocs =
-  "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
-const getMetadataDocs =
-  "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause";
+const getInfoDocs = "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
+const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause";
 
 export default () =>
   describe("fdc3.getInfo", () => {
@@ -29,29 +23,20 @@ export default () =>
       try {
         await fdc3.getInfo();
       } catch (ex) {
-        assert.fail(
-          "\r\nDocumentation: " +
-            APIDocumentation2_0.getInfo +
-            "\r\nCause" +
-            (ex.message ?? ex)
-        );
+        assert.fail("\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause" + (ex.message ?? ex));
       }
     });
 
     it("(2.0-GetInfo1) Returns a valid ImplementationMetadata object", async () => {
       try {
         const implMetadata = await fdc3.getInfo();
-        expect(
-          implMetadata,
-          `ImplementationMetadata did not have property fdc3Version${getInfoDocs}`
-        ).to.have.property("fdc3Version");
-        expect(parseFloat(implMetadata.fdc3Version)).to.be.greaterThanOrEqual(
-          2
+        expect(implMetadata, `ImplementationMetadata did not have property fdc3Version${getInfoDocs}`).to.have.property(
+          "fdc3Version"
         );
-        expect(
-          implMetadata,
-          `ImplementationMetadata did not have property provider${getInfoDocs}`
-        ).to.have.property("provider");
+        expect(parseFloat(implMetadata.fdc3Version)).to.be.greaterThanOrEqual(2);
+        expect(implMetadata, `ImplementationMetadata did not have property provider${getInfoDocs}`).to.have.property(
+          "provider"
+        );
         expect(implMetadata.provider).to.not.be.equal("");
         expect(
           implMetadata.optionalFeatures,
@@ -88,19 +73,13 @@ export default () =>
       let timeout;
       const wrapper = wrapPromise();
 
-      appControlChannel.addContextListener(
-        "metadataContext",
-        async (context: MetadataContext) => {
-          implMetadata = context.implMetadata;
-          wrapper.resolve();
-          clearTimeout(timeout);
-        }
-      );
+      appControlChannel.addContextListener("metadataContext", async (context: MetadataContext) => {
+        implMetadata = context.implMetadata;
+        wrapper.resolve();
+        clearTimeout(timeout);
+      });
 
-      const appIdentifier = await fdc3.open(
-        { appId: "MetadataAppId" },
-        metadataAppContext
-      );
+      const appIdentifier = await fdc3.open({ appId: "MetadataAppId" }, metadataAppContext);
 
       //fail if no metadataContext received
       timeout = await window.setTimeout(() => {
@@ -111,20 +90,15 @@ export default () =>
       await wrapper.promise;
 
       //validate AppIdentifier
-      expect(
-        appIdentifier,
-        `AppIdentifier did not have property appId${getInfoDocs}`
-      ).to.have.property("appId");
-      expect(
-        appIdentifier,
-        `AppIdentifier did not have property instanceId${getInfoDocs}`
-      ).to.have.property("instanceId");
+      expect(appIdentifier, `AppIdentifier did not have property appId${getInfoDocs}`).to.have.property("appId");
+      expect(appIdentifier, `AppIdentifier did not have property instanceId${getInfoDocs}`).to.have.property(
+        "instanceId"
+      );
 
       //validate ImplementationMetadata
-      expect(
-        implMetadata,
-        `ImplementationMetadata did not have property appMetadata${getInfoDocs}`
-      ).to.have.property("appMetadata");
+      expect(implMetadata, `ImplementationMetadata did not have property appMetadata${getInfoDocs}`).to.have.property(
+        "appMetadata"
+      );
       expect(
         implMetadata.appMetadata,
         `ImplementationMetadata did not have property appId${getInfoDocs}`
@@ -154,14 +128,11 @@ export default () =>
       let timeout;
       const messageReceived = new Promise<Context>(async (resolve, reject) => {
         const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-        const listener = await appControlChannel.addContextListener(
-          "windowClosed",
-          (context) => {
-            resolve(context);
-            clearTimeout(timeout);
-            listener.unsubscribe();
-          }
-        );
+        const listener = await appControlChannel.addContextListener("windowClosed", (context) => {
+          resolve(context);
+          clearTimeout(timeout);
+          listener.unsubscribe();
+        });
 
         //if no context received reject promise
         const { promise: sleepPromise, timeout: theTimeout } = sleep();

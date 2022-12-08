@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import {APIDocumentation2_0} from "../apiDocuments-2.0";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { openApp } from "../../common/open-control";
 import { OpenControl2_0 } from "./open-support-2.0";
@@ -9,8 +9,7 @@ const control = new OpenControl2_0();
 
 export default () =>
   describe("fdc3.open", () => {
-    const AOpensB1 =
-      "(2.0-AOpensB1) Can open app B from app A with AppIdentifier (appId) as target";
+    const AOpensB1 = "(2.0-AOpensB1) Can open app B from app A with AppIdentifier (appId) as target";
     it(AOpensB1, async () => {
       const result = control.contextReceiver("fdc3-conformance-opened");
       await control.openMockApp(openApp.b.id);
