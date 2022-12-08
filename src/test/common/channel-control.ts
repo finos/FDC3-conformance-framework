@@ -1,3 +1,5 @@
+import { CommonContext } from "./common-types";
+
 /**
  * This interface contains everything you need to do to control channels/context listeners in either 1.2 or 2.0 FDC3
  */
@@ -49,19 +51,6 @@ export interface ChannelControl<X, Y> {
 
   // helpers
   getRandomId(): string;
-}
-
-/** same in 1.2 and 2.0 */
-export interface CommonContext {
-  id?: {
-    [key: string]: string;
-  };
-  name?: string;
-  type: string;
-}
-
-export interface AppControlContext extends CommonContext {
-  testId?: string;
 }
 
 export type ChannelsAppContext = CommonContext & {

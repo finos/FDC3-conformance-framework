@@ -2,7 +2,7 @@ import { ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { IntentControl2_0 } from "./raiseIntent-support-2.0";
+import { IntentControl2_0 } from "./intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
 const control = new IntentControl2_0();

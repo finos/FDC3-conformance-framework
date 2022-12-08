@@ -1,9 +1,9 @@
 import { ChannelError, PrivateChannel } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { wait } from "../../../utils";
-import { IntentControl2_0, IntentResultType } from "./raiseIntent-support-2.0";
+import { RaiseIntentControl2_0, IntentResultType, IntentApp } from "./intent-support-2.0";
 
-const control = new IntentControl2_0();
+const control = new RaiseIntentControl2_0();
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
@@ -20,7 +20,7 @@ export default () =>
       await control.listenForError();
       const result = control.receiveContext("fdc3-intent-a-opened");
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX");
-      control.validateIntentResolution("IntentAppAId", intentResolution);
+      control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
     });
 
@@ -30,9 +30,9 @@ export default () =>
       await control.listenForError();
       const result = control.receiveContext("fdc3-intent-a-opened");
       const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextX", {
-        appId: "IntentAppBId",
+        appId: IntentApp.IntentAppB,
       });
-      control.validateIntentResolution("IntentAppBId", intentResolution);
+      control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       await result;
     });
 
@@ -40,12 +40,12 @@ export default () =>
       "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
       await control.listenForError();
-      const appIdentifier = await control.openIntentApp("IntentAppAId");
+      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
       const result = control.receiveContext("fdc3-intent-a-opened");
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);
-      control.validateIntentResolution("IntentAppAId", intentResolution);
+      control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
-      const instances = await control.findInstances("IntentAppAId");
+      const instances = await control.findInstances(IntentApp.IntentAppA);
       control.validateInstances(instances, 1, appIdentifier.instanceId);
     });
 
@@ -53,16 +53,16 @@ export default () =>
       "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
       await control.listenForError();
-      const appIdentifier = await control.openIntentApp("IntentAppAId");
-      const instances = await control.findInstances("IntentAppAId");
+      const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
+      const instances = await control.findInstances(IntentApp.IntentAppA);
       control.validateInstances(instances, 1, appIdentifier.instanceId);
       const result = control.receiveContext("fdc3-intent-a-opened");
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);
-      control.validateIntentResolution("IntentAppAId", intentResolution);
+      control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
 
       //make sure no other instance is started
-      const instances2 = await control.findInstances("IntentAppAId");
+      const instances2 = await control.findInstances(IntentApp.IntentAppA);
       expect(instances2.length).to.be.equal(1);
     });
 
@@ -96,7 +96,8 @@ export default () =>
         undefined,
         { key: privChan2.id }
       );
-      control.validateIntentResolution("IntentAppFId", intentResolution);
+
+      control.validateIntentResolution(IntentApp.IntentAppF, intentResolution);
       let result = control.getIntentResult(intentResolution);
       await wait(300);
       await result;
@@ -108,8 +109,10 @@ export default () =>
     it(PrivateChannelsLifecycleEvents, async () => {
       await control.listenForError();
       let onUnsubscribeReceiver = control.receiveContext("onUnsubscribeTriggered");
-      const intentResolution = await control.raiseIntent("kTestingIntent", "testContextX", { appId: "IntentAppKId" });
-      control.validateIntentResolution("IntentAppKId", intentResolution);
+      const intentResolution = await control.raiseIntent("kTestingIntent", "testContextX", {
+        appId: IntentApp.IntentAppK,
+      });
+      control.validateIntentResolution(IntentApp.IntentAppK, intentResolution);
       let result = await control.getIntentResult(intentResolution);
       control.validateIntentResult(result, IntentResultType.PrivateChannel);
       let listener = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5);

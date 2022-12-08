@@ -10,7 +10,7 @@ import { ContextWithError } from "../../common/common-types";
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
-export class IntentControl2_0 {
+export class RaiseIntentControl2_0 {
   async receiveContext(contextType: string, waitTime?: number, expectedId?: string): Promise<Context> {
     let timeout;
     const appControlChannel = await getOrCreateChannel("app-control");
@@ -297,4 +297,18 @@ export enum IntentResultType {
   PrivateChannel = "PrivateChannel",
   Context = "Context",
   Void = "Void",
+}
+
+export enum IntentApp {
+  IntentAppA = "IntentAppAId",
+  IntentAppB = "IntentAppBId",
+  IntentAppC = "IntentAppCId",
+  IntentAppD = "IntentAppDId",
+  IntentAppE = "IntentAppEId",
+  IntentAppF = "IntentAppFId",
+  IntentAppG = "IntentAppGId",
+  IntentAppH = "IntentAppHId",
+  IntentAppI = "IntentAppIId",
+  IntentAppJ = "IntentAppJId",
+  IntentAppK = "IntentAppKId",
 }
