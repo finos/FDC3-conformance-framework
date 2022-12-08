@@ -1,12 +1,5 @@
 import { assert, expect } from "chai";
-import {
-  AppIdentifier,
-  Channel,
-  IntentResolution,
-  IntentResult,
-  Listener,
-  PrivateChannel,
-} from "fdc3_2_0";
+import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, PrivateChannel } from "fdc3_2_0";
 import { Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
@@ -16,34 +9,24 @@ import { IntentUtilityContext } from "../../v2.0/common-types";
 import { ContextWithError } from "../common-types";
 
 declare let fdc3: DesktopAgent;
-const raiseIntentDocs =
-  "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
+const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class IntentControl2_0 {
-  async receiveContext(
-    contextType: string,
-    waitTime?: number,
-    expectedId?: string
-  ): Promise<Context> {
+  async receiveContext(contextType: string, waitTime?: number, expectedId?: string): Promise<Context> {
     let timeout;
     const appControlChannel = await getOrCreateChannel("app-control");
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      const listener = await appControlChannel.addContextListener(
-        contextType,
-        (context) => {
-          if (expectedId) {
-            expect(context.id).to.be.equal(expectedId);
-          }
-          resolve(context);
-          clearTimeout(timeout);
-          listener.unsubscribe();
+      const listener = await appControlChannel.addContextListener(contextType, (context) => {
+        if (expectedId) {
+          expect(context.id).to.be.equal(expectedId);
         }
-      );
+        resolve(context);
+        clearTimeout(timeout);
+        listener.unsubscribe();
+      });
 
       //if no context received reject promise
-      const { promise: sleepPromise, timeout: theTimeout } = sleep(
-        waitTime ?? undefined
-      );
+      const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? undefined);
       timeout = theTimeout;
       await sleepPromise;
       reject("No context received from app B");
@@ -56,9 +39,7 @@ export class IntentControl2_0 {
     try {
       return await fdc3.open({ appId: appId });
     } catch (ex) {
-      assert.fail(
-        `Error while attempting to open the mock app: ${ex.message ?? ex}`
-      );
+      assert.fail(`Error while attempting to open the mock app: ${ex.message ?? ex}`);
     }
   }
 
@@ -97,9 +78,7 @@ export class IntentControl2_0 {
         return await fdc3.raiseIntent(intent, context);
       }
     } catch (ex) {
-      assert.fail(
-        `Error while attempting to raise intent: ${ex.message ?? ex}`
-      );
+      assert.fail(`Error while attempting to raise intent: ${ex.message ?? ex}`);
     }
   }
 
@@ -107,9 +86,7 @@ export class IntentControl2_0 {
     try {
       return await fdc3.findInstances({ appId: appId });
     } catch (ex) {
-      assert.fail(
-        `Error while attempting to find instances: ${ex.message ?? ex}`
-      );
+      assert.fail(`Error while attempting to find instances: ${ex.message ?? ex}`);
     }
   }
 
@@ -118,19 +95,14 @@ export class IntentControl2_0 {
     let timeout = this.failIfIntentResultPromiseNotReceived();
     let intentResult = intentResolution.getResult().catch((ex) => {
       assert.fail(
-        `Error while attempting to retrieve the IntentResult from the IntentResolution object: ${
-          ex.message ?? ex
-        }`
+        `Error while attempting to retrieve the IntentResult from the IntentResolution object: ${ex.message ?? ex}`
       );
     });
     clearTimeout(timeout);
     return intentResult;
   }
 
-  async privateChannelBroadcast(
-    privateChannel: PrivateChannel,
-    contextType: string
-  ): Promise<void> {
+  async privateChannelBroadcast(privateChannel: PrivateChannel, contextType: string): Promise<void> {
     await privateChannel.broadcast({ type: contextType });
   }
 
@@ -144,11 +116,7 @@ export class IntentControl2_0 {
     return timeout;
   }
 
-  validateIntentResult(
-    intentResult,
-    expectedIntentResultType: IntentResultType,
-    expectedContextType?: string
-  ) {
+  validateIntentResult(intentResult, expectedIntentResultType: IntentResultType, expectedContextType?: string) {
     expect(typeof intentResult).to.be.equal("object");
 
     switch (expectedIntentResultType) {
@@ -166,10 +134,8 @@ export class IntentControl2_0 {
         }
       }
       case IntentResultType.Void: {
-        expect(
-          intentResult,
-          "The promise received by Test from resolution.getResult() should resolve to void"
-        ).to.be.empty;
+        expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be
+          .empty;
         break;
       }
       case IntentResultType.Channel: {
@@ -192,43 +158,26 @@ export class IntentControl2_0 {
     }
   }
 
-  validateInstances(
-    instances: AppIdentifier[],
-    expectedInstances: number,
-    expectedInstanceId?: string
-  ): void {
+  validateInstances(instances: AppIdentifier[], expectedInstances: number, expectedInstanceId?: string): void {
     expect(instances.length).to.be.equal(expectedInstances);
     expect(instances[0].instanceId).to.be.equal(expectedInstanceId);
   }
 
-  validateIntentResolution = (
-    appId: string,
-    intentResolution: IntentResolution
-  ) => {
+  validateIntentResolution = (appId: string, intentResolution: IntentResolution) => {
     if (typeof intentResolution.source === "object") {
-      expect(intentResolution.source as AppIdentifier).to.have.property(
-        "appId"
-      );
-      expect(intentResolution.source as AppIdentifier).to.have.property(
-        "instanceId"
-      );
+      expect(intentResolution.source as AppIdentifier).to.have.property("appId");
+      expect(intentResolution.source as AppIdentifier).to.have.property("instanceId");
       expect(typeof intentResolution.source.instanceId).to.be.equal("string");
       expect(intentResolution.source.instanceId).to.not.be.equal("");
-      expect((intentResolution.source as AppIdentifier).appId).to.eq(
-        appId,
-        raiseIntentDocs
-      );
+      expect((intentResolution.source as AppIdentifier).appId).to.eq(appId, raiseIntentDocs);
     } else assert.fail("Invalid intent resolution object");
   };
 
   async listenForError() {
     const appControlChannel = await getOrCreateChannel("app-control");
-    appControlChannel.addContextListener(
-      "error",
-      (context: ContextWithError) => {
-        assert.fail(context.errorMessage);
-      }
-    );
+    appControlChannel.addContextListener("error", (context: ContextWithError) => {
+      assert.fail(context.errorMessage);
+    });
   }
 
   async receiveContextStreamFromMockApp(
@@ -240,19 +189,16 @@ export class IntentControl2_0 {
     const wrapper = wrapPromise();
 
     //receive multiple contexts in succession from intent-k
-    const listener = await privChannel.addContextListener(
-      "testContextZ",
-      (context: IntentUtilityContext) => {
-        expect(context.number).to.be.equal(streamedNumberStart);
-        streamedNumberStart += 1;
-        expect(context.type).to.be.equal("testContextZ");
+    const listener = await privChannel.addContextListener("testContextZ", (context: IntentUtilityContext) => {
+      expect(context.number).to.be.equal(streamedNumberStart);
+      streamedNumberStart += 1;
+      expect(context.type).to.be.equal("testContextZ");
 
-        if (streamedNumberStart === streamedNumberEnd) {
-          wrapper.resolve;
-          clearTimeout(timeout);
-        }
+      if (streamedNumberStart === streamedNumberEnd) {
+        wrapper.resolve;
+        clearTimeout(timeout);
       }
-    );
+    });
 
     timeout = await window.setTimeout(() => {
       wrapper.reject(
@@ -288,24 +234,15 @@ const broadcastCloseWindow = async (currentTest) => {
   } as AppControlContext);
 };
 
-const waitForContext = (
-  contextType: string,
-  testId: string,
-  channel?: Channel
-): Promise<Context> => {
+const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<Context> => {
   let executionListener: Listener;
   return new Promise<Context>(async (resolve) => {
-    console.log(
-      Date.now() +
-        ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
-    );
+    console.log(Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`);
 
     const handler = (context: AppControlContext) => {
       if (testId) {
         if (testId == context.testId) {
-          console.log(
-            Date.now() + ` Received ${contextType} for test: ${testId}`
-          );
+          console.log(Date.now() + ` Received ${contextType} for test: ${testId}`);
           resolve(context);
           if (executionListener) executionListener.unsubscribe();
         } else {
@@ -315,10 +252,7 @@ const waitForContext = (
           );
         }
       } else {
-        console.log(
-          Date.now() +
-            ` Received (without testId) "${contextType}" for test: "${testId}"`
-        );
+        console.log(Date.now() + ` Received (without testId) "${contextType}" for test: "${testId}"`);
         resolve(context);
         if (executionListener) executionListener.unsubscribe();
       }
@@ -327,19 +261,13 @@ const waitForContext = (
     if (channel === undefined) {
       executionListener = await fdc3.addContextListener(contextType, handler);
     } else {
-      executionListener = await channel.addContextListener(
-        contextType,
-        handler
-      );
+      executionListener = await channel.addContextListener(contextType, handler);
       //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
       const ccHandler = async (context: AppControlContext) => {
         if (context) {
           if (testId) {
             if (testId == context?.testId && context?.type == contextType) {
-              console.log(
-                Date.now() +
-                  ` Received "${contextType}" (from current context) for test: "${testId}"`
-              );
+              console.log(Date.now() + ` Received "${contextType}" (from current context) for test: "${testId}"`);
               if (executionListener) executionListener.unsubscribe();
               resolve(context);
             } //do not warn as it will be ignoring mismatches which will be common
@@ -349,19 +277,12 @@ const waitForContext = (
                   ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
                     context ? "" : "NOT "
                   } exist, 
-had testId: "${context?.testId}" (${
-                    testId == context?.testId ? "did match" : "did NOT match"
-                  }) 
-and type "${context?.type}" (${
-                    context?.type == contextType ? "did match" : "did NOT match"
-                  })`
+had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"}) 
+and type "${context?.type}" (${context?.type == contextType ? "did match" : "did NOT match"})`
               );
             }
           } else {
-            console.log(
-              Date.now() +
-                ` Received "${contextType}" (from current context) for an unspecified test`
-            );
+            console.log(Date.now() + ` Received "${contextType}" (from current context) for an unspecified test`);
             if (executionListener) executionListener.unsubscribe();
             resolve(context);
           }
