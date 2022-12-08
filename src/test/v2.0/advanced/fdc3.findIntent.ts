@@ -60,7 +60,7 @@ export default () =>
       );
     });
 
-    it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextX'", async () => {
+    it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextY'", async () => {
       const appIntent = await fdc3.findIntent("sharedTestingIntent2", { type: "testContextY" });
       validateAppIntent(
         appIntent,

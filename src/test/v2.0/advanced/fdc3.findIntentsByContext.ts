@@ -1,7 +1,8 @@
-import { ResolveError } from "fdc3_2_0";
+import { AppIntent, ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
+import { IntentApp } from "./intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
 const findIntentsByContextDocs = "\r\nDocumentation: " + APIDocumentation2_0.findIntentsByContext + "\r\nCause";
@@ -13,9 +14,7 @@ export default () =>
   describe("fdc3.findIntentsByContext", () => {
     it("(2.0-FindIntentByContextSingleContext) Should find intents by context 'testContextX'", async () => {
       try {
-        const intents = await fdc3.findIntentsByContext({
-          type: "testContextX",
-        });
+        const intents = await fdc3.findIntentsByContext({ type: "testContextX" });
         expect(intents).to.have.length(4, findIntentsByContextDocs);
 
         const intentNames = intents.map((appIntent) => appIntent.intent.name);
@@ -24,22 +23,10 @@ export default () =>
           findIntentsByContextDocs
         );
 
-        const aTestingIntent = intents.find((appIntent) => appIntent.intent.name === "aTestingIntent");
-        expect(aTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
-        expect(aTestingIntent.apps[0].appId).to.eq("IntentAppAId", findIntentsByContextDocs);
-
-        const sharedTestingIntent1 = intents.find((appIntent) => appIntent.intent.name === "sharedTestingIntent1");
-        expect(sharedTestingIntent1.apps).to.have.length(2, findIntentsByContextDocs);
-        const sharedAppNames = sharedTestingIntent1.apps.map((app) => app.name);
-        expect(sharedAppNames).to.have.all.members(["IntentAppAId", "IntentAppBId"], findIntentsByContextDocs);
-
-        const cTestingIntent = intents.find((appIntent) => appIntent.intent.name === "cTestingIntent");
-        expect(cTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
-        expect(cTestingIntent.apps[0].appId).to.eq("IntentAppCId", findIntentsByContextDocs);
-
-        const kTestingIntent = intents.find((appIntent) => appIntent.intent.name === "kTestingIntent");
-        expect(kTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
-        expect(kTestingIntent.apps[0].appId).to.eq("IntentAppKId", findIntentsByContextDocs);
+        validateIntents(intents, "aTestingIntent", 1, [IntentApp.IntentAppA]);
+        validateIntents(intents, "sharedTestingIntent1", 2, [IntentApp.IntentAppA, IntentApp.IntentAppB]);
+        validateIntents(intents, "cTestingIntent", 1, [IntentApp.IntentAppC]);
+        validateIntents(intents, "kTestingIntent", 1, [IntentApp.IntentAppK]);
       } catch (ex) {
         assert.fail(findIntentsByContextDocs + (ex.message ?? ex));
       }
@@ -57,3 +44,15 @@ export default () =>
       }
     });
   });
+
+function validateIntents(
+  intents: AppIntent[],
+  intentFilter: string,
+  expectedAppCount: number,
+  expectedAppIds: IntentApp[]
+) {
+  const filteredIntents = intents.find((appIntent) => appIntent.intent.name === intentFilter);
+  expect(filteredIntents.apps).to.have.length(expectedAppCount, findIntentsByContextDocs);
+  const sharedAppNames = filteredIntents.apps.map((app) => app.name);
+  expect(sharedAppNames).to.have.all.members(expectedAppIds, findIntentsByContextDocs);
+}
