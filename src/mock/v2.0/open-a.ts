@@ -1,10 +1,7 @@
-import {
-  closeWindowOnCompletion,
-  onFdc3Ready,
-} from "./mock-functions";
+import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { ContextWithError } from "../../test/v2.0/common-types";
+import { ContextWithError } from "../../test/common/common-types";
 
 declare let fdc3: DesktopAgent;
 onFdc3Ready().then(async () => {

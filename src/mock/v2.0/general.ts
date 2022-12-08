@@ -1,11 +1,8 @@
-import {
-  closeWindowOnCompletion,
-  onFdc3Ready,
-} from "./mock-functions";
+import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { ContextWithError, IntentUtilityContext } from "../../test/v2.0/common-types";
+import { ContextWithError, IntentUtilityContext } from "../../test/common/common-types";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
@@ -37,7 +34,7 @@ onFdc3Ready().then(async () => {
   await fdc3.addContextListener("fdc3.contact", async (context) => {
     let errorMessageContext: ContextWithError = {
       type: "context-received",
-      errorMessage: "Listener for fdc3.contact received fdc3.instrument context"
+      errorMessage: "Listener for fdc3.contact received fdc3.instrument context",
     };
     // broadcast that this app has received context
     await sendContextToTests(errorMessageContext as ContextWithError);

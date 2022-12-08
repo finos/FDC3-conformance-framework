@@ -1,12 +1,7 @@
-import {
-  closeWindowOnCompletion,
-  onFdc3Ready,
-  sendContextToTests,
-  validateContext,
-} from "./mock-functions";
+import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
 import { Context, DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
-import { IntentUtilityContext } from "../../test/v2.0/common-types";
+import { IntentUtilityContext } from "../../test/common/common-types";
 declare let fdc3: DesktopAgent;
 
 //used in '2.0-PrivateChannelsLifecycleEvents'

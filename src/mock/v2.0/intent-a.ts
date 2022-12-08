@@ -2,7 +2,7 @@ import { closeWindowOnCompletion, onFdc3Ready, validateContext } from "./mock-fu
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
 import { wait } from "../../utils";
-import { IntentUtilityContext } from "../../test/v2.0/common-types";
+import { IntentUtilityContext } from "../../test/common/common-types";
 import { IntentResult } from "fdc3_2_0";
 declare let fdc3: DesktopAgent;
 
@@ -10,9 +10,9 @@ onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
 
   //used in 'Raise Intent Result (void result)' and 'Raise Intent (Ignoring any results)'
-  fdc3.addIntentListener("aTestingIntent", async (context: IntentUtilityContext) : Promise<IntentResult> => {
+  fdc3.addIntentListener("aTestingIntent", async (context: IntentUtilityContext): Promise<IntentResult> => {
     validateContext(context.type, "testContextX");
-    if(context.delayBeforeReturn){
+    if (context.delayBeforeReturn) {
       await wait(context.delayBeforeReturn);
     }
 
@@ -23,9 +23,9 @@ onFdc3Ready().then(async () => {
     return;
   });
 
-  fdc3.addIntentListener("sharedTestingIntent1", async (context: IntentUtilityContext) : Promise<IntentResult> => {
+  fdc3.addIntentListener("sharedTestingIntent1", async (context: IntentUtilityContext): Promise<IntentResult> => {
     validateContext(context.type, "testContextY");
-    if(context.delayBeforeReturn && context.delayBeforeReturn > 0){
+    if (context.delayBeforeReturn && context.delayBeforeReturn > 0) {
       await wait(context.delayBeforeReturn);
     }
 
