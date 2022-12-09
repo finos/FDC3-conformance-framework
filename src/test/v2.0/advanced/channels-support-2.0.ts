@@ -81,7 +81,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(commands, channelsAppConfig));
   };
 
-  setupAndValidateListener1 = async (channel: Channel, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void): Promise<Listener> => {
+  setupAndValidateListener = async (channel: Channel, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void): Promise<Listener> => {
     let listener;
     if (channel) {
       listener = await channel.addContextListener(listenContextType, (context) => {
