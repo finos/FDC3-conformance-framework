@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import { wait } from "../../utils";
-import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl } from "./channel-control";
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, JOIN_AND_BROADCAST_TWICE } from "./channel-control";
 
 export function createAppChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
   return describe("App channels", () => {
@@ -62,30 +62,20 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       }
     });
 
-    const acTestId5 = "(" + prefix + "ACFilteredContext2) Should receive multiple contexts when app B broadcasts the listened types to the same app channel";
-    it(acTestId5, async () => {
-      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument and fdc3.contact\r\n- App B retrieves the same app channel as A\r\n- App B broadcasts a context of type fdc3.instrument and fdc3.contact${documentation}`;
+    const scTestId5 = "(" + prefix + "ACFilteredReceiveMultiple) Should receive multiple contexts when app B broadcasts the listened types to the same app channel";
+    it(scTestId5, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument and fdc3.contact context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts both context types${documentation}`;
 
+      const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId5);
       let contextTypes: string[] = [];
-      const testChannel = await cc.createRandomTestChannel();
-      const resolveExecutionCompleteListener = cc.initCompleteListener(acTestId5);
-
-      let listener1 = await cc.setupAndValidateListener(testChannel, "fdc3.instrument", "fdc3.instrument", errorMessage, (context) => {
-        contextTypes.push(context.type);
-        checkIfBothContextsReceived();
-      });
-
-      let listener2 = await cc.setupAndValidateListener(testChannel, "fdc3.contact", "fdc3.contact", errorMessage, (context) => {
-        contextTypes.push(context.type);
-        checkIfBothContextsReceived();
-      });
-
-      await cc.openChannelApp(acTestId5, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
-
       let receivedContext = false;
+
+      const contextId = cc.getRandomId();
+
       function checkIfBothContextsReceived() {
         if (contextTypes.length === 2) {
-          if (!contextTypes.includes("fdc3.contact") || !contextTypes.includes("fdc3.instrument")) {
+          console.warn(JSON.stringify(contextTypes));
+          if (!contextTypes.includes(`fdc3.contact.${contextId}`) || !contextTypes.includes(`fdc3.instrument.${contextId}`)) {
             assert.fail("Incorrect context received", errorMessage);
           } else {
             receivedContext = true;
@@ -93,11 +83,22 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
         }
       }
 
-      await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener1, listener2]);
+      let listener = await cc.setupAndValidateListener(null, `fdc3.instrument.${contextId}`, `fdc3.instrument.${contextId}`, errorMessage, (context) => {
+        contextTypes.push(context.type);
+        checkIfBothContextsReceived();
+      });
 
+      let listener2 = await cc.setupAndValidateListener(null, `fdc3.contact.${contextId}`, `fdc3.contact.${contextId}`, errorMessage, (context) => {
+        contextTypes.push(context.type);
+        checkIfBothContextsReceived();
+      });
+
+      const channel = await cc.retrieveAndJoinChannel(1);
+      await cc.openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
+      await resolveExecutionCompleteListener;
+      cc.unsubscribeListeners([listener, listener2]);
       if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+        assert.fail(`At least one context was not received!\n${errorMessage}`);
       }
     });
 
@@ -117,7 +118,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       await resolveExecutionCompleteListener;
     });
 
-    const acTestId7 = "(" + prefix + "ACFilteredContext3) Should not receive context when app B broadcasts context to a different app channel";
+    const acTestId7 = "(" + prefix + "ACFilteredContext2) Should not receive context when app B broadcasts context to a different app channel";
     it(acTestId7, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves a different app channel\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
@@ -131,7 +132,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       cc.unsubscribeListeners([listener]);
     });
 
-    const acTestId8 = "(" + prefix + "ACFilteredContext4) Should not receive context when retrieving two different app channels before app B broadcasts the listened type to the first channel that was retrieved";
+    const acTestId8 = "(" + prefix + "ACFilteredContext3) Should not receive context when retrieving two different app channels before app B broadcasts the listened type to the first channel that was retrieved";
     it(acTestId8, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves an app channel\r\n- App A switches to a different app channel\r\n- App A adds a context listener of type fdc3.instrument\r\n- App B retrieves the first channel that A retrieved\r\n- App B broadcasts a context of type fdc3.instrument${documentation}`;
 
