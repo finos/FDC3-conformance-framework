@@ -81,7 +81,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
     const scTestId4 = "(" + prefix + "UCFilteredUsage1) Should receive context when app A adds a listener before joining a user channel and app B broadcasts the listened type to the same user channel";
     it(scTestId4, async () => {
-      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4);
       let receivedContext = false;
@@ -97,7 +97,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
     const UCFilteredUsage2 = "(" + prefix + "UCFilteredUsage2 ) Should receive context when app A joins a user channel before adding a listener and app B broadcasts the listened type to the same user channel";
     it(UCFilteredUsage2, async () => {
-      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4);
       let receivedContext = false;

@@ -41,6 +41,10 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     return await fdc3.getOrCreateChannel(channelName);
   };
 
+  getCurrentChannel = async (): Promise<Channel> => {
+    return await fdc3.getCurrentChannel();
+  };
+
   unsubscribeListeners = async (listeners: Listener[]) => {
     listeners.map((listener) => {
       listener.unsubscribe();
