@@ -1,4 +1,4 @@
-import { assert } from "chai";
+import { assert, expect } from "chai";
 import constants from "../../constants";
 import { wait } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
@@ -265,6 +265,18 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await resolveExecutionCompleteListener;
       await wait(constants.WaitTime);
       cc.unsubscribeListeners([listener, listener2]);
+    });
+
+    const UCFilteredUsageJoin = "(" + prefix + "UCFilteredUsageLeave) Should not receive context after leaving a user channel";
+    it(UCFilteredUsageJoin, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves user channels\r\n- App A joins the third channel\r\n- App A gets current channel${documentation}`;
+      const channels = await cc.getSystemChannels();
+      if (channels.length < 1) {
+        assert.fail("No system channels available for app A");
+      }
+      cc.joinChannel(channels[2]);
+      const currentChannel = await cc.getCurrentChannel();
+      expect(channels[2].id, errorMessage).to.be.equal(currentChannel.id);
     });
   });
 }

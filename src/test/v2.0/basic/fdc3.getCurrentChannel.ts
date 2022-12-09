@@ -3,8 +3,7 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
-const getCurrentChannelDocs =
-  "\r\nDocumentation: " + APIDocumentation2_0.getCurrentChannel + "\r\nCause";
+const getCurrentChannelDocs = "\r\nDocumentation: " + APIDocumentation2_0.getCurrentChannel + "\r\nCause";
 
 export default () =>
   describe("fdc3.getCurrentChannel", () => {

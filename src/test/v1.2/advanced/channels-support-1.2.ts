@@ -38,7 +38,11 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
 
   createRandomTestChannel = async (): Promise<Channel> => {
     const channelName = `${this.testAppChannelName}.${this.getRandomId()}`;
-    return fdc3.getOrCreateChannel(channelName);
+    return await fdc3.getOrCreateChannel(channelName);
+  };
+
+  getCurrentChannel = async (): Promise<Channel> => {
+    return await fdc3.getCurrentChannel();
   };
 
   unsubscribeListeners = async (listeners: Listener[]) => {
