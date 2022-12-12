@@ -1,3 +1,4 @@
+import { assert } from "chai";
 import constants from "./constants";
 
 export function sleep(timeoutMs: number = constants.WaitTime) {
@@ -27,4 +28,11 @@ export function wrapPromise(): {
     wrapperReject = reject;
   });
   return { promise, resolve: wrapperResolve, reject: wrapperReject };
+}
+
+export function failOnTimeout(errorMessage) {
+  let timeout = window.setTimeout(() => {
+    assert.fail(errorMessage);
+  }, constants.WaitTime);
+  return timeout;
 }

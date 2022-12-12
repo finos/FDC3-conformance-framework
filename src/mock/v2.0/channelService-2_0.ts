@@ -45,9 +45,6 @@ export class Fdc3CommandExecutor2_0 {
     if (joinedChannel) {
       await fdc3.joinUserChannel(channelId);
       return joinedChannel;
-    } else {
-      await fdc3.joinUserChannel(userChannels[0].id);
-      return userChannels[0];
     }
   }
 
@@ -57,7 +54,7 @@ export class Fdc3CommandExecutor2_0 {
   }
 
   //get broadcast service and broadcast the given context type
-  async broadcastContextItem(contextType, channel, historyItems, testId, joinedChannel?) {
+  async broadcastContextItem(contextType: string, channel: Channel, historyItems: number, testId: string, joinedChannel?: string) {
     let broadcastService = this.getBroadcastService(channel.type);
     await broadcastService.broadcast(contextType, historyItems, channel, testId, joinedChannel);
   }
@@ -119,7 +116,7 @@ export class Fdc3CommandExecutor2_0 {
     });
   }
 
-  async notifyAppAOnCompletion(testId, joinedChannel) {
+  async notifyAppAOnCompletion(testId: string, joinedChannel: string) {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     await this.broadcastContextItem("executionComplete", appControlChannel, 1, testId, joinedChannel);
   }

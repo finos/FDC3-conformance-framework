@@ -2,14 +2,12 @@ import { Channel, DesktopAgent } from "fdc3_1_2";
 import constants from "../../constants";
 import { AppControlContext, ChannelsAppConfig } from "../../test/common/channel-control";
 import { commands, channelType } from "../constants";
-declare let fdc3: DesktopAgent
-
+declare let fdc3: DesktopAgent;
 
 export class Fdc3CommandExecutor1_2 {
   //execute commands in order
   async executeCommands(orderedCommands: string[], config: ChannelsAppConfig) {
     let channel: Channel;
-
     //close ChannelsApp when test is complete
     await this.closeWindowOnCompletion(config.testId);
     for (const command of orderedCommands) {
@@ -27,22 +25,12 @@ export class Fdc3CommandExecutor1_2 {
         }
         case commands.broadcastInstrumentContext: {
           const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : "fdc3.instrument";
-          this.broadcastContextItem(
-            contextType,
-            channel,
-            config.historyItems,
-            config.testId
-          );
+          this.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
           break;
         }
         case commands.broadcastContactContext: {
           const contextType = config.contextId ? `fdc3.contact.${config.contextId}` : "fdc3.contact";
-          this.broadcastContextItem(
-            contextType,
-            channel,
-            config.historyItems,
-            config.testId
-          );
+          this.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
           break;
         }
       }
@@ -50,16 +38,22 @@ export class Fdc3CommandExecutor1_2 {
 
     //notify app A that ChannelsApp has finished executing
     if (config.notifyAppAOnCompletion) {
-      await this.notifyAppAOnCompletion(config.testId);
+      await this.notifyAppAOnCompletion(config.testId, channel.id);
     }
   }
 
-  async joinRetrievedUserChannel(channelId) {
+  async joinRetrievedUserChannel(channelId: string): Promise<Channel> {
     const systemChannels = await fdc3.getSystemChannels();
-    const joinedChannel = systemChannels.find((c) => c.id === channelId);
-    if(joinedChannel){
-      await fdc3.joinChannel(channelId);
-      return joinedChannel;
+
+    if (channelId) {
+      const joinedChannel = systemChannels.find((c) => c.id === channelId);
+      if (joinedChannel) {
+        await fdc3.joinChannel(channelId);
+        return joinedChannel;
+      }
+    } else {
+      await fdc3.joinChannel(systemChannels[0].id);
+      return systemChannels[0];
     }
   }
 
@@ -69,9 +63,9 @@ export class Fdc3CommandExecutor1_2 {
   }
 
   //get broadcast service and broadcast the given context type
-  broadcastContextItem(contextType: string, channel: Channel, historyItems: number, testId: string) {
+  broadcastContextItem(contextType: string, channel: Channel, historyItems: number, testId: string, joinedChannel?: string) {
     let broadcastService = this.getBroadcastService(channel.type);
-    broadcastService.broadcast(contextType, historyItems, channel, testId);
+    broadcastService.broadcast(contextType, historyItems, channel, testId, joinedChannel);
   }
 
   //get app/system channel broadcast service
@@ -85,14 +79,15 @@ export class Fdc3CommandExecutor1_2 {
 
   //app channel broadcast service
   appChannelBroadcastService = {
-    broadcast: (contextType: string, historyItems: number, channel: Channel, testId: string) => {
+    broadcast: (contextType: string, historyItems: number, channel: Channel, testId: string, joinedChannel: string) => {
       if (channel !== undefined) {
         for (let i = 0; i < historyItems; i++) {
-          let context : AppControlContext = {
+          let context: AppControlContext = {
             type: contextType,
             name: `History-item-${i + 1}`,
-            testId
+            testId,
           };
+          if (joinedChannel) context.joinedChannel = joinedChannel;
           channel.broadcast(context);
         }
       }
@@ -103,10 +98,10 @@ export class Fdc3CommandExecutor1_2 {
   systemChannelBroadcastService = {
     broadcast: (contextType: string, historyItems: number, ignored, testId: string) => {
       for (let i = 0; i < historyItems; i++) {
-        let context : AppControlContext = {
+        let context: AppControlContext = {
           type: contextType,
           name: `History-item-${i + 1}`,
-          testId
+          testId,
         };
         fdc3.broadcast(context);
       }
@@ -116,9 +111,7 @@ export class Fdc3CommandExecutor1_2 {
   //close ChannelsApp on completion and respond to app A
   async closeWindowOnCompletion(testId: string) {
     console.log(Date.now() + ` Setting up closeWindow listener`);
-    const appControlChannel = await fdc3.getOrCreateChannel(
-      constants.ControlChannel
-    );
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     appControlChannel.addContextListener("closeWindow", async () => {
       console.log(Date.now() + ` Received closeWindow message`);
       appControlChannel.broadcast({ type: "windowClosed", testId: testId } as AppControlContext);
@@ -129,15 +122,8 @@ export class Fdc3CommandExecutor1_2 {
     });
   }
 
-  async notifyAppAOnCompletion(testId: string) {
-    const appControlChannel = await fdc3.getOrCreateChannel(
-      constants.ControlChannel
-    );
-    this.broadcastContextItem(
-      "executionComplete",
-      appControlChannel,
-      1,
-      testId
-    );
+  async notifyAppAOnCompletion(testId: string, joinedChannel: string) {
+    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
+    this.broadcastContextItem("executionComplete", appControlChannel, 1, testId, joinedChannel);
   }
 }

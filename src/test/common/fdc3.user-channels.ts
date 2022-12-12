@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import constants from "../../constants";
-import { wait } from "../../utils";
+import { failOnTimeout, wait, wrapPromise } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
 import { ChannelControl } from "./channel-control";
 
@@ -99,7 +99,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
     it(UCFilteredUsage2, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact${documentation}`;
 
-      const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4);
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage2);
       let receivedContext = false;
       const channel = await cc.retrieveAndJoinChannel(1);
       let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
@@ -112,26 +112,31 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
     });
 
     const UCFilteredUsage3 = "(" + prefix + "UCFilteredUsage3) Should receive context when B broadcasts to a user channel before A listens for the broadcast type and joins the same channel as B";
-    it(UCFilteredUsage3, async () => {
+    it.only(UCFilteredUsage3, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1${documentation}`;
 
-      const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4);
-      let receivedContext = false;
-      await cc.openChannelApp(UCFilteredUsage3, undefined, JOIN_AND_BROADCAST_TWICE);
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage3);
+      await cc.openChannelApp(UCFilteredUsage3, undefined, JOIN_AND_BROADCAST_TWICE, undefined, true);
       const returnedContext = await resolveExecutionCompleteListener;
-      let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
-      await cc.retrieveAndJoinChannel(returnedContext.joinedChannel);
+
+      let timeout;
+      const wrapper = wrapPromise();
+      let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
+        wrapper.resolve();
+        clearTimeout(timeout);
+      });
+      await cc.retrieveAndJoinChannel(undefined, returnedContext.joinedChannel);
+      timeout = failOnTimeout("No context received!\n" + errorMessage);
+      await wrapper.promise;
+
       cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
-      }
     });
 
     const UCFilteredUsage4 = "(" + prefix + "UCFilteredUsage4) Should receive context when B broadcasts to a user channel before A joins the same channel and listens for the broadcast type";
     it(UCFilteredUsage4, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
-      const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4);
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage4);
       let receivedContext = false;
       await cc.openChannelApp(UCFilteredUsage4, undefined, JOIN_AND_BROADCAST_TWICE);
       const returnedContext = await resolveExecutionCompleteListener;

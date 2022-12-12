@@ -9,10 +9,18 @@ declare let fdc3: DesktopAgent;
 export class ChannelControl1_2 implements ChannelControl<Channel, Context, Listener> {
   private readonly testAppChannelName = "test-channel";
 
-  retrieveAndJoinChannel = async (channelNumber: number): Promise<Channel> => {
-    const channel = await this.getUserChannel(channelNumber);
-    await fdc3.joinChannel(channel.id);
-    return channel;
+  retrieveAndJoinChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
+    if (channelNumber) {
+      const channel = await this.getUserChannel(channelNumber);
+      await fdc3.joinChannel(channel.id);
+      return channel;
+    } else if (channelId) {
+      const channel = await this.getUserChannel(undefined, channelId);
+      await fdc3.joinChannel(channelId);
+      return channel;
+    } else {
+      throw new Error("The retrieveAndJoinChannel function requires at least one parameter to be passed to it");
+    }
   };
 
   getSystemChannels = async () => {
@@ -23,10 +31,16 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
     return await fdc3.leaveCurrentChannel();
   };
 
-  getUserChannel = async (channel: number): Promise<Channel> => {
+  getUserChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
     const channels = await fdc3.getSystemChannels();
     if (channels.length > 0) {
-      return channels[channel - 1];
+      if (channelNumber) {
+        return channels[channelNumber - 1];
+      } else if (channelId) {
+        return channels.find((channel) => channel.id === channelId);
+      } else {
+        throw new Error("The getUserChannel function requires at least one parameter to be passed to it");
+      }
     } else {
       assert.fail("No system channels available for app A");
     }
@@ -63,9 +77,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
 
   initCompleteListener = async (testId: string): Promise<AppControlContext> => {
     const receivedContext = await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel("app-control"));
-
     await wait(constants.ShortWait);
-
     return receivedContext;
   };
 
