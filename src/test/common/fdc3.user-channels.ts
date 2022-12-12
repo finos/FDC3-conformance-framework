@@ -1,4 +1,5 @@
 import { assert, expect } from "chai";
+import { joinChannel } from "fdc3_1_2";
 import constants from "../../constants";
 import { failOnTimeout, wait, wrapPromise } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
@@ -10,7 +11,9 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      await cc.closeChannelsAppWindow(this.currentTest.title);
+      if (this.currentTest.title !== UCFilteredUsageLeave) {
+        await cc.closeChannelsAppWindow(this.currentTest.title);
+      }
     });
 
     const scTestId1 = "(" + prefix + "UCBasicUsage1) Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel";
@@ -116,16 +119,17 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage3);
-      await cc.openChannelApp(UCFilteredUsage3, undefined, JOIN_AND_BROADCAST_TWICE, undefined, true);
-      const returnedContext = await resolveExecutionCompleteListener;
+      const userChannels = await cc.getSystemChannels();
+      await cc.openChannelApp(UCFilteredUsage3, userChannels[0].id, JOIN_AND_BROADCAST_TWICE, undefined, true);
+      await resolveExecutionCompleteListener;
 
       let timeout;
       const wrapper = wrapPromise();
-      let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
+      let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
         wrapper.resolve();
         clearTimeout(timeout);
       });
-      await cc.retrieveAndJoinChannel(undefined, returnedContext.joinedChannel);
+      await cc.joinChannel(userChannels[0]);
       timeout = failOnTimeout("No context received!\n" + errorMessage);
       await wrapper.promise;
 
@@ -137,15 +141,20 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage4);
-      let receivedContext = false;
-      await cc.openChannelApp(UCFilteredUsage4, undefined, JOIN_AND_BROADCAST_TWICE);
-      const returnedContext = await resolveExecutionCompleteListener;
-      await cc.retrieveAndJoinChannel(returnedContext.joinedChannel);
-      let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
+      const userChannels = await cc.getSystemChannels();
+      await cc.openChannelApp(UCFilteredUsage4, userChannels[0].id, JOIN_AND_BROADCAST_TWICE, undefined, true);
+      await resolveExecutionCompleteListener;
+      await cc.joinChannel(userChannels[0]);
+
+      let timeout;
+      const wrapper = wrapPromise();
+      let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
+        wrapper.resolve();
+        clearTimeout(timeout);
+      });
+      timeout = failOnTimeout("No context received!\n" + errorMessage);
+      await wrapper.promise;
       cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
-      }
     });
 
     const scTestId5 = "(" + prefix + "UCFilteredUsage5) Should receive multiple contexts when app B broadcasts the listened types to the same user channel";
@@ -266,7 +275,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
       const channel = await cc.retrieveAndJoinChannel(1);
       await cc.leaveChannel();
-      await cc.openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
+      await cc.openChannelApp(UCFilteredUsageLeave, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
       await wait(constants.WaitTime);
       cc.unsubscribeListeners([listener, listener2]);

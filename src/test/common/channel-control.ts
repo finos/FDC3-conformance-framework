@@ -3,7 +3,7 @@
  */
 export interface ChannelControl<X, Y, Z> {
   // channels
-  retrieveAndJoinChannel(channelNumber: number, channelId?: string): Promise<X>;
+  retrieveAndJoinChannel(channelNumber: number): Promise<X>;
   getSystemChannels(): Promise<X[]>;
   leaveChannel(): Promise<void>;
   getUserChannel(cn: number): Promise<X>;
