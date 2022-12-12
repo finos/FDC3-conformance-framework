@@ -112,7 +112,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
     });
 
     const UCFilteredUsage3 = "(" + prefix + "UCFilteredUsage3) Should receive context when B broadcasts to a user channel before A listens for the broadcast type and joins the same channel as B";
-    it.only(UCFilteredUsage3, async () => {
+    it(UCFilteredUsage3, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage3);
