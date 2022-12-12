@@ -43,10 +43,10 @@ export class Fdc3CommandExecutor2_0 {
     const userChannels = await fdc3.getUserChannels();
     const joinedChannel = userChannels.find((c) => c.id === channelId);
     if (joinedChannel) {
-      await fdc3.joinChannel(channelId);
+      await fdc3.joinUserChannel(channelId);
       return joinedChannel;
     } else {
-      await fdc3.joinChannel(userChannels[0].id);
+      await fdc3.joinUserChannel(userChannels[0].id);
       return userChannels[0];
     }
   }
@@ -59,7 +59,7 @@ export class Fdc3CommandExecutor2_0 {
   //get broadcast service and broadcast the given context type
   async broadcastContextItem(contextType, channel, historyItems, testId, joinedChannel?) {
     let broadcastService = this.getBroadcastService(channel.type);
-    await broadcastService.broadcast(contextType, historyItems, channel, testId, joinedChannel?);
+    await broadcastService.broadcast(contextType, historyItems, channel, testId, joinedChannel);
   }
 
   //get app/system channel broadcast service
@@ -96,7 +96,7 @@ export class Fdc3CommandExecutor2_0 {
           name: `History-item-${i + 1}`,
         };
         if (testId) context.testId = testId;
-        if(joinedChannel) context.joinedChannel = joinedChannel;
+        if (joinedChannel) context.joinedChannel = joinedChannel;
         await fdc3.broadcast(context);
       }
     },

@@ -66,7 +66,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
     it(UCBasicUsage4, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
-      const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId3);
+      const resolveExecutionCompleteListener = cc.initCompleteListener(UCBasicUsage4);
       const channel = await cc.getUserChannel(1);
       await cc.openChannelApp(UCBasicUsage4, channel.id, JOIN_AND_BROADCAST);
       await cc.joinChannel(channel);
