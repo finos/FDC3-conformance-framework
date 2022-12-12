@@ -35,7 +35,7 @@ export class Fdc3CommandExecutor2_0 {
 
     //notify app A that ChannelsApp has finished executing
     if (config.notifyAppAOnCompletion) {
-      await this.notifyAppAOnCompletion(config.testId, channel.id);
+      await this.notifyAppAOnCompletion(config.testId);
     }
   }
 
@@ -54,9 +54,9 @@ export class Fdc3CommandExecutor2_0 {
   }
 
   //get broadcast service and broadcast the given context type
-  async broadcastContextItem(contextType: string, channel: Channel, historyItems: number, testId: string, joinedChannel?: string) {
+  async broadcastContextItem(contextType: string, channel: Channel, historyItems: number, testId: string) {
     let broadcastService = this.getBroadcastService(channel.type);
-    await broadcastService.broadcast(contextType, historyItems, channel, testId, joinedChannel);
+    await broadcastService.broadcast(contextType, historyItems, channel, testId);
   }
 
   //get app/system channel broadcast service
@@ -70,7 +70,7 @@ export class Fdc3CommandExecutor2_0 {
 
   //app channel broadcast service
   appChannelBroadcastService = {
-    broadcast: async (contextType, historyItems, channel, testId, unused) => {
+    broadcast: async (contextType, historyItems, channel, testId) => {
       if (channel !== undefined) {
         for (let i = 0; i < historyItems; i++) {
           let context: AppControlContext = {
@@ -86,14 +86,13 @@ export class Fdc3CommandExecutor2_0 {
 
   //system channel broadcast service
   systemChannelBroadcastService = {
-    broadcast: async (contextType, historyItems, ignored, testId, joinedChannel) => {
+    broadcast: async (contextType, historyItems, ignored, testId) => {
       for (let i = 0; i < historyItems; i++) {
         let context: AppControlContext = {
           type: contextType,
           name: `History-item-${i + 1}`,
         };
         if (testId) context.testId = testId;
-        if (joinedChannel) context.joinedChannel = joinedChannel;
         await fdc3.broadcast(context);
       }
     },
@@ -116,8 +115,8 @@ export class Fdc3CommandExecutor2_0 {
     });
   }
 
-  async notifyAppAOnCompletion(testId: string, joinedChannel: string) {
+  async notifyAppAOnCompletion(testId: string) {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    await this.broadcastContextItem("executionComplete", appControlChannel, 1, testId, joinedChannel);
+    await this.broadcastContextItem("executionComplete", appControlChannel, 1, testId);
   }
 }
