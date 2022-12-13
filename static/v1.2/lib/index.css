@@ -21,9 +21,12 @@ body {
 
   #back-button{
 	position: relative;
-	top: 20px;
-	left: 20px;
+	top: 10px;
+	left: 10px;
 	display: none;
 	cursor: pointer;
+	border-radius: 100%;
+	background: transparent;
+    border: none !important;
   }
 
