@@ -13,3 +13,17 @@ body {
 body {
 	height: 100%;
 }
+
+.center {
+	margin: auto;
+	width: 50%;
+  }
+
+  #back-button{
+	position: relative;
+	top: 20px;
+	left: 20px;
+	display: none;
+	cursor: pointer;
+  }
+

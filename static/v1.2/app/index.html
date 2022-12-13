@@ -7,13 +7,22 @@
 </head>
 
 <body>
+  <button type="button" id="back-button">
+    <svg viewBox="0 0 22 22"
+         height="22"
+         width="22"
+         role="img"
+         class="svg-icon"
+         focusable="true">
+        <path d="M20,11V13H8L13.5,18.5L12.08,19.92L4.16,12L12.08,4.08L13.5,5.5L8,11H20Z"/>
+    </svg>
+</button>
   <div id="mocha"></div>
   <div class="center" id="version-selector">
     <label for="version">Test suite:</label>
     <select id="version"></select>
     <input id="runButton" value="Run" type="button" />
   </div>
-  <p id="context"></p>
   <script src="../../lib/fdc3-compliance-v1.2.js"></script>
   <script>
     // no idea why but this doesn't seem to work when added in the above script.
