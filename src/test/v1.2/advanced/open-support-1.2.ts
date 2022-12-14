@@ -15,12 +15,9 @@ export class OpenControl1_2 implements OpenControl<Context> {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = appControlChannel.addContextListener(contextType, async (context: MockAppContext) => {
-        console.log(context.type);
         if (context.errorMessage) {
-          console.log("error: " + context.errorMessage);
           reject(context.errorMessage);
         } else {
-          console.log(JSON.stringify(context));
           resolve(context);
         }
         //clearTimeout(timeout);
@@ -35,7 +32,6 @@ export class OpenControl1_2 implements OpenControl<Context> {
         resolve({ type: "noContextReceived" });
       }
     });
-    console.log(messageReceived);
     return messageReceived;
   };
 

@@ -17,8 +17,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, async (context: MockAppContext) => {
-        console.log("RECEIVED CONTEXT");
-        console.log(JSON.stringify(context));
         if (context.errorMessage) {
           reject(new Error(context.errorMessage));
         } else {
