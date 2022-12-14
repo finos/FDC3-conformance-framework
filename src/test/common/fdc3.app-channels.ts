@@ -182,7 +182,6 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
 
       await cc.openChannelApp(acTestId10, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE, 2);
       await resolveExecutionCompleteListener;
-
       await cc.setupContextChecker(testChannel, "fdc3.instrument", "fdc3.instrument", errorMessage, (context) => {
         expect(context.name).to.be.equals("History-item-2", errorMessage);
       });

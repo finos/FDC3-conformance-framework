@@ -70,9 +70,9 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
     const channelsAppConfig: ChannelsAppConfig = {
       fdc3ApiVersion: "1.2",
       testId: testId,
-      channelId,
+      channelId: channelId,
       notifyAppAOnCompletion: notify,
-      contextId,
+      contextId: contextId,
     };
 
     if (historyItems) {

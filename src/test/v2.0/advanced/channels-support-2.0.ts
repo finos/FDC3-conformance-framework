@@ -76,19 +76,16 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
   };
 
   initCompleteListener = async (testId: string) => {
-    const receivedContext = await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
-
-    await wait(constants.ShortWait);
-
-    return receivedContext;
+    return await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
   };
 
-  openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true) => {
+  openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true, contextId?: string) => {
     const channelsAppConfig: ChannelsAppConfig = {
       fdc3ApiVersion: "2.0",
       testId: testId,
-      channelId,
+      channelId: channelId,
       notifyAppAOnCompletion: notify,
+      contextId: contextId,
     };
 
     if (historyItems) {
@@ -123,9 +120,9 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
 
   setupContextChecker = async (channel: Channel, requestedContextType: string | null, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void): Promise<void> => {
     //Retrieve current context from channel
-    const context = requestedContextType == undefined ? await channel.getCurrentContext() : await channel.getCurrentContext(requestedContextType);
-
-    expect(context.type).to.be.equals(expectedContextType, errorMessage);
+    const context = requestedContextType === undefined ? await channel.getCurrentContext() : await channel.getCurrentContext(requestedContextType);
+    expect(context, "await channel.getCurrentContext() returned null").to.not.be.null;
+    expect(context.type, "retrieved context was not of the expected type").to.be.equals(expectedContextType, errorMessage);
     onComplete(context);
   };
 
@@ -216,6 +213,7 @@ function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppC
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
       channelId: config.channelId,
+      contextId: config.contextId,
     },
   };
 }

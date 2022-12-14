@@ -1,5 +1,4 @@
 import { assert, expect } from "chai";
-import { joinChannel } from "fdc3_1_2";
 import constants from "../../constants";
 import { failOnTimeout, wait, wrapPromise } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
@@ -164,12 +163,10 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId5);
       let contextTypes: string[] = [];
       let receivedContext = false;
-
       const contextId = cc.getRandomId();
 
       function checkIfBothContextsReceived() {
         if (contextTypes.length === 2) {
-          console.warn(JSON.stringify(contextTypes));
           if (!contextTypes.includes(`fdc3.contact.${contextId}`) || !contextTypes.includes(`fdc3.instrument.${contextId}`)) {
             assert.fail("Incorrect context received", errorMessage);
           } else {

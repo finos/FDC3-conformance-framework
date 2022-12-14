@@ -8,7 +8,6 @@ export class Fdc3CommandExecutor2_0 {
   //execute commands in order
   async executeCommands(orderedCommands: string[], config: ChannelsAppConfig) {
     let channel: Channel;
-
     //close ChannelsApp when test is complete
     await this.closeWindowOnCompletion(config.testId);
     for (const command of orderedCommands) {
