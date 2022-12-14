@@ -25,12 +25,12 @@ export class Fdc3CommandExecutor2_0 {
         }
         case commands.broadcastInstrumentContext: {
           const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : "fdc3.instrument";
-          this.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
+          await this.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
           break;
         }
         case commands.broadcastContactContext: {
           const contextType = config.contextId ? `fdc3.contact.${config.contextId}` : "fdc3.contact";
-          this.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
+          await this.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
           break;
         }
       }
