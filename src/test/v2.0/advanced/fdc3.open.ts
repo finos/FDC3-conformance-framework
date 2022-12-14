@@ -20,16 +20,14 @@ export default () =>
     getCommonOpenTests(control, openDocs, config);
 
     //run v2.0-only open tests
-    const AOpensBWithWrongContext =
-      "(2.0-AOpensBWithWrongContext) Received App timeout when opening app B with fake context, app b listening for different context";
+    const AOpensBWithWrongContext = "(2.0-AOpensBWithWrongContext) Received App timeout when opening app B with fake context, app b listening for different context";
     it(AOpensBWithWrongContext, async () => {
       await control.addListenerAndFailIfReceived();
       await expectAppTimeoutErrorOnOpen(openApp.d.id);
       await control.closeAppWindows(AOpensBWithWrongContext);
     }).timeout(constants.NoListenerTimeout + 1000);
 
-    const AOpensBNoListen =
-      "(2.0-AOpensBNoListen) Received App timeout when opening app B with fake context, app b not listening for any context";
+    const AOpensBNoListen = "(2.0-AOpensBNoListen) Received App timeout when opening app B with fake context, app b not listening for any context";
     it(AOpensBNoListen, async () => {
       await expectAppTimeoutErrorOnOpen(openApp.e.id);
       await control.closeAppWindows(AOpensBNoListen);

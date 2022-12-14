@@ -1,6 +1,6 @@
 import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
-import { sendContextToTests } from "../v2.0/mock-functions";
+import { sendContextToTests } from "../v1.2/mock-functions";
 import { MockAppContext } from "../../test/common/open-control";
 declare let fdc3: DesktopAgent;
 
@@ -11,8 +11,7 @@ onFdc3Ready().then(async () => {
   await fdc3.addContextListener("fdc3.contact", async (context) => {
     let errorMessage;
     if (context.type === "fdc3.intrument") {
-      errorMessage =
-        "App B listener received fdc3.contact context. Expected fdc3.instrument";
+      errorMessage = "App B listener received fdc3.contact context. Expected fdc3.instrument";
     } else if (context.name === "this is a malformed context") {
       errorMessage = "App B listener received a malformed context";
     }
@@ -25,7 +24,7 @@ onFdc3Ready().then(async () => {
 
   try {
     //used in AOpensBMultipleListen & AOpensBMalformedContext
-    await fdc3.addContextListener(null, async (context) => {
+    fdc3.addContextListener(null, async (context) => {
       // broadcast that this app has received context
       if (context.type === "fdc3.instrument") {
         await sendContextToTests({

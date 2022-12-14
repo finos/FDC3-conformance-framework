@@ -9,10 +9,7 @@ export interface OpenControl<X> {
 
   //validation
   confirmAppNotFoundErrorReceived(exception: DOMException): void;
-  validateReceivedContext(
-    contextReceiver: X,
-    expectedContextType: string
-  ): Promise<void>;
+  validateReceivedContext(contextReceiver: X, expectedContextType: string): Promise<void>;
 }
 
 /** same in 1.2 and 2.0 */
@@ -45,18 +42,18 @@ export const openApp = {
   d: {
     id: "OpenAppAId",
   },
-  e:{
+  e: {
     id: "OpenAppBId",
   },
   f: {
     name: "IntentAppB",
-    id: "IntentAppBId"
-  }
+    id: "IntentAppBId",
+  },
 };
 
 export type OpenCommonConfig = {
-  fdc3Version: string,
-  prefix: string,
-  target: string,
-  targetMultiple: string
-}
+  fdc3Version: string;
+  prefix: string;
+  target: string;
+  targetMultiple: string;
+};

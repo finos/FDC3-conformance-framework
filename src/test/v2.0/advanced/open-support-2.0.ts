@@ -17,6 +17,8 @@ export class OpenControl2_0 implements OpenControl<Context> {
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, async (context: MockAppContext) => {
+        console.log("RECEIVED CONTEXT");
+        console.log(JSON.stringify(context));
         if (context.errorMessage) {
           reject(new Error(context.errorMessage));
         } else {
@@ -64,7 +66,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
   };
 
   validateReceivedContext = async (context: ContextSender, expectedContextType: string) => {
-    expect(context.type).to.eq(expectedContextType, openDocs);
+    expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
 }
 
@@ -102,10 +104,7 @@ const waitForContext = (contextType: string, testId: string, channel?: Channel):
           resolve(context);
           if (executionListener) executionListener.unsubscribe();
         } else {
-          console.warn(
-            Date.now() +
-              ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
-          );
+          console.warn(Date.now() + ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`);
         }
       } else {
         console.log(Date.now() + ` Received (without testId) "${contextType}" for test: "${testId}"`);
@@ -131,13 +130,9 @@ const waitForContext = (contextType: string, testId: string, channel?: Channel):
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
-                    context ? "" : "NOT "
-                  } exist,
+                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist,
               had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"})
-              and type "${context?.type}" vs ${contextType} (${
-                    context?.type == contextType ? "did match" : "did NOT match"
-                  })`
+              and type "${context?.type}" vs ${contextType} (${context?.type == contextType ? "did match" : "did NOT match"})`
               );
             }
           } else {

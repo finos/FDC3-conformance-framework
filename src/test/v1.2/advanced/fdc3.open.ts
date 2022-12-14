@@ -28,8 +28,7 @@ export default () =>
       await control.closeAppWindows(AOpensB2Test);
     });
 
-    const AOpensB3Test =
-      "(AOpensB3) Can open app B from app A with no context and AppMetadata (name and appId) as target";
+    const AOpensB3Test = "(AOpensB3) Can open app B from app A with no context and AppMetadata (name and appId) as target";
     it(AOpensB3Test, async () => {
       const result = control.contextReceiver("fdc3-conformance-opened");
       await control.openMockApp(openApp.b.name, openApp.b.id);
@@ -37,8 +36,7 @@ export default () =>
       await control.closeAppWindows(AOpensB3Test);
     });
 
-    const AFailsToOpenB2Test =
-      "(AFailsToOpenB2) Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target";
+    const AFailsToOpenB2Test = "(AFailsToOpenB2) Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target";
     it(AFailsToOpenB2Test, async () => {
       try {
         await control.openMockApp("ThisAppDoesNotExist");
@@ -48,8 +46,7 @@ export default () =>
       }
     });
 
-    const AFailsToOpenB3 =
-      "(AFailsToOpenB3) Receive AppNotFound error when targeting non-existent app AppMetadata (name and appId) as target";
+    const AFailsToOpenB3 = "(AFailsToOpenB3) Receive AppNotFound error when targeting non-existent app AppMetadata (name and appId) as target";
     it(AFailsToOpenB3, async () => {
       try {
         await control.openMockApp("ThisAppDoesNotExist", "ThisIdDoesNotExist");
@@ -59,8 +56,7 @@ export default () =>
       }
     });
 
-    const AOpensBWithContext2Test =
-      "(AOpensBWithContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds generic listener";
+    const AOpensBWithContext2Test = "(AOpensBWithContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds generic listener";
     it(AOpensBWithContext2Test, async () => {
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(openApp.c.name, undefined, "fdc3.instrument");
@@ -68,8 +64,7 @@ export default () =>
       await control.closeAppWindows(AOpensBWithContext2Test);
     });
 
-    const AOpensBWithContext3Test =
-      "(AOpensBWithContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds generic listener";
+    const AOpensBWithContext3Test = "(AOpensBWithContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds generic listener";
     it(AOpensBWithContext3Test, async () => {
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(openApp.c.name, openApp.c.id, "fdc3.instrument");
