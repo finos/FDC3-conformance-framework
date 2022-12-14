@@ -148,7 +148,7 @@ const init = async () => {
           {
             name: "aTestingIntent",
             displayName: "A Testing Intent",
-            contexts: ["testContextZ"],
+            contexts: ["testContextX", "testContextZ"],
           },
           {
             name: "sharedTestingIntent1",
@@ -405,11 +405,13 @@ const init = async () => {
             src: "http://localhost:3000/scott-logic-icon-256.png",
           },
         ],
-        intents: [{
-          name: "aTestingIntent",
-          displayName: "A Testing Intent",
-          contexts: ["testContextX"],
-        }],
+        intents: [
+          {
+            name: "aTestingIntent",
+            displayName: "A Testing Intent",
+            contexts: ["testContextX"],
+          },
+        ],
         description: "Testing spec conformance",
         type: "window",
         details: {
