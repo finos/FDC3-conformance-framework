@@ -71,7 +71,7 @@ export class RaiseIntentControl2_0 {
         return await fdc3.raiseIntent(intent, context);
       }
     } catch (ex) {
-      assert.fail(`Error while attempting to raise intent: ${ex.message ?? ex}`);
+      throw new Error(`${ex.message ?? ex}`);
     }
   }
 
