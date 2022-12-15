@@ -14,8 +14,7 @@ export default () =>
       await control.closeIntentAppWindow(this.currentTest.title);
     });
 
-    const RaiseIntentSingleResolve =
-      "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
+    const RaiseIntentSingleResolve = "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
     it(RaiseIntentSingleResolve, async () => {
       await control.listenForError();
       const result = control.receiveContext("fdc3-intent-a-opened");
@@ -24,8 +23,7 @@ export default () =>
       await result;
     });
 
-    const RaiseIntentTargetedAppResolve =
-      "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
+    const RaiseIntentTargetedAppResolve = "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
       await control.listenForError();
       const result = control.receiveContext("fdc3-intent-a-opened");
@@ -36,8 +34,7 @@ export default () =>
       await result;
     });
 
-    const RaiseIntentTargetedInstanceResolveOpen =
-      "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent' with context 'testContextX' after opening intent-a app";
+    const RaiseIntentTargetedInstanceResolveOpen = "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
       await control.listenForError();
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
@@ -49,8 +46,7 @@ export default () =>
       control.validateInstances(instances, 1, appIdentifier.instanceId);
     });
 
-    const RaiseIntentTargetedInstanceResolveFindInstances =
-      "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
+    const RaiseIntentTargetedInstanceResolveFindInstances = "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
       await control.listenForError();
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
@@ -66,8 +62,7 @@ export default () =>
       expect(instances2.length).to.be.equal(1);
     });
 
-    const PrivateChannelsAreNotAppChannels =
-      "(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id";
+    const PrivateChannelsAreNotAppChannels = "(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id";
     it(PrivateChannelsAreNotAppChannels, async () => {
       await control.listenForError();
       const privChan = await control.createPrivateChannel();
@@ -82,20 +77,10 @@ export default () =>
         await control.createAppChannel(privChan.id);
         assert.fail("No error was not thrown when calling fdc3.getOrCreateChannel(privateChannel.id)");
       } catch (ex) {
-        expect(ex).to.have.property(
-          "message",
-          ChannelError.AccessDenied,
-          `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${ex.message}`
-        );
+        expect(ex).to.have.property("message", ChannelError.AccessDenied, `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${ex.message}`);
       }
 
-      const intentResolution = await control.raiseIntent(
-        "privateChanneliIsPrivate",
-        "privateChannelId",
-        undefined,
-        undefined,
-        { key: privChan2.id }
-      );
+      const intentResolution = await control.raiseIntent("privateChanneliIsPrivate", "privateChannelId", undefined, undefined, { key: privChan2.id });
 
       control.validateIntentResolution(IntentApp.IntentAppF, intentResolution);
       let result = control.getIntentResult(intentResolution);
@@ -104,8 +89,7 @@ export default () =>
       control.validateIntentResult(result, IntentResultType.PrivateChannel);
     });
 
-    const PrivateChannelsLifecycleEvents =
-      "(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected";
+    const PrivateChannelsLifecycleEvents = "(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected";
     it(PrivateChannelsLifecycleEvents, async () => {
       await control.listenForError();
       let onUnsubscribeReceiver = control.receiveContext("onUnsubscribeTriggered");
