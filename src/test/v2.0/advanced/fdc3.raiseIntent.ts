@@ -2,6 +2,7 @@ import { ChannelError, PrivateChannel } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { wait } from "../../../utils";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp } from "./intent-support-2.0";
+import constants from "../../../constants";
 
 const control = new RaiseIntentControl2_0();
 
@@ -14,7 +15,7 @@ export default () =>
       await control.closeIntentAppWindow(this.currentTest.title);
     });
 
-    const RaiseIntentSingleResolve = "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
+    const RaiseIntentSingleResolve = "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentSingleResolve, async () => {
       await control.listenForError();
       const result = control.receiveContext("fdc3-intent-a-opened");
@@ -23,7 +24,7 @@ export default () =>
       await result;
     });
 
-    const RaiseIntentTargetedAppResolve = "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-a when raising intent 'aTestingIntent' with context 'testContextX'";
+    const RaiseIntentTargetedAppResolve = "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
       await control.listenForError();
       const result = control.receiveContext("fdc3-intent-a-opened");
@@ -34,7 +35,7 @@ export default () =>
       await result;
     });
 
-    const RaiseIntentTargetedInstanceResolveOpen = "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent' with context 'testContextX' after opening intent-a app";
+    const RaiseIntentTargetedInstanceResolveOpen = "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
       await control.listenForError();
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
@@ -46,7 +47,7 @@ export default () =>
       control.validateInstances(instances, 1, appIdentifier.instanceId);
     });
 
-    const RaiseIntentTargetedInstanceResolveFindInstances = "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
+    const RaiseIntentTargetedInstanceResolveFindInstances = "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
       await control.listenForError();
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
@@ -84,7 +85,7 @@ export default () =>
 
       control.validateIntentResolution(IntentApp.IntentAppF, intentResolution);
       let result = control.getIntentResult(intentResolution);
-      await wait(300);
+      await wait(constants.ShortWait);
       await result;
       control.validateIntentResult(result, IntentResultType.PrivateChannel);
     });

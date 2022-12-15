@@ -85,7 +85,7 @@ export class RaiseIntentControl2_0 {
 
   getIntentResult(intentResolution: IntentResolution): Promise<IntentResult> {
     //ensure getIntentResult immediately returns a promise that can be awaited
-    let timeout = this.failIfIntentResultPromiseNotReceived();
+    let timeout = this.failIfPromiseNotReceived();
     let intentResult = intentResolution.getResult().catch((ex) => {
       assert.fail(`Error while attempting to retrieve the IntentResult from the IntentResolution object: ${ex.message ?? ex}`);
     });
@@ -97,7 +97,7 @@ export class RaiseIntentControl2_0 {
     await privateChannel.broadcast({ type: contextType });
   }
 
-  failIfIntentResultPromiseNotReceived() {
+  failIfPromiseNotReceived() {
     let timeout = window.setTimeout(() => {
       assert.fail("When running getIntentResult() the promise should be returned immediately unless it is being awaited");
     }, 500);
