@@ -5,7 +5,7 @@
 
 |Version    | Release | Specification |
 |-----------|---------|--------|
-|[FDC3 1.2](https://fdc3.finos.org/docs/1.2/fdc3-intro)   | _unreleased_ | [1.2 Tests Specification](https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/FDC3-1.2-Conformance-Test-Cases.md) |
+|[FDC3 1.2](https://fdc3.finos.org/docs/1.2/fdc3-intro)   | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/finos/FDC3-Conformance-Framework) | [1.2 Tests Specification](https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/FDC3-1.2-Conformance-Test-Cases.md) |
 |[FDC3 2.0](https://fdc3.finos.org/docs/fdc3-intro) | _in development_ | [2.0 Tests Specification](https://github.com/finos/FDC3/blob/8166c0e6aa872b2fc7b755384e5b2eeeaf88c732/toolbox/fdc3-conformance/FDC3-2.0-Conformance-Test-Cases.md) |
 
 # FDC3 Conformance Framework
@@ -104,6 +104,12 @@ If you've had a clean run of all the tests locally, why not join the conformance
 Once you have followed these steps, you will be allowed to display the FDC3 Compliance Badges within your marketing literature.
 
 <img src="terms-conditions/graphics/1.2/2022_FDC3_CompliantBadge_1.2.png" alt="Conformance with FDC3 1.2" width="100px"><img src="terms-conditions/graphics/2.0/2022_FDC3_CompliantBadge_2.0.png" alt="Conformance with FDC3 2.0"  width="100px">
+
+### Who Is Conformant?
+
+We publish the details of conformant applications on the [FDC3 Community Page](https://fdc3.finos.org/community).  Please check there to find out who FINOS has certified! 
+
+[Read the latest blog post here about the certification announcements at OSFF New York](https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents)
 
 
 ## Contributing
