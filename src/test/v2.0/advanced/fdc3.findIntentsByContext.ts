@@ -5,7 +5,7 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { IntentApp } from "./intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
-const findIntentsByContextDocs = "\r\nDocumentation: " + APIDocumentation2_0.findIntentsByContext + "\r\nCause";
+const findIntentsByContextDocs = "\r\nDocumentation: " + APIDocumentation2_0.findIntentsByContext;
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
@@ -16,7 +16,7 @@ export default () =>
       try {
         const intents = await fdc3.findIntentsByContext({ type: "testContextX" });
         expect(intents).to.have.length(4, findIntentsByContextDocs);
-
+        console.log(JSON.stringify(intents));
         const intentNames = intents.map((appIntent) => appIntent.intent.name);
         expect(intentNames).to.have.all.members(["aTestingIntent", "sharedTestingIntent1", "cTestingIntent", "kTestingIntent"], findIntentsByContextDocs);
 
@@ -45,6 +45,6 @@ export default () =>
 function validateIntents(intents: AppIntent[], intentFilter: string, expectedAppCount: number, expectedAppIds: IntentApp[]) {
   const filteredIntents = intents.find((appIntent) => appIntent.intent.name === intentFilter);
   expect(filteredIntents.apps).to.have.length(expectedAppCount, findIntentsByContextDocs);
-  const sharedAppNames = filteredIntents.apps.map((app) => app.name);
+  const sharedAppNames = filteredIntents.apps.map((app) => app.appId);
   expect(sharedAppNames).to.have.all.members(expectedAppIds, findIntentsByContextDocs);
 }
