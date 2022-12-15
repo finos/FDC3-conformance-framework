@@ -107,7 +107,7 @@ Once you have followed these steps, you will be allowed to display the FDC3 Comp
 
 ### Who Is Conformant?
 
-We publish the details of conformant applications on the [FDC3 Community Page](https://fdc3.finos.org/community).  Please check there to find out who FINOS has certified! 
+We publish the details of conformant desktop agents on the [FDC3 Community Page](https://fdc3.finos.org/community).  Please check there to find out who FINOS has certified! 
 
 [Read the latest blog post here about the certification announcements at OSFF New York](https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents)
 
