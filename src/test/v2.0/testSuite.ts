@@ -16,7 +16,7 @@ import fdc3JoinUserChannel_2_0 from "./basic/fdc3.joinUserChannel";
 import fdc3LeaveCurrentChannel_2_0 from "./basic/fdc3.leaveCurrentChannel";
 import fdc3Open_2_0 from "./advanced/fdc3.open";
 import fdc3RaiseIntent_2_0 from "./advanced/fdc3.raiseIntent";
-import fdc3RaiseIntent_2_0_Result from "./advanced/fdc3.raiseIntent-Result";
+import fdc3RaiseIntent_2_0_Result from "./advanced/fdc3.raiseIntent-result";
 import fdc3RaiseIntent_2_0_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
 import fdc3RaiseIntentForContext_2_0 from "./basic/fdc3.raiseIntentForContext";
 
@@ -43,9 +43,8 @@ const advancedSuite_2_0: testSet = {
   fdc3FindIntentsByContext_2_0: [fdc3FindIntentsByContext_2_0],
   fdc3RaiseIntent_2_0: [fdc3RaiseIntent_2_0],
   "fdc3RaiseIntent_2_0 (Result)": [fdc3RaiseIntent_2_0_Result],
-  "fdc3RaiseIntent_2_0 (NoAppsFound)": [fdc3RaiseIntent_2_0_NoAppsFound]
+  "fdc3RaiseIntent_2_0 (NoAppsFound)": [fdc3RaiseIntent_2_0_NoAppsFound],
 };
-
 
 function stripSuites(ts: testSet[]): (() => void)[] {
   const out: (() => void)[] = [];
