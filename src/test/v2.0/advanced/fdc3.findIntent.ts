@@ -14,12 +14,7 @@ export default () =>
   describe("fdc3.findIntent", () => {
     it("(2.0-FindIntentAppD) Should find intent 'aTestingIntent' belonging only to app intent-a", async () => {
       const appIntent = await fdc3.findIntent("aTestingIntent");
-      validateAppIntent(
-        appIntent,
-        1,
-        { name: "aTestingIntent", displayName: "A Testing Intent" },
-        IntentApp.IntentAppA
-      );
+      validateAppIntent(appIntent, 1, { name: "aTestingIntent", displayName: "A Testing Intent" }, IntentApp.IntentAppA);
     });
 
     it("(2.0-FindNonExistentIntentAppD) Should throw NoAppsFound error when intent does not exist", async () => {
@@ -33,12 +28,7 @@ export default () =>
 
     it("(2.0-FindIntentAppDRightContext) Should find intent 'aTestingIntent' belonging only to app intent-a with context 'testContextX'", async () => {
       const appIntent = await fdc3.findIntent("aTestingIntent", { type: "testContextX" });
-      validateAppIntent(
-        appIntent,
-        1,
-        { name: "aTestingIntent", displayName: "A Testing Intent" },
-        IntentApp.IntentAppA
-      );
+      validateAppIntent(appIntent, 1, { name: "aTestingIntent", displayName: "A Testing Intent" }, IntentApp.IntentAppA);
     });
 
     it("(2.0-FindIntentAppDWrongContext) Should throw NoAppsFound error when intent exists but context does not", async () => {
@@ -52,85 +42,41 @@ export default () =>
 
     it("(2.0-FindIntentAppDMultiple1) Should find intent 'sharedTestingIntent2' belonging to multiple apps (intent-a & intent-b)", async () => {
       const appIntent = await fdc3.findIntent("sharedTestingIntent2");
-      validateAppIntent(
-        appIntent,
-        6,
-        { name: "sharedTestingIntent2", displayName: "Shared Testing Intent" },
-        IntentApp.IntentAppD
-      );
+      validateAppIntent(appIntent, 6, { name: "sharedTestingIntent2", displayName: "Shared Testing Intent" }, IntentApp.IntentAppD);
     });
 
     it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextY'", async () => {
       const appIntent = await fdc3.findIntent("sharedTestingIntent2", { type: "testContextY" });
-      validateAppIntent(
-        appIntent,
-        6,
-        { name: "sharedTestingIntent2", displayName: "Shared Testing Intent" },
-        IntentApp.IntentAppD
-      );
+      validateAppIntent(appIntent, 6, { name: "sharedTestingIntent2", displayName: "Shared Testing Intent" }, IntentApp.IntentAppD);
     });
 
     it("(2.0-FindIntentAppDByResultSingle) Should find intent 'cTestingIntent' belonging only to app intent-c with context 'testContextX' and result type 'testContextZ'", async () => {
       const appIntent = await fdc3.findIntent("cTestingIntent", { type: "testContextX" }, "testContextZ");
-      validateAppIntent(
-        appIntent,
-        1,
-        { name: "cTestingIntent", displayName: "C Testing Intent" },
-        IntentApp.IntentAppC
-      );
+      validateAppIntent(appIntent, 1, { name: "cTestingIntent", displayName: "C Testing Intent" }, IntentApp.IntentAppC);
     });
 
     it("(2.0-FindIntentAppDByResultSingleNullContext) Should find intent 'cTestingIntent' belonging only to app intent-c with a null context and result type 'testContextZ'", async () => {
       const appIntent = await fdc3.findIntent("cTestingIntent", undefined, "testContextZ");
-      validateAppIntent(
-        appIntent,
-        1,
-        { name: "cTestingIntent", displayName: "C Testing Intent" },
-        IntentApp.IntentAppC
-      );
+      validateAppIntent(appIntent, 1, { name: "cTestingIntent", displayName: "C Testing Intent" }, IntentApp.IntentAppC);
     });
 
     it("(2.0-FindIntentAppDByResultMultiple) Should find intent 'sharedTestingIntent1' belonging only to app intent-b with context 'testContextX' and result type 'testContextY'", async () => {
       const appIntent = await fdc3.findIntent("sharedTestingIntent1", { type: "testContextX" }, "testContextY");
-      validateAppIntent(
-        appIntent,
-        2,
-        { name: "sharedTestingIntent1", displayName: "Shared Testing Intent" },
-        IntentApp.IntentAppA
-      );
+      validateAppIntent(appIntent, 2, { name: "sharedTestingIntent1", displayName: "Shared Testing Intent" }, IntentApp.IntentAppA);
     });
 
     it("(2.0-FindIntentAppDByResultChannel1) Should find intent 'sharedTestingIntent2' belonging only to apps intent-e and itent-f with context 'testContextY' and result type 'channel", async () => {
       const appIntent = await fdc3.findIntent("sharedTestingIntent2", { type: "testContextY" }, "channel");
-      validateAppIntent(
-        appIntent,
-        2,
-        { name: "sharedTestingIntent2", displayName: "Shared Testing Intent" },
-        IntentApp.IntentAppE
-      );
+      validateAppIntent(appIntent, 2, { name: "sharedTestingIntent2", displayName: "Shared Testing Intent" }, IntentApp.IntentAppE);
     });
 
     it("(2.0-FindIntentAppDByResultChannel2) Should find intent 'sharedTestingIntent2' belonging only to app intent-c with context 'testContextY' and result type 'channel<testContextZ>'", async () => {
-      const appIntent = await fdc3.findIntent(
-        "sharedTestingIntent2",
-        { type: "testContextY" },
-        "channel<testContextZ>"
-      );
-      validateAppIntent(
-        appIntent,
-        1,
-        { name: "sharedTestingIntent2", displayName: "Shared Testing Intent" },
-        IntentApp.IntentAppF
-      );
+      const appIntent = await fdc3.findIntent("sharedTestingIntent2", { type: "testContextY" }, "channel<testContextZ>");
+      validateAppIntent(appIntent, 1, { name: "sharedTestingIntent2", displayName: "Shared Testing Intent" }, IntentApp.IntentAppF);
     });
   });
 
-function validateAppIntent(
-  appIntent: AppIntent,
-  expectedNumberOfApps: number,
-  expectedIntentMetadata: IntentMetadata,
-  firstIntentAppToValidate: IntentApp
-) {
+function validateAppIntent(appIntent: AppIntent, expectedNumberOfApps: number, expectedIntentMetadata: IntentMetadata, firstIntentAppToValidate: IntentApp) {
   expect(appIntent.intent).to.deep.eq(
     {
       name: expectedIntentMetadata.name,
@@ -139,31 +85,13 @@ function validateAppIntent(
     findIntentDocs
   );
 
-  expect(
-    appIntent.apps,
-    `Unexpected AppIntent.apps.length. Expected ${expectedNumberOfApps}, got ${appIntent.apps.length}`
-  ).to.have.length(expectedNumberOfApps, findIntentDocs);
+  expect(appIntent.apps, `Unexpected AppIntent.apps.length. Expected ${expectedNumberOfApps}, got ${appIntent.apps.length}`).to.have.length(expectedNumberOfApps, findIntentDocs);
 
-  const intentApps = [
-    "IntentAppAId",
-    "IntentAppBId",
-    "IntentAppCId",
-    "IntentAppDId",
-    "IntentAppEId",
-    "IntentAppFId",
-    "IntentAppGId",
-    "IntentAppHId",
-    "IntentAppIId",
-    "IntentAppJId",
-    "IntentAppKId",
-  ];
+  const intentApps = ["IntentAppAId", "IntentAppBId", "IntentAppCId", "IntentAppDId", "IntentAppEId", "IntentAppFId", "IntentAppGId", "IntentAppHId", "IntentAppIId", "IntentAppJId", "IntentAppKId"];
   const position = intentApps.indexOf(firstIntentAppToValidate);
   const appsThatNeedValidating = intentApps.splice(position, expectedNumberOfApps);
 
   appsThatNeedValidating.forEach((appId, index) => {
-    expect(
-      appIntent.apps[index],
-      `AppIntent.apps[${index}] did not have expected property 'appId' ${findIntentDocs}`
-    ).to.have.property("appId", appId);
+    expect(appIntent.apps[index], `AppIntent.apps[${index}] did not have expected property 'appId' ${findIntentDocs}`).to.have.property("appId", appId);
   });
 }

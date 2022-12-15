@@ -18,10 +18,7 @@ export default () =>
         expect(intents).to.have.length(4, findIntentsByContextDocs);
 
         const intentNames = intents.map((appIntent) => appIntent.intent.name);
-        expect(intentNames).to.have.all.members(
-          ["aTestingIntent", "sharedTestingIntent1", "cTestingIntent", "kTestingIntent"],
-          findIntentsByContextDocs
-        );
+        expect(intentNames).to.have.all.members(["aTestingIntent", "sharedTestingIntent1", "cTestingIntent", "kTestingIntent"], findIntentsByContextDocs);
 
         validateIntents(intents, "aTestingIntent", 1, [IntentApp.IntentAppA]);
         validateIntents(intents, "sharedTestingIntent1", 2, [IntentApp.IntentAppA, IntentApp.IntentAppB]);
@@ -45,12 +42,7 @@ export default () =>
     });
   });
 
-function validateIntents(
-  intents: AppIntent[],
-  intentFilter: string,
-  expectedAppCount: number,
-  expectedAppIds: IntentApp[]
-) {
+function validateIntents(intents: AppIntent[], intentFilter: string, expectedAppCount: number, expectedAppIds: IntentApp[]) {
   const filteredIntents = intents.find((appIntent) => appIntent.intent.name === intentFilter);
   expect(filteredIntents.apps).to.have.length(expectedAppCount, findIntentsByContextDocs);
   const sharedAppNames = filteredIntents.apps.map((app) => app.name);

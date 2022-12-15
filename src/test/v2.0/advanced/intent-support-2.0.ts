@@ -54,13 +54,7 @@ export class RaiseIntentControl2_0 {
     expect(privChan).to.have.property("id");
   }
 
-  async raiseIntent(
-    intent: string,
-    contextType: string,
-    appIdentifier?: AppIdentifier,
-    delayBeforeReturn: number = 0,
-    contextId?: { [key: string]: string }
-  ): Promise<IntentResolution> {
+  async raiseIntent(intent: string, contextType: string, appIdentifier?: AppIdentifier, delayBeforeReturn: number = 0, contextId?: { [key: string]: string }): Promise<IntentResolution> {
     let context: IntentUtilityContext = {
       type: contextType,
       delayBeforeReturn: delayBeforeReturn,
@@ -93,9 +87,7 @@ export class RaiseIntentControl2_0 {
     //ensure getIntentResult immediately returns a promise that can be awaited
     let timeout = this.failIfIntentResultPromiseNotReceived();
     let intentResult = intentResolution.getResult().catch((ex) => {
-      assert.fail(
-        `Error while attempting to retrieve the IntentResult from the IntentResolution object: ${ex.message ?? ex}`
-      );
+      assert.fail(`Error while attempting to retrieve the IntentResult from the IntentResolution object: ${ex.message ?? ex}`);
     });
     clearTimeout(timeout);
     return intentResult;
@@ -107,9 +99,7 @@ export class RaiseIntentControl2_0 {
 
   failIfIntentResultPromiseNotReceived() {
     let timeout = window.setTimeout(() => {
-      assert.fail(
-        "When running getIntentResult() the promise should be returned immediately unless it is being awaited"
-      );
+      assert.fail("When running getIntentResult() the promise should be returned immediately unless it is being awaited");
     }, 500);
 
     return timeout;
@@ -121,20 +111,13 @@ export class RaiseIntentControl2_0 {
     switch (expectedIntentResultType) {
       case IntentResultType.Context: {
         if (expectedContextType) {
-          expect(
-            intentResult,
-            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance`
-          ).to.have.property("type");
-          expect(
-            intentResult.type,
-            `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${intentResult.type}`
-          ).to.be.equal(expectedContextType);
+          expect(intentResult, `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance`).to.have.property("type");
+          expect(intentResult.type, `The promise received by Test from resolution.getResult() should resolve to a ${expectedContextType} instance. Instead resolved to ${intentResult.type}`).to.be.equal(expectedContextType);
           break;
         }
       }
       case IntentResultType.Void: {
-        expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be
-          .empty;
+        expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be.empty;
         break;
       }
       case IntentResultType.Channel: {
@@ -179,11 +162,7 @@ export class RaiseIntentControl2_0 {
     });
   }
 
-  async receiveContextStreamFromMockApp(
-    privChannel: PrivateChannel,
-    streamedNumberStart: number,
-    streamedNumberEnd: number
-  ): Promise<Listener> {
+  async receiveContextStreamFromMockApp(privChannel: PrivateChannel, streamedNumberStart: number, streamedNumberEnd: number): Promise<Listener> {
     let timeout;
     const wrapper = wrapPromise();
 
@@ -200,9 +179,7 @@ export class RaiseIntentControl2_0 {
     });
 
     timeout = await window.setTimeout(() => {
-      wrapper.reject(
-        "Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered"
-      );
+      wrapper.reject("Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered");
     }, constants.WaitTime);
 
     await wrapper.promise;
@@ -245,10 +222,7 @@ const waitForContext = (contextType: string, testId: string, channel?: Channel):
           resolve(context);
           if (executionListener) executionListener.unsubscribe();
         } else {
-          console.warn(
-            Date.now() +
-              ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
-          );
+          console.warn(Date.now() + ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`);
         }
       } else {
         console.log(Date.now() + ` Received (without testId) "${contextType}" for test: "${testId}"`);
@@ -273,9 +247,7 @@ const waitForContext = (contextType: string, testId: string, channel?: Channel):
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
-                    context ? "" : "NOT "
-                  } exist, 
+                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist, 
 had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"}) 
 and type "${context?.type}" (${context?.type == contextType ? "did match" : "did NOT match"})`
               );

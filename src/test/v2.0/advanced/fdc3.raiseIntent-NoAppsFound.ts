@@ -2,10 +2,10 @@ import { ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { IntentControl2_0 } from "./intent-support-2.0";
+import { RaiseIntentControl2_0 } from "./intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
-const control = new IntentControl2_0();
+const control = new RaiseIntentControl2_0();
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 /**
@@ -13,8 +13,7 @@ const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent 
  */
 export default () =>
   describe("fdc3.raiseIntent (NoAppsFound)", () => {
-    const RaiseIntentFailedResolve =
-      "(RaiseIntentFailedResolve) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
+    const RaiseIntentFailedResolve = "(RaiseIntentFailedResolve) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
     it(RaiseIntentFailedResolve, async () => {
       try {
         await control.raiseIntent("aTestingIntent", "testContextY");
@@ -24,8 +23,7 @@ export default () =>
       }
     });
 
-    const RaiseIntentFailTargetedAppResolve1 =
-      "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
+    const RaiseIntentFailTargetedAppResolve1 = "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
     it(RaiseIntentFailTargetedAppResolve1, async () => {
       try {
         await control.raiseIntent("aTestingIntent", "testContextY", { appId: "IntentAppAId" });
@@ -35,8 +33,7 @@ export default () =>
       }
     });
 
-    const RaiseIntentFailTargetedAppResolve2 =
-      "(RaiseIntentFailTargetedAppResolve2) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier NonExistentApp do not correlate";
+    const RaiseIntentFailTargetedAppResolve2 = "(RaiseIntentFailTargetedAppResolve2) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier NonExistentApp do not correlate";
     it(RaiseIntentFailTargetedAppResolve2, async () => {
       try {
         await control.raiseIntent("aTestingIntent", "testContextY", { appId: "NonExistentApp" });
@@ -47,8 +44,7 @@ export default () =>
     });
 
     //To Do: Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.
-    const RaiseIntentFailTargetedAppResolve3 =
-      "(RaiseIntentFailTargetedAppResolve3) Should fail to raise intent when targeted app intent-h, context 'testContextY', intent 'sharedTestingIntent2' and AppIdentifier IntentAppHId do not correlate";
+    const RaiseIntentFailTargetedAppResolve3 = "(RaiseIntentFailTargetedAppResolve3) Should fail to raise intent when targeted app intent-h, context 'testContextY', intent 'sharedTestingIntent2' and AppIdentifier IntentAppHId do not correlate";
     it(RaiseIntentFailTargetedAppResolve3, async () => {
       try {
         await control.raiseIntent("sharedTestingIntent2", "testContextY", { appId: "NonExistentApp" });
@@ -59,8 +55,7 @@ export default () =>
     });
 
     //To Do: Test will need an extended timeout to allow for this to be returned in time by the desktop agent, which will have a vendor-defined timeout.
-    const RaiseIntentFailTargetedAppResolve4 =
-      "(RaiseIntentFailTargetedAppResolve4) Should fail to raise intent when targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2' and AppIdentifier IntentAppIId do not correlate";
+    const RaiseIntentFailTargetedAppResolve4 = "(RaiseIntentFailTargetedAppResolve4) Should fail to raise intent when targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2' and AppIdentifier IntentAppIId do not correlate";
     it(RaiseIntentFailTargetedAppResolve4, async () => {
       try {
         await control.raiseIntent("sharedTestingIntent2", "testContextY", { appId: "IntentAppIId" });

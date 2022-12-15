@@ -1,7 +1,7 @@
 import { wait } from "../../../utils";
-import { IntentControl2_0, IntentResultType } from "./intent-support-2.0";
+import { RaiseIntentControl2_0, IntentResultType } from "./intent-support-2.0";
 
-const control = new IntentControl2_0();
+const control = new RaiseIntentControl2_0();
 
 export default () =>
   describe("fdc3.raiseIntent (Result)", () => {
@@ -15,8 +15,7 @@ export default () =>
     });
 
     // THIS TEST DOESN'T MAKE SENSE: The returned intentResult is always void/an empty object. therefore its state never changes, either before or after the intent listener returns
-    const RaiseIntentVoidResult5secs =
-      "(2.0-RaiseIntentVoidResult5secs) App A receives a void IntentResult after a 5 second delay";
+    const RaiseIntentVoidResult5secs = "(2.0-RaiseIntentVoidResult5secs) App A receives a void IntentResult after a 5 second delay";
     it(RaiseIntentVoidResult5secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("context-received", 8000);
@@ -32,8 +31,7 @@ export default () =>
     });
 
     //TEST DOESN'T MAKE SENSE: see test above
-    const RaiseIntentVoidResult61secs =
-      "(2.0-RaiseIntentVoidResult61secs) App A receives a void IntentResult after a 61 second delay";
+    const RaiseIntentVoidResult61secs = "(2.0-RaiseIntentVoidResult61secs) App A receives a void IntentResult after a 61 second delay";
     it(RaiseIntentVoidResult61secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("context-received", 64000);
@@ -57,8 +55,7 @@ export default () =>
       control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
     });
 
-    const RaiseIntentContextResult5secs =
-      "(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay";
+    const RaiseIntentContextResult5secs = "(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay";
     it(RaiseIntentContextResult5secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("context-received", 8000);
@@ -74,8 +71,7 @@ export default () =>
       control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
     });
 
-    const RaiseIntentContextResult61secs =
-      "(2.0-RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay";
+    const RaiseIntentContextResult61secs = "(2.0-RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay";
     it(RaiseIntentContextResult61secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("context-received", 64000);
@@ -107,8 +103,7 @@ export default () =>
       await receiver;
     });
 
-    const RaiseIntentPrivateChannelResult =
-      "(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object";
+    const RaiseIntentPrivateChannelResult = "(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object";
     it(RaiseIntentPrivateChannelResult, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");

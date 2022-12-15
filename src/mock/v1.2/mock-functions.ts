@@ -1,8 +1,8 @@
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import constants from "../../constants";
-import { AppControlContext } from "../../test/common/channel-control";
+import { AppControlContext } from "../../test/common/common-types";
 
-declare let fdc3 : DesktopAgent
+declare let fdc3: DesktopAgent;
 
 export const onFdc3Ready = () =>
   new Promise((resolve) => {
@@ -16,7 +16,7 @@ export const onFdc3Ready = () =>
 export const closeWindowOnCompletion = async () => {
   console.log("Setting up closeWindow listener on app-control channel");
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  appControlChannel.addContextListener("closeWindow", (context : AppControlContext) => {
+  appControlChannel.addContextListener("closeWindow", (context: AppControlContext) => {
     //notify app A that window was closed
     appControlChannel.broadcast({
       type: "windowClosed",
@@ -30,9 +30,7 @@ export const closeWindowOnCompletion = async () => {
   });
 };
 
-export const sendContextToTests = async(context) =>{
-  const appControlChannel = await fdc3.getOrCreateChannel(
-    constants.ControlChannel
-  );
+export const sendContextToTests = async (context) => {
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   appControlChannel.broadcast(context);
-}
+};
