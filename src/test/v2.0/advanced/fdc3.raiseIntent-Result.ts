@@ -67,7 +67,6 @@ export default () =>
       //give app b time to return
       await wait(300);
       await intentResult;
-      console.log("INTENT RESULT: " + JSON.stringify(intentResult));
       control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
     });
 
