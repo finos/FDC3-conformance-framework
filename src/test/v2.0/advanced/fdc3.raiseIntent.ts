@@ -53,9 +53,9 @@ export default () =>
       const result = control.receiveContext("fdc3-intent-a-opened");
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
       const instances = await control.findInstances(IntentApp.IntentAppA);
-      control.validateInstances(instances, 1, instances[0].instanceId);
+      control.validateInstances(instances, 1, appIdentifier.instanceId);
       await result;
-      const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);
+      const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", instances[0]);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
 
