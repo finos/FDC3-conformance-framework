@@ -15,7 +15,6 @@ export const APIDocumentation2_0 = {
   getCurrentChannel:
     "https://fdc3.finos.org/docs/api/ref/DesktopAgent#getcurrentchannel",
   getInfo: "https://fdc3.finos.org/docs/api/ref/DesktopAgent#getinfo",
-  getInfo2_0: "https://fdc3.finos.org/docs/api/ref/DesktopAgent#getinfo",
   getOrCreateChannel:
     "https://fdc3.finos.org/docs/api/ref/DesktopAgent#getorcreatechannel",
   getSystemChannels:

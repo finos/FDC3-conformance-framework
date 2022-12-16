@@ -4,6 +4,7 @@ import { AppMetadata, Context } from "fdc3_2_0";
 import { sleep } from "../../../utils";
 import constants from "../../../constants";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
+import constants from "../../../constants";
 
 declare let fdc3: DesktopAgent;
 const getMetadataDocs =

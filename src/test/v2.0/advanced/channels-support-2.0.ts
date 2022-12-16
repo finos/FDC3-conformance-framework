@@ -74,14 +74,16 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     await wait(constants.WindowCloseWaitTime);
   }
 
-
-
   initCompleteListener = async (testId: string) => {
-    return waitForContext(
+    const receivedContext = await waitForContext(
       "executionComplete",
       testId,
-      await fdc3.getOrCreateChannel("app-control")
+      await fdc3.getOrCreateChannel(constants.ControlChannel)
     );
+    
+    await wait(constants.ShortWait)
+
+    return receivedContext;
   }
 
   openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true) => {
@@ -103,9 +105,9 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     );
   }
 
-  setupAndValidateListener1 = async (channel: Channel, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void) => {
+  setupAndValidateListener1 = async (channel: Channel,  listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void) => {
     if (channel) {
-      listener1 = await channel.addContextListener(expectedContextType, (context) => {
+      listener1 = await channel.addContextListener(listenContextType, (context) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
@@ -123,9 +125,9 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     validateListenerObject(listener1);
   }
 
-  setupAndValidateListener2 = async (channel: Channel, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void) => {
+  setupAndValidateListener2 = async (channel: Channel, listenContextType: string | null, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void) => {
     if (channel) {
-      listener2 = await channel.addContextListener(expectedContextType, (context) => {
+      listener2 = await channel.addContextListener(listenContextType, (context) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
@@ -157,19 +159,6 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     return uint32.toString(16);
   }
 
-  validateContextIsNotReceived = async(channel: Channel | null, unexpectedContextType: string, errorMessage: string): Promise<void> => {
-    if (channel) {
-      listener1 = await channel.addContextListener(unexpectedContextType, (context) => {
-        assert.fail(errorMessage);
-      });
-    } else {
-      listener1 = await fdc3.addContextListener(unexpectedContextType, (context) => {
-        assert.fail(errorMessage);
-      });
-    }
-    validateListenerObject(listener1);
-  }
-
 }
 
 
@@ -185,7 +174,7 @@ function validateListenerObject(listenerObject) {
 }
 
 const broadcastAppChannelCloseWindow = async (testId: string) => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
+  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   /* tslint:disable-next-line */
   const closeContext: AppControlContext = {
     type: "closeWindow",

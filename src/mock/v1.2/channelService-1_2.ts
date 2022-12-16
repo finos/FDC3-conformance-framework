@@ -1,4 +1,5 @@
 import { Channel, DesktopAgent } from "fdc3_1_2";
+import constants from "../../constants";
 import { AppControlContext, ChannelsAppConfig } from "../../test/common/channel-control";
 import { commands, channelType } from "../constants";
 import constants from "../../constants"
@@ -26,8 +27,9 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.broadcastInstrumentContext: {
+          const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : "fdc3.instrument";
           this.broadcastContextItem(
-            "fdc3.instrument",
+            contextType,
             channel,
             config.historyItems,
             config.testId
@@ -35,8 +37,9 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.broadcastContactContext: {
+          const contextType = config.contextId ? `fdc3.contact.${config.contextId}` : "fdc3.contact";
           this.broadcastContextItem(
-            "fdc3.contact",
+            contextType,
             channel,
             config.historyItems,
             config.testId
