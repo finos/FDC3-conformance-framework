@@ -7,7 +7,7 @@ import {
   
   onFdc3Ready().then(async () => {
     await closeWindowOnCompletion();
-    fdc3.addIntentListener("sharedTestingIntent2", async (context) => {
+    fdc3.addIntentListener("MadeUpIntent", async (context) => {
       return context;
     });
   });
