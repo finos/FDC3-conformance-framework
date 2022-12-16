@@ -20,24 +20,24 @@ import fdc3RaiseIntentForContext_1_2 from "./basic/fdc3.raiseIntentForContext";
 type testSet = { [key: string]: (() => void)[] };
 
 const basicSuite_1_2: testSet = {
-  fdc3AddContextListener_1_2: [fdc3AddContextListener_1_2],
-  fdc3AddIntentListener_1_2: [fdc3AddIntentListener_1_2],
-  fdc3GetCurrentChannel_1_2: [fdc3GetCurrentChannel_1_2],
-  fdc3GetInfo_1_2: [fdc3GetInfo_1_2],
-  fdc3GetOrCreateChannel_1_2: [fdc3GetOrCreateChannel_1_2],
-  fdc3GetSystemChannels_1_2: [fdc3GetSystemChannels_1_2],
-  fdc3JoinChannel_1_2: [fdc3JoinChannel_1_2],
-  fdc3LeaveCurrentChannel_1_2: [fdc3LeaveCurrentChannel_1_2],
-  fdc3RaiseIntentForContext_1_2: [fdc3RaiseIntentForContext_1_2],
+  "fdc3.addContextListener 1.2": [fdc3AddContextListener_1_2],
+  "fdc3.addIntentListener 1.2": [fdc3AddIntentListener_1_2],
+  "fdc3.getCurrentChannel 1.2": [fdc3GetCurrentChannel_1_2],
+  "fdc3.getInfo 1.2": [fdc3GetInfo_1_2],
+  "fdc3.getOrCreateChannel 1.2": [fdc3GetOrCreateChannel_1_2],
+  "fdc3.getSystemChannels 1.2": [fdc3GetSystemChannels_1_2],
+  "fdc3.joinChannel 1.2": [fdc3JoinChannel_1_2],
+  "fdc3.leaveCurrentChannel 1.2": [fdc3LeaveCurrentChannel_1_2],
+  "fdc3.raiseIntentForContext 1.2": [fdc3RaiseIntentForContext_1_2],
 };
 
 const advancedSuite_1_2: testSet = {
-  fdc3Open_1_2: [fdc3Open_1_2],
-  channels_1_2: [channels_1_2],
-  fdc3FindIntent_1_2: [fdc3FindIntent_1_2],
-  fdc3RaiseIntent_1_2: [fdc3RaiseIntent_1_2],
-  "fdc3RaiseIntent_1_2 (NoAppsFound)": [fdc3RaiseIntent_1_2_NoAppsFound],
-  fdc3FindIntentsByContext_1_2: [fdc3FindIntentsByContext_1_2],
+  "fdc3.open 1.2": [fdc3Open_1_2],
+  "channels 1.2": [channels_1_2],
+  "fdc3.findIntent 1.2": [fdc3FindIntent_1_2],
+  "fdc3.raiseIntent 1.2": [fdc3RaiseIntent_1_2],
+  "fdc3.raiseIntent 1.2 (NoAppsFound)": [fdc3RaiseIntent_1_2_NoAppsFound],
+  "fdc3.findIntentsByContext 1.2": [fdc3FindIntentsByContext_1_2],
 };
 
 function stripSuites(ts: testSet[]): (() => void)[] {
