@@ -27,7 +27,7 @@ export default () =>
     const RaiseIntentTargetedAppResolve = "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
       await control.listenForError();
-      const result = control.receiveContext("fdc3-intent-a-opened");
+      const result = control.receiveContext("fdc3-intent-b-opened");
       const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextX", {
         appId: IntentApp.IntentAppB,
       });
