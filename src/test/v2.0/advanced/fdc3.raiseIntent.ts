@@ -82,7 +82,7 @@ export default () =>
         expect(ex).to.have.property("message", ChannelError.AccessDenied, `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${ex.message}`);
       }
 
-      const intentResolution = await control.raiseIntent("privateChanneliIsPrivate", "privateChannelId", undefined, undefined, { key: privChan2.id });
+      const intentResolution = await control.raiseIntent("privateChannelIsPrivate", "privateChannelId", undefined, undefined, { key: privChan2.id });
 
       control.validateIntentResolution(IntentApp.IntentAppF, intentResolution);
       let result = control.getIntentResult(intentResolution);
