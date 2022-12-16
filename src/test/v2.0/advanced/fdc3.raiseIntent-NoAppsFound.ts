@@ -95,7 +95,7 @@ export default () =>
         assert.fail("No error was thrown");
       } catch (ex) {
         clearTimeout(timeout);
-        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
+        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
     }).timeout(constants.NoListenerTimeout + 1000);
   });
