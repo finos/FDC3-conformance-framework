@@ -18,7 +18,7 @@ export default () =>
     const RaiseIntentSingleResolve = "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentSingleResolve, async () => {
       await control.listenForError();
-      const result = control.receiveContext("fdc3-intent-a-opened");
+      const result = control.receiveContext("aTestingIntent-listener-triggered");
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX");
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
@@ -27,7 +27,7 @@ export default () =>
     const RaiseIntentTargetedAppResolve = "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
       await control.listenForError();
-      const result = control.receiveContext("fdc3-intent-b-opened");
+      const result = control.receiveContext("sharedTestingIntent1-listener-triggered");
       const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextX", {
         appId: IntentApp.IntentAppB,
       });
@@ -38,7 +38,7 @@ export default () =>
     const RaiseIntentTargetedInstanceResolveOpen = "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
       await control.listenForError();
-      const result = control.receiveContext("fdc3-intent-a-opened");
+      const result = control.receiveContext("aTestingIntent-listener-triggered");
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
       await result;
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);
@@ -50,7 +50,7 @@ export default () =>
     const RaiseIntentTargetedInstanceResolveFindInstances = "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
       await control.listenForError();
-      const result = control.receiveContext("fdc3-intent-a-opened");
+      const result = control.receiveContext("aTestingIntent-listener-triggered");
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
       const instances = await control.findInstances(IntentApp.IntentAppA);
       control.validateInstances(instances, 1, appIdentifier.instanceId);

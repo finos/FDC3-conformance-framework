@@ -7,27 +7,21 @@ declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
-  const wrapper = wrapPromise();
-  let receivedContext: IntentUtilityContext;
-  await fdc3.addIntentListener("sharedTestingIntent1", (context: IntentUtilityContext) => {
-    receivedContext = context;
-    wrapper.resolve();
-  });
 
-  await wrapper.promise;
-
-  if (receivedContext) {
-    await wait(receivedContext.delayBeforeReturn);
-    await sendContextToTests(receivedContext);
-    if (receivedContext.type === "testContextY") {
-      return;
-    } else if (receivedContext.type === "testContextX") {
-      return receivedContext;
+  //used in 'RaiseIntentTargetedAppResolve'
+  await fdc3.addIntentListener("sharedTestingIntent1", async (context: IntentUtilityContext) => {
+    if (context.delayBeforeReturn > 0) {
+      await wait(context.delayBeforeReturn);
     }
-  }
 
-  //broadcast that intent-a has opened
-  await sendContextToTests({
-    type: "fdc3-intent-b-opened",
+    await sendContextToTests({
+      type: "sharedTestingIntent1-listener-triggered",
+    });
+
+    if (context.type === "testContextY") {
+      return;
+    } else if (context.type === "testContextX") {
+      return context;
+    }
   });
 });

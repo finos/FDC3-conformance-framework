@@ -16,8 +16,11 @@ onFdc3Ready().then(async () => {
       await wait(context.delayBeforeReturn);
     }
 
-    sendContextToTests({
-      type: "context-received",
+    const { appMetadata } = await fdc3.getInfo();
+
+    await sendContextToTests({
+      type: "aTestingIntent-listener-triggered",
+      instanceId: appMetadata.instanceId,
     });
 
     return;
@@ -29,18 +32,10 @@ onFdc3Ready().then(async () => {
       await wait(context.delayBeforeReturn);
     }
 
-    sendContextToTests({
-      type: "context-received",
+    await sendContextToTests({
+      type: "sharedTestingIntent1-listener-triggered",
     });
 
     return context;
-  });
-
-  const { appMetadata } = await fdc3.getInfo();
-
-  //broadcast that intent-a has opened
-  await sendContextToTests({
-    type: "fdc3-intent-a-opened",
-    instanceId: appMetadata.instanceId,
   });
 });
