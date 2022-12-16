@@ -29,7 +29,7 @@ export default () =>
       "(RaiseIntentFailTargetedAppInstanceResolve1) Should fail to raise intent when targeted app intent-a instance, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
     it(RaiseIntentFailTargetedAppInstanceResolve1, async () => {
       try {
-        const appIdentifier = await control.openIntentApp("IntentAppAId");
+        const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
         await control.raiseIntent("aTestingIntent", "testContextY", appIdentifier);
         assert.fail("No error was thrown");
       } catch (ex) {
@@ -85,7 +85,7 @@ export default () =>
       }
     }).timeout(constants.NoListenerTimeout + 1000);
 
-    const RaiseIntentFailTargetedAppResolve4 = "(RaiseIntentFailTargetedAppResolve4) Should fail to raise intent when targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2' and throw an IntentDeliveryFailed error";
+    const RaiseIntentFailTargetedAppResolve4 = "(RaiseIntentFailTargetedAppResolve4) Should throw an IntentDeliveryFailed error when raising intent with targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2'";
     it(RaiseIntentFailTargetedAppResolve4, async () => {
       const { timeout, promise } = sleep(constants.NoListenerTimeout);
 
