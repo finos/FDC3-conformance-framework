@@ -33,7 +33,7 @@ export default () =>
         await control.raiseIntent("aTestingIntent", "testContextY", appIdentifier);
         assert.fail("No error was thrown");
       } catch (ex) {
-        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
+        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.ResolveError.IntentDeliveryFailed);
       }
     });
 
