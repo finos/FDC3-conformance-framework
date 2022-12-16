@@ -4,7 +4,6 @@ import { Context } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
 import { ImplementationMetadata } from "fdc3_2_0";
-import { getOrCreateChannel } from "fdc3_2_0";
 import { validateAppMetadata } from "./fdc3.getAppMetadata";
 import {
   MetadataAppCommandContext,
@@ -15,7 +14,7 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 const getInfoDocs =
-  "\r\nDocumentation: " + APIDocumentation2_0.getInfo2_0 + "\r\nCause";
+  "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
 const getMetadataDocs =
   "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause";
 
@@ -78,7 +77,7 @@ export default () =>
     it("(2.0-GetInfo2) Returns a valid ImplementationMetadata object", async () => {
       console.log("startstart");
       let implMetadata: ImplementationMetadata;
-      const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
+      const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
 
       //set command for metadata app
       const metadataAppContext: MetadataAppCommandContext = {

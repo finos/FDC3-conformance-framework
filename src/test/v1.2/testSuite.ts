@@ -3,8 +3,7 @@ import constants from "../../constants";
 
 import fdc3AddContextListener_1_2 from "./basic/fdc3.addContextListener";
 import fdc3AddIntentListener_1_2 from "./basic/fdc3.addIntentListener";
-import fdc3AppChannels_1_2 from "./advanced/fdc3.app-channels";
-import fdc3UserChannels_1_2 from "./advanced/fdc3.user-channels";
+import channels_1_2 from "./advanced/channels";
 import fdc3FindIntent_1_2 from "./advanced/fdc3.findIntent";
 import fdc3FindIntentsByContext_1_2 from "./advanced/fdc3.findIntentsByContext";
 import fdc3GetCurrentChannel_1_2 from "./basic/fdc3.getCurrentChannel";
@@ -14,6 +13,7 @@ import fdc3GetSystemChannels_1_2 from "./basic/fdc3.getSystemChannels";
 import fdc3JoinChannel_1_2 from "./basic/fdc3.joinChannel";
 import fdc3LeaveCurrentChannel_1_2 from "./basic/fdc3.leaveCurrentChannel";
 import fdc3Open_1_2 from "./advanced/fdc3.open";
+import fdc3RaiseIntent_1_2_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
 import fdc3RaiseIntent_1_2 from "./advanced/fdc3.raiseIntent";
 import fdc3RaiseIntentForContext_1_2 from "./basic/fdc3.raiseIntentForContext";
 
@@ -33,10 +33,10 @@ const basicSuite_1_2: testSet = {
 
 const advancedSuite_1_2: testSet = {
   fdc3Open_1_2: [fdc3Open_1_2],
-  fdc3AppChannels_1_2: [fdc3AppChannels_1_2],
-  fdc3UserChannels_1_2: [fdc3UserChannels_1_2],
+  channels_1_2: [channels_1_2],
   fdc3FindIntent_1_2: [fdc3FindIntent_1_2],
   fdc3RaiseIntent_1_2: [fdc3RaiseIntent_1_2],
+  "fdc3RaiseIntent_1_2 (NoAppsFound)": [fdc3RaiseIntent_1_2_NoAppsFound],
   fdc3FindIntentsByContext_1_2: [fdc3FindIntentsByContext_1_2],
 };
 
