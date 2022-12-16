@@ -36,8 +36,11 @@ onFdc3Ready().then(async () => {
     return context;
   });
 
+  const { appMetadata } = await fdc3.getInfo();
+
   //broadcast that intent-a has opened
   await sendContextToTests({
     type: "fdc3-intent-a-opened",
+    instanceId: appMetadata.instanceId,
   });
 });

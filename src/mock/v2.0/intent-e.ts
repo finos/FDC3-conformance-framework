@@ -1,9 +1,4 @@
-import {
-  closeWindowOnCompletion,
-  onFdc3Ready,
-  sendContextToTests,
-  validateContext,
-} from "./mock-functions";
+import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
 
@@ -18,6 +13,8 @@ onFdc3Ready().then(async () => {
     return channel;
   });
 
+  const { appMetadata } = await fdc3.getInfo();
+
   await wait();
-  await sendContextToTests({ type: "testContextZ", id: { key: "uniqueId" }})
+  await sendContextToTests({ type: "testContextZ", id: { key: "uniqueId" }, instanceId: appMetadata.instanceId });
 });

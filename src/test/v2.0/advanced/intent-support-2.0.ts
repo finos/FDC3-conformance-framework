@@ -11,14 +11,11 @@ declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class RaiseIntentControl2_0 {
-  async receiveContext(contextType: string, waitTime?: number, expectedId?: string): Promise<Context> {
+  async receiveContext(contextType: string, waitTime?: number): Promise<ContextWithError> {
     let timeout;
     const appControlChannel = await getOrCreateChannel("app-control");
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      const listener = await appControlChannel.addContextListener(contextType, (context) => {
-        if (expectedId) {
-          expect(context.id).to.be.equal(expectedId);
-        }
+      const listener = await appControlChannel.addContextListener(contextType, (context: ContextWithError) => {
         resolve(context);
         clearTimeout(timeout);
         listener.unsubscribe();
@@ -141,9 +138,12 @@ export class RaiseIntentControl2_0 {
     }
   }
 
-  validateInstances(instances: AppIdentifier[], expectedInstances: number, expectedInstanceId?: string): void {
-    expect(instances.length).to.be.equal(expectedInstances);
+  validateInstances(instances: AppIdentifier[], expectedInstanceCount: number, expectedInstanceId?: string, returnedInstanceId?: string): void {
+    expect(instances.length).to.be.equal(expectedInstanceCount);
     expect(instances[0].instanceId).to.be.equal(expectedInstanceId);
+    if (returnedInstanceId) {
+      expect(expectedInstanceId).to.be.equal(returnedInstanceId);
+    }
   }
 
   validateIntentResolution = (appId: string, intentResolution: IntentResolution) => {

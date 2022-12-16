@@ -44,7 +44,7 @@ export default () =>
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       const instances = await control.findInstances(IntentApp.IntentAppA);
-      control.validateInstances(instances, 1, appIdentifier.instanceId);
+      control.validateInstances(instances, 1, appIdentifier.instanceId, (await result).instanceId);
     });
 
     const RaiseIntentTargetedInstanceResolveFindInstances = "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";

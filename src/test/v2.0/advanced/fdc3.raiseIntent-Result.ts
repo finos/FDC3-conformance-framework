@@ -91,7 +91,7 @@ export default () =>
     const RaiseIntentChannelResult = "(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object";
     it(RaiseIntentChannelResult, async () => {
       await control.listenForError();
-      let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");
+      let receiver = control.receiveContext("testContextZ", 3000);
       const intentResolution = await control.raiseIntent("sharedTestingIntent2", "testContextY", {
         appId: IntentApp.IntentAppE,
       });
@@ -101,14 +101,14 @@ export default () =>
       //wait for intent-e to return channel
       await wait(300);
       await intentResult;
-      control.validateIntentResult(intentResult, IntentResultType.Channel);
       await receiver;
+      control.validateIntentResult(intentResult, IntentResultType.Channel, (await receiver).instanceId);
     });
 
     const RaiseIntentPrivateChannelResult = "(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object";
     it(RaiseIntentPrivateChannelResult, async () => {
       await control.listenForError();
-      let receiver = control.receiveContext("testContextZ", 3000, "uniqueId");
+      let receiver = control.receiveContext("testContextZ", 3000);
       const intentResolution = await control.raiseIntent("sharedTestingIntent2", "testContextY", {
         appId: IntentApp.IntentAppF,
       });
@@ -118,7 +118,7 @@ export default () =>
       //wait for intent-e to return private channel
       await wait(300);
       await intentResult;
-      control.validateIntentResult(intentResult, IntentResultType.PrivateChannel);
       await receiver;
+      control.validateIntentResult(intentResult, IntentResultType.PrivateChannel, (await receiver).instanceId);
     });
   });

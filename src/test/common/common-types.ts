@@ -13,6 +13,7 @@ export interface AppControlContext extends CommonContext {
 
 export interface ContextWithError extends CommonContext {
   errorMessage?: string;
+  instanceId?: string;
 }
 
 export interface IntentUtilityContext extends CommonContext {
