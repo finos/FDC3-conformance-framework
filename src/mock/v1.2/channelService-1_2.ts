@@ -11,6 +11,7 @@ export class Fdc3CommandExecutor1_2 {
     let channel: Channel;
 
     //close ChannelsApp when test is complete
+    console.log("********************** setting closeWindowOnCompletion");
     await this.closeWindowOnCompletion(config.testId);
     for (const command of orderedCommands) {
       switch (command) {
@@ -127,6 +128,7 @@ export class Fdc3CommandExecutor1_2 {
         window.close();
       }, 1);
     });
+    return;
   }
 
   async notifyAppAOnCompletion(testId: string) {

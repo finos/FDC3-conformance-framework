@@ -2,9 +2,20 @@ import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v1.2/mock-functions";
 import { ContextToSend } from "./general";
+import { createAgent } from '@connectifi/agent-web';
+
 declare let fdc3: DesktopAgent;
 
-onFdc3Ready().then(async () => {
+
+const cfiStart = async () => {
+  const api = await createAgent(
+      'https://nicholaskolba.connectifi-interop.com',
+      'IntentAppC@Conformance-1.2',
+  );
+
+  window.fdc3 = api;
+  document.dispatchEvent(new CustomEvent('fdc3Ready'));
+
   await closeWindowOnCompletion();
   fdc3.addIntentListener("cTestingIntent", (context) => {
     return context;
@@ -22,4 +33,6 @@ onFdc3Ready().then(async () => {
       context: context,
     } as ContextToSend);
   });
-});
+};
+
+cfiStart();
