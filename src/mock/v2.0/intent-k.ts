@@ -1,31 +1,34 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
-import { Context, DesktopAgent } from "fdc3_2_0";
+import { DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
 import { IntentUtilityContext } from "../../test/common/common-types";
+import constants from "../../constants";
 declare let fdc3: DesktopAgent;
 
 //used in '2.0-PrivateChannelsLifecycleEvents'
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
-  let contextStreamNumber = 1;
 
   fdc3.addIntentListener("kTestingIntent", async (context) => {
     validateContext(context.type, "testContextX");
     const privChan = await fdc3.createPrivateChannel();
 
+    let contextStreamNumber = 1;
     privChan.onAddContextListener(async (contextType) => {
+      await wait(100); //wait for listener in test to init
+
       //stream multiple contexts to test in short succession
-      for (let i = 0; i < 4; i++) {
+      for (let i = 0; i < 5; i++) {
         let intentKContext: IntentUtilityContext = {
-          type: contextType,
+          type: "testContextZ",
           number: contextStreamNumber,
         };
 
+        await privChan.broadcast(intentKContext);
         contextStreamNumber++;
 
-        //give broadcast time to fire
+        //give broadcast time to run
         await wait(50);
-        await sendContextToTests(intentKContext);
       }
     });
 

@@ -74,7 +74,6 @@ export default () =>
 
       //confirm that the ids of both private channels are different
       expect(privChan.id).to.not.be.equal(privChan2.id);
-
       try {
         await control.createAppChannel(privChan.id);
         assert.fail("No error was not thrown when calling fdc3.getOrCreateChannel(privateChannel.id)");
@@ -83,8 +82,7 @@ export default () =>
       }
 
       const intentResolution = await control.raiseIntent("privateChannelIsPrivate", "privateChannelId", undefined, undefined, { key: privChan2.id });
-
-      control.validateIntentResolution(IntentApp.IntentAppF, intentResolution);
+      control.validateIntentResolution(IntentApp.IntentAppJ, intentResolution);
       let result = control.getIntentResult(intentResolution);
       await wait(constants.ShortWait);
       await result;

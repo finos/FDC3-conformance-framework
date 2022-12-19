@@ -1,4 +1,4 @@
-import { assert, expect } from "chai";
+import { assert, AssertionError, expect } from "chai";
 import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, PrivateChannel } from "fdc3_2_0";
 import { Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
@@ -22,7 +22,7 @@ export class RaiseIntentControl2_0 {
       });
 
       //if no context received reject promise
-      const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? undefined);
+      const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
       timeout = theTimeout;
       await sleepPromise;
       reject("No context received from app B");
@@ -68,7 +68,7 @@ export class RaiseIntentControl2_0 {
         return await fdc3.raiseIntent(intent, context);
       }
     } catch (ex) {
-      throw new Error(`${ex.message ?? ex}`);
+      assert.fail(`${ex.message ?? ex}`);
     }
   }
 
