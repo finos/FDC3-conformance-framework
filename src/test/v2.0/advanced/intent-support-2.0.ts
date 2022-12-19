@@ -25,7 +25,7 @@ export class RaiseIntentControl2_0 {
       const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
       timeout = theTimeout;
       await sleepPromise;
-      reject("No context received from app B");
+      reject("No context received. Listener expected to receive context of type " + contextType + " from mock app");
     });
 
     return messageReceived;
@@ -169,7 +169,7 @@ export class RaiseIntentControl2_0 {
 
     //receive multiple contexts in succession from intent-k
     const listener = await privChannel.addContextListener("testContextZ", (context: IntentUtilityContext) => {
-      expect(context.number).to.be.equal(streamedNumberStart);
+      expect(context.number, "Unexpected context stream number received.").to.be.equal(streamedNumberStart);
       streamedNumberStart += 1;
       expect(context.type).to.be.equal("testContextZ");
 
