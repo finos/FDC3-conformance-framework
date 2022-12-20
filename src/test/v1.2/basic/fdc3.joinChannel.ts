@@ -3,22 +3,6 @@ import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
 
-function wrapPromise(): {
-  promise: Promise<void>;
-  resolve: () => void;
-  reject: (reason?: any) => void;
-} {
-  let wrapperResolve;
-  let wrapperReject;
-
-  const promise = new Promise<void>((resolve, reject) => {
-    wrapperResolve = resolve;
-    wrapperReject = reject;
-  });
-
-  return { promise, resolve: wrapperResolve, reject: wrapperReject };
-}
-
 export default () =>
   describe("fdc3.joinChannel", () => {
     afterEach(async () => {
@@ -35,14 +19,12 @@ export default () =>
           const currentChannel = await fdc3.getCurrentChannel();
 
           expect(currentChannel).to.not.be.null;
-
         } catch (ex) {
           assert.fail("Error while joining channel: " + (ex.message ?? ex));
         }
       } else {
         assert.fail("No system channels available");
       }
-
     });
 
     it("(BasicJC2) Can join the correct system channel", async () => {
@@ -53,5 +35,5 @@ export default () =>
       const current = await fdc3.getCurrentChannel();
 
       expect(current.id).to.eql(channel.id);
-    })
+    });
   });

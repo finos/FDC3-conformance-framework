@@ -44,7 +44,7 @@ export class Fdc3CommandExecutor1_2 {
     }
   }
 
-  async joinRetrievedUserChannel(channelId) {
+  async joinRetrievedUserChannel(channelId: string): Promise<Channel> {
     const systemChannels = await fdc3.getSystemChannels();
     const joinedChannel = systemChannels.find((c) => c.id === channelId);
     if (joinedChannel) {

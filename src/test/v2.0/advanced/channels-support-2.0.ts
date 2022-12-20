@@ -2,20 +2,25 @@ import { assert, expect } from "chai";
 import { Channel, Context, Listener, DesktopAgent } from "fdc3_2_0";
 import constants from "../../../constants";
 import { wait } from "../../../utils";
-import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/channel-control";
-import { AppControlContext } from "../../common/common-types";
+import { AppControlContext, ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/channel-control";
 
 declare let fdc3: DesktopAgent;
 
-let listener1: Listener, listener2: Listener;
-
-export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
+export class ChannelControl2_0 implements ChannelControl<Channel, Context, Listener> {
   private readonly testAppChannelName = "test-channel";
 
-  retrieveAndJoinChannel = async (channelNumber: number): Promise<Channel> => {
-    const channel = await this.getUserChannel(channelNumber);
-    await fdc3.joinUserChannel(channel.id);
-    return channel;
+  retrieveAndJoinChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
+    if (channelNumber) {
+      const channel = await this.getUserChannel(channelNumber);
+      await fdc3.joinUserChannel(channel.id);
+      return channel;
+    } else if (channelId) {
+      const channel = await this.getUserChannel(undefined, channelId);
+      await fdc3.joinUserChannel(channelId);
+      return channel;
+    } else {
+      throw new Error("The retrieveAndJoinChannel function requires at least one parameter to be passed to it");
+    }
   };
 
   getSystemChannels = async () => {
@@ -26,39 +31,39 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     return await fdc3.leaveCurrentChannel();
   };
 
-  getUserChannel = async (channel: number): Promise<Channel> => {
+  getUserChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
     const channels = await fdc3.getUserChannels();
     if (channels.length > 0) {
-      return channels[channel - 1];
+      if (channelNumber) {
+        return channels[channelNumber - 1];
+      } else if (channelId) {
+        return channels.find((channel) => channel.id === channelId);
+      } else {
+        throw new Error("The getUserChannel function requires at least one parameter to be passed to it");
+      }
     } else {
       assert.fail("No system channels available for app A");
     }
   };
 
   joinChannel = async (channel: Channel) => {
-    return fdc3.joinUserChannel(channel.id);
+    return await fdc3.joinUserChannel(channel.id);
   };
 
   createRandomTestChannel = async (name: string = "test-channel") => {
     const channelName = `${this.testAppChannelName}.${this.getRandomId()}`;
-    return fdc3.getOrCreateChannel(channelName);
+    return await fdc3.getOrCreateChannel(channelName);
   };
 
-  unsubscribeListeners = async () => {
-    if (listener1 !== undefined) {
-      await listener1.unsubscribe();
-      listener1 = undefined;
-    }
-
-    if (listener2 !== undefined) {
-      await listener2.unsubscribe();
-      listener2 = undefined;
-    }
+  getCurrentChannel = async (): Promise<Channel> => {
+    return await fdc3.getCurrentChannel();
   };
 
-  channelCleanUp = async () => {
-    await this.unsubscribeListeners();
-    await fdc3.leaveCurrentChannel();
+  unsubscribeListeners = async (listeners: Listener[]) => {
+    listeners.map((listener) => {
+      listener.unsubscribe();
+      listener = undefined;
+    });
   };
 
   closeChannelsAppWindow = async (testId: string) => {
@@ -71,19 +76,16 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
   };
 
   initCompleteListener = async (testId: string) => {
-    const receivedContext = await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
-
-    await wait(constants.ShortWait);
-
-    return receivedContext;
+    return await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
   };
 
-  openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true) => {
+  openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true, contextId?: string) => {
     const channelsAppConfig: ChannelsAppConfig = {
       fdc3ApiVersion: "2.0",
       testId: testId,
-      channelId,
+      channelId: channelId,
       notifyAppAOnCompletion: notify,
+      contextId: contextId,
     };
 
     if (historyItems) {
@@ -94,16 +96,17 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(commands, channelsAppConfig));
   };
 
-  setupAndValidateListener1 = async (channel: Channel, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void) => {
+  setupAndValidateListener = async (channel: Channel, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void): Promise<Listener> => {
+    let listener;
     if (channel) {
-      listener1 = await channel.addContextListener(listenContextType, (context) => {
+      listener = await channel.addContextListener(listenContextType, (context) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
         onComplete(context);
       });
     } else {
-      listener1 = await fdc3.addContextListener(expectedContextType, (context) => {
+      listener = await fdc3.addContextListener(expectedContextType, (context) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
@@ -111,34 +114,15 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
       });
     }
 
-    validateListenerObject(listener1);
-  };
-
-  setupAndValidateListener2 = async (channel: Channel, listenContextType: string | null, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void) => {
-    if (channel) {
-      listener2 = await channel.addContextListener(listenContextType, (context) => {
-        if (expectedContextType != null) {
-          expect(context.type).to.be.equals(expectedContextType, errorMessage);
-        }
-        onComplete(context);
-      });
-    } else {
-      listener2 = await fdc3.addContextListener(expectedContextType, (context) => {
-        if (expectedContextType != null) {
-          expect(context.type).to.be.equals(expectedContextType, errorMessage);
-        }
-        onComplete(context);
-      });
-    }
-
-    validateListenerObject(listener2);
+    validateListenerObject(listener);
+    return listener;
   };
 
   setupContextChecker = async (channel: Channel, requestedContextType: string | null, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void): Promise<void> => {
     //Retrieve current context from channel
-    const context = requestedContextType == undefined ? await channel.getCurrentContext() : await channel.getCurrentContext(requestedContextType);
-
-    expect(context.type).to.be.equals(expectedContextType, errorMessage);
+    const context = requestedContextType === undefined ? await channel.getCurrentContext() : await channel.getCurrentContext(requestedContextType);
+    expect(context, "await channel.getCurrentContext() returned null").to.not.be.null;
+    expect(context.type, "retrieved context was not of the expected type").to.be.equals(expectedContextType, errorMessage);
     onComplete(context);
   };
 
@@ -161,7 +145,7 @@ const broadcastAppChannelCloseWindow = async (testId: string) => {
     type: "closeWindow",
     testId: testId,
   };
-  appControlChannel.broadcast(closeContext);
+  await appControlChannel.broadcast(closeContext);
   return appControlChannel;
 };
 
@@ -214,7 +198,7 @@ const waitForContext = (contextType: string, testId: string, channel?: Channel):
           }
         }
       };
-      channel.getCurrentContext().then(ccHandler);
+      await channel.getCurrentContext().then(ccHandler);
     }
   });
 };
@@ -229,6 +213,7 @@ function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppC
       notifyAppAOnCompletion: config.notifyAppAOnCompletion ?? false,
       historyItems: config.historyItems ?? 1,
       channelId: config.channelId,
+      contextId: config.contextId,
     },
   };
 }
