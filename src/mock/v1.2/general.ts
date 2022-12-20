@@ -13,23 +13,15 @@ onFdc3Ready().then(async () => {
   });
 
   // Context listeners used by tests.
-  fdc3.addContextListener("fdc3.testReceiver", async (context) => {
+  fdc3.addContextListener("fdc3.instrument", async (context) => {
     // broadcast that this app has received context
     await sendContextToTests({
-      type: "fdc3-conformance-context-received",
+      type: "context-received",
       context: context,
-    } as ContextToSend);
-  });
-
-  fdc3.addContextListener("fdc3.testReceiverMultiple", async (context) => {
-    // broadcast that this app has received multiple context
-    await sendContextToTests({
-      type: "fdc3-conformance-context-received-multiple",
-      context: context,
-    } as ContextToSend);
+    } as ContextSender);
   });
 });
 
-export interface ContextToSend extends Context {
-  context: Context;
+export interface ContextSender extends Context {
+  context?: Context;
 }
