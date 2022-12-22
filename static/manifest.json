@@ -1,0 +1,29 @@
+{
+    "default_icon": "default_icon.png",
+    "licenseKey": "64605fac-add3-48a0-8710-64b38e96a2dd",
+    "devtools_port": 9090,
+    "websocket_port": 9696,
+    "logging": true,
+    "startup_app": {
+        "name": "FDC3-1.2-Conformance",
+        "version": "1.0.0",
+        "description": "FDC3 1.2 Conformance Test Runner",
+        "url": "http://localhost:3001/v1.2/app/",
+        "uuid": "testRunner-1.2",
+        "defaultHeight": 800,
+        "defaultWidth": 800,
+        "applicationIcon": "",
+        "company": "FINOS",
+        "autoShow": true
+    },
+    "runtime": {
+        "arguments": "",
+        "version": "stable"
+    },
+    "shortcut": {
+        "company": "FINOS",
+        "description": "FDC3 1.2 Conformance Test Runner",
+        "icon": "https://fdc3.finos.org/img/fdc3-icon-2019.svg",
+        "name": "FDC3-1.2-Conformance"
+    }
+} 

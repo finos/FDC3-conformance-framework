@@ -1,4 +1,5 @@
 import { getPackMembers, getPackNames, executeTestsInBrowser } from "./testSuite";
+import { createAgent } from '@connectifi/agent-web';
 
 require('mocha/mocha.css');
 
@@ -42,5 +43,19 @@ function hideVersionSelector() {
     versionSelector.style.display = "none";
   }
 }
+
+const cfiStart = async () => {
+  const api = await createAgent(
+      'https://nicholaskolba.connectifi-interop.com',
+      'Conformance1@Conformance-1.2',
+  );
+
+  window.fdc3 = api;
+  document.dispatchEvent(new CustomEvent('fdc3Ready'));
+
+
+};
+
+cfiStart();
 
 document.getElementById("runButton").addEventListener("click", executeTests);

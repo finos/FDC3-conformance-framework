@@ -8,6 +8,7 @@ const documentation =
   "\r\nDocumentation: " + APIDocumentation1_2.addContextListener + "\r\nCause";
 
 export default () =>
+
   describe("fdc3.addContextListener", () => {
     let listener: Listener;
 
@@ -19,6 +20,7 @@ export default () =>
     });
 
     it("(BasicCL1) Method is callable", async () => {
+      
       const contextType = "fdc3.contact";
       try {
         listener = fdc3.addContextListener(contextType, (info: any) => {

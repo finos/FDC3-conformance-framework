@@ -12,10 +12,11 @@ const cfiStart = async () => {
         'ChannelsApp@Conformance-1.2',
     );
 
+        
     window.fdc3 = api;
     document.dispatchEvent(new CustomEvent('fdc3Ready'));
     let firedOnce = false;
-   
+    
     //await commands from App A, then execute commands
     fdc3.addContextListener(
         "channelsAppContext",
@@ -26,6 +27,8 @@ const cfiStart = async () => {
                 commandExecutor.executeCommands(context.commands, context.config);
             }
         });
+
+   
 };
 
 cfiStart();
