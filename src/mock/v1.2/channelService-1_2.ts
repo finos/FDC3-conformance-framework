@@ -27,7 +27,7 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.broadcastInstrumentContext: {
-          const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : "fdc3.instrument";
+          const contextType = config.contextId ? `fdc3.instrument_${config.contextId}` : "fdc3.instrument";
           this.broadcastContextItem(
             contextType,
             channel,
@@ -37,7 +37,7 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.broadcastContactContext: {
-          const contextType = config.contextId ? `fdc3.contact.${config.contextId}` : "fdc3.contact";
+          const contextType = config.contextId ? `fdc3.contact_${config.contextId}` : "fdc3.contact";
           this.broadcastContextItem(
             contextType,
             channel,

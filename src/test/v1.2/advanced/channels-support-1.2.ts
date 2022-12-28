@@ -81,8 +81,8 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
       await fdc3.getOrCreateChannel("app-control")
     );
     
-  //  await wait(constants.ShortWait)
-
+   // await wait(constants.ShortWait)
+    console.log("**************returning receivedContext", receivedContext);
     return receivedContext;
   }
 
@@ -96,7 +96,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     };
 
     if (historyItems) {
-      channelsAppConfig.historyItems = historyItems;
+     channelsAppConfig.historyItems = historyItems;
     }
 
     //Open ChannelsApp then execute commands in order
@@ -111,21 +111,21 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
       listener1 = channel.addContextListener(listenContextType, (context) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
-          if (context.type === expectedContextType){
+          /*if (context.type === expectedContextType){
             onComplete(context);
-          }
+          }*/
         }
-        
+        onComplete(context);
       });
     } else {
       listener1 = fdc3.addContextListener(listenContextType, (context) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
-          if (context.type === expectedContextType){
+         /* if (context.type === expectedContextType){
             onComplete(context);
-          }
+          }*/
         }
-
+        onComplete(context);
         
       });
     }
@@ -138,21 +138,21 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
       listener2 = channel.addContextListener(listenContextType, (context) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
-          if (context.type === expectedContextType){
+         /* if (context.type === expectedContextType){
             onComplete(context);
-          }
+          }*/
         }
-        
+        onComplete(context);
       });
     } else {
       listener2 = fdc3.addContextListener(listenContextType, (context) => {
         if (expectedContextType != null) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
-          if (context.type === expectedContextType){
+         /* if (context.type === expectedContextType){
             onComplete(context);
-          }
+          }*/
         }
-        
+        onComplete(context);
       });
     }
 
@@ -276,7 +276,7 @@ const waitForContext = (
           }
         }
       };
-    //  channel.getCurrentContext().then(ccHandler);
+      channel.getCurrentContext().then(ccHandler);
     }
   });
 };
