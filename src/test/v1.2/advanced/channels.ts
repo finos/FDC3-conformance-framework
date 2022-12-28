@@ -8,5 +8,5 @@ const documentation =
 
 export default () => describe("channels", () => {
   createUserChannelTests(new ChannelControl1_2(), documentation, "");
- // createAppChannelTests(new ChannelControl1_2(), documentation, "");
+  createAppChannelTests(new ChannelControl1_2(), documentation, "");
 });

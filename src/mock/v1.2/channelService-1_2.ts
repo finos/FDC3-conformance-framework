@@ -1,6 +1,7 @@
 import { Channel, DesktopAgent } from "fdc3_1_2";
 import constants from "../../constants";
 import { AppControlContext, ChannelsAppConfig } from "../../test/common/channel-control";
+import { wait } from "../../utils";
 import { commands, channelType } from "../constants";
 declare let fdc3: DesktopAgent
 
@@ -11,7 +12,6 @@ export class Fdc3CommandExecutor1_2 {
     let channel: Channel;
 
     //close ChannelsApp when test is complete
-    console.log("********************** setting closeWindowOnCompletion");
     await this.closeWindowOnCompletion(config.testId);
     for (const command of orderedCommands) {
       switch (command) {
@@ -34,6 +34,7 @@ export class Fdc3CommandExecutor1_2 {
             config.historyItems,
             config.testId
           );
+          await wait(100);
           break;
         }
         case commands.broadcastContactContext: {
@@ -44,6 +45,7 @@ export class Fdc3CommandExecutor1_2 {
             config.historyItems,
             config.testId
           );
+          await wait(100);
           break;
         }
       }
@@ -94,7 +96,7 @@ export class Fdc3CommandExecutor1_2 {
             name: `History-item-${i + 1}`,
             testId
           };
-          channel.broadcast(context);
+          setTimeout(() => {channel.broadcast(context);}, (i * 100));
         }
       }
     },
@@ -109,7 +111,7 @@ export class Fdc3CommandExecutor1_2 {
           name: `History-item-${i + 1}`,
           testId
         };
-        fdc3.broadcast(context);
+        setTimeout(() => {fdc3.broadcast(context);}, (i * 100));
       }
     },
   };
