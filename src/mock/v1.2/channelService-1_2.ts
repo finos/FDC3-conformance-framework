@@ -34,7 +34,7 @@ export class Fdc3CommandExecutor1_2 {
             config.historyItems,
             config.testId
           );
-          await wait(100);
+         
           break;
         }
         case commands.broadcastContactContext: {
@@ -45,7 +45,7 @@ export class Fdc3CommandExecutor1_2 {
             config.historyItems,
             config.testId
           );
-          await wait(100);
+        
           break;
         }
       }
@@ -96,7 +96,8 @@ export class Fdc3CommandExecutor1_2 {
             name: `History-item-${i + 1}`,
             testId
           };
-          setTimeout(() => {channel.broadcast(context);}, (i * 100));
+      
+          channel.broadcast(context);
         }
       }
     },
@@ -111,7 +112,8 @@ export class Fdc3CommandExecutor1_2 {
           name: `History-item-${i + 1}`,
           testId
         };
-        setTimeout(() => {fdc3.broadcast(context);}, (i * 100));
+
+        fdc3.broadcast(context);
       }
     },
   };
