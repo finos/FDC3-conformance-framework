@@ -40,8 +40,9 @@ export default () =>
       await control.listenForError();
       const result = control.receiveContext("aTestingIntent-listener-triggered");
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
-      await result;
+      await wait(constants.ShortWait); //give it time to open
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);
+      await result;
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       const instances = await control.findInstances(IntentApp.IntentAppA);
       control.validateInstances(instances, 1, appIdentifier.instanceId, (await result).instanceId);
