@@ -72,8 +72,7 @@ export default () =>
       const privChan2 = await control.createPrivateChannel();
       control.validatePrivateChannel(privChan2);
 
-      //confirm that the ids of both private channels are different
-      expect(privChan.id).to.not.be.equal(privChan2.id);
+      expect(privChan.id).to.not.be.equal(privChan2.id); //check that the ids of both private channels are different
       try {
         await control.createAppChannel(privChan.id);
         assert.fail("No error was not thrown when calling fdc3.getOrCreateChannel(privateChannel.id)");
@@ -83,10 +82,8 @@ export default () =>
 
       const intentResolution = await control.raiseIntent("privateChannelIsPrivate", "privateChannelId", undefined, undefined, { key: privChan2.id });
       control.validateIntentResolution(IntentApp.IntentAppJ, intentResolution);
-      let result = control.getIntentResult(intentResolution);
-      await wait(constants.ShortWait);
-      await result;
-      control.validateIntentResult(result, IntentResultType.PrivateChannel);
+      let result = await control.getIntentResult(intentResolution);
+      control.validateIntentResult(result, IntentResultType.Context, "privateChannelId");
     });
 
     const PrivateChannelsLifecycleEvents = "(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected";

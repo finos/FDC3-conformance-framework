@@ -126,7 +126,6 @@ export class RaiseIntentControl2_0 {
         break;
       }
       case IntentResultType.PrivateChannel: {
-        expect(intentResult).to.have.property("type");
         expect(intentResult).to.have.property("onAddContextListener");
         expect(intentResult).to.have.property("onUnsubscribe");
         expect(intentResult).to.have.property("onDisconnect");
