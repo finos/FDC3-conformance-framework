@@ -55,14 +55,13 @@ export default () =>
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
       const instances = await control.findInstances(IntentApp.IntentAppA);
       control.validateInstances(instances, 1, appIdentifier.instanceId);
-      await result;
+      await wait(constants.ShortWait); //give it time to open
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", instances[0]);
-      control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
+      control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
 
-      //make sure no other instance is started
       const instances2 = await control.findInstances(IntentApp.IntentAppA);
-      expect(instances2.length).to.be.equal(1);
+      expect(instances2.length).to.be.equal(1); //make sure no other instance is started
     });
 
     const PrivateChannelsAreNotAppChannels = "(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id";
