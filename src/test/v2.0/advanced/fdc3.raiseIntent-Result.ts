@@ -59,23 +59,6 @@ export default () =>
       }
     });
 
-    const RaiseIntentContextResult61secs = "(2.0-RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay";
-    it(RaiseIntentContextResult61secs, async () => {
-      await control.listenForError();
-      let receiver = control.receiveContext("sharedTestingIntent1-listener-triggered", 64000);
-      const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY", undefined, 61000);
-      control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
-      let intentResultPromise = control.getIntentResult(intentResolution);
-      await receiver;
-
-      //give app b time to return
-      await wait(300);
-      if (intentResultPromise) {
-        const intentResult = await intentResultPromise;
-        control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
-      }
-    }).timeout(64000);
-
     const RaiseIntentChannelResult = "(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object";
     it(RaiseIntentChannelResult, async () => {
       await control.listenForError();
@@ -128,6 +111,23 @@ export default () =>
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
         control.validateIntentResult(intentResult, IntentResultType.Void);
+      }
+    }).timeout(64000);
+
+    const RaiseIntentContextResult61secs = "(2.0-RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay";
+    it(RaiseIntentContextResult61secs, async () => {
+      await control.listenForError();
+      let receiver = control.receiveContext("sharedTestingIntent1-listener-triggered", 64000);
+      const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY", undefined, 61000);
+      control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
+      let intentResultPromise = control.getIntentResult(intentResolution);
+      await receiver;
+
+      //give app b time to return
+      await wait(300);
+      if (intentResultPromise) {
+        const intentResult = await intentResultPromise;
+        control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
       }
     }).timeout(64000);
   });
