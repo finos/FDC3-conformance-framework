@@ -26,8 +26,7 @@ export default () =>
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
-      //give app b time to return
-      await wait(300);
+      await wait(300); //give app b time to return
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
         control.validateIntentResult(intentResult, IntentResultType.Void);
@@ -39,7 +38,7 @@ export default () =>
       await control.listenForError();
       const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY");
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
-      let intentResult = await control.getIntentResult(intentResolution);
+      const intentResult = await control.getIntentResult(intentResolution);
       control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
     });
 
@@ -49,7 +48,7 @@ export default () =>
       let receiver = control.receiveContext("sharedTestingIntent1-listener-triggered", 8000);
       const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY", undefined, 5000);
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
-      let intentResultPromise = control.getIntentResult(intentResolution);
+      const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
       //give app b time to return
