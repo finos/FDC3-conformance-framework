@@ -1,12 +1,10 @@
 import { ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
-import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { IntentApp, RaiseIntentControl2_0 } from "./intent-support-2.0";
 import constants from "../../../constants";
-import { sleep, wrapPromise } from "../../../utils";
+import { sleep } from "../../../utils";
 
-declare let fdc3: DesktopAgent;
 const control = new RaiseIntentControl2_0();
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
