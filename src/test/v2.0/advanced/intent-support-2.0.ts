@@ -167,18 +167,19 @@ export class RaiseIntentControl2_0 {
     const wrapper = wrapPromise();
 
     //receive multiple contexts in succession from intent-k
-    const listener = await privChannel.addContextListener("testContextZ", (context: IntentUtilityContext) => {
+    const listener = privChannel.addContextListener("testContextZ", (context: IntentUtilityContext) => {
       expect(context.number, "Unexpected context stream number received.").to.be.equal(streamedNumberStart);
-      streamedNumberStart += 1;
       expect(context.type).to.be.equal("testContextZ");
 
       if (streamedNumberStart === streamedNumberEnd) {
-        wrapper.resolve;
+        wrapper.resolve();
         clearTimeout(timeout);
       }
+
+      streamedNumberStart += 1;
     });
 
-    timeout = await window.setTimeout(() => {
+    timeout = window.setTimeout(() => {
       wrapper.reject("Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered");
     }, constants.WaitTime);
 

@@ -13,6 +13,10 @@ onFdc3Ready().then(async () => {
     validateContext(context.type, "testContextX");
     const privChan = await fdc3.createPrivateChannel();
 
+    await privChan.addContextListener("testContextX", async () => {
+      await sendContextToTests({ type: "testContextX" }); //let test know addContextListener was triggered
+    });
+
     let contextStreamNumber = 1;
     privChan.onAddContextListener(async (contextType) => {
       await wait(100); //wait for listener in test to init
@@ -40,10 +44,6 @@ onFdc3Ready().then(async () => {
     await privChan.onDisconnect(async () => {
       //let test know onUnsubscribe was triggered
       await sendContextToTests({ type: "onDisconnectTriggered" });
-    });
-
-    await privChan.addContextListener("testContextX", async () => {
-      await sendContextToTests({ type: "testContextX" }); //let test know addContextListener was triggered
     });
 
     return privChan;
