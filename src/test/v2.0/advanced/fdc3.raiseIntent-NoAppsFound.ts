@@ -47,7 +47,7 @@ export default () =>
         });
         assert.fail("No error was thrown");
       } catch (ex) {
-        expect(ex).to.have.property("message", ResolveError.NoAppsFound);
+        expect(ex).to.have.property("message", ResolveError.TargetInstanceUnavailable);
       }
     });
 
