@@ -42,8 +42,8 @@ const advancedSuite_2_0: testSet = {
   fdc3FindIntent_2_0: [fdc3FindIntent_2_0],
   fdc3FindIntentsByContext_2_0: [fdc3FindIntentsByContext_2_0],
   fdc3RaiseIntent_2_0: [fdc3RaiseIntent_2_0],
-  "fdc3RaiseIntent_2_0 (Result)": [fdc3RaiseIntent_2_0_Result],
-  "fdc3RaiseIntent_2_0 (NoAppsFound)": [fdc3RaiseIntent_2_0_NoAppsFound],
+  "fdc3RaiseIntent_2_0 (result)": [fdc3RaiseIntent_2_0_Result],
+  "fdc3RaiseIntent_2_0 (throws error)": [fdc3RaiseIntent_2_0_NoAppsFound],
 };
 
 function stripSuites(ts: testSet[]): (() => void)[] {

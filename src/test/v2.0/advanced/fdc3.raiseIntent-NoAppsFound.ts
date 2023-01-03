@@ -12,7 +12,7 @@ const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent 
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 export default () =>
-  describe("fdc3.raiseIntent (NoAppsFound)", () => {
+  describe("fdc3.raiseIntent (throws error)", () => {
     const RaiseIntentFailedResolve = "(RaiseIntentFailedResolve) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
     it(RaiseIntentFailedResolve, async () => {
       try {
@@ -48,6 +48,7 @@ export default () =>
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.TargetInstanceUnavailable);
       }
+      await control.closeIntentAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
     });
 
     const RaiseIntentFailTargetedAppResolve1 = "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
@@ -84,6 +85,7 @@ export default () =>
         clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
+      await control.closeIntentAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const RaiseIntentFailTargetedAppResolve4 = "(RaiseIntentFailTargetedAppResolve4) Should throw an IntentDeliveryFailed error when raising intent with targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2'";
@@ -98,5 +100,6 @@ export default () =>
         clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
+      await control.closeIntentAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
     }).timeout(constants.NoListenerTimeout + 1000);
   });

@@ -26,8 +26,7 @@ export default () =>
       }
     });
 
-    const AOpensBWithContext =
-      "(2.0-AOpensBWithContext) Can open app B from app A with context and AppIdentifier (appId) as target but app B listening for null context";
+    const AOpensBWithContext = "(2.0-AOpensBWithContext) Can open app B from app A with context and AppIdentifier (appId) as target but app B listening for null context";
     it(AOpensBWithContext, async () => {
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(openApp.c.id, "fdc3.instrument");
@@ -35,8 +34,7 @@ export default () =>
       await control.closeAppWindows(AOpensBWithContext);
     });
 
-    const AOpensBWithSpecificContext =
-      "(2.0-AOpensBWithSpecificContext) Can open app B from app A with context and AppIdentifier (appId) as target and app B is expecting context";
+    const AOpensBWithSpecificContext = "(2.0-AOpensBWithSpecificContext) Can open app B from app A with context and AppIdentifier (appId) as target and app B is expecting context";
     it(AOpensBWithSpecificContext, async () => {
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(openApp.b.id, "fdc3.instrument");
@@ -44,8 +42,7 @@ export default () =>
       await control.closeAppWindows(AOpensBWithSpecificContext);
     });
 
-    const AOpensBMultipleListen =
-      "(2.0-AOpensBMultipleListen) Can open app B from app A with context and AppIdentifier (appId) as target but app B add listener before correct one";
+    const AOpensBMultipleListen = "(2.0-AOpensBMultipleListen) Can open app B from app A with context and AppIdentifier (appId) as target but app B add listener before correct one";
     it(AOpensBMultipleListen, async () => {
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(openApp.b.id, "fdc3.instrument");
@@ -53,16 +50,14 @@ export default () =>
       await control.closeAppWindows(AOpensBMultipleListen);
     });
 
-    const AOpensBWithWrongContext =
-      "(2.0-AOpensBWithWrongContext) Received App timeout when opening app B with fake context, app b listening for different context";
-    it.only(AOpensBWithWrongContext, async () => {
+    const AOpensBWithWrongContext = "(2.0-AOpensBWithWrongContext) Received App timeout when opening app B with fake context, app b listening for different context";
+    it(AOpensBWithWrongContext, async () => {
       await control.addListenerAndFailIfReceived();
       await control.expectAppTimeoutErrorOnOpen(openApp.d.id);
       await control.closeAppWindows(AOpensBWithWrongContext);
     }).timeout(constants.NoListenerTimeout + 1000);
 
-    const AOpensBNoListen =
-      "(2.0-AOpensBNoListen) Received App timeout when opening app B with fake context, app b not listening for any context";
+    const AOpensBNoListen = "(2.0-AOpensBNoListen) Received App timeout when opening app B with fake context, app b not listening for any context";
     it(AOpensBNoListen, async () => {
       await control.expectAppTimeoutErrorOnOpen(openApp.e.id);
       await control.closeAppWindows(AOpensBNoListen);
