@@ -9,12 +9,17 @@ onFdc3Ready().then(async () => {
 
   try {
     //used in AOpensBMultipleListen & AOpensBMalformedContext
-    await fdc3.addContextListener(null, async (context) => {
+    fdc3.addContextListener(null, async (context) => {
       // broadcast that this app has received context
-      if (context.name === "this is a malformed context") {
+      if (context.type === "fdc3.instrument") {
         await sendContextToTests({
           type: "context-received",
-          errorMessage: `App B listener received a malformed context. Context received = ${JSON.stringify(context)}`,
+          context: context,
+        } as AppControlContext);
+      } else if (context.name === "this is a malformed context") {
+        await sendContextToTests({
+          type: "context-received",
+          errorMessage: "App B listener received a malformed context",
         } as AppControlContext);
       }
     });
