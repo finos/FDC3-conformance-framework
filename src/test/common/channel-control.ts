@@ -16,38 +16,13 @@ export interface ChannelControl<X, Y> {
   closeChannelsAppWindow(testId: string): Promise<void>;
   channelCleanUp(): Promise<void>;
   unsubscribeListeners(): void | Promise<void>;
-  openChannelApp(
-    testId: string,
-    channelId: string | undefined,
-    commands: string[],
-    historyItems?: number,
-    notify?: boolean,
-    contextId?: string
-  ): Promise<void>;
+  openChannelApp(testId: string, channelId: string | undefined, commands: string[], historyItems?: number, notify?: boolean, contextId?: string): Promise<void>;
 
   // listening
   initCompleteListener(testId: string): Promise<Y>;
-  setupAndValidateListener1(
-    channel: X | null,
-    listenContextType: string | null,
-    expectedContextType: string | null,
-    errorMessage: string,
-    onComplete: (ctx: Y) => void
-  ): void | Promise<void>;
-  setupAndValidateListener2(
-    channel: X | null,
-    listenContextType: string | null,
-    expectedContextType: string | null,
-    errorMessage: string,
-    onComplete: (ctx: Y) => void
-  ): void | Promise<void>;
-  setupContextChecker(
-    channel: X,
-    requestedContextType: string,
-    expectedContextType: string,
-    errorMessage: string,
-    onComplete: (ctx: Y) => void
-  ): Promise<void>;
+  setupAndValidateListener1(channel: X | null, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
+  setupAndValidateListener2(channel: X | null, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
+  setupContextChecker(channel: X, requestedContextType: string, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): Promise<void>;
 
   // helpers
   getRandomId(): string;
@@ -83,16 +58,8 @@ export const commands = {
 
 export const APP_CHANNEL_AND_BROADCAST = [commands.retrieveTestAppChannel, commands.broadcastInstrumentContext];
 
-export const APP_CHANNEL_AND_BROADCAST_TWICE = [
-  commands.retrieveTestAppChannel,
-  commands.broadcastInstrumentContext,
-  commands.broadcastContactContext,
-];
+export const APP_CHANNEL_AND_BROADCAST_TWICE = [commands.retrieveTestAppChannel, commands.broadcastInstrumentContext, commands.broadcastContactContext];
 
 export const JOIN_AND_BROADCAST = [commands.joinRetrievedUserChannel, commands.broadcastInstrumentContext];
 
-export const JOIN_AND_BROADCAST_TWICE = [
-  commands.joinRetrievedUserChannel,
-  commands.broadcastInstrumentContext,
-  commands.broadcastContactContext,
-];
+export const JOIN_AND_BROADCAST_TWICE = [commands.joinRetrievedUserChannel, commands.broadcastInstrumentContext, commands.broadcastContactContext];
