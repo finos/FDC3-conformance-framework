@@ -4,6 +4,7 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context, ContextMetadata, ImplementationMetadata } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
+import { MetadataAppCommand, MetadataContext } from "./metadata-support-2.0";
 
 declare let fdc3: DesktopAgent;
 const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause";
@@ -92,17 +93,3 @@ const broadcastCloseWindow = async () => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.broadcast({ type: "closeWindow" });
 };
-
-export interface MetadataContext extends Context {
-  implMetadata?: ImplementationMetadata;
-  contextMetadata?: ContextMetadata;
-}
-
-export interface MetadataAppCommandContext extends Context {
-  command: string;
-}
-
-export enum MetadataAppCommand {
-  sendGetInfoMetadataToTests = "sendGetInfoMetadataToTests",
-  confirmRaisedIntentReceived = "confirmRaisedIntentReceived",
-}
