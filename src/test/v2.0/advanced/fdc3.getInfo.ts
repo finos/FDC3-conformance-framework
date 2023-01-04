@@ -1,12 +1,11 @@
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import constants from "../../../constants";
-import { failOnTimeout, sleep, wrapPromise } from "../../../utils";
-import { ImplementationMetadata } from "fdc3_2_0";
-import { MetadataValidator } from "./metadata-support-2.0";
-import { MetadataAppCommandContext, MetadataContext, MetadataAppCommand } from "./metadata-support-2.0";
-import { APIDocumentation2_0 } from "../apiDocuments-2.0";
+import { failOnTimeout, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../utils_2_0";
+import { ImplementationMetadata } from "fdc3_2_0";
+import { MetadataValidator, MetadataAppCommandContext, MetadataContext, MetadataAppCommand } from "./metadata-support-2.0";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 
