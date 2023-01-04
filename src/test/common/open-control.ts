@@ -1,4 +1,4 @@
-import { CommonContext } from "./common-types";
+import { CommonContext } from "../../common-types";
 
 export interface OpenControl<X> {
   //test control

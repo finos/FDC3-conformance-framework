@@ -3,7 +3,7 @@ import { Channel, Context, DesktopAgent, Listener, OpenError } from "fdc3_2_0";
 import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v2.0/general";
 import { sleep, wait } from "../../../utils";
-import { AppControlContext } from "../../common/common-types";
+import { AppControlContext } from "../../../common-types";
 import { OpenControl } from "../../common/open-control";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 

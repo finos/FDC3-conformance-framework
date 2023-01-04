@@ -1,6 +1,6 @@
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import constants from "../../constants";
-import { AppControlContext } from "../../test/common/common-types";
+import { AppControlContext } from "../../common-types";
 
 declare let fdc3: DesktopAgent;
 

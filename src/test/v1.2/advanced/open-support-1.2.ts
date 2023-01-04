@@ -3,7 +3,7 @@ import { Channel, Context, DesktopAgent, Listener, OpenError, TargetApp } from "
 import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v1.2/general";
 import { sleep, wait } from "../../../utils";
-import { AppControlContext } from "../../common/common-types";
+import { AppControlContext } from "../../../common-types";
 import { OpenControl } from "../../common/open-control";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
