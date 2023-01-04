@@ -85,7 +85,7 @@ function validateAppIntent(appIntent: AppIntent, expectedNumberOfApps: number, e
     findIntentDocs
   );
 
-  expect(appIntent.apps, `Unexpected AppIntent.apps.length. Expected ${expectedNumberOfApps}, got ${appIntent.apps.length}`).to.have.length(expectedNumberOfApps, findIntentDocs);
+  expect(appIntent.apps, `Unexpected AppIntent.apps.length. Expected ${expectedNumberOfApps}, got ${appIntent.apps.length}${findIntentDocs}`).to.have.length(expectedNumberOfApps);
 
   const intentApps = ["IntentAppAId", "IntentAppBId", "IntentAppCId", "IntentAppDId", "IntentAppEId", "IntentAppFId", "IntentAppGId", "IntentAppHId", "IntentAppIId", "IntentAppJId", "IntentAppKId"];
   const position = intentApps.indexOf(firstIntentAppToValidate);
