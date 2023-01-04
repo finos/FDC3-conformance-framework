@@ -1,4 +1,3 @@
-import { wait } from "../../../utils";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp } from "./intent-support-2.0";
 
 const control = new RaiseIntentControl2_0();
