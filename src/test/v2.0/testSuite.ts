@@ -1,4 +1,4 @@
-import mocha, { Suite } from "mocha";
+import mocha from "mocha";
 import constants from "../../constants";
 
 import fdc3AddContextListener_2_0 from "../v2.0/basic/fdc3.addContextListener";
@@ -23,27 +23,27 @@ import fdc3RaiseIntentForContext_2_0 from "./basic/fdc3.raiseIntentForContext";
 type testSet = { [key: string]: (() => void)[] };
 
 const basicSuite_2_0: testSet = {
-  fdc3AddContextListener_2_0: [fdc3AddContextListener_2_0],
-  fdc3AddIntentListener_2_0: [fdc3AddIntentListener_2_0],
-  fdc3GetCurrentChannel_2_0: [fdc3GetCurrentChannel_2_0],
-  fdc3GetOrCreateChannel_2_0: [fdc3GetOrCreateChannel_2_0],
-  fdc3GetUserChannels_2_0: [fdc3GetUserChannels_2_0],
-  fdc3JoinUserChannel_2_0: [fdc3JoinUserChannel_2_0],
-  fdc3LeaveCurrentChannel_2_0: [fdc3LeaveCurrentChannel_2_0],
-  fdc3RaiseIntentForContext_2_0: [fdc3RaiseIntentForContext_2_0],
+  "fdc3.addContextListener 2.0": [fdc3AddContextListener_2_0],
+  "fdc3.addIntentListener 2.0": [fdc3AddIntentListener_2_0],
+  "fdc3.getCurrentChannel 2.0": [fdc3GetCurrentChannel_2_0],
+  "fdc3.getOrCreateChannel 2.0": [fdc3GetOrCreateChannel_2_0],
+  "fdc3.getUserChannels 2.0": [fdc3GetUserChannels_2_0],
+  "fdc3.joinUserChannel 2.0": [fdc3JoinUserChannel_2_0],
+  "fdc3.leaveCurrentChannel 2.0": [fdc3LeaveCurrentChannel_2_0],
+  "fdc3.raiseIntentForContext 2.0": [fdc3RaiseIntentForContext_2_0],
 };
 
 const advancedSuite_2_0: testSet = {
-  fdc3Open_2_0: [fdc3Open_2_0],
-  fdc3GetInfo_2_0: [fdc3GetInfo_2_0],
-  fdc3getAppMetadata_2_0: [fdc3getAppMetadata_2_0],
-  channels_2_0: [channels_2_0],
-  fdc3FindInstances_2_0: [fdc3FindInstances_2_0],
-  fdc3FindIntent_2_0: [fdc3FindIntent_2_0],
-  fdc3FindIntentsByContext_2_0: [fdc3FindIntentsByContext_2_0],
-  fdc3RaiseIntent_2_0: [fdc3RaiseIntent_2_0],
-  "fdc3RaiseIntent_2_0 (result)": [fdc3RaiseIntent_2_0_Result],
-  "fdc3RaiseIntent_2_0 (throws error)": [fdc3RaiseIntent_2_0_NoAppsFound],
+  "fdc3.open 2.0": [fdc3Open_2_0],
+  "fdc3.getInfo 2.0": [fdc3GetInfo_2_0],
+  "fdc3.getAppMetadata 2.0": [fdc3getAppMetadata_2_0],
+  "Channels 2.0": [channels_2_0],
+  "fdc3.findInstances 2.0": [fdc3FindInstances_2_0],
+  "fdc3.findIntent 2.0": [fdc3FindIntent_2_0],
+  "fdc3.findIntentsByContext 2.0": [fdc3FindIntentsByContext_2_0],
+  "fdc3.raiseIntent 2.0": [fdc3RaiseIntent_2_0],
+  "fdc3.raiseIntent 2.0 (result)": [fdc3RaiseIntent_2_0_Result],
+  "fdc3.raiseIntent 2.0 (throws error)": [fdc3RaiseIntent_2_0_NoAppsFound],
 };
 
 function stripSuites(ts: testSet[]): (() => void)[] {

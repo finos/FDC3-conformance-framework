@@ -21,8 +21,8 @@ body {
 
   #back-button{
 	position: relative;
-	top: 10px;
-	left: 10px;
+	top: 0px;
+	left: 0px;
 	display: none;
 	cursor: pointer;
 	border-radius: 100%;
