@@ -1,10 +1,11 @@
 import { assert, expect } from "chai";
 import { Channel, Context, DesktopAgent, Listener, OpenError } from "fdc3_2_0";
-import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
+import { ContextSender } from "../../../mock/v2.0/general";
 import { sleep, wait } from "../../../utils";
-import { OpenControl } from "../../common/open-control";
-import { AppControlContext, ContextWithError } from "../../common/common-types";
+import { AppControlContext } from "../../common/common-types";
+import { MockAppContext, OpenControl } from "../../common/open-control";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_0.open + "\r\nCause:";
@@ -15,14 +16,14 @@ export class OpenControl2_0 implements OpenControl<Context> {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     let timeout;
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      const listener = await appControlChannel.addContextListener(contextType, async (context: ContextWithError) => {
-        if (context.errorMessage !== undefined) {
+      const listener = await appControlChannel.addContextListener(contextType, async (context: MockAppContext) => {
+        if (context.errorMessage) {
           reject(new Error(context.errorMessage));
         } else {
           resolve(context);
         }
         clearTimeout(timeout);
-        await listener.unsubscribe();
+        listener.unsubscribe();
       });
       //if no context received reject promise
       const { promise: thePromise, timeout: theTimeout } = sleep();
@@ -34,10 +35,10 @@ export class OpenControl2_0 implements OpenControl<Context> {
     return messageReceived;
   };
 
-  openMockApp = async (appId: string, contextType?: string) => {
-    let context;
+  openMockApp = async (appName: string, appId?: string, contextType?: string) => {
+    appId = `${appName}Id`;
     if (contextType) {
-      context = { type: contextType };
+      const context = { type: contextType };
       await fdc3.open({ appId: appId }, context);
     } else {
       await fdc3.open({ appId: appId });
@@ -46,7 +47,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    await appControlChannel.addContextListener("context-received", (context: ContextWithError) => {
+    await appControlChannel.addContextListener("context-received", (context: MockAppContext) => {
       assert.fail(context.errorMessage);
     });
   };
@@ -58,35 +59,34 @@ export class OpenControl2_0 implements OpenControl<Context> {
     await wait(constants.WindowCloseWaitTime);
   };
 
-  expectAppTimeoutErrorOnOpen = async (appId: string) => {
-    //give promise time to reject test
-    const { timeout, promise } = sleep(constants.NoListenerTimeout);
-    let promiseRejected;
-
-    //wait for the open promise to be rejected
-    try {
-      await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
-      await promise;
-    } catch (ex) {
-      expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-      promiseRejected = true;
-      clearTimeout(timeout);
-    }
-
-    if (!promiseRejected) {
-      assert.fail(testTimeoutMessage + openDocs);
-    }
-  };
-
   confirmAppNotFoundErrorReceived = (exception: DOMException) => {
     expect(exception).to.have.property("message", OpenError.AppNotFound, openDocs);
   };
 
-  validateReceivedContext = async (contextReceiver: Promise<Context>, expectedContextType: string) => {
-    const receivedValue = (await contextReceiver) as any;
-    expect(receivedValue.context.type).to.eq(expectedContextType, openDocs);
+  validateReceivedContext = async (context: ContextSender, expectedContextType: string) => {
+    expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
 }
+
+export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
+  //allow open t
+  const { timeout, promise } = sleep(constants.NoListenerTimeout);
+  let promiseRejected;
+
+  //wait for the open promise to be rejected
+  try {
+    await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
+    await promise;
+  } catch (ex) {
+    expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
+    promiseRejected = true;
+    clearTimeout(timeout);
+  }
+
+  if (!promiseRejected) {
+    assert.fail(testTimeoutMessage + openDocs);
+  }
+};
 
 const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<Context> => {
   let executionListener: Listener;
@@ -102,10 +102,7 @@ const waitForContext = (contextType: string, testId: string, channel?: Channel):
           resolve(context);
           if (executionListener) executionListener.unsubscribe();
         } else {
-          console.warn(
-            Date.now() +
-              ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
-          );
+          console.warn(Date.now() + ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`);
         }
       } else {
         console.log(Date.now() + ` Received (without testId) "${contextType}" for test: "${testId}"`);
@@ -131,13 +128,9 @@ const waitForContext = (contextType: string, testId: string, channel?: Channel):
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
-                    context ? "" : "NOT "
-                  } exist,
+                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist,
               had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"})
-              and type "${context?.type}" vs ${contextType} (${
-                    context?.type == contextType ? "did match" : "did NOT match"
-                  })`
+              and type "${context?.type}" vs ${contextType} (${context?.type == contextType ? "did match" : "did NOT match"})`
               );
             }
           } else {

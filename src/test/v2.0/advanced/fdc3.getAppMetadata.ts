@@ -2,8 +2,8 @@ import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { AppMetadata, Context } from "fdc3_2_0";
 import { sleep } from "../../../utils";
-import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
+import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
 const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";

@@ -1,16 +1,21 @@
-import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
+import {
+  closeWindowOnCompletion,
+  onFdc3Ready,
+} from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { ContextWithError, IntentUtilityContext } from "../../test/common/common-types";
+import { MockAppContext } from "../../test/common/open-control";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
+
+  //used in AOpensB1
   const implementationMetadata = await fdc3.getInfo();
   let { appId } = implementationMetadata.appMetadata;
 
-  let appOpenedContext: ContextWithError = {
+  let appOpenedContext: MockAppContext = {
     type: "fdc3-conformance-opened",
   };
 
@@ -19,45 +24,18 @@ onFdc3Ready().then(async () => {
   }
 
   // broadcast that this app has opened
-  await sendContextToTests(appOpenedContext as ContextWithError);
+  await sendContextToTests(appOpenedContext as MockAppContext);
 
   // Context listeners used by tests.
-  await fdc3.addContextListener("fdc3.testReceiver", async (context) => {
-    // broadcast that this app has received context
-    await sendContextToTests({
-      type: "fdc3-conformance-context-received",
-      context: context,
-    } as ContextToSend);
-  });
-
-  // Context listeners used by tests.
-  await fdc3.addContextListener("fdc3.contact", async (context) => {
-    let errorMessageContext: ContextWithError = {
-      type: "context-received",
-      errorMessage: "Listener for fdc3.contact received fdc3.instrument context",
-    };
-    // broadcast that this app has received context
-    await sendContextToTests(errorMessageContext as ContextWithError);
-  });
-
-  // Context listeners used by tests.
-  await fdc3.addContextListener("fdc3.intrument", async (context) => {
+  await fdc3.addContextListener("fdc3.instrument", async (context) => {
     // broadcast that this app has received context
     await sendContextToTests({
       type: "context-received",
       context: context,
-    } as ContextToSend);
-  });
-
-  fdc3.addContextListener("fdc3.testReceiverMultiple", async (context) => {
-    // broadcast that this app has received multiple context
-    await sendContextToTests({
-      type: "fdc3-conformance-context-received-multiple",
-      context: context,
-    } as ContextToSend);
+    } as ContextSender);
   });
 });
 
-export interface ContextToSend extends Context {
-  context: Context;
+export interface ContextSender extends Context {
+  context?: Context;
 }

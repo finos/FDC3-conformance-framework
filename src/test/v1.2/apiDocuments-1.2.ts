@@ -25,7 +25,6 @@ export const APIDocumentation1_2 = {
   leaveCurrentChannel:
     "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#leavecurrentchannel",
   open: "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#open",
-  open2_0: "https://fdc3.finos.org/docs/api/ref/DesktopAgent#open",
   raiseIntent:
     "https://fdc3.finos.org/docs/1.2/api/ref/DesktopAgent#raiseintent",
   raiseIntentForContext:

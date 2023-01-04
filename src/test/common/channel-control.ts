@@ -1,9 +1,7 @@
-import { CommonContext } from "./common-types";
-
 /**
  * This interface contains everything you need to do to control channels/context listeners in either 1.2 or 2.0 FDC3
  */
-export interface ChannelControl<X, Y> {
+export interface ChannelControl<X, Y, Z> {
   // channels
   retrieveAndJoinChannel(channelNumber: number): Promise<X>;
   getSystemChannels(): Promise<X[]>;
@@ -11,21 +9,34 @@ export interface ChannelControl<X, Y> {
   getUserChannel(cn: number): Promise<X>;
   joinChannel(channel: X): Promise<void>;
   createRandomTestChannel(): Promise<X>;
+  getCurrentChannel(): Promise<X>;
 
   // test control
   closeChannelsAppWindow(testId: string): Promise<void>;
-  channelCleanUp(): Promise<void>;
-  unsubscribeListeners(): void | Promise<void>;
+  unsubscribeListeners(listeners: Z[]): void;
   openChannelApp(testId: string, channelId: string | undefined, commands: string[], historyItems?: number, notify?: boolean, contextId?: string): Promise<void>;
 
   // listening
   initCompleteListener(testId: string): Promise<Y>;
-  setupAndValidateListener1(channel: X | null, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
-  setupAndValidateListener2(channel: X | null, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): void | Promise<void>;
+  setupAndValidateListener(channel: X | null, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Y) => void): Z | Promise<Z>;
   setupContextChecker(channel: X, requestedContextType: string, expectedContextType: string, errorMessage: string, onComplete: (ctx: Y) => void): Promise<void>;
 
   // helpers
   getRandomId(): string;
+}
+
+/** same in 1.2 and 2.0 */
+export interface CommonContext {
+  id?: {
+    [key: string]: string;
+  };
+  name?: string;
+  type: string;
+}
+
+export interface AppControlContext extends CommonContext {
+  testId?: string;
+  joinedChannel?: string;
 }
 
 export type ChannelsAppContext = CommonContext & {
