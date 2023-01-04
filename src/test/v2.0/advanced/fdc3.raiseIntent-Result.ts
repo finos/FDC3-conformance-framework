@@ -14,7 +14,8 @@ export default () =>
       await control.listenForError();
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX");
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
-      control.getIntentResult(intentResolution);
+      const intentResult = await control.getIntentResult(intentResolution);
+      control.validateIntentResult(intentResult, IntentResultType.Void);
     });
 
     const RaiseIntentVoidResult5secs = "(2.0-RaiseIntentVoidResult5secs) App A receives a void IntentResult after a 5 second delay";
@@ -26,7 +27,6 @@ export default () =>
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
-      await wait(300); //give app b time to return
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
         control.validateIntentResult(intentResult, IntentResultType.Void);
@@ -51,8 +51,6 @@ export default () =>
       const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
-      //give app b time to return
-      await wait(300);
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
         control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
@@ -70,8 +68,6 @@ export default () =>
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
-      //wait for intent-e to return channel
-      await wait(300);
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
         control.validateIntentResult(intentResult, IntentResultType.Channel, (await receiver).instanceId);
@@ -89,8 +85,6 @@ export default () =>
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
-      //wait for intent-e to return private channel
-      await wait(300);
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
         control.validateIntentResult(intentResult, IntentResultType.PrivateChannel, (await receiver).instanceId);
@@ -106,8 +100,6 @@ export default () =>
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
-      //give app b time to return
-      await wait(300);
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
         control.validateIntentResult(intentResult, IntentResultType.Void);
@@ -123,8 +115,6 @@ export default () =>
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
-      //give app b time to return
-      await wait(300);
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
         control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
