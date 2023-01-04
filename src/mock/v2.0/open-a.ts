@@ -1,7 +1,7 @@
 import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { ContextWithError } from "../../test/common/common-types";
+import { AppControlContext } from "../../test/common/common-types";
 
 declare let fdc3: DesktopAgent;
 onFdc3Ready().then(async () => {
@@ -12,7 +12,7 @@ onFdc3Ready().then(async () => {
       await sendContextToTests({
         type: "context-received",
         errorMessage: `Listener received incorrect context type. Listener listening for 'shouldNotReceiveThisContext' type received '${context.type}' type`,
-      } as ContextWithError);
+      } as AppControlContext);
     }
   });
 });

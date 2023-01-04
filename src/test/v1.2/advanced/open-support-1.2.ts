@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v1.2/general";
 import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../common/common-types";
-import { MockAppContext, OpenControl } from "../../common/open-control";
+import { OpenControl } from "../../common/open-control";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
 declare let fdc3: DesktopAgent;
@@ -14,7 +14,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
   contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      const listener = appControlChannel.addContextListener(contextType, async (context: MockAppContext) => {
+      const listener = appControlChannel.addContextListener(contextType, async (context: AppControlContext) => {
         if (context.errorMessage) {
           reject(context.errorMessage);
         } else {
@@ -64,7 +64,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
 
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    await appControlChannel.addContextListener("context-received", (context: MockAppContext) => {
+    await appControlChannel.addContextListener("context-received", (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
   };

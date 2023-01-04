@@ -14,12 +14,6 @@ export interface OpenControl<X> {
   validateReceivedContext(contextReceiver: X, expectedContextType: string): Promise<void>;
 }
 
-
-export interface MockAppContext extends CommonContext {
-  errorMessage?: string;
-  ContextSender?: CommonContext;
-}
-
 export const openApp = {
   a: {
     name: "IntentAppA",

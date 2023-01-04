@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
-import { Context, DesktopAgent } from "fdc3_2_0";
+import { DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
 declare let fdc3: DesktopAgent;
 

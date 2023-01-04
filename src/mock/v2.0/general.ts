@@ -1,11 +1,8 @@
-import {
-  closeWindowOnCompletion,
-  onFdc3Ready,
-} from "./mock-functions";
+import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { MockAppContext } from "../../test/common/open-control";
+import { AppControlContext } from "../../test/common/common-types";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
@@ -15,7 +12,7 @@ onFdc3Ready().then(async () => {
   const implementationMetadata = await fdc3.getInfo();
   let { appId } = implementationMetadata.appMetadata;
 
-  let appOpenedContext: MockAppContext = {
+  let appOpenedContext: AppControlContext = {
     type: "fdc3-conformance-opened",
   };
 
@@ -24,7 +21,7 @@ onFdc3Ready().then(async () => {
   }
 
   // broadcast that this app has opened
-  await sendContextToTests(appOpenedContext as MockAppContext);
+  await sendContextToTests(appOpenedContext as AppControlContext);
 
   // Context listeners used by tests.
   await fdc3.addContextListener("fdc3.instrument", async (context) => {

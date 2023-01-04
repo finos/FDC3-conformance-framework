@@ -9,11 +9,9 @@ export interface CommonContext {
 
 export interface AppControlContext extends CommonContext {
   testId?: string;
-}
-
-export interface ContextWithError extends CommonContext {
-  errorMessage?: string;
   instanceId?: string;
+  Context?: CommonContext;
+  errorMessage?: string;
 }
 
 export interface IntentUtilityContext extends CommonContext {

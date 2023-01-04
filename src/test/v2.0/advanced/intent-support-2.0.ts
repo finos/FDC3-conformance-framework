@@ -5,17 +5,16 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
 import { AppControlContext, IntentUtilityContext } from "../../common/common-types";
-import { ContextWithError } from "../../common/common-types";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class RaiseIntentControl2_0 {
-  async receiveContext(contextType: string, waitTime?: number): Promise<ContextWithError> {
+  async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContext> {
     let timeout;
     const appControlChannel = await getOrCreateChannel("app-control");
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
-      const listener = await appControlChannel.addContextListener(contextType, (context: ContextWithError) => {
+      const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
         resolve(context);
         clearTimeout(timeout);
         listener.unsubscribe();
@@ -157,7 +156,7 @@ export class RaiseIntentControl2_0 {
 
   async listenForError() {
     const appControlChannel = await getOrCreateChannel("app-control");
-    appControlChannel.addContextListener("error", (context: ContextWithError) => {
+    appControlChannel.addContextListener("error", (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
   }

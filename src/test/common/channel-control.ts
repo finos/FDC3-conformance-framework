@@ -34,11 +34,6 @@ export interface CommonContext {
   type: string;
 }
 
-export interface AppControlContext extends CommonContext {
-  testId?: string;
-  joinedChannel?: string;
-}
-
 export type ChannelsAppContext = CommonContext & {
   commands: string[];
   config: {

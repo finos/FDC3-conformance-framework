@@ -1,6 +1,6 @@
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import constants from "../../constants";
-import { AppControlContext, ContextWithError } from "../../test/common/common-types";
+import { AppControlContext } from "../../test/common/common-types";
 
 declare let fdc3: DesktopAgent;
 
@@ -29,7 +29,7 @@ export const closeWindowOnCompletion = async () => {
   });
 };
 
-export const sendContextToTests = async (context: ContextWithError) => {
+export const sendContextToTests = async (context: AppControlContext) => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.broadcast(context);
 };
@@ -42,4 +42,3 @@ export const validateContext = (receivedContextType: string, expectedContextType
     });
   }
 };
-

@@ -1,5 +1,6 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
 import { ChannelError, DesktopAgent } from "fdc3_2_0";
+
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
