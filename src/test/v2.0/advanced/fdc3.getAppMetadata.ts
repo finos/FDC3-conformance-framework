@@ -1,19 +1,17 @@
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
-import { AppMetadata, Context } from "fdc3_2_0";
-import { sleep } from "../../../utils";
-import constants from "../../../constants";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { validateAppMetadata } from "./metadata-support-2.0";
+import { MetadataValidator } from "./metadata-support-2.0";
+import { closeMockAppWindow } from "../utils_2_0";
 
 declare let fdc3: DesktopAgent;
 const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
+const validator = new MetadataValidator();
 
 export default () =>
   describe("fdc3.getAppMetadata", () => {
     after(async () => {
-      await broadcastCloseWindow();
-      await waitForMockAppToClose();
+      await closeMockAppWindow();
     });
 
     it("Method is callable", async () => {
@@ -31,7 +29,7 @@ export default () =>
         //retrieve AppMetadata object
         const metadata = await fdc3.getAppMetadata({ appId: "MetadataAppId" });
 
-        validateAppMetadata(metadata);
+        validator.validateAppMetadata(metadata);
       } catch (ex) {
         assert.fail(getMetadataDocs + (ex.message ?? ex));
       }
@@ -60,7 +58,7 @@ export default () =>
 
         const metadata1 = await fdc3.getAppMetadata(appIdentifier1);
 
-        validateAppMetadata(metadata1);
+        validator.validateAppMetadata(metadata1);
 
         //check that metadata instanceId is the same as the appIdentifyer instanceId
         expect(
@@ -79,28 +77,3 @@ export default () =>
       }
     });
   });
-
-async function waitForMockAppToClose() {
-  let timeout;
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    const listener = await appControlChannel.addContextListener("windowClosed", (context) => {
-      resolve(context);
-      clearTimeout(timeout);
-      listener.unsubscribe();
-    });
-
-    //if no context received reject promise
-    const { promise: sleepPromise, timeout: theTimeout } = sleep();
-    timeout = theTimeout;
-    await sleepPromise;
-    reject(new Error("windowClosed context not received from app B"));
-  });
-
-  return messageReceived;
-}
-
-const broadcastCloseWindow = async () => {
-  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  await appControlChannel.broadcast({ type: "closeWindow" });
-};

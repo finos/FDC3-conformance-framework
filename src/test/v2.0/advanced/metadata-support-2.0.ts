@@ -2,11 +2,9 @@ import { assert, expect } from "chai";
 import { AppIdentifier, AppMetadata, Context, ContextMetadata, DesktopAgent, ImplementationMetadata } from "fdc3_2_0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
-declare let fdc3: DesktopAgent;
+//declare let fdc3: DesktopAgent;
 const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
 const getInfoDocs = "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
-
-export class MetaFdc3ApiCalls {}
 
 export class MetadataValidator {
   validateAppMetadata(metadata: AppMetadata) {
