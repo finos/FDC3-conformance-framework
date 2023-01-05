@@ -5,15 +5,15 @@ import { Context, ContextMetadata, ImplementationMetadata } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
 import { MetadataAppCommand, MetadataContext } from "./metadata-support-2.0";
+import { closeMockAppWindow } from "../utils_2_0";
 
 declare let fdc3: DesktopAgent;
-const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause";
+const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause: ";
 
 export default () =>
   describe("fdc3.findInstances", () => {
-    afterEach(async () => {
-      await broadcastCloseWindow();
-      await waitForMockAppToClose();
+    after(async () => {
+      await closeMockAppWindow();
     });
 
     it("(2.0-FindInstances) valid metadata", async () => {
@@ -28,13 +28,16 @@ export default () =>
           appId: "MetadataAppId",
         });
 
+        console.log(JSON.stringify(appIdentifier2));
+
         //confirm that the instanceId for both app instantiations is different
         expect(appIdentifier.instanceId, `The AppIdentifier's instanceId property for both instances of the opened app should not be the same.${findInstancesDocs}`).to.not.equal(appIdentifier2.instanceId);
 
         //retrieve instance details
         let instances = await fdc3.findInstances({ appId: "MetadataAppId" });
 
-        if (!instances.includes(appIdentifier) || !instances.includes(appIdentifier2)) {
+        // check that the retrieved instances match the retrieved app Identifiers
+        if (!instances.some((instance) => JSON.stringify(instance) === JSON.stringify(appIdentifier) || JSON.stringify(instance) === JSON.stringify(appIdentifier2))) {
           assert.fail(`At least one AppIdentifier object is missing from the AppIdentifier array returned after calling fdc3.findInstances(app: AppIdentifier)${findInstancesDocs}`);
         }
 
@@ -70,26 +73,3 @@ export default () =>
       }
     });
   });
-
-async function waitForMockAppToClose() {
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    const listener = await appControlChannel.addContextListener("windowClosed", async (context) => {
-      await wait(constants.WindowCloseWaitTime);
-      resolve(context);
-      listener.unsubscribe();
-    });
-
-    //if no context received reject promise
-    const { promise: sleepPromise } = sleep();
-    await sleepPromise;
-    reject(new Error("windowClosed context not received from app B"));
-  });
-
-  return messageReceived;
-}
-
-const broadcastCloseWindow = async () => {
-  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  await appControlChannel.broadcast({ type: "closeWindow" });
-};
