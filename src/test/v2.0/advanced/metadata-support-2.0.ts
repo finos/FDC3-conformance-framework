@@ -1,10 +1,13 @@
 import { assert, expect } from "chai";
-import { AppIdentifier, AppMetadata, Context, ContextMetadata, DesktopAgent, ImplementationMetadata } from "fdc3_2_0";
+import { IntentResolution, AppIdentifier, AppMetadata, Channel, Context, ContextMetadata, DesktopAgent, ImplementationMetadata } from "fdc3_2_0";
+import { AppControlContext } from "../../../common-types";
+import constants from "../../../constants";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 //declare let fdc3: DesktopAgent;
 const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
 const getInfoDocs = "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
+declare let fdc3: DesktopAgent;
 
 export class MetadataValidator {
   validateAppMetadata(metadata: AppMetadata) {
@@ -46,7 +49,48 @@ export class MetadataValidator {
 
   validateAppIdentifier(appIdentifier: AppIdentifier) {
     expect(appIdentifier, `AppIdentifier did not have property appId${getInfoDocs}`).to.have.property("appId");
+    expect(typeof appIdentifier.appId).to.be.equal("string");
     expect(appIdentifier, `AppIdentifier did not have property instanceId${getInfoDocs}`).to.have.property("instanceId");
+    expect(typeof appIdentifier.instanceId).to.be.equal("string");
+  }
+}
+
+export class MetadataFdc3Api {
+  async openMetadataApp(contextType?: string): Promise<AppIdentifier> {
+    if (contextType) {
+      return await fdc3.open(
+        {
+          appId: "MetadataAppId",
+        },
+        { type: contextType }
+      );
+    } else {
+      return await fdc3.open({
+        appId: "MetadataAppId",
+      });
+    }
+  }
+
+  async getAppInstances(): Promise<AppIdentifier[]> {
+    return await fdc3.findInstances({ appId: "MetadataAppId" });
+  }
+
+  async getAppMetadata(): Promise<AppMetadata> {
+    return await fdc3.getAppMetadata({
+      appId: "MetadataAppId",
+    });
+  }
+
+  async retrieveAppControlChannel(): Promise<Channel> {
+    return await fdc3.getOrCreateChannel(constants.ControlChannel);
+  }
+
+  async raiseIntent(intent: string, contextType: string, appIdentifier: AppIdentifier): Promise<IntentResolution> {
+    return await fdc3.raiseIntent(intent, { type: contextType }, appIdentifier);
+  }
+
+  async getInfo(): Promise<ImplementationMetadata> {
+    return await fdc3.getInfo();
   }
 }
 
