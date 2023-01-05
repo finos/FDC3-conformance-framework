@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import { failOnTimeout, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../utils_2_0";
 import { ImplementationMetadata } from "fdc3_2_0";
-import { MetadataValidator, MetadataAppCommandContext, MetadataContext, MetadataAppCommand } from "./metadata-support-2.0";
+import { MetadataValidator, MetadataContext } from "./metadata-support-2.0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
 declare let fdc3: DesktopAgent;
@@ -39,22 +39,16 @@ export default () =>
       let implMetadata: ImplementationMetadata;
       const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
 
-      //set command for metadata app
-      const metadataAppContext: MetadataAppCommandContext = {
-        type: "metadataAppContext",
-        command: MetadataAppCommand.sendGetInfoMetadataToTests,
-      };
-
       let timeout;
       const wrapper = wrapPromise();
 
-      appControlChannel.addContextListener("metadataContext", async (context: MetadataContext) => {
+      appControlChannel.addContextListener("context-listener-triggered", async (context: MetadataContext) => {
         implMetadata = context.implMetadata;
         wrapper.resolve();
         clearTimeout(timeout);
       });
 
-      const appIdentifier = await fdc3.open({ appId: "MetadataAppId" }, metadataAppContext);
+      const appIdentifier = await fdc3.open({ appId: "MetadataAppId" }, { type: "metadataAppContext" });
       validator.validateAppIdentifier(appIdentifier);
       timeout = failOnTimeout("did not receive MetadataContext from metadata app"); // fail if no metadataContext received
       await wrapper.promise; // wait for listener above to receive context

@@ -12,7 +12,7 @@ const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent 
 export class RaiseIntentControl2_0 {
   async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContext> {
     let timeout;
-    const appControlChannel = await getOrCreateChannel("app-control");
+    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
         resolve(context);
