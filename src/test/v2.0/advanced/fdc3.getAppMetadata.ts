@@ -25,7 +25,6 @@ export default () =>
       try {
         //retrieve AppMetadata object
         const metadata = await api.getAppMetadata();
-
         validator.validateAppMetadata(metadata);
       } catch (ex) {
         assert.fail(getMetadataDocs + (ex.message ?? ex));
@@ -34,34 +33,30 @@ export default () =>
 
     it("(2.0-AppInstanceMetadata) App instance metadata is valid", async () => {
       try {
-        //open metadata app
         const appIdentifier1 = await api.openMetadataApp();
         validator.validateAppIdentifier(appIdentifier1);
 
-        //open metadata app again
-        const appIdentifier2 = await api.openMetadataApp();
+        const appIdentifier2 = await api.openMetadataApp(); //open a second instance of the same app
         validator.validateAppIdentifier(appIdentifier2);
 
-        //check instanceId is different for both instantiations of the app
-        expect(appIdentifier1.instanceId, `The AppIdentifier's instanceId property for both instances of the opened app should not be the same.${getMetadataDocs}`).to.not.equal(appIdentifier2.instanceId);
+        // check instanceId is different for both instantiations of the app
+        expect(appIdentifier1.instanceId, `The AppIdentifier instanceId properties for both instances of the opened app should not match.${getMetadataDocs}`).to.not.equal(appIdentifier2.instanceId);
 
-        const metadata1 = await api.getAppMetadata();
+        const metadata1 = await api.getAppMetadata(appIdentifier1);
         validator.validateAppMetadata(metadata1);
 
-        //check that metadata instanceId is the same as the appIdentifyer instanceId
-        expect(
-          metadata1.instanceId,
-          "The AppMetaData's instanceId property that was retrieved when calling open() does not match AppIdentifier's instanceId property that was retrieved when calling getAppMetadata() for the same app instance"
-        ).to.be.equal(appIdentifier1.instanceId);
+        validateMatchingInstanceIds(metadata1.instanceId, appIdentifier1.instanceId);
 
-        const metadata2 = await api.getAppMetadata();
+        const metadata2 = await api.getAppMetadata(appIdentifier2);
 
-        expect(metadata2, `The AppIdentifier object retrieved after calling fdc3.open() should contain an instanceId property.${getMetadataDocs}`).to.have.property("instanceId");
-        expect(metadata2.instanceId, "The AppMetaData's instanceId property retrieved when calling open() does not match AppIdentifier's instanceId property retrieved when calling getAppMetadata() for the same app").to.be.equal(
-          appIdentifier2.instanceId
-        );
+        expect(metadata2, `The AppIdentifier object should contain an instanceId property.${getMetadataDocs}`).to.have.property("instanceId");
+        validateMatchingInstanceIds(metadata2.instanceId, appIdentifier2.instanceId);
       } catch (ex) {
         assert.fail(getMetadataDocs + (ex.message ?? ex));
       }
     });
   });
+
+function validateMatchingInstanceIds(instanceId1: string, instanceId2: string) {
+  expect(instanceId1, "The AppMetaData instanceId properties do not match").to.be.equal(instanceId2);
+}

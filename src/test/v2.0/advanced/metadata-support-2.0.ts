@@ -4,7 +4,6 @@ import { AppControlContext } from "../../../common-types";
 import constants from "../../../constants";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
-//declare let fdc3: DesktopAgent;
 const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
 const getInfoDocs = "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
 declare let fdc3: DesktopAgent;
@@ -75,10 +74,14 @@ export class MetadataFdc3Api {
     return await fdc3.findInstances({ appId: "MetadataAppId" });
   }
 
-  async getAppMetadata(): Promise<AppMetadata> {
-    return await fdc3.getAppMetadata({
-      appId: "MetadataAppId",
-    });
+  async getAppMetadata(appIdentifier?: AppIdentifier): Promise<AppMetadata> {
+    if (!appIdentifier) {
+      appIdentifier = {
+        appId: "MetadataAppId",
+      };
+    }
+
+    return await fdc3.getAppMetadata(appIdentifier);
   }
 
   async retrieveAppControlChannel(): Promise<Channel> {
