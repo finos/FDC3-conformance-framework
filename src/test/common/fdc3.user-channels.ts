@@ -2,7 +2,6 @@ import { assert, expect } from "chai";
 import constants from "../../constants";
 import { failOnTimeout, wait, wrapPromise } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
-import { closeMockAppWindow } from "../v2.0/utils_2_0";
 import { ChannelControl } from "./channel-control";
 
 export function createUserChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
@@ -12,7 +11,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
     afterEach(async function afterEach() {
       if (this.currentTest.title !== UCFilteredUsageLeave) {
-        await closeMockAppWindow(this.currentTest.title);
+        await cc.closeMockApp(this.currentTest.title);
       }
     });
 

@@ -14,6 +14,7 @@ export interface ChannelControl<X, Y, Z> {
   // test control
   unsubscribeListeners(listeners: Z[]): void;
   openChannelApp(testId: string, channelId: string | undefined, commands: string[], historyItems?: number, notify?: boolean, contextId?: string): Promise<void>;
+  closeMockApp(testId: string): Promise<void>;
 
   // listening
   initCompleteListener(testId: string): Promise<Y>;

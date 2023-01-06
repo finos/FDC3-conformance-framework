@@ -63,6 +63,10 @@ export class OpenControl1_2 implements OpenControl<Context> {
     }
   };
 
+  async closeMockApp(testId: string) {
+    await closeMockAppWindow(testId);
+  }
+
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     await appControlChannel.addContextListener("context-received", (context: AppControlContext) => {

@@ -6,6 +6,7 @@ import { sleep, wait } from "../../../utils";
 import { AppControlContext } from "../../../common-types";
 import { OpenControl } from "../../common/open-control";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
+import { closeMockAppWindow } from "../utils_2_0";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_0.open + "\r\nCause:";
@@ -44,6 +45,10 @@ export class OpenControl2_0 implements OpenControl<Context> {
       await fdc3.open({ appId: appId });
     }
   };
+
+  async closeMockApp(testId: string) {
+    await closeMockAppWindow(testId);
+  }
 
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
