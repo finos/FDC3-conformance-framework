@@ -1,6 +1,5 @@
 import { assert, expect } from "chai";
 import { IntentResolution, AppIdentifier, AppMetadata, Channel, Context, ContextMetadata, DesktopAgent, ImplementationMetadata } from "fdc3_2_0";
-import { AppControlContext } from "../../../common-types";
 import constants from "../../../constants";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
@@ -10,29 +9,39 @@ declare let fdc3: DesktopAgent;
 
 export class MetadataValidator {
   validateAppMetadata(metadata: AppMetadata) {
-    // expect(metadata, `no name property found on AppMetadata object${getMetadataDocs}`).to.have.property("name");
-    // expect(typeof metadata.name, `Incorrect type detected for AppMetadata.name. Expected a string, got ${typeof metadata.name}`).to.be.equal("string");
-    // expect(metadata.instanceMetadata, `no version property found on AppMetadata object${getMetadataDocs}`).to.have.property("version");
-    // expect(typeof metadata.instanceMetadata, `Incorrect type detected for AppMetadata.version. Expected a string, got ${typeof metadata.instanceMetadata.version}`).to.be.equal("string");
-    // expect(metadata.instanceMetadata, `no title property found on AppMetadata object${getMetadataDocs}`).to.have.property("title");
-    // expect(typeof metadata.instanceMetadata.title, `Incorrect type detected for AppMetadata.title. Expected a string, got ${typeof metadata.instanceMetadata.title}`).to.be.equal("string");
-    // expect(metadata.instanceMetadata, `no tooltip property found on AppMetadata object${getMetadataDocs}`).to.have.property("tooltip");
-    // expect(typeof metadata.instanceMetadata.tooltip, `Incorrect type detected for AppMetadata.tooltip. Expected a string, got ${typeof metadata.instanceMetadata.tooltip}`).to.be.equal("string");
-    // expect(metadata.instanceMetadata, `no description property found on AppMetadata object${getMetadataDocs}`).to.have.property("description");
-    // expect(typeof metadata.instanceMetadata.description, `Incorrect type detected for AppMetadata.description. Expected a string, got ${typeof metadata.instanceMetadata.description}`).to.be.equal("string");
-    // expect(metadata.instanceMetadata.instanceMetadata, `no icons property found on AppMetadata object${getMetadataDocs}`).to.have.property("icons");
-    // if (!Array.isArray(metadata.instanceMetadata.icons)) {
-    //   assert.fail(`Incorrect type detected for AppMetadata.icons. Expected an Array, got ${typeof metadata.description}`);
-    // }
-    // //ensure icons property contains an array of objects
-    // const isObjectArray = isArrayOfObjects(metadata.instanceMetadata.icons);
-    // if (!isObjectArray) assert.fail("AppMetadata.icons should contain an Array of objects");
-    // expect(metadata.instanceMetadata, getMetadataDocs).to.have.property("screenshots");
-    // expect(typeof metadata.instanceMetadata.screenshots, `Incorrect type detected for AppMetadata.screenshots. Expected an Array, got ${typeof metadata.instanceMetadata.description}`).to.be.equal("Array");
-    // //ensure screenshots property contains an array of objects
-    // const isObjectArray2 = isArrayOfObjects(metadata.instanceMetadata.screenshots);
-    // if (!isObjectArray2) assert.fail("AppMetadata.screenshots should contain an Array of objects");
-    // expect(metadata.instanceMetadata, getMetadataDocs).to.have.nested.property("listensFor");
+    expect(metadata, `The AppMetadata object does not contain an appId property${getMetadataDocs}`).to.have.property("appId");
+    expect(typeof metadata.name, `Incorrect type detected for AppMetadata.name. Expected a string, got ${typeof metadata.name}`).to.be.equal("string");
+
+    expect(metadata, `The AppMetadata object does not contain a name property${getMetadataDocs}`).to.have.property("name");
+    expect(typeof metadata.name, `Incorrect type detected for AppMetadata.name. Expected a string, got ${typeof metadata.name}`).to.be.equal("string");
+
+    expect(metadata, `The AppMetadata object does not contain a version property${getMetadataDocs}`).to.have.property("version");
+    expect(typeof metadata.name, `Incorrect type detected for AppMetadata.name. Expected a string, got ${typeof metadata.name}`).to.be.equal("string");
+
+    expect(metadata, `The AppMetadata object does not contain a title property${getMetadataDocs}`).to.have.property("title");
+    expect(typeof metadata.title, `Incorrect type detected for AppMetadata.title. Expected a string, got ${typeof metadata.title}`).to.be.equal("string");
+
+    expect(metadata, `The AppMetadata object does not contain a tooltip property${getMetadataDocs}`).to.have.property("tooltip");
+    expect(typeof metadata.tooltip, `Incorrect type detected for AppMetadata.tooltip. Expected a string, got ${typeof metadata.tooltip}`).to.be.equal("string");
+
+    expect(metadata, `The AppMetadata object does not contain a description property${getMetadataDocs}`).to.have.property("description");
+    expect(typeof metadata.description, `Incorrect type detected for AppMetadata.description. Expected a string, got ${typeof metadata.description}`).to.be.equal("string");
+
+    expect(metadata, `The AppMetadata object does not contain an icons property${getMetadataDocs}`).to.have.property("icons");
+    if (!Array.isArray(metadata.icons)) {
+      assert.fail(`Incorrect type detected for AppMetadata.icons. Expected an Array, got ${typeof metadata.description}`);
+    }
+
+    const isObjectArray = isArrayOfObjects(metadata.icons); // ensure icons property contains an array of objects
+    if (!isObjectArray) assert.fail("AppMetadata.icons should contain an Array of objects");
+
+    expect(metadata, getMetadataDocs).to.have.property("screenshots");
+    expect(typeof metadata.screenshots, `Incorrect type detected for AppMetadata.screenshots. Expected an Array, got ${typeof metadata.description}`).to.be.equal("Array");
+
+    const isObjectArray2 = isArrayOfObjects(metadata.screenshots); // ensure screenshots property contains an array of objects
+    if (!isObjectArray2) assert.fail("AppMetadata.screenshots should contain an Array of objects");
+
+    expect(metadata, `The AppMetadata object does not contain nested property interop.intents.listensFor${getMetadataDocs}`).to.deep.nested.property("interop.intents.listensFor");
   }
 
   validateImplementationMetadata(implMetadata: ImplementationMetadata) {
