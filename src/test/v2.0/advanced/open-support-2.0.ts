@@ -2,11 +2,11 @@ import { assert, expect } from "chai";
 import { Context, DesktopAgent, OpenError } from "fdc3_2_0";
 import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v2.0/general";
-import { sleep, wait } from "../../../utils";
-import { AppControlContext } from "../../../common-types";
+import { sleep } from "../../../utils";
+import { AppControlContext } from "../../../context-types";
 import { OpenControl } from "../../common/open-control";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { closeMockAppWindow } from "../utils_2_0";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_0.open + "\r\nCause:";
@@ -67,7 +67,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
 }
 
 export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
-  //allow open t
   const { timeout, promise } = sleep(constants.NoListenerTimeout);
   let promiseRejected;
 

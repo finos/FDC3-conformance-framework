@@ -1,6 +1,6 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0";
-import { AppControlContext } from "../../common-types";
+import { AppControlContext } from "../../context-types";
 
 declare let fdc3: DesktopAgent;
 

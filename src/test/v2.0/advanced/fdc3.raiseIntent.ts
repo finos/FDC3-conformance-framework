@@ -3,7 +3,7 @@ import { assert, expect } from "chai";
 import { wait } from "../../../utils";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp } from "./intent-support-2.0";
 import constants from "../../../constants";
-import { closeMockAppWindow } from "../utils_2_0";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
 
 const control = new RaiseIntentControl2_0();
 

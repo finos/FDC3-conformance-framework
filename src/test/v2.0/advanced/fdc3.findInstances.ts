@@ -1,11 +1,10 @@
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../../v2.0/apiDocuments-2.0";
 import { failOnTimeout, wrapPromise } from "../../../utils";
-import { closeMockAppWindow } from "../utils_2_0";
-import { AppControlContext } from "../../../common-types";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
+import { AppControlContext } from "../../../context-types";
 import { MetadataFdc3Api } from "./metadata-support-2.0";
 
-//declare let fdc3: DesktopAgent;
 const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause: ";
 
 export default () =>

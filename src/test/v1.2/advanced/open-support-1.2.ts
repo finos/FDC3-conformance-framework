@@ -2,11 +2,11 @@ import { assert, expect } from "chai";
 import { Context, DesktopAgent, OpenError, TargetApp } from "fdc3_1_2";
 import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v1.2/general";
-import { sleep, wait } from "../../../utils";
-import { AppControlContext } from "../../../common-types";
+import { sleep } from "../../../utils";
+import { AppControlContext } from "../../../context-types";
 import { OpenControl } from "../../common/open-control";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { closeMockAppWindow, waitForContext } from "../utils_1_2";
+import { closeMockAppWindow, waitForContext } from "../fdc3-1_2-utils";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause:";
@@ -21,11 +21,11 @@ export class OpenControl1_2 implements OpenControl<Context> {
         } else {
           resolve(context);
         }
-        //clearTimeout(timeout);
+
         listener.unsubscribe();
       });
-      //if no context received reject promise
-      const { promise: thePromise } = sleep();
+
+      const { promise: thePromise } = sleep(); //if no context received reject promise
       await thePromise;
       if (!expectNotToReceiveContext) {
         reject(new Error("No context received from app B"));
@@ -72,13 +72,6 @@ export class OpenControl1_2 implements OpenControl<Context> {
     await appControlChannel.addContextListener("context-received", (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
-  };
-
-  closeAppWindows = async (testId) => {
-    await closeMockAppWindow(testId);
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    await waitForContext("windowClosed", testId, appControlChannel);
-    await wait(constants.WindowCloseWaitTime);
   };
 
   confirmAppNotFoundErrorReceived = (exception: DOMException) => {

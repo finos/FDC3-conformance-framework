@@ -4,7 +4,7 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { IntentApp, RaiseIntentControl2_0 } from "./intent-support-2.0";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
-import { closeMockAppWindow } from "../utils_2_0";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
 
 const control = new RaiseIntentControl2_0();
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";

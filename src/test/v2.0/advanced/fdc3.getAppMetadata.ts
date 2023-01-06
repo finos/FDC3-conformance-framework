@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { MetadataFdc3Api, MetadataValidator } from "./metadata-support-2.0";
-import { closeMockAppWindow } from "../utils_2_0";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
 
 const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
 const validator = new MetadataValidator();

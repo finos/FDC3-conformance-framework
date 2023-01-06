@@ -2,7 +2,7 @@ import constants from "../../../constants";
 import { getCommonOpenTests } from "../../common/fdc3.open";
 import { openApp, OpenCommonConfig } from "../../common/open-control";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { closeMockAppWindow } from "../utils_2_0";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { expectAppTimeoutErrorOnOpen, OpenControl2_0 } from "./open-support-2.0";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_0 + "\r\nCause:";

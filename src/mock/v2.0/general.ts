@@ -2,7 +2,7 @@ import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context } from "fdc3_2_0";
 import { sendContextToTests } from "../v2.0/mock-functions";
-import { AppControlContext } from "../../common-types";
+import { AppControlContext } from "../../context-types";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {

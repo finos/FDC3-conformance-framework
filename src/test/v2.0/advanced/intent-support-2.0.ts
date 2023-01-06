@@ -4,7 +4,7 @@ import { Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
-import { AppControlContext, IntentUtilityContext } from "../../../common-types";
+import { AppControlContext, IntentUtilityContext } from "../../../context-types";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";

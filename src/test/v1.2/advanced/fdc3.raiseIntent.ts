@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep } from "../../../utils";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { closeMockAppWindow } from "../utils_1_2";
+import { closeMockAppWindow } from "../fdc3-1_2-utils";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";

@@ -3,8 +3,8 @@ import { Channel, Context, Listener, DesktopAgent } from "fdc3_2_0";
 import constants from "../../../constants";
 import { wait } from "../../../utils";
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/channel-control";
-import { AppControlContext } from "../../../common-types";
-import { closeMockAppWindow, waitForContext } from "../utils_2_0";
+import { AppControlContext } from "../../../context-types";
+import { closeMockAppWindow, waitForContext } from "../fdc3-2_0-utils";
 
 declare let fdc3: DesktopAgent;
 

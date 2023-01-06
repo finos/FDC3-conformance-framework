@@ -1,7 +1,7 @@
 import { closeWindowOnCompletion, onFdc3Ready, validateContext } from "./mock-functions";
 import { sendContextToTests } from "../v2.0/mock-functions";
 import { wait } from "../../utils";
-import { IntentUtilityContext } from "../../common-types";
+import { IntentUtilityContext } from "../../context-types";
 import { IntentResult, DesktopAgent } from "fdc3_2_0";
 declare let fdc3: DesktopAgent;
 
