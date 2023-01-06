@@ -1,7 +1,6 @@
 export interface OpenControl<X> {
   //test control
   openMockApp(appName?: string, appId?: string, contextType?: string, targetAppAsString?: boolean, malformedContext?: boolean): void;
-  closeAppWindows(testId: string): Promise<void>;
 
   //listening
   contextReceiver(contextType: string, expectNotToReceiveContext?: boolean): Promise<X>;

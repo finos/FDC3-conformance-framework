@@ -11,8 +11,8 @@ const api = new MetadataFdc3Api();
 
 export default () =>
   describe("fdc3.getInfo", () => {
-    after(async () => {
-      await closeMockAppWindow();
+    after(async function after() {
+      await closeMockAppWindow(this.currentTest.title);
     });
 
     it("Method is callable", async () => {

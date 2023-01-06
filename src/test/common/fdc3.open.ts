@@ -1,4 +1,5 @@
 import { assert } from "chai";
+import { closeMockAppWindow } from "../v2.0/utils_2_0";
 import { openApp, OpenCommonConfig, OpenControl } from "./open-control";
 
 export function getCommonOpenTests(control: OpenControl<any>, documentation: string, config: OpenCommonConfig) {
@@ -7,7 +8,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     const result = control.contextReceiver("fdc3-conformance-opened");
     await control.openMockApp(openApp.b.name, undefined, undefined, true);
     await result;
-    await control.closeAppWindows(AOpensB1);
+    await closeMockAppWindow(AOpensB1);
   });
 
   it(`(${config.prefix}AFailsToOpenB) Receive AppNotFound error when config.targeting non-existent ${config.target} as config.target`, async () => {
@@ -24,7 +25,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     const receiver = control.contextReceiver("context-received");
     await control.openMockApp(openApp.c.name, undefined, "fdc3.instrument", true);
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
-    await control.closeAppWindows(AOpensBWithContext);
+    await closeMockAppWindow(AOpensBWithContext);
   });
 
   const AOpensBWithSpecificContext = `(${config.prefix}AOpensBWithSpecificContext) Can open app B from app A with context and ${config.targetMultiple} as config.target and app B is expecting context`;
@@ -32,7 +33,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     const receiver = control.contextReceiver("context-received");
     await control.openMockApp(openApp.b.name, undefined, "fdc3.instrument");
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
-    await control.closeAppWindows(AOpensBWithSpecificContext);
+    await closeMockAppWindow(AOpensBWithSpecificContext);
   });
 
   const AOpensBMultipleListen = `(${config.prefix}AOpensBMultipleListen) Can open app B from app A with context and ${config.targetMultiple} as config.target but app B has multiple listeners added before the correct one`;
@@ -41,6 +42,6 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     await control.openMockApp(openApp.f.name, undefined, "fdc3.instrument", true);
     await receiver;
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
-    await control.closeAppWindows(AOpensBMultipleListen);
+    await closeMockAppWindow(AOpensBMultipleListen);
   });
 }

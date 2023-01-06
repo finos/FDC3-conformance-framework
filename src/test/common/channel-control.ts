@@ -12,7 +12,6 @@ export interface ChannelControl<X, Y, Z> {
   getCurrentChannel(): Promise<X>;
 
   // test control
-  closeChannelsAppWindow(testId: string): Promise<void>;
   unsubscribeListeners(listeners: Z[]): void;
   openChannelApp(testId: string, channelId: string | undefined, commands: string[], historyItems?: number, notify?: boolean, contextId?: string): Promise<void>;
 

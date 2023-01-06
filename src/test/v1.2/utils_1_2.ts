@@ -1,4 +1,4 @@
-import { Channel, Context, DesktopAgent, Listener } from "fdc3_2_0";
+import { Channel, Context, DesktopAgent, Listener } from "fdc3_1_2";
 import { AppControlContext } from "../../common-types";
 import constants from "../../constants";
 import { wait } from "../../utils";
@@ -24,15 +24,13 @@ const broadcastCloseWindow = async (currentTest) => {
   } as AppControlContext);
 };
 
-export const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<Context> => {
+export const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<AppControlContext> => {
   let executionListener: Listener;
   return new Promise<Context>(async (resolve) => {
     console.log(Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`);
 
     const handler = (context: AppControlContext) => {
-      console.log(` waitforcontext hander reached`);
       if (testId) {
-        console.log(` ${testId} VS ${context.testId}`);
         if (testId == context.testId) {
           console.log(Date.now() + ` Received ${contextType} for test: ${testId}`);
           resolve(context);
@@ -48,10 +46,9 @@ export const waitForContext = (contextType: string, testId: string, channel?: Ch
     };
 
     if (channel === undefined) {
-      executionListener = await fdc3.addContextListener(contextType, handler);
+      executionListener = fdc3.addContextListener(contextType, handler);
     } else {
-      console.log("adding listener in waitforcontext");
-      executionListener = await channel.addContextListener(contextType, handler);
+      executionListener = channel.addContextListener(contextType, handler);
       //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
       const ccHandler = async (context: AppControlContext) => {
         if (context) {
@@ -64,9 +61,9 @@ export const waitForContext = (contextType: string, testId: string, channel?: Ch
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist,
-              had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"})
-              and type "${context?.type}" vs ${contextType} (${context?.type == contextType ? "did match" : "did NOT match"})`
+                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist, 
+    had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"}) 
+    and type "${context?.type}" (${context?.type == contextType ? "did match" : "did NOT match"})`
               );
             }
           } else {

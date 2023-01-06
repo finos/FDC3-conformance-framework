@@ -10,7 +10,7 @@ const api = new MetadataFdc3Api();
 export default () =>
   describe("fdc3.getAppMetadata", () => {
     after(async () => {
-      await closeMockAppWindow();
+      await closeMockAppWindow(appInstanceMetadata);
     });
 
     it("Method is callable", async () => {
@@ -31,7 +31,8 @@ export default () =>
       }
     });
 
-    it("(2.0-AppInstanceMetadata) App instance metadata is valid", async () => {
+    const appInstanceMetadata = "(2.0-AppInstanceMetadata) App instance metadata is valid";
+    it(appInstanceMetadata, async () => {
       try {
         const appIdentifier1 = await api.openMetadataApp();
         validator.validateAppIdentifier(appIdentifier1);

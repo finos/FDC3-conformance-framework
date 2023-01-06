@@ -10,11 +10,12 @@ const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstan
 
 export default () =>
   describe("fdc3.findInstances", () => {
-    after(async () => {
-      await closeMockAppWindow();
+    after(async function after() {
+      await closeMockAppWindow(this.currentTest.title);
     });
 
-    it("(2.0-FindInstances) valid metadata when opening multiple instances of the same app", async () => {
+    const findInstances = "(2.0-FindInstances) valid metadata when opening multiple instances of the same app";
+    it(findInstances, async () => {
       const api = new MetadataFdc3Api();
       try {
         const appIdentifier = await api.openMetadataApp(); // open metadataApp
@@ -40,7 +41,7 @@ export default () =>
         const resolution = await api.raiseIntent("aTestingIntent", "testContextX", appIdentifier); // raise an intent that targets appIdentifier
         validateResolutionSource(resolution, appIdentifier);
 
-        failOnTimeout("'intent-listener-triggered' context not received from mock app"); // fail if expected context not received
+        timeout = failOnTimeout("intent-listener-triggered' context not received from mock app"); // fail if expected context not received
         await wrapper.promise; // wait for context from MetadataApp
       } catch (ex) {
         assert.fail(findInstancesDocs + (ex.message ?? ex));
