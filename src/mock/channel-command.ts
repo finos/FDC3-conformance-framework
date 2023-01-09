@@ -1,4 +1,5 @@
-import { ChannelsAppConfig, commands } from "../test/common/control/channel-control";
+import { ChannelsAppConfig } from "../test/common/channel-control";
+import { commands } from "./constants";
 import { IChannelService } from "./interfaces";
 
 export class Fdc3CommandExecutor {
