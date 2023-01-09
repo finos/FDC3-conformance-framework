@@ -43,7 +43,7 @@ export default () =>
           appId: IntentApp.IntentAppA,
           instanceId: "NonExistentInstanceId",
         });
-        await wait();
+        await wait(); // give test time to throw error
         assert.fail("No error was thrown");
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.TargetInstanceUnavailable);
@@ -55,7 +55,7 @@ export default () =>
     it(RaiseIntentFailTargetedAppResolve1, async () => {
       try {
         await control.raiseIntent("aTestingIntent", "testContextY", { appId: IntentApp.IntentAppA });
-        await wait();
+        await wait(); // give test time to throw error
         assert.fail("No error was thrown");
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
@@ -66,7 +66,7 @@ export default () =>
     it(RaiseIntentFailTargetedAppResolve2, async () => {
       try {
         await control.raiseIntent("aTestingIntent", "testContextY", { appId: "NonExistentApp" });
-        await wait();
+        await wait(); // give test time to throw error
         assert.fail("No error was thrown");
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.TargetAppUnavailable);

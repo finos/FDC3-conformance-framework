@@ -210,7 +210,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
       await cc.joinChannel(channels[0]);
       await cc.openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
-      await wait();
+      await wait(); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 

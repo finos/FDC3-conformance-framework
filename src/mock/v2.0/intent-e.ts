@@ -15,6 +15,6 @@ onFdc3Ready().then(async () => {
 
   const { appMetadata } = await fdc3.getInfo();
 
-  await wait();
+  await wait(); // send context after short delay
   await sendContextToTests({ type: "testContextZ", id: { key: "uniqueId" }, instanceId: appMetadata.instanceId });
 });
