@@ -33,6 +33,10 @@ onFdc3Ready().then(async () => {
 
     return context;
   });
+
+  await sendContextToTests({
+    type: "intent-app-a-opened",
+  });
 });
 
 async function delayExecution(delayMiliseconds: number | undefined): Promise<void> {

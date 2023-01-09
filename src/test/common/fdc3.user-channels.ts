@@ -210,7 +210,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
       await cc.joinChannel(channels[0]);
       await cc.openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
-      await wait();
+      await wait(); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 
@@ -251,7 +251,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await cc.joinChannel(channels[0]);
       await cc.joinChannel(channels[1]);
       await cc.openChannelApp(scTestId8, channels[0].id, JOIN_AND_BROADCAST, undefined, true, contextId);
-      await wait(3000);
+      await wait(); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 
@@ -274,7 +274,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await cc.leaveChannel();
       await cc.openChannelApp(UCFilteredUsageLeave, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
-      await wait(constants.WaitTime);
+      await wait(constants.WaitTime); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 

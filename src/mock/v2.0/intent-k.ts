@@ -19,7 +19,7 @@ onFdc3Ready().then(async () => {
 
     let contextStreamNumber = 1;
     privChan.onAddContextListener(async (contextType) => {
-      await wait(100); //wait for listener in test to init
+      await wait(100); //wait for listener in test to initialise
 
       //stream multiple contexts to test in short succession
       for (let i = 0; i < 5; i++) {

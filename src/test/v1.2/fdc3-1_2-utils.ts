@@ -13,7 +13,7 @@ export async function closeMockAppWindow(testId: string) {
 async function waitForMockAppToClose(testId: string) {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await waitForContext("windowClosed", testId, appControlChannel);
-  await wait(constants.WindowCloseWaitTime);
+  await wait(constants.WindowCloseWaitTime); // wait for window to close
 }
 
 const broadcastCloseWindow = async (currentTest) => {
