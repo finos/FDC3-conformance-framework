@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import { Channel, Context, DesktopAgent, Listener } from "fdc3_1_2";
-import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/channel-control";
+import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
 import { AppControlContext } from "../../../context-types";
 import { closeMockAppWindow, waitForContext } from "../fdc3-1_2-utils";
 

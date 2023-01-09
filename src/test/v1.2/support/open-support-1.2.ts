@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v1.2/general";
 import { sleep } from "../../../utils";
 import { AppControlContext } from "../../../context-types";
-import { OpenControl } from "../../common/open-control";
+import { OpenControl } from "../../common/control/open-control";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 import { closeMockAppWindow, waitForContext } from "../fdc3-1_2-utils";
 

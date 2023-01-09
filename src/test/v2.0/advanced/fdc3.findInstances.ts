@@ -3,7 +3,7 @@ import { APIDocumentation2_0 } from "../../v2.0/apiDocuments-2.0";
 import { failOnTimeout, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { AppControlContext } from "../../../context-types";
-import { MetadataFdc3Api } from "./metadata-support-2.0";
+import { MetadataFdc3Api } from "../support/metadata-support-2.0";
 
 const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause: ";
 

@@ -1,5 +1,5 @@
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
-import { RaiseIntentControl2_0, IntentResultType, IntentApp } from "./intent-support-2.0";
+import { RaiseIntentControl2_0, IntentResultType, IntentApp } from "../support/intent-support-2.0";
 
 const control = new RaiseIntentControl2_0();
 
