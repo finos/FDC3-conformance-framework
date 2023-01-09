@@ -35,7 +35,7 @@ onFdc3Ready().then(async () => {
   });
 });
 
-async function delayExecution(delayMiliseconds: number): Promise<void> {
+async function delayExecution(delayMiliseconds: number | undefined): Promise<void> {
   if (delayMiliseconds && delayMiliseconds > 0) {
     await wait(delayMiliseconds);
   }
