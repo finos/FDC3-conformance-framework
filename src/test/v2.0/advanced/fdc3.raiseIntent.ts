@@ -37,10 +37,14 @@ export default () =>
 
     const RaiseIntentTargetedInstanceResolveOpen = "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
+      // add app control listeners
       await control.listenForError();
+      const confirmAppOpened = control.receiveContext("intent-app-a-opened");
       const result = control.receiveContext("aTestingIntent-listener-triggered");
+
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
-      await wait(constants.ShortWait); //give it time to open
+      await confirmAppOpened;
+
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", appIdentifier);
       await result;
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
@@ -50,12 +54,16 @@ export default () =>
 
     const RaiseIntentTargetedInstanceResolveFindInstances = "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
+      // add app control listeners
       await control.listenForError();
+      const confirmAppOpened = control.receiveContext("intent-app-a-opened");
       const result = control.receiveContext("aTestingIntent-listener-triggered");
+
       const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
       const instances = await control.findInstances(IntentApp.IntentAppA);
       control.validateInstances(instances, 1, appIdentifier.instanceId);
-      await wait(constants.ShortWait); //give it time to open
+      await confirmAppOpened;
+
       const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", instances[0]);
       await result;
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
