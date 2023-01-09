@@ -11,9 +11,7 @@ onFdc3Ready().then(async () => {
   //used in 'Raise Intent Result (void result)' and 'Raise Intent (Ignoring any results)'
   fdc3.addIntentListener("aTestingIntent", async (context: IntentUtilityContext): Promise<IntentResult> => {
     validateContext(context.type, "testContextX");
-    if (context.delayBeforeReturn) {
-      await wait(context.delayBeforeReturn);
-    }
+    await delayExecution(context.delayBeforeReturn);
 
     const { appMetadata } = await fdc3.getInfo();
 
@@ -27,9 +25,7 @@ onFdc3Ready().then(async () => {
 
   fdc3.addIntentListener("sharedTestingIntent1", async (context: IntentUtilityContext): Promise<IntentResult> => {
     validateContext(context.type, "testContextY");
-    if (context.delayBeforeReturn && context.delayBeforeReturn > 0) {
-      await wait(context.delayBeforeReturn);
-    }
+    await delayExecution(context.delayBeforeReturn);
 
     await sendContextToTests({
       type: "sharedTestingIntent1-listener-triggered",
@@ -38,3 +34,9 @@ onFdc3Ready().then(async () => {
     return context;
   });
 });
+
+async function delayExecution(delayMiliseconds: number): Promise<void> {
+  if (delayMiliseconds && delayMiliseconds > 0) {
+    await wait(delayMiliseconds);
+  }
+}
