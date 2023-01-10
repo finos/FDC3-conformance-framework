@@ -39,7 +39,7 @@ export default () =>
       "(RaiseIntentFailTargetedAppInstanceResolve2) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId with instanceId property NonExistentInstanceId do not correlate";
     it(RaiseIntentFailTargetedAppInstanceResolve2, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextY", {
+        await control.raiseIntent("aTestingIntent", "testContextX", {
           appId: IntentApp.IntentAppA,
           instanceId: "NonExistentInstanceId",
         });
@@ -54,7 +54,7 @@ export default () =>
     const RaiseIntentFailTargetedAppResolve1 = "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
     it(RaiseIntentFailTargetedAppResolve1, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextX", { appId: IntentApp.IntentAppA });
+        await control.raiseIntent("aTestingIntent", "testContextY", { appId: IntentApp.IntentAppA });
         await wait(); // give test time to throw error
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {

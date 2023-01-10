@@ -62,7 +62,7 @@ export default () =>
 
     it("(2.0-FindIntentAppDByResultMultiple) Should find intent 'sharedTestingIntent1' belonging only to app intent-b with context 'testContextX' and result type 'testContextY'", async () => {
       const appIntent = await fdc3.findIntent("sharedTestingIntent1", { type: "testContextX" }, "testContextY");
-      validateAppIntent(appIntent, 2, { name: "sharedTestingIntent1", displayName: "Shared Testing Intent" }, IntentApp.IntentAppA);
+      validateAppIntent(appIntent, 1, { name: "sharedTestingIntent1", displayName: "Shared Testing Intent" }, IntentApp.IntentAppB);
     });
 
     it("(2.0-FindIntentAppDByResultChannel1) Should find intent 'sharedTestingIntent2' belonging only to apps intent-e and itent-f with context 'testContextY' and result type 'channel", async () => {
