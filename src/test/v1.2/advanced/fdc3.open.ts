@@ -1,6 +1,6 @@
-import { OpenControl1_2 } from "./open-support-1.2";
+import { OpenControl1_2 } from "../support/open-support-1.2";
 import { getCommonOpenTests } from "../../common/fdc3.open";
-import { openApp, OpenCommonConfig } from "../../common/open-control";
+import { openApp, OpenCommonConfig } from "../../common/control/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 

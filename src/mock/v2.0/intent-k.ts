@@ -1,9 +1,9 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
-import { IntentUtilityContext } from "../../test/common/common-types";
+import { IntentUtilityContext } from "../../context-types";
 import constants from "../../constants";
-import { ContextType, Intent } from "../../test/v2.0/advanced/intent-support-2.0";
+import { ContextType, Intent } from "../../test/v2.0/support/intent-support-2.0";
 declare let fdc3: DesktopAgent;
 
 //used in '2.0-PrivateChannelsLifecycleEvents'

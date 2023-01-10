@@ -1,6 +1,6 @@
 import { Channel, DesktopAgent } from "fdc3_2_0";
 import constants from "../../../constants";
-import { AppControlContext } from "../../../test/common/common-types";
+import { AppControlContext } from "../../../context-types";
 import { channelType } from "../../constants";
 import { IBroadcastService, IChannelService } from "../../interfaces";
 

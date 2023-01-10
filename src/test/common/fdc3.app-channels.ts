@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import { wait } from "../../utils";
-import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, JOIN_AND_BROADCAST_TWICE } from "./channel-control";
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, JOIN_AND_BROADCAST_TWICE } from "./control/channel-control";
 
 export function createAppChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
   return describe("App channels", () => {

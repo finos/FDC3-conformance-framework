@@ -2,7 +2,7 @@ import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { ContextType, Intent, IntentApp } from "./intent-support-1.2";
+import { ContextType, Intent, IntentApp } from "../support/intent-support-1.2";
 
 declare let fdc3: DesktopAgent;
 const findIntentsByContextDocs = "\r\nDocumentation: " + APIDocumentation1_2.findIntentsByContext + "\r\nCause";

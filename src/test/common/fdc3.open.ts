@@ -1,5 +1,5 @@
 import { assert } from "chai";
-import { openApp, OpenCommonConfig, OpenControl } from "./open-control";
+import { openApp, OpenCommonConfig, OpenControl } from "./control/open-control";
 
 export function getCommonOpenTests(control: OpenControl<any>, documentation: string, config: OpenCommonConfig) {
   const AOpensB1 = `(${config.prefix}AOpensB1) Can open app B from app A with ${config.target} as config.target`;

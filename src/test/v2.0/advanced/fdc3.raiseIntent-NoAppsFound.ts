@@ -1,7 +1,7 @@
 import { ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from "./intent-support-2.0";
+import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from "../support/intent-support-2.0";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
 

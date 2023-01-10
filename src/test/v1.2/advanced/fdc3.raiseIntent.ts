@@ -4,9 +4,9 @@ import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { ContextType, Intent } from "./intent-support-1.2";
-import { IntentApp } from "../../v2.0/advanced/intent-support-2.0";
-import { AppControlContext } from "../../common/common-types";
+import { ContextType, Intent } from "../support/intent-support-1.2";
+import { IntentApp } from "../../v2.0/support/intent-support-2.0";
+import { AppControlContext } from "../../../context-types";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";

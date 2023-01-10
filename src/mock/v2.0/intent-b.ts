@@ -2,8 +2,8 @@ import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
 import { wait } from "../../utils";
-import { AppControlContext, IntentUtilityContext } from "../../test/common/common-types";
-import { Intent } from "../../test/v2.0/advanced/intent-support-2.0";
+import { AppControlContext, IntentUtilityContext } from "../../context-types";
+import { Intent } from "../../test/v2.0/support/intent-support-2.0";
 declare let fdc3: DesktopAgent;
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();

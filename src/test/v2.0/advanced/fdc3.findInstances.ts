@@ -4,7 +4,7 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context, ContextMetadata, ImplementationMetadata } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
-import { Intent } from "./intent-support-2.0";
+import { Intent } from "../support/intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
 const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause";

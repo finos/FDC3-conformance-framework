@@ -1,6 +1,6 @@
 import { ChannelError, PrivateChannel } from "fdc3_2_0";
 import { assert, expect } from "chai";
-import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextType, Intent } from "./intent-support-2.0";
+import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextType, Intent } from "../support/intent-support-2.0";
 
 const control = new RaiseIntentControl2_0();
 

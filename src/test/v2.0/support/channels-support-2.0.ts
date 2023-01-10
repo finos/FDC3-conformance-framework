@@ -2,8 +2,8 @@ import { assert, expect } from "chai";
 import { Channel, Context, Listener, DesktopAgent } from "fdc3_2_0";
 import constants from "../../../constants";
 import { wait } from "../../../utils";
-import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/channel-control";
-import { AppControlContext } from "../../common/common-types";
+import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
+import { AppControlContext } from "../../../context-types";
 
 declare let fdc3: DesktopAgent;
 

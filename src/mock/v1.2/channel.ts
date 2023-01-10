@@ -2,7 +2,7 @@ import { onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_1_2";
 import { Fdc3CommandExecutor } from "../channel-command";
 import { ChannelService1_2 } from "./support/channel-support-1.2";
-import { ChannelsAppContext } from "../../test/common/channel-control";
+import { ChannelsAppContext } from "../../test/common/control/channel-control";
 
 declare let fdc3: DesktopAgent;
 
