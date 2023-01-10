@@ -1,7 +1,7 @@
 import { ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { IntentApp, RaiseIntentControl2_0 } from "./intent-support-2.0";
+import { ContextTypes, IntentApp, Intents, RaiseIntentControl2_0 } from "./intent-support-2.0";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
 
@@ -16,7 +16,7 @@ export default () =>
     const RaiseIntentFailedResolve = "(RaiseIntentFailedResolve) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
     it(RaiseIntentFailedResolve, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextY");
+        await control.raiseIntent(Intents.aTestingIntent, ContextTypes.testContextY);
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
@@ -28,7 +28,7 @@ export default () =>
     it(RaiseIntentFailTargetedAppInstanceResolve1, async () => {
       try {
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
-        await control.raiseIntent("aTestingIntent", "testContextY", appIdentifier);
+        await control.raiseIntent(Intents.aTestingIntent, ContextTypes.testContextY, appIdentifier);
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
@@ -39,7 +39,7 @@ export default () =>
       "(RaiseIntentFailTargetedAppInstanceResolve2) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId with instanceId property NonExistentInstanceId do not correlate";
     it(RaiseIntentFailTargetedAppInstanceResolve2, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextX", {
+        await control.raiseIntent(Intents.aTestingIntent, ContextTypes.testContextX, {
           appId: IntentApp.IntentAppA,
           instanceId: "NonExistentInstanceId",
         });
@@ -54,7 +54,7 @@ export default () =>
     const RaiseIntentFailTargetedAppResolve1 = "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
     it(RaiseIntentFailTargetedAppResolve1, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextY", { appId: IntentApp.IntentAppA });
+        await control.raiseIntent(Intents.aTestingIntent, ContextTypes.testContextY, { appId: IntentApp.IntentAppA });
         await wait(); // give test time to throw error
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
@@ -65,7 +65,7 @@ export default () =>
     const RaiseIntentFailTargetedAppResolve2 = "(RaiseIntentFailTargetedAppResolve2) Should fail to raise intent when targeting non-existant app id, context 'testContextY', intent 'aTestingIntent' and throw TargetAppUnavailable error";
     it(RaiseIntentFailTargetedAppResolve2, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextX", { appId: "NonExistentApp" });
+        await control.raiseIntent(Intents.aTestingIntent, ContextTypes.testContextX, { appId: "NonExistentApp" });
         await wait(); // give test time to throw error
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
@@ -78,7 +78,7 @@ export default () =>
       const { timeout, promise } = sleep(constants.NoListenerTimeout);
 
       try {
-        await control.raiseIntent("sharedTestingIntent2", "testContextY", { appId: IntentApp.IntentAppH });
+        await control.raiseIntent("sharedTestingIntent2", ContextTypes.testContextY, { appId: IntentApp.IntentAppH });
         await promise;
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
@@ -93,7 +93,7 @@ export default () =>
       const { timeout, promise } = sleep(constants.NoListenerTimeout);
 
       try {
-        await control.raiseIntent("sharedTestingIntent2", "testContextY", { appId: IntentApp.IntentAppI });
+        await control.raiseIntent("sharedTestingIntent2", ContextTypes.testContextY, { appId: IntentApp.IntentAppI });
         await promise;
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {

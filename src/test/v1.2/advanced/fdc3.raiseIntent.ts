@@ -1,19 +1,13 @@
-import {
-  AppMetadata,
-  Channel,
-  Context,
-  IntentResolution,
-  Listener,
-} from "fdc3_1_2";
+import { AppMetadata, Channel, Context, IntentResolution, Listener } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
+import { ContextTypes, Intents } from "./intent-support-1.2";
 
 declare let fdc3: DesktopAgent;
-const raiseIntentDocs =
-  "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";
+const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";
 
 /**
  * Details on the mock apps used in these tests can be found in /mock/README.md
@@ -24,27 +18,25 @@ export default () =>
       await closeIntentAppsWindows(this.currentTest.title);
     });
 
-    const test1 =
-      "(SingleResolve1) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextY'";
+    const test1 = "(SingleResolve1) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextY'";
     it(test1, async () => {
       const result = createReceiver("fdc3-intent-b-opened");
       console.log("receiver added");
       const intentResolution = await fdc3.raiseIntent("sharedTestingIntent1", {
-        type: "testContextY",
+        type: ContextTypes.testContextY,
       });
 
       validateIntentResolution("IntentAppB", intentResolution);
       await result;
     });
 
-    const test2 =
-      "(TargetedResolve1) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
+    const test2 = "(TargetedResolve1) Should start app intent-a when targeted by raising intent 'aTestingIntent' with context 'testContextX'";
     it(test2, async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await fdc3.raiseIntent(
-        "aTestingIntent",
+        Intents.aTestingIntent,
         {
-          type: "testContextX",
+          type: ContextTypes.testContextX,
         },
         "IntentAppA"
       );
@@ -52,14 +44,13 @@ export default () =>
       await result;
     });
 
-    const test3 =
-      "(TargetedResolve2) Should start app intent-a when targeted (name) by raising intent 'aTestingIntent' with context 'testContextX'";
+    const test3 = "(TargetedResolve2) Should start app intent-a when targeted (name) by raising intent 'aTestingIntent' with context 'testContextX'";
     it(test3, async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await fdc3.raiseIntent(
-        "aTestingIntent",
+        Intents.aTestingIntent,
         {
-          type: "testContextX",
+          type: ContextTypes.testContextX,
         },
         { name: "IntentAppA" }
       );
@@ -68,14 +59,13 @@ export default () =>
       await result;
     });
 
-    const test4 =
-      "(TargetedResolve3) Should start app intent-a when targeted (name and appId) by raising intent 'aTestingIntent' with context 'testContextX'";
+    const test4 = "(TargetedResolve3) Should start app intent-a when targeted (name and appId) by raising intent 'aTestingIntent' with context 'testContextX'";
     it(test4, async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await fdc3.raiseIntent(
-        "aTestingIntent",
+        Intents.aTestingIntent,
         {
-          type: "testContextX",
+          type: ContextTypes.testContextX,
         },
         { name: "IntentAppA", appId: "IntentAppAId" }
       );
@@ -84,17 +74,11 @@ export default () =>
     });
   });
 
-const validateIntentResolution = (
-  appName: string,
-  intentResolution: IntentResolution
-) => {
+const validateIntentResolution = (appName: string, intentResolution: IntentResolution) => {
   if (typeof intentResolution.source === "string") {
     expect(intentResolution.source).to.eq(appName, raiseIntentDocs);
   } else if (typeof intentResolution.source === "object") {
-    expect((intentResolution.source as AppMetadata).name).to.eq(
-      appName,
-      raiseIntentDocs
-    );
+    expect((intentResolution.source as AppMetadata).name).to.eq(appName, raiseIntentDocs);
   } else assert.fail("Invalid intent resolution object");
 };
 
@@ -112,14 +96,11 @@ const createReceiver = async (contextType: string) => {
   let timeout;
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const listener = appControlChannel.addContextListener(
-      contextType,
-      (context) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      }
-    );
+    const listener = appControlChannel.addContextListener(contextType, (context) => {
+      resolve(context);
+      clearTimeout(timeout);
+      listener.unsubscribe();
+    });
 
     //if no context received reject promise
     const { promise: sleepPromise, timeout: theTimeout } = sleep();
@@ -138,37 +119,22 @@ async function closeIntentAppsWindows(testId) {
   await wait(constants.WindowCloseWaitTime);
 }
 
-const waitForContext = (
-  contextType: string,
-  testId: string,
-  channel?: Channel
-): Promise<Context> => {
+const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<Context> => {
   let executionListener: Listener;
   return new Promise<Context>(async (resolve) => {
-    console.log(
-      Date.now() +
-        ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`
-    );
+    console.log(Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`);
 
     const handler = (context: AppControlContext) => {
       if (testId) {
         if (testId == context.testId) {
-          console.log(
-            Date.now() + ` Received ${contextType} for test: ${testId}`
-          );
+          console.log(Date.now() + ` Received ${contextType} for test: ${testId}`);
           resolve(context);
           if (executionListener) executionListener.unsubscribe();
         } else {
-          console.warn(
-            Date.now() +
-              ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`
-          );
+          console.warn(Date.now() + ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`);
         }
       } else {
-        console.log(
-          Date.now() +
-            ` Received (without testId) "${contextType}" for test: "${testId}"`
-        );
+        console.log(Date.now() + ` Received (without testId) "${contextType}" for test: "${testId}"`);
         resolve(context);
         if (executionListener) executionListener.unsubscribe();
       }
@@ -183,32 +149,20 @@ const waitForContext = (
         if (context) {
           if (testId) {
             if (testId == context?.testId && context?.type == contextType) {
-              console.log(
-                Date.now() +
-                  ` Received "${contextType}" (from current context) for test: "${testId}"`
-              );
+              console.log(Date.now() + ` Received "${contextType}" (from current context) for test: "${testId}"`);
               if (executionListener) executionListener.unsubscribe();
               resolve(context);
             } //do not warn as it will be ignoring mismatches which will be common
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${
-                    context ? "" : "NOT "
-                  } exist, 
-had testId: "${context?.testId}" (${
-                    testId == context?.testId ? "did match" : "did NOT match"
-                  }) 
-and type "${context?.type}" (${
-                    context?.type == contextType ? "did match" : "did NOT match"
-                  })`
+                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist, 
+had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"}) 
+and type "${context?.type}" (${context?.type == contextType ? "did match" : "did NOT match"})`
               );
             }
           } else {
-            console.log(
-              Date.now() +
-                ` Received "${contextType}" (from current context) for an unspecified test`
-            );
+            console.log(Date.now() + ` Received "${contextType}" (from current context) for an unspecified test`);
             if (executionListener) executionListener.unsubscribe();
             resolve(context);
           }

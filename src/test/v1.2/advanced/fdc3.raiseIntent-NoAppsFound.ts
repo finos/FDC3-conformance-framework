@@ -2,6 +2,7 @@ import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
+import { ContextTypes, Intents } from "./intent-support-1.2";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";
@@ -15,9 +16,9 @@ export default () =>
     it(test5, async () => {
       try {
         await fdc3.raiseIntent(
-          "aTestingIntent",
+          Intents.aTestingIntent,
           {
-            type: "testContextY",
+            type: ContextTypes.testContextY,
           },
           "IntentAppA"
         );
@@ -30,9 +31,9 @@ export default () =>
     it(test6, async () => {
       try {
         await fdc3.raiseIntent(
-          "aTestingIntent",
+          Intents.aTestingIntent,
           {
-            type: "testContextY",
+            type: ContextTypes.testContextY,
           },
           { name: "IntentAppA", appId: "IntentAppAId" }
         );
@@ -46,9 +47,9 @@ export default () =>
     it(test7, async () => {
       try {
         await fdc3.raiseIntent(
-          "aTestingIntent",
+          Intents.aTestingIntent,
           {
-            type: "testContextY",
+            type: ContextTypes.testContextY,
           },
           { name: "IntentAppA" }
         );
@@ -62,9 +63,9 @@ export default () =>
     it(test8, async () => {
       try {
         await fdc3.raiseIntent(
-          "aTestingIntent",
+          Intents.aTestingIntent,
           {
-            type: "testContextX",
+            type: ContextTypes.testContextX,
           },
           "IntentAppC"
         );

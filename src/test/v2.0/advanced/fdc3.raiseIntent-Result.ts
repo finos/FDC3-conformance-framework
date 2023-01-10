@@ -1,4 +1,4 @@
-import { RaiseIntentControl2_0, IntentResultType, IntentApp } from "./intent-support-2.0";
+import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextTypes, Intents } from "./intent-support-2.0";
 
 const control = new RaiseIntentControl2_0();
 
@@ -11,7 +11,7 @@ export default () =>
     const RaiseIntentVoidResult0secs = "(2.0-RaiseIntentVoidResult0secs) App A receives a void IntentResult";
     it(RaiseIntentVoidResult0secs, async () => {
       await control.listenForError();
-      const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX");
+      const intentResolution = await control.raiseIntent(Intents.aTestingIntent, ContextTypes.testContextX);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       const intentResult = await control.getIntentResult(intentResolution);
       control.validateIntentResult(intentResult, IntentResultType.Void);
@@ -21,7 +21,7 @@ export default () =>
     it(RaiseIntentVoidResult5secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("aTestingIntent-listener-triggered", 8000);
-      const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", undefined, 5000);
+      const intentResolution = await control.raiseIntent(Intents.aTestingIntent, ContextTypes.testContextX, undefined, 5000);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
@@ -35,32 +35,32 @@ export default () =>
     const RaiseIntentContextResult0secs = "(2.0-RaiseIntentContextResult0secs) IntentResult resolves to testContextY";
     it(RaiseIntentContextResult0secs, async () => {
       await control.listenForError();
-      const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY");
+      const intentResolution = await control.raiseIntent("sharedTestingIntent1", ContextTypes.testContextY);
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       const intentResult = await control.getIntentResult(intentResolution);
-      control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
+      control.validateIntentResult(intentResult, IntentResultType.Context, ContextTypes.testContextY);
     });
 
     const RaiseIntentContextResult5secs = "(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay";
     it(RaiseIntentContextResult5secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("sharedTestingIntent1-listener-triggered", 8000);
-      const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY", undefined, 5000);
+      const intentResolution = await control.raiseIntent("sharedTestingIntent1", ContextTypes.testContextY, undefined, 5000);
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
-        control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
+        control.validateIntentResult(intentResult, IntentResultType.Context, ContextTypes.testContextY);
       }
     });
 
     const RaiseIntentChannelResult = "(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object";
     it(RaiseIntentChannelResult, async () => {
       await control.listenForError();
-      let receiver = control.receiveContext("testContextZ", 5000);
-      const intentResolution = await control.raiseIntent("sharedTestingIntent2", "testContextY", {
+      let receiver = control.receiveContext(ContextTypes.testContextZ, 5000);
+      const intentResolution = await control.raiseIntent("sharedTestingIntent2", ContextTypes.testContextY, {
         appId: IntentApp.IntentAppE,
       });
       control.validateIntentResolution(IntentApp.IntentAppE, intentResolution);
@@ -76,8 +76,8 @@ export default () =>
     const RaiseIntentPrivateChannelResult = "(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object";
     it(RaiseIntentPrivateChannelResult, async () => {
       await control.listenForError();
-      let receiver = control.receiveContext("testContextZ", 5000);
-      const intentResolution = await control.raiseIntent("sharedTestingIntent2", "testContextY", {
+      let receiver = control.receiveContext(ContextTypes.testContextZ, 5000);
+      const intentResolution = await control.raiseIntent("sharedTestingIntent2", ContextTypes.testContextY, {
         appId: IntentApp.IntentAppF,
       });
       control.validateIntentResolution(IntentApp.IntentAppF, intentResolution);
@@ -94,7 +94,7 @@ export default () =>
     it(RaiseIntentVoidResult61secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("aTestingIntent-listener-triggered", 64000);
-      const intentResolution = await control.raiseIntent("aTestingIntent", "testContextX", undefined, 61000);
+      const intentResolution = await control.raiseIntent(Intents.aTestingIntent, ContextTypes.testContextX, undefined, 61000);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
@@ -109,14 +109,14 @@ export default () =>
     it(RaiseIntentContextResult61secs, async () => {
       await control.listenForError();
       let receiver = control.receiveContext("sharedTestingIntent1-listener-triggered", 64000);
-      const intentResolution = await control.raiseIntent("sharedTestingIntent1", "testContextY", undefined, 61000);
+      const intentResolution = await control.raiseIntent("sharedTestingIntent1", ContextTypes.testContextY, undefined, 61000);
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);
       await receiver;
 
       if (intentResultPromise) {
         const intentResult = await intentResultPromise;
-        control.validateIntentResult(intentResult, IntentResultType.Context, "testContextY");
+        control.validateIntentResult(intentResult, IntentResultType.Context, ContextTypes.testContextY);
       }
     }).timeout(64000);
   });

@@ -166,9 +166,9 @@ export class RaiseIntentControl2_0 {
     const wrapper = wrapPromise();
 
     //receive multiple contexts in succession from intent-k
-    const listener = privChannel.addContextListener("testContextZ", (context: IntentUtilityContext) => {
+    const listener = privChannel.addContextListener(ContextTypes.testContextZ, (context: IntentUtilityContext) => {
       expect(context.number, "Unexpected context stream number received.").to.be.equal(streamedNumberStart);
-      expect(context.type).to.be.equal("testContextZ");
+      expect(context.type).to.be.equal(ContextTypes.testContextZ);
 
       if (streamedNumberStart === streamedNumberEnd) {
         wrapper.resolve();
@@ -283,4 +283,23 @@ export enum IntentApp {
   IntentAppI = "IntentAppIId",
   IntentAppJ = "IntentAppJId",
   IntentAppK = "IntentAppKId",
+}
+
+export enum ContextTypes {
+  testContextX = "testContextX",
+  testContextY = "testContextY",
+  testContextZ = "testContextZ",
+  nonExistentContext = "nonExistentContext ",
+  privateChannelDetails = "privateChannelDetails",
+  privateChannelisPrivateResult = "privateChannelisPrivateResult",
+}
+
+export enum Intents {
+  aTestingIntent = "aTestingIntent",
+  bTestingIntent = "bTestingIntent",
+  cTestingIntent = "cTestingIntent",
+  kTestingIntent = "kTestingIntent",
+  sharedTestingIntent1 = "sharedtestingIntent1",
+  sharedTestingIntent2 = "sharedTestingIntent2",
+  privateChannelIsPrivate = "privateChannelIsPrivate",
 }
