@@ -11,11 +11,20 @@ onFdc3Ready().then(async () => {
     return context;
   });
 
-  fdc3.addContextListener("fdc3.genericListener", async (context) => {
-    // broadcast that this app has received context
+  try {
+    await fdc3.addContextListener(null, async (context) => {
+      // broadcast that this app has received context
+      if (context.type === "fdc3.instrument") {
+        await sendContextToTests({
+          type: "context-received",
+          context: context,
+        } as AppControlContext);
+      }
+    });
+  } catch (ex) {
     await sendContextToTests({
-      type: "fdc3-conformance-context-received",
-      context: context,
+      type: "context-received",
+      errorMessage: `${ex.message ?? ex}`,
     } as AppControlContext);
-  });
+  }
 });
