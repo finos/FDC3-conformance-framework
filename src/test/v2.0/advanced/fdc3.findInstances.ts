@@ -4,7 +4,7 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { Context, ContextMetadata, ImplementationMetadata } from "fdc3_2_0";
 import constants from "../../../constants";
 import { sleep, wait, wrapPromise } from "../../../utils";
-import { Intents } from "./intent-support-2.0";
+import { Intent } from "./intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
 const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause";
@@ -54,7 +54,7 @@ export default () =>
         };
 
         //raise an intent and target appIdentifier
-        const resolution = await fdc3.raiseIntent(Intents.aTestingIntent, metadataAppContext, appIdentifier);
+        const resolution = await fdc3.raiseIntent(Intent.aTestingIntent, metadataAppContext, appIdentifier);
 
         expect(resolution.source, "IntentResolution.source did not match the mock app's AppIdentifier").to.be.equal(appIdentifier);
 

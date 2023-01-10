@@ -1,4 +1,4 @@
-import { assert, AssertionError, expect } from "chai";
+import { assert, expect } from "chai";
 import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, PrivateChannel } from "fdc3_2_0";
 import { Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
@@ -166,9 +166,9 @@ export class RaiseIntentControl2_0 {
     const wrapper = wrapPromise();
 
     //receive multiple contexts in succession from intent-k
-    const listener = privChannel.addContextListener(ContextTypes.testContextZ, (context: IntentUtilityContext) => {
+    const listener = privChannel.addContextListener(ContextType.testContextZ, (context: IntentUtilityContext) => {
       expect(context.number, "Unexpected context stream number received.").to.be.equal(streamedNumberStart);
-      expect(context.type).to.be.equal(ContextTypes.testContextZ);
+      expect(context.type).to.be.equal(ContextType.testContextZ);
 
       if (streamedNumberStart === streamedNumberEnd) {
         wrapper.resolve();
@@ -285,7 +285,7 @@ export enum IntentApp {
   IntentAppK = "IntentAppKId",
 }
 
-export enum ContextTypes {
+export enum ContextType {
   testContextX = "testContextX",
   testContextY = "testContextY",
   testContextZ = "testContextZ",
@@ -294,7 +294,7 @@ export enum ContextTypes {
   privateChannelisPrivateResult = "privateChannelisPrivateResult",
 }
 
-export enum Intents {
+export enum Intent {
   aTestingIntent = "aTestingIntent",
   bTestingIntent = "bTestingIntent",
   cTestingIntent = "cTestingIntent",

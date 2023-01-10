@@ -1,7 +1,7 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests } from "./mock-functions";
-import { Context, DesktopAgent } from "fdc3_2_0";
+import { DesktopAgent } from "fdc3_2_0";
 import { MetadataAppCommandContext } from "../../test/v2.0/advanced/fdc3.findInstances";
-import { Intents } from "../../test/v2.0/advanced/intent-support-2.0";
+import { Intent } from "../../test/v2.0/advanced/intent-support-2.0";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
@@ -18,7 +18,7 @@ onFdc3Ready().then(async () => {
       };
       sendContextToTests(metadataContext);
     } else if (context.command === "sendIntentMetadataToTests") {
-      await fdc3.addIntentListener(Intents.aTestingIntent, (context, metadata) => {
+      await fdc3.addIntentListener(Intent.aTestingIntent, (context, metadata) => {
         const metadataContext = {
           type: "metadataContext",
           contextMetadata: metadata,

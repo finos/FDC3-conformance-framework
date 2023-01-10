@@ -4,7 +4,9 @@ import constants from "../../../constants";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep, wait } from "../../../utils";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { ContextTypes, Intents } from "./intent-support-1.2";
+import { ContextType, Intent } from "./intent-support-1.2";
+import { IntentApp } from "../../v2.0/advanced/intent-support-2.0";
+import { AppControlContext } from "../../common/common-types";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";
@@ -22,8 +24,8 @@ export default () =>
     it(test1, async () => {
       const result = createReceiver("fdc3-intent-b-opened");
       console.log("receiver added");
-      const intentResolution = await fdc3.raiseIntent(Intents.sharedTestingIntent1, {
-        type: ContextTypes.testContextY,
+      const intentResolution = await fdc3.raiseIntent(Intent.sharedTestingIntent1, {
+        type: ContextType.testContextY,
       });
 
       validateIntentResolution("IntentAppB", intentResolution);
@@ -34,13 +36,13 @@ export default () =>
     it(test2, async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await fdc3.raiseIntent(
-        Intents.aTestingIntent,
+        Intent.aTestingIntent,
         {
-          type: ContextTypes.testContextX,
+          type: ContextType.testContextX,
         },
-        "IntentAppA"
+        IntentApp.IntentAppA
       );
-      validateIntentResolution("IntentAppA", intentResolution);
+      validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
     });
 
@@ -48,14 +50,14 @@ export default () =>
     it(test3, async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await fdc3.raiseIntent(
-        Intents.aTestingIntent,
+        Intent.aTestingIntent,
         {
-          type: ContextTypes.testContextX,
+          type: ContextType.testContextX,
         },
-        { name: "IntentAppA" }
+        { name: IntentApp.IntentAppA }
       );
 
-      validateIntentResolution("IntentAppA", intentResolution);
+      validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
     });
 
@@ -63,13 +65,13 @@ export default () =>
     it(test4, async () => {
       const result = createReceiver("fdc3-intent-a-opened");
       const intentResolution = await fdc3.raiseIntent(
-        Intents.aTestingIntent,
+        Intent.aTestingIntent,
         {
-          type: ContextTypes.testContextX,
+          type: ContextType.testContextX,
         },
-        { name: "IntentAppA", appId: "IntentAppAId" }
+        { name: IntentApp.IntentAppA, appId: "IntentAppAId" }
       );
-      validateIntentResolution("IntentAppA", intentResolution);
+      validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       await result;
     });
   });
@@ -172,7 +174,3 @@ and type "${context?.type}" (${context?.type == contextType ? "did match" : "did
     }
   });
 };
-
-interface AppControlContext extends Context {
-  testId: string;
-}
