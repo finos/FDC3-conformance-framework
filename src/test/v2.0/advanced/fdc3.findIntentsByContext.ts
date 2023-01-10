@@ -18,7 +18,7 @@ export default () =>
         expect(intents).to.have.length(4, findIntentsByContextDocs);
         console.log(JSON.stringify(intents));
         const intentNames = intents.map((appIntent) => appIntent.intent.name);
-        expect(intentNames).to.have.all.members([Intents.aTestingIntent, "sharedTestingIntent1", Intents.cTestingIntent, Intents.kTestingIntent], findIntentsByContextDocs);
+        expect(intentNames).to.have.all.members([Intents.aTestingIntent, Intents.sharedTestingIntent1, Intents.cTestingIntent, Intents.kTestingIntent], findIntentsByContextDocs);
 
         validateIntents(intents, Intents.aTestingIntent, 1, [IntentApp.IntentAppA]);
         validateIntents(intents, Intents.sharedTestingIntent1, 2, [IntentApp.IntentAppA, IntentApp.IntentAppB]);

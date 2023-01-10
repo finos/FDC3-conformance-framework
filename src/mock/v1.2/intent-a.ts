@@ -17,7 +17,7 @@ onFdc3Ready().then(async () => {
   fdc3.addIntentListener(Intents.aTestingIntent, async (context) => {
     return context;
   });
-  fdc3.addIntentListener("sharedTestingIntent1", (context) => {
+  fdc3.addIntentListener(Intents.sharedTestingIntent1, (context) => {
     return context;
   });
 

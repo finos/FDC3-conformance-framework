@@ -20,13 +20,13 @@ export default () =>
         expect(intents).to.have.length(3, findIntentsByContextDocs);
 
         const intentNames = intents.map((appIntent) => appIntent.intent.name);
-        expect(intentNames).to.have.all.members([Intents.aTestingIntent, "sharedTestingIntent1", Intents.cTestingIntent], findIntentsByContextDocs);
+        expect(intentNames).to.have.all.members([Intents.aTestingIntent, Intents.sharedTestingIntent1, Intents.cTestingIntent], findIntentsByContextDocs);
 
         const aTestingIntent = intents.find((appIntent) => appIntent.intent.name === Intents.aTestingIntent);
         expect(aTestingIntent.apps).to.have.length(1, findIntentsByContextDocs);
         expect(aTestingIntent.apps[0].name).to.eq("IntentAppA", findIntentsByContextDocs);
 
-        const sharedTestingIntent1 = intents.find((appIntent) => appIntent.intent.name === "sharedTestingIntent1");
+        const sharedTestingIntent1 = intents.find((appIntent) => appIntent.intent.name === Intents.sharedTestingIntent1);
         expect(sharedTestingIntent1.apps).to.have.length(2, findIntentsByContextDocs);
         const sharedAppNames = sharedTestingIntent1.apps.map((app) => app.name);
         expect(sharedAppNames).to.have.all.members(["IntentAppA", "IntentAppB"], findIntentsByContextDocs);

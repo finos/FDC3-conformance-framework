@@ -24,7 +24,7 @@ onFdc3Ready().then(async () => {
     return;
   });
 
-  fdc3.addIntentListener("sharedTestingIntent1", async (context: IntentUtilityContext): Promise<IntentResult> => {
+  fdc3.addIntentListener(Intents.sharedTestingIntent1, async (context: IntentUtilityContext): Promise<IntentResult> => {
     validateContext(context.type, ContextTypes.testContextY);
     await delayExecution(context.delayBeforeReturn);
 

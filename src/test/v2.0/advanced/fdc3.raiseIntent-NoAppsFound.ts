@@ -78,7 +78,7 @@ export default () =>
       const { timeout, promise } = sleep(constants.NoListenerTimeout);
 
       try {
-        await control.raiseIntent("sharedTestingIntent2", ContextTypes.testContextY, { appId: IntentApp.IntentAppH });
+        await control.raiseIntent(Intents.sharedTestingIntent2, ContextTypes.testContextY, { appId: IntentApp.IntentAppH });
         await promise;
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
@@ -93,7 +93,7 @@ export default () =>
       const { timeout, promise } = sleep(constants.NoListenerTimeout);
 
       try {
-        await control.raiseIntent("sharedTestingIntent2", ContextTypes.testContextY, { appId: IntentApp.IntentAppI });
+        await control.raiseIntent(Intents.sharedTestingIntent2, ContextTypes.testContextY, { appId: IntentApp.IntentAppI });
         await promise;
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {

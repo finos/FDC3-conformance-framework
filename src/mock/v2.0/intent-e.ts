@@ -1,14 +1,14 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
 import { DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
-import { ContextTypes } from "../../test/v2.0/advanced/intent-support-2.0";
+import { ContextTypes, Intents } from "../../test/v2.0/advanced/intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
 
 //used in '2.0-RaiseIntentChannelResult'
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
-  fdc3.addIntentListener("sharedTestingIntent2", async (context) => {
+  fdc3.addIntentListener(Intents.sharedTestingIntent2, async (context) => {
     validateContext(context.type, ContextTypes.testContextY);
     const channel = await fdc3.getOrCreateChannel("test-channel");
     return channel;

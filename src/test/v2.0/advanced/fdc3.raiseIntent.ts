@@ -28,7 +28,7 @@ export default () =>
     it(RaiseIntentTargetedAppResolve, async () => {
       await control.listenForError();
       const result = control.receiveContext("sharedTestingIntent1-listener-triggered");
-      const intentResolution = await control.raiseIntent("sharedTestingIntent1", ContextTypes.testContextX, {
+      const intentResolution = await control.raiseIntent(Intents.sharedTestingIntent1, ContextTypes.testContextX, {
         appId: IntentApp.IntentAppB,
       });
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);

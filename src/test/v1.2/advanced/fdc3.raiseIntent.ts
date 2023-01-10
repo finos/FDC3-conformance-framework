@@ -22,7 +22,7 @@ export default () =>
     it(test1, async () => {
       const result = createReceiver("fdc3-intent-b-opened");
       console.log("receiver added");
-      const intentResolution = await fdc3.raiseIntent("sharedTestingIntent1", {
+      const intentResolution = await fdc3.raiseIntent(Intents.sharedTestingIntent1, {
         type: ContextTypes.testContextY,
       });
 

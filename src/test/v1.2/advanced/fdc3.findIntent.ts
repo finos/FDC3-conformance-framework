@@ -61,7 +61,7 @@ export default () =>
     });
 
     it("(IntentAppDMultiple1) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b)", async () => {
-      const appIntent = await fdc3.findIntent("sharedTestingIntent1");
+      const appIntent = await fdc3.findIntent(Intents.sharedTestingIntent1);
       expect(appIntent.intent).to.deep.eq(
         {
           name: Intents.sharedTestingIntent1,
@@ -75,12 +75,12 @@ export default () =>
     });
 
     it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextX'", async () => {
-      const appIntent = await fdc3.findIntent("sharedTestingIntent1", {
+      const appIntent = await fdc3.findIntent(Intents.sharedTestingIntent1, {
         type: ContextTypes.testContextX,
       });
       expect(appIntent.intent).to.deep.eq(
         {
-          name: "sharedTestingIntent1",
+          name: Intents.sharedTestingIntent1,
           displayName: "Shared Testing Intent",
         },
         findIntentDocs
@@ -91,12 +91,12 @@ export default () =>
     });
 
     it("(IntentAppDMultiple3) Should find intent 'sharedTestingIntent1' belonging to app 'intent-b' when filtered by specific context 'testContextY'", async () => {
-      const appIntent = await fdc3.findIntent("sharedTestingIntent1", {
+      const appIntent = await fdc3.findIntent(Intents.sharedTestingIntent1, {
         type: ContextTypes.testContextY,
       });
       expect(appIntent.intent).to.deep.eq(
         {
-          name: "sharedTestingIntent1",
+          name: Intents.sharedTestingIntent1,
           displayName: "Shared Testing Intent",
         },
         findIntentDocs
