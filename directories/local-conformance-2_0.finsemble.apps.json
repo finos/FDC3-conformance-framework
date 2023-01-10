@@ -199,7 +199,8 @@
             },
             "sharedTestingIntent1": {
               "displayName": "Shared Testing Intent",
-              "contexts": ["testContextX", "testContextY"]
+              "contexts": ["testContextX", "testContextY"],
+              "resultType": "testContextZ"
             }
           }
         }
