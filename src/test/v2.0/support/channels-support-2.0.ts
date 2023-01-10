@@ -68,15 +68,6 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     });
   };
 
-  closeChannelsAppWindow = async (testId: string) => {
-    //Tell ChannelsApp to close window
-    const appControlChannel = await broadcastAppChannelCloseWindow(testId);
-
-    //Wait for ChannelsApp to respond
-    await waitForContext("windowClosed", testId, appControlChannel);
-    await wait(constants.WindowCloseWaitTime);
-  };
-
   initCompleteListener = async (testId: string) => {
     return await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
   };
