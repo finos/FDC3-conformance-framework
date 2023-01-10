@@ -2,18 +2,10 @@ import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { Context } from "fdc3_1_2";
 import { sendContextToTests } from "../v1.2/mock-functions";
-import { createAgent } from '@connectifi/agent-web';
-
 declare let fdc3: DesktopAgent;
 
-const cfiStart = async () => {
-  const api = await createAgent(
-      'https://nicholaskolba.connectifi-interop.com',
-      'MockApp@Conformance-1.2',
-  );
-
-  window.fdc3 = api;
-  document.dispatchEvent(new CustomEvent('fdc3Ready'));
+onFdc3Ready().then(async () => {
+  
   await closeWindowOnCompletion();
   // broadcast that this app has opened
 
@@ -37,9 +29,7 @@ const cfiStart = async () => {
       context: context,
     } as ContextToSend);
   });
-};
-
-cfiStart();
+});
 
 export interface ContextToSend extends Context {
   context: Context;
