@@ -1,10 +1,9 @@
 import { assert, expect } from "chai";
 import { Channel, Context, Listener, DesktopAgent } from "fdc3_2_0";
 import constants from "../../../constants";
-import { wait } from "../../../utils";
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
 import { AppControlContext } from "../../../context-types";
-import { waitForContext } from "../fdc3-2_0-utils";
+import { closeMockAppWindow, waitForContext } from "../fdc3-2_0-utils";
 
 declare let fdc3: DesktopAgent;
 
@@ -68,15 +67,6 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     });
   };
 
-  closeChannelsAppWindow = async (testId: string) => {
-    //Tell ChannelsApp to close window
-    const appControlChannel = await broadcastAppChannelCloseWindow(testId);
-
-    //Wait for ChannelsApp to respond
-    await waitForContext("windowClosed", testId, appControlChannel);
-    await wait(constants.WindowCloseWaitTime);
-  };
-
   initCompleteListener = async (testId: string) => {
     return await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
   };
@@ -97,6 +87,10 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     //Open ChannelsApp then execute commands in order
     await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(commands, channelsAppConfig));
   };
+
+  async closeMockApp(testId: string) {
+    await closeMockAppWindow(testId);
+  }
 
   setupAndValidateListener = async (channel: Channel, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void): Promise<Listener> => {
     let listener;

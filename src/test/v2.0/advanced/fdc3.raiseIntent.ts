@@ -1,6 +1,7 @@
 import { ChannelError, PrivateChannel } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextType, Intent } from "../support/intent-support-2.0";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
 
 const control = new RaiseIntentControl2_0();
 
@@ -10,7 +11,7 @@ const control = new RaiseIntentControl2_0();
 export default () =>
   describe("fdc3.raiseIntent", () => {
     afterEach(async function afterEach() {
-      await control.closeIntentAppWindow(this.currentTest.title);
+      await closeMockAppWindow(this.currentTest.title);
     });
 
     const RaiseIntentSingleResolve = "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";

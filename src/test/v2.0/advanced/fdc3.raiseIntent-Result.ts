@@ -1,3 +1,4 @@
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextType, Intent } from "../support/intent-support-2.0";
 
 const control = new RaiseIntentControl2_0();
@@ -5,7 +6,7 @@ const control = new RaiseIntentControl2_0();
 export default () =>
   describe("fdc3.raiseIntent (Result)", () => {
     afterEach(async function afterEach() {
-      await control.closeIntentAppWindow(this.currentTest.title);
+      await closeMockAppWindow(this.currentTest.title);
     });
 
     const RaiseIntentVoidResult0secs = "(2.0-RaiseIntentVoidResult0secs) App A receives a void IntentResult";

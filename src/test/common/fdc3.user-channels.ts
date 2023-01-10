@@ -11,7 +11,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
     afterEach(async function afterEach() {
       if (this.currentTest.title !== UCFilteredUsageLeave) {
-        await cc.closeChannelsAppWindow(this.currentTest.title);
+        await cc.closeMockApp(this.currentTest.title);
       }
     });
 

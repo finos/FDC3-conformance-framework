@@ -4,6 +4,7 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from "../support/intent-support-2.0";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
 
 const control = new RaiseIntentControl2_0();
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
@@ -48,7 +49,7 @@ export default () =>
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.TargetInstanceUnavailable);
       }
-      await control.closeIntentAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
+      await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
     });
 
     const RaiseIntentFailTargetedAppResolve1 = "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
@@ -85,7 +86,7 @@ export default () =>
         clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
-      await control.closeIntentAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
+      await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const RaiseIntentFailTargetedAppResolve4 = "(RaiseIntentFailTargetedAppResolve4) Should throw an IntentDeliveryFailed error when raising intent with targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2'";
@@ -100,6 +101,6 @@ export default () =>
         clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
-      await control.closeIntentAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
+      await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
     }).timeout(constants.NoListenerTimeout + 1000);
   });

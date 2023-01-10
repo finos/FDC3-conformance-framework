@@ -4,7 +4,7 @@ import constants from "../../../constants";
 import { wait } from "../../../utils";
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
 import { AppControlContext } from "../../../context-types";
-import { waitForContext } from "../fdc3-1_2-utils";
+import { closeMockAppWindow, waitForContext } from "../fdc3-1_2-utils";
 
 declare let fdc3: DesktopAgent;
 
@@ -84,6 +84,10 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
     //Open ChannelsApp then execute commands in order
     await fdc3.open("ChannelsApp", buildChannelsAppContext(commands, channelsAppConfig));
   };
+
+  async closeMockApp(testId: string) {
+    await closeMockAppWindow(testId);
+  }
 
   setupAndValidateListener = (channel: Channel, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void): Listener => {
     let listener;
