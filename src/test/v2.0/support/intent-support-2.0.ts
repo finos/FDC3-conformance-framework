@@ -230,7 +230,6 @@ export enum ContextType {
   testContextZ = "testContextZ",
   nonExistentContext = "nonExistentContext ",
   privateChannelDetails = "privateChannelDetails",
-  privateChannelisPrivateResult = "privateChannelisPrivateResult",
 }
 
 export enum Intent {
@@ -238,7 +237,7 @@ export enum Intent {
   bTestingIntent = "bTestingIntent",
   cTestingIntent = "cTestingIntent",
   kTestingIntent = "kTestingIntent",
-  sharedTestingIntent1 = "sharedtestingIntent1",
+  sharedTestingIntent1 = "sharedTestingIntent1",
   sharedTestingIntent2 = "sharedTestingIntent2",
   privateChannelIsPrivate = "privateChannelIsPrivate",
 }

@@ -87,10 +87,10 @@ export default () =>
         expect(ex).to.have.property("message", ChannelError.AccessDenied, `Incorrect error received when calling fdc3.getOrCreateChannel(privateChannel.id). Expected AccessDenied, got ${ex.message}`);
       }
 
-      const intentResolution = await control.raiseIntent("privateChannelIsPrivate", "privateChannelId", undefined, undefined, { key: privChan2.id });
+      const intentResolution = await control.raiseIntent(Intent.privateChannelIsPrivate, ContextType.privateChannelDetails, undefined, undefined, { key: privChan2.id });
       control.validateIntentResolution(IntentApp.IntentAppJ, intentResolution);
       let result = await control.getIntentResult(intentResolution);
-      control.validateIntentResult(result, IntentResultType.Context, "privateChannelId");
+      control.validateIntentResult(result, IntentResultType.Context, ContextType.privateChannelDetails);
     });
 
     const PrivateChannelsLifecycleEvents = "(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected";

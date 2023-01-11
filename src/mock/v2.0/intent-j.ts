@@ -1,5 +1,6 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
 import { ChannelError, DesktopAgent } from "fdc3_2_0";
+import { ContextType, Intent } from "../../test/v2.0/support/intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
 
@@ -7,8 +8,8 @@ onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
 
   //used in '2.0-PrivateChannelsAreNotAppChannels'
-  fdc3.addIntentListener("privateChannelIsPrivate", async (context) => {
-    validateContext(context.type, "privateChannelId");
+  fdc3.addIntentListener(Intent.privateChannelIsPrivate, async (context) => {
+    validateContext(context.type, ContextType.privateChannelDetails);
 
     try {
       await fdc3.getOrCreateChannel(context.id.key);
