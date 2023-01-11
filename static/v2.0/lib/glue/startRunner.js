@@ -352,7 +352,7 @@ const init = async () => {
         },
         intents: [
           {
-            name: "privateChannelIIsPrivate",
+            name: "privateChannelIsPrivate",
             displayName: "J Testing Intent",
             contexts: ["privateChannelId"],
             resultType: "privateChannelIsPrivateResult",
