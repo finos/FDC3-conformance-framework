@@ -1,8 +1,8 @@
 import { assert, expect } from "chai";
 import constants from "../../constants";
 import { failOnTimeout, wait, wrapPromise } from "../../utils";
-import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "../common/channel-control";
-import { ChannelControl } from "./channel-control";
+import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "./control/channel-control";
+import { ChannelControl } from "./control/channel-control";
 
 export function createUserChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
   const channelName = prefix === "" ? "System channels" : "User channels";
@@ -11,7 +11,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
     afterEach(async function afterEach() {
       if (this.currentTest.title !== UCFilteredUsageLeave) {
-        await cc.closeChannelsAppWindow(this.currentTest.title);
+        await cc.closeMockApp(this.currentTest.title);
       }
     });
 
@@ -210,7 +210,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
       await cc.joinChannel(channels[0]);
       await cc.openChannelApp(scTestId6, channels[1].id, JOIN_AND_BROADCAST_TWICE);
-      await wait();
+      await wait(); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 

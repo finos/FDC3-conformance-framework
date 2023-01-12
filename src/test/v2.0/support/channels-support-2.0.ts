@@ -1,8 +1,9 @@
 import { assert, expect } from "chai";
 import { Channel, Context, Listener, DesktopAgent } from "fdc3_2_0";
 import constants from "../../../constants";
-import { wait } from "../../../utils";
-import { AppControlContext, ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/channel-control";
+import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
+import { AppControlContext } from "../../../context-types";
+import { closeMockAppWindow, waitForContext } from "../fdc3-2_0-utils";
 
 declare let fdc3: DesktopAgent;
 
@@ -66,15 +67,6 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     });
   };
 
-  closeChannelsAppWindow = async (testId: string) => {
-    //Tell ChannelsApp to close window
-    const appControlChannel = await broadcastAppChannelCloseWindow(testId);
-
-    //Wait for ChannelsApp to respond
-    await waitForContext("windowClosed", testId, appControlChannel);
-    await wait(constants.WindowCloseWaitTime);
-  };
-
   initCompleteListener = async (testId: string) => {
     return await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
   };
@@ -95,6 +87,10 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     //Open ChannelsApp then execute commands in order
     await fdc3.open({ appId: "ChannelsAppId" }, buildChannelsAppContext(commands, channelsAppConfig));
   };
+
+  async closeMockApp(testId: string) {
+    await closeMockAppWindow(testId);
+  }
 
   setupAndValidateListener = async (channel: Channel, listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void): Promise<Listener> => {
     let listener;
@@ -147,60 +143,6 @@ const broadcastAppChannelCloseWindow = async (testId: string) => {
   };
   await appControlChannel.broadcast(closeContext);
   return appControlChannel;
-};
-
-const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<Context> => {
-  let executionListener: Listener;
-  return new Promise<Context>(async (resolve) => {
-    console.log(Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`);
-
-    const handler = (context: AppControlContext) => {
-      if (testId) {
-        if (testId == context.testId) {
-          console.log(Date.now() + ` Received ${contextType} for test: ${testId}`);
-          resolve(context);
-          if (executionListener) executionListener.unsubscribe();
-        } else {
-          console.warn(Date.now() + ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`);
-        }
-      } else {
-        console.log(Date.now() + ` Received (without testId) "${contextType}" for test: "${testId}"`);
-        resolve(context);
-        if (executionListener) executionListener.unsubscribe();
-      }
-    };
-
-    if (channel === undefined) {
-      executionListener = await fdc3.addContextListener(contextType, handler);
-    } else {
-      executionListener = await channel.addContextListener(contextType, handler);
-      //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
-      const ccHandler = async (context: AppControlContext) => {
-        if (context) {
-          if (testId) {
-            if (testId == context?.testId && context?.type == contextType) {
-              console.log(Date.now() + ` Received "${contextType}" (from current context) for test: "${testId}"`);
-              if (executionListener) executionListener.unsubscribe();
-              resolve(context);
-            } //do not warn as it will be ignoring mismatches which will be common
-            else {
-              console.log(
-                Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist, 
-  had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"}) 
-  and type "${context?.type}" (${context?.type == contextType ? "did match" : "did NOT match"})`
-              );
-            }
-          } else {
-            console.log(Date.now() + ` Received "${contextType}" (from current context) for an unspecified test`);
-            if (executionListener) executionListener.unsubscribe();
-            resolve(context);
-          }
-        }
-      };
-      await channel.getCurrentContext().then(ccHandler);
-    }
-  });
 };
 
 function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppConfig): ChannelsAppContext {

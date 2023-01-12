@@ -1,26 +1,12 @@
 import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v1.2/mock-functions";
-import { MockAppContext } from "../../test/common/open-control";
+import { AppControlContext } from "../../context-types";
+import { Intent } from "../../test/v2.0/support/intent-support-2.0";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
-
-  //AOpensBMultipleListen & AOpensBMalformedContext: this should never get hit
-  await fdc3.addContextListener("fdc3.contact", async (context) => {
-    let errorMessage;
-    if (context.type === "fdc3.intrument") {
-      errorMessage = "App B listener received fdc3.contact context. Expected fdc3.instrument";
-    } else if (context.name === "this is a malformed context") {
-      errorMessage = "App B listener received a malformed context";
-    }
-
-    await sendContextToTests({
-      type: "context-received",
-      errorMessage: errorMessage,
-    } as MockAppContext);
-  });
 
   try {
     //used in AOpensBMultipleListen & AOpensBMalformedContext
@@ -30,29 +16,29 @@ onFdc3Ready().then(async () => {
         await sendContextToTests({
           type: "context-received",
           context: context,
-        } as MockAppContext);
+        } as AppControlContext);
       } else if (context.name === "this is a malformed context") {
         await sendContextToTests({
           type: "context-received",
           errorMessage: "App B listener received a malformed context",
-        } as MockAppContext);
+        } as AppControlContext);
       }
     });
   } catch (ex) {
     await sendContextToTests({
       type: "context-received",
       errorMessage: `${ex.message ?? ex}`,
-    } as MockAppContext);
+    } as AppControlContext);
   }
 
-  fdc3.addIntentListener("bTestingIntent", async (context) => {
+  fdc3.addIntentListener(Intent.bTestingIntent, (context) => {
     return context;
   });
-  fdc3.addIntentListener("sharedTestingIntent1", async (context) => {
+  fdc3.addIntentListener(Intent.sharedTestingIntent1, (context) => {
     return context;
   });
 
-  //broadcast that intent-a has opened
+  //broadcast that intent-b has opened
   await sendContextToTests({
     type: "fdc3-intent-b-opened",
   });

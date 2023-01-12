@@ -1,19 +1,15 @@
 import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v1.2/mock-functions";
-import { ContextSender } from "./general";
-import { MockAppContext } from "../../test/common/open-control";
+import { AppControlContext } from "../../context-types";
+import { Intent } from "../../test/v2.0/support/intent-support-2.0";
+
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
-  fdc3.addIntentListener("cTestingIntent", (context) => {
+  fdc3.addIntentListener(Intent.cTestingIntent, (context) => {
     return context;
-  });
-
-  //broadcast that intent-a has opened
-  await sendContextToTests({
-    type: "fdc3-intent-c-opened",
   });
 
   try {
@@ -23,13 +19,13 @@ onFdc3Ready().then(async () => {
         await sendContextToTests({
           type: "context-received",
           context: context,
-        } as ContextSender);
+        } as AppControlContext);
       }
     });
   } catch (ex) {
     await sendContextToTests({
       type: "context-received",
       errorMessage: `${ex.message ?? ex}`,
-    } as MockAppContext);
+    } as AppControlContext);
   }
 });

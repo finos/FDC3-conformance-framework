@@ -22,7 +22,8 @@ getPackNames().forEach((pn) => {
 });
 
 function executeTests() {
-  hideVersionSelector();
+  toggleVersionSelector();
+  toggleBackButton();
   const fdc3Versions = document.getElementById("version") as HTMLSelectElement;
   var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
   const action = () => executeTestsInBrowser(selectedVersion);
@@ -33,7 +34,11 @@ function executeTests() {
   }
 }
 
-function hideVersionSelector() {
+function returnToTestSelection() {
+  location.reload();
+}
+
+function toggleVersionSelector() {
   const versionSelector = document.getElementById("version-selector");
   if (versionSelector.style.display === "none") {
     versionSelector.style.display = "block";
@@ -42,4 +47,14 @@ function hideVersionSelector() {
   }
 }
 
+function toggleBackButton() {
+  const backButton = document.getElementById("back-button");
+  if (window.getComputedStyle(backButton).display === "none") {
+    backButton.style.display = "block";
+  } else {
+    backButton.style.display = "none";
+  }
+}
+
 document.getElementById("runButton").addEventListener("click", executeTests);
+document.getElementById("back-button").addEventListener("click", returnToTestSelection);

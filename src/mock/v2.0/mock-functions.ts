@@ -1,7 +1,6 @@
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import constants from "../../constants";
-import { AppControlContext } from "../../test/common/common-types";
-import { MockAppContext } from "../../test/common/open-control";
+import { AppControlContext } from "../../context-types";
 
 declare let fdc3: DesktopAgent;
 
@@ -30,7 +29,16 @@ export const closeWindowOnCompletion = async () => {
   });
 };
 
-export const sendContextToTests = async (context: MockAppContext) => {
+export const sendContextToTests = async (context: AppControlContext) => {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   await appControlChannel.broadcast(context);
+};
+
+export const validateContext = (receivedContextType: string, expectedContextType: string): void => {
+  if (expectedContextType !== receivedContextType) {
+    sendContextToTests({
+      type: "error",
+      errorMessage: `Incorrect context received for intent 'aTestingIntent. Expected ${expectedContextType}, got ${receivedContextType}`,
+    });
+  }
 };

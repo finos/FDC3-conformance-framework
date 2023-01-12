@@ -1,7 +1,9 @@
+import { CommonContext } from "../../../context-types";
+
 export interface OpenControl<X> {
   //test control
   openMockApp(appName?: string, appId?: string, contextType?: string, targetAppAsString?: boolean, malformedContext?: boolean): void;
-  closeAppWindows(testId: string): Promise<void>;
+  closeMockApp(testId: string): Promise<void>;
 
   //listening
   contextReceiver(contextType: string, expectNotToReceiveContext?: boolean): Promise<X>;
@@ -10,20 +12,6 @@ export interface OpenControl<X> {
   //validation
   confirmAppNotFoundErrorReceived(exception: DOMException): void;
   validateReceivedContext(contextReceiver: X, expectedContextType: string): Promise<void>;
-}
-
-/** same in 1.2 and 2.0 */
-export interface CommonContext {
-  id?: {
-    [key: string]: string;
-  };
-  name?: string;
-  type: string;
-}
-
-export interface MockAppContext extends CommonContext {
-  errorMessage?: string;
-  ContextSender?: CommonContext;
 }
 
 export const openApp = {

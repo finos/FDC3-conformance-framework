@@ -1,8 +1,9 @@
-import { OpenControl1_2 } from "./open-support-1.2";
+import { OpenControl1_2 } from "../support/open-support-1.2";
 import { getCommonOpenTests } from "../../common/fdc3.open";
-import { openApp, OpenCommonConfig } from "../../common/open-control";
+import { openApp, OpenCommonConfig } from "../../common/control/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
+import { closeMockAppWindow } from "../fdc3-1_2-utils";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
@@ -25,7 +26,7 @@ export default () =>
       const result = control.contextReceiver("fdc3-conformance-opened");
       await control.openMockApp(openApp.b.name);
       await result;
-      await control.closeAppWindows(AOpensB2Test);
+      await closeMockAppWindow(AOpensB2Test);
     });
 
     const AOpensB3Test = "(AOpensB3) Can open app B from app A with no context and AppMetadata (name and appId) as target";
@@ -33,7 +34,7 @@ export default () =>
       const result = control.contextReceiver("fdc3-conformance-opened");
       await control.openMockApp(openApp.b.name, openApp.b.id);
       await result;
-      await control.closeAppWindows(AOpensB3Test);
+      await closeMockAppWindow(AOpensB3Test);
     });
 
     const AFailsToOpenB2Test = "(AFailsToOpenB2) Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target";
@@ -61,16 +62,15 @@ export default () =>
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(openApp.c.name, undefined, "fdc3.instrument");
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
-      await control.closeAppWindows(AOpensBWithContext2Test);
+      await closeMockAppWindow(AOpensBWithContext2Test);
     });
 
     const AOpensBWithContext3Test = "(AOpensBWithContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds generic listener";
     it(AOpensBWithContext3Test, async () => {
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(openApp.c.name, openApp.c.id, "fdc3.instrument");
-
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
-      await control.closeAppWindows(AOpensBWithContext3Test);
+      await closeMockAppWindow(AOpensBWithContext3Test);
     });
 
     const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
@@ -78,6 +78,6 @@ export default () =>
       const receiver = control.contextReceiver("context-received", true);
       await control.openMockApp(openApp.f.name, undefined, undefined, true, true);
       await receiver;
-      await control.closeAppWindows(AOpensBMalformedContext);
+      await closeMockAppWindow(AOpensBMalformedContext);
     });
   });

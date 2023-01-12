@@ -1,13 +1,13 @@
 import { assert, expect } from "chai";
 import { wait } from "../../utils";
-import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, JOIN_AND_BROADCAST_TWICE } from "./channel-control";
+import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, JOIN_AND_BROADCAST_TWICE } from "./control/channel-control";
 
 export function createAppChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
   return describe("App channels", () => {
     beforeEach(cc.leaveChannel);
 
     afterEach(async function afterEach() {
-      await cc.closeChannelsAppWindow(this.currentTest.title);
+      await cc.closeMockApp(this.currentTest.title);
     });
 
     const acTestId = "(" + prefix + "ACBasicUsage1) Should receive context when app a adds a listener and app B broadcasts to the same app channel";
@@ -128,7 +128,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       });
       const differentTestChannel = await cc.createRandomTestChannel();
       await cc.openChannelApp(acTestId7, differentTestChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
-      await wait();
+      await wait(); // give listener time to receive context
       cc.unsubscribeListeners([listener]);
     });
 
