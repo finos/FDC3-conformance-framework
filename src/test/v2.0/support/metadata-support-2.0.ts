@@ -36,7 +36,9 @@ export class MetadataValidator {
     if (!isObjectArray) assert.fail("AppMetadata.icons should contain an Array of objects");
 
     expect(metadata, getMetadataDocs).to.have.property("screenshots");
-    expect(typeof metadata.screenshots, `Incorrect type detected for AppMetadata.screenshots. Expected an Array, got ${typeof metadata.description}`).to.be.equal("Array");
+    if (!Array.isArray(metadata.screenshots)) {
+      assert.fail(`Incorrect type detected for AppMetadata.icons. Expected an Array, got ${typeof metadata.description}`);
+    }
 
     const isObjectArray2 = isArrayOfObjects(metadata.screenshots); // ensure screenshots property contains an array of objects
     if (!isObjectArray2) assert.fail("AppMetadata.screenshots should contain an Array of objects");
@@ -109,7 +111,7 @@ export class MetadataFdc3Api {
 const isArrayOfObjects = (array): boolean => {
   return (
     array.length > 0 &&
-    array.screenshots.every((value) => {
+    array.every((value) => {
       return typeof value === "object";
     })
   );
