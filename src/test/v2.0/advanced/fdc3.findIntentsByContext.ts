@@ -2,7 +2,7 @@ import { AppIntent, ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
-import { IntentApp } from "../support/intent-support-2.0";
+import { ContextType, IntentApp, Intent } from "../support/intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
 const findIntentsByContextDocs = "\r\nDocumentation: " + APIDocumentation2_0.findIntentsByContext;
@@ -14,18 +14,17 @@ export default () =>
   describe("fdc3.findIntentsByContext", () => {
     it("(2.0-FindIntentByContextSingleContext) Should find intents by context 'testContextX'", async () => {
       try {
-        const intents = await fdc3.findIntentsByContext({ type: "testContextX" });
-        expect(intents).to.have.length(4, findIntentsByContextDocs);
-        console.log(JSON.stringify(intents));
+        const intents = await fdc3.findIntentsByContext({ type: ContextType.testContextX });
+        expect(intents).to.have.length(4);
         const intentNames = intents.map((appIntent) => appIntent.intent.name);
-        expect(intentNames).to.have.all.members(["aTestingIntent", "sharedTestingIntent1", "cTestingIntent", "kTestingIntent"], findIntentsByContextDocs);
+        expect(intentNames).to.have.all.members([Intent.aTestingIntent, Intent.sharedTestingIntent1, Intent.cTestingIntent, Intent.kTestingIntent]);
 
-        validateIntents(intents, "aTestingIntent", 1, [IntentApp.IntentAppA]);
-        validateIntents(intents, "sharedTestingIntent1", 2, [IntentApp.IntentAppA, IntentApp.IntentAppB]);
-        validateIntents(intents, "cTestingIntent", 1, [IntentApp.IntentAppC]);
-        validateIntents(intents, "kTestingIntent", 1, [IntentApp.IntentAppK]);
+        validateIntents(intents, Intent.aTestingIntent, 1, [IntentApp.IntentAppA]);
+        validateIntents(intents, Intent.sharedTestingIntent1, 2, [IntentApp.IntentAppA, IntentApp.IntentAppB]);
+        validateIntents(intents, Intent.cTestingIntent, 1, [IntentApp.IntentAppC]);
+        validateIntents(intents, Intent.kTestingIntent, 1, [IntentApp.IntentAppK]);
       } catch (ex) {
-        assert.fail(findIntentsByContextDocs + (ex.message ?? ex));
+        assert.fail(ex.message ?? ex + findIntentsByContextDocs);
       }
     });
 
@@ -42,9 +41,9 @@ export default () =>
     });
   });
 
-function validateIntents(intents: AppIntent[], intentFilter: string, expectedAppCount: number, expectedAppIds: IntentApp[]) {
+function validateIntents(intents: AppIntent[], intentFilter: string, expectedAppCount: number, expectedAppIds: string[]) {
   const filteredIntents = intents.find((appIntent) => appIntent.intent.name === intentFilter);
-  expect(filteredIntents.apps).to.have.length(expectedAppCount, findIntentsByContextDocs);
+  expect(filteredIntents.apps).to.have.length(expectedAppCount);
   const sharedAppNames = filteredIntents.apps.map((app) => app.appId);
-  expect(sharedAppNames).to.have.all.members(expectedAppIds, findIntentsByContextDocs);
+  expect(sharedAppNames).to.have.all.members(expectedAppIds);
 }

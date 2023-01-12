@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { Context, DesktopAgent, OpenError, TargetApp } from "fdc3_1_2";
+import { Context, DesktopAgent, Listener, OpenError, TargetApp } from "fdc3_1_2";
 import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v1.2/general";
 import { sleep } from "../../../utils";

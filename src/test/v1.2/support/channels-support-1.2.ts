@@ -120,7 +120,6 @@ function validateListenerObject(listenerObject) {
   assert.isTrue(typeof listenerObject === "object", "No listener object found");
   expect(typeof listenerObject.unsubscribe).to.be.equals("function", "Listener does not contain an unsubscribe method");
 }
-
 export function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppConfig): ChannelsAppContext {
   return {
     type: "channelsAppContext",

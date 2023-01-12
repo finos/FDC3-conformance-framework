@@ -2,6 +2,7 @@ import { ResolveError } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
+import { ContextType, IntentApp, Intent } from "../support/intent-support-1.2";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";
@@ -15,11 +16,11 @@ export default () =>
     it(test5, async () => {
       try {
         await fdc3.raiseIntent(
-          "aTestingIntent",
+          Intent.aTestingIntent,
           {
-            type: "testContextY",
+            type: ContextType.testContextY,
           },
-          "IntentAppA"
+          IntentApp.IntentAppA
         );
         assert.fail("Error was not thrown");
       } catch (ex) {
@@ -30,11 +31,11 @@ export default () =>
     it(test6, async () => {
       try {
         await fdc3.raiseIntent(
-          "aTestingIntent",
+          Intent.aTestingIntent,
           {
-            type: "testContextY",
+            type: ContextType.testContextY,
           },
-          { name: "IntentAppA", appId: "IntentAppAId" }
+          { name: IntentApp.IntentAppA, appId: "IntentAppAId" }
         );
         assert.fail("Error was not thrown");
       } catch (ex) {
@@ -46,11 +47,11 @@ export default () =>
     it(test7, async () => {
       try {
         await fdc3.raiseIntent(
-          "aTestingIntent",
+          Intent.aTestingIntent,
           {
-            type: "testContextY",
+            type: ContextType.testContextY,
           },
-          { name: "IntentAppA" }
+          { name: IntentApp.IntentAppA }
         );
         assert.fail("Error was not thrown");
       } catch (ex) {
@@ -62,11 +63,11 @@ export default () =>
     it(test8, async () => {
       try {
         await fdc3.raiseIntent(
-          "aTestingIntent",
+          Intent.aTestingIntent,
           {
-            type: "testContextX",
+            type: ContextType.testContextX,
           },
-          "IntentAppC"
+          IntentApp.IntentAppC
         );
         assert.fail("Error was not thrown");
       } catch (ex) {

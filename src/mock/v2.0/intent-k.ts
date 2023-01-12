@@ -3,18 +3,19 @@ import { DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
 import { IntentUtilityContext } from "../../context-types";
 import constants from "../../constants";
+import { ContextType, Intent } from "../../test/v2.0/support/intent-support-2.0";
 declare let fdc3: DesktopAgent;
 
 //used in '2.0-PrivateChannelsLifecycleEvents'
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
 
-  fdc3.addIntentListener("kTestingIntent", async (context) => {
-    validateContext(context.type, "testContextX");
+  fdc3.addIntentListener(Intent.kTestingIntent, async (context) => {
+    validateContext(context.type, ContextType.testContextX);
     const privChan = await fdc3.createPrivateChannel();
 
-    await privChan.addContextListener("testContextX", async () => {
-      await sendContextToTests({ type: "testContextX" }); //let test know addContextListener was triggered
+    await privChan.addContextListener(ContextType.testContextX, async () => {
+      await sendContextToTests({ type: ContextType.testContextX }); //let test know addContextListener was triggered
     });
 
     let contextStreamNumber = 1;
@@ -24,7 +25,7 @@ onFdc3Ready().then(async () => {
       //stream multiple contexts to test in short succession
       for (let i = 0; i < 5; i++) {
         let intentKContext: IntentUtilityContext = {
-          type: "testContextZ",
+          type: ContextType.testContextZ,
           number: contextStreamNumber,
         };
 

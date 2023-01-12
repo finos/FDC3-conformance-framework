@@ -4,6 +4,7 @@ import { failOnTimeout, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { AppControlContext } from "../../../context-types";
 import { MetadataFdc3Api } from "../support/metadata-support-2.0";
+import { ContextType, Intent } from "../support/intent-support-2.0";
 
 const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause: ";
 
@@ -37,9 +38,8 @@ export default () =>
           wrapper.resolve();
         });
 
-        const resolution = await api.raiseIntent("aTestingIntent", "testContextX", appIdentifier); // raise an intent that targets appIdentifier
+        const resolution = await api.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, appIdentifier); // raise an intent that targets appIdentifier
         validateResolutionSource(resolution, appIdentifier);
-
         timeout = failOnTimeout("intent-listener-triggered' context not received from mock app"); // fail if expected context not received
         await wrapper.promise; // wait for context from MetadataApp
       } catch (ex) {

@@ -1,7 +1,7 @@
 import { ResolveError } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { IntentApp, RaiseIntentControl2_0 } from "../support/intent-support-2.0";
+import { ContextType, IntentApp, Intent, RaiseIntentControl2_0 } from "../support/intent-support-2.0";
 import constants from "../../../constants";
 import { sleep, wait } from "../../../utils";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
@@ -17,8 +17,8 @@ export default () =>
     const RaiseIntentFailedResolve = "(RaiseIntentFailedResolve) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
     it(RaiseIntentFailedResolve, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextY");
-        assert.fail("No error was thrown");
+        await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY);
+        assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
       }
@@ -29,8 +29,8 @@ export default () =>
     it(RaiseIntentFailTargetedAppInstanceResolve1, async () => {
       try {
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA);
-        await control.raiseIntent("aTestingIntent", "testContextY", appIdentifier);
-        assert.fail("No error was thrown");
+        await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY, appIdentifier);
+        assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
@@ -40,12 +40,12 @@ export default () =>
       "(RaiseIntentFailTargetedAppInstanceResolve2) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId with instanceId property NonExistentInstanceId do not correlate";
     it(RaiseIntentFailTargetedAppInstanceResolve2, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextY", {
+        await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, {
           appId: IntentApp.IntentAppA,
           instanceId: "NonExistentInstanceId",
         });
         await wait(); // give test time to throw error
-        assert.fail("No error was thrown");
+        assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.TargetInstanceUnavailable);
       }
@@ -55,20 +55,20 @@ export default () =>
     const RaiseIntentFailTargetedAppResolve1 = "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
     it(RaiseIntentFailTargetedAppResolve1, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextY", { appId: IntentApp.IntentAppA });
+        await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY, { appId: IntentApp.IntentAppA });
         await wait(); // give test time to throw error
-        assert.fail("No error was thrown");
+        assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
-        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
+        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
     });
 
     const RaiseIntentFailTargetedAppResolve2 = "(RaiseIntentFailTargetedAppResolve2) Should fail to raise intent when targeting non-existant app id, context 'testContextY', intent 'aTestingIntent' and throw TargetAppUnavailable error";
     it(RaiseIntentFailTargetedAppResolve2, async () => {
       try {
-        await control.raiseIntent("aTestingIntent", "testContextY", { appId: "NonExistentApp" });
+        await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, { appId: "NonExistentApp" });
         await wait(); // give test time to throw error
-        assert.fail("No error was thrown");
+        assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.TargetAppUnavailable);
       }
@@ -79,9 +79,9 @@ export default () =>
       const { timeout, promise } = sleep(constants.NoListenerTimeout);
 
       try {
-        await control.raiseIntent("sharedTestingIntent2", "testContextY", { appId: IntentApp.IntentAppH });
+        await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, { appId: IntentApp.IntentAppH });
         await promise;
-        assert.fail("No error was thrown");
+        assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
         clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
@@ -94,9 +94,9 @@ export default () =>
       const { timeout, promise } = sleep(constants.NoListenerTimeout);
 
       try {
-        await control.raiseIntent("sharedTestingIntent2", "testContextY", { appId: IntentApp.IntentAppI });
+        await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, { appId: IntentApp.IntentAppI });
         await promise;
-        assert.fail("No error was thrown");
+        assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
         clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);

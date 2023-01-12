@@ -1,7 +1,6 @@
 import { assert, expect } from "chai";
 import { Channel, Context, Listener, DesktopAgent } from "fdc3_2_0";
 import constants from "../../../constants";
-import { wait } from "../../../utils";
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
 import { AppControlContext } from "../../../context-types";
 import { closeMockAppWindow, waitForContext } from "../fdc3-2_0-utils";
@@ -66,15 +65,6 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
       listener.unsubscribe();
       listener = undefined;
     });
-  };
-
-  closeChannelsAppWindow = async (testId: string) => {
-    //Tell ChannelsApp to close window
-    const appControlChannel = await broadcastAppChannelCloseWindow(testId);
-
-    //Wait for ChannelsApp to respond
-    await waitForContext("windowClosed", testId, appControlChannel);
-    await wait(constants.WindowCloseWaitTime);
   };
 
   initCompleteListener = async (testId: string) => {

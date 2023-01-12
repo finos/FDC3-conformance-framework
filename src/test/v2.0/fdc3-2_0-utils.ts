@@ -30,7 +30,6 @@ export const waitForContext = (contextType: string, testId: string, channel?: Ch
     console.log(Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`);
 
     const handler = (context: AppControlContext) => {
-      console.log(` waitforcontext hander reached`);
       if (testId) {
         console.log(` ${testId} VS ${context.testId}`);
         if (testId == context.testId) {

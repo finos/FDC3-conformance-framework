@@ -3,6 +3,7 @@ import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { sendContextToTests } from "../v2.0/mock-functions";
 import { wait } from "../../utils";
 import { AppControlContext, IntentUtilityContext } from "../../context-types";
+import { Intent } from "../../test/v2.0/support/intent-support-2.0";
 declare let fdc3: DesktopAgent;
 onFdc3Ready().then(async () => {
   await closeWindowOnCompletion();
@@ -26,7 +27,7 @@ onFdc3Ready().then(async () => {
   }
 
   //used in 'RaiseIntentContextResult5secs'
-  await fdc3.addIntentListener("sharedTestingIntent1", async (context: IntentUtilityContext) => {
+  await fdc3.addIntentListener(Intent.sharedTestingIntent1, async (context: IntentUtilityContext) => {
     if (context.delayBeforeReturn > 0) {
       await wait(context.delayBeforeReturn);
     }
