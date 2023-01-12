@@ -1,5 +1,4 @@
 import { assert, expect } from "chai";
-import constants from "../../constants";
 import { failOnTimeout, wait, wrapPromise } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "./control/channel-control";
 import { ChannelControl } from "./control/channel-control";
@@ -274,7 +273,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await cc.leaveChannel();
       await cc.openChannelApp(UCFilteredUsageLeave, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
-      await wait(constants.WaitTime); // give listeners time to receive context
+      await wait(); // give listeners time to receive context
       cc.unsubscribeListeners([listener, listener2]);
     });
 

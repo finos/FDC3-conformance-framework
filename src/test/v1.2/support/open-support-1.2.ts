@@ -1,12 +1,12 @@
 import { assert, expect } from "chai";
-import { Context, DesktopAgent, Listener, OpenError, TargetApp } from "fdc3_1_2";
+import { Context, DesktopAgent, OpenError, TargetApp } from "fdc3_1_2";
 import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v1.2/general";
 import { sleep } from "../../../utils";
 import { AppControlContext } from "../../../context-types";
 import { OpenControl } from "../../common/control/open-control";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { closeMockAppWindow, waitForContext } from "../fdc3-1_2-utils";
+import { closeMockAppWindow } from "../fdc3-1_2-utils";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause:";

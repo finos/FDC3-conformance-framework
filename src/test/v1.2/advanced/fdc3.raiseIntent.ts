@@ -1,7 +1,6 @@
-import { AppMetadata, Context, IntentResolution } from "fdc3_1_2";
+import { AppMetadata, Context, IntentResolution, DesktopAgent } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import constants from "../../../constants";
-import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { sleep } from "../../../utils";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 import { ContextType, Intent, IntentApp } from "../support/intent-support-1.2";
