@@ -277,7 +277,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       cc.unsubscribeListeners([listener, listener2]);
     });
 
-    const UCFilteredUsageJoin = "(" + prefix + "UCFilteredUsageLeave) Should not receive context after leaving a user channel";
+    const UCFilteredUsageJoin = "(" + prefix + "UCFilteredUsageJoin) getCurrentChannel retrieves the channel that was joined";
     it(UCFilteredUsageJoin, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves user channels\r\n- App A joins the third channel\r\n- App A gets current channel${documentation}`;
       const channels = await cc.getSystemChannels();
