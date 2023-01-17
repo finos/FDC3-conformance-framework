@@ -10,7 +10,6 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
     afterEach(async function afterEach() {
       if (this.currentTest.title !== UCFilteredUsageJoin) {
-        console.log("Conole log reached");
         await cc.closeMockApp(this.currentTest.title);
       }
     });
@@ -279,7 +278,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
     });
 
     const UCFilteredUsageJoin = "(" + prefix + "UCFilteredUsageJoin) getCurrentChannel retrieves the channel that was joined";
-    it.only(UCFilteredUsageJoin, async () => {
+    it(UCFilteredUsageJoin, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves user channels\r\n- App A joins the third channel\r\n- App A gets current channel${documentation}`;
       const channels = await cc.getSystemChannels();
       if (channels.length < 1) {
