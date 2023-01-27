@@ -46,6 +46,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
     }
   };
 
+  //Close mock app using the interface implementation so that common tests can switch freely between different closeMockAppWindow implementations
   async closeMockApp(testId: string) {
     await closeMockAppWindow(testId);
   }
