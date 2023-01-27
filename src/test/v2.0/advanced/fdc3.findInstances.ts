@@ -1,109 +1,62 @@
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../../v2.0/apiDocuments-2.0";
-import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
-import { Context, ContextMetadata, ImplementationMetadata } from "fdc3_2_0";
-import constants from "../../../constants";
-import { sleep, wait, wrapPromise } from "../../../utils";
-import { Intent } from "../support/intent-support-2.0";
+import { failOnTimeout, wrapPromise } from "../../../utils";
+import { closeMockAppWindow } from "../fdc3-2_0-utils";
+import { AppControlContext } from "../../../context-types";
+import { MetadataFdc3Api } from "../support/metadata-support-2.0";
+import { ContextType, Intent } from "../support/intent-support-2.0";
 
-declare let fdc3: DesktopAgent;
-const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause";
+const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause: ";
 
 export default () =>
   describe("fdc3.findInstances", () => {
-    afterEach(async () => {
-      await broadcastCloseWindow();
-      await waitForMockAppToClose();
+    after(async function after() {
+      await closeMockAppWindow(this.currentTest.title);
     });
 
-    it("(2.0-FindInstances) valid metadata", async () => {
+    const findInstances = "(2.0-FindInstances) valid metadata when opening multiple instances of the same app";
+    it(findInstances, async () => {
+      const api = new MetadataFdc3Api();
       try {
-        //start A and retrieve its AppIdentifier
-        const appIdentifier = await fdc3.open({
-          appId: "MetadataAppId",
-        });
-
-        //start A again and retrieve another AppIdentifier
-        let appIdentifier2 = await fdc3.open({
-          appId: "MetadataAppId",
-        });
+        const appIdentifier = await api.openMetadataApp(); // open metadataApp
+        const appIdentifier2 = await api.openMetadataApp(); // open second instance of metadataApp
 
         //confirm that the instanceId for both app instantiations is different
         expect(appIdentifier.instanceId, `The AppIdentifier's instanceId property for both instances of the opened app should not be the same.${findInstancesDocs}`).to.not.equal(appIdentifier2.instanceId);
 
-        //retrieve instance details
-        let instances = await fdc3.findInstances({ appId: "MetadataAppId" });
-
-        if (!instances.includes(appIdentifier) || !instances.includes(appIdentifier2)) {
-          assert.fail(`At least one AppIdentifier object is missing from the AppIdentifier array returned after calling fdc3.findInstances(app: AppIdentifier)${findInstancesDocs}`);
-        }
+        let instances = await api.getAppInstances();
+        validateInstances(instances, appIdentifier, appIdentifier2);
 
         let timeout;
         const wrapper = wrapPromise();
+        const appControlChannel = await api.retrieveAppControlChannel();
 
         //ensure appIdentifier received the raised intent
-        await fdc3.addContextListener("metadataContext", (context: MetadataContext) => {
+        await appControlChannel.addContextListener("intent-listener-triggered", (context: AppControlContext) => {
+          expect(context.instanceId, "the raised intent was received by a different instance of the mock app than expected").to.be.equals(appIdentifier.instanceId);
           clearTimeout(timeout);
-          expect(context.contextMetadata.source, "ContextMetadata.source did not match the AppIdentifier of the first mock app that was opened").to.be.equals(appIdentifier);
           wrapper.resolve();
         });
 
-        const metadataAppContext = {
-          type: "metadataAppContext",
-          command: MetadataAppCommand.confirmRaisedIntentReceived,
-        };
-
-        //raise an intent and target appIdentifier
-        const resolution = await fdc3.raiseIntent(Intent.aTestingIntent, metadataAppContext, appIdentifier);
-
-        expect(resolution.source, "IntentResolution.source did not match the mock app's AppIdentifier").to.be.equal(appIdentifier);
-
-        //fail if no metadataContext received
-        timeout = window.setTimeout(() => {
-          wrapper.reject("did not receive MetadataContext from metadata app");
-        }, constants.WaitTime);
-
-        //wait for raised intent
-        await wrapper.promise;
+        const resolution = await api.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, appIdentifier); // raise an intent that targets appIdentifier
+        validateResolutionSource(resolution, appIdentifier);
+        timeout = failOnTimeout("intent-listener-triggered' context not received from mock app"); // fail if expected context not received
+        await wrapper.promise; // wait for context from MetadataApp
       } catch (ex) {
         assert.fail(findInstancesDocs + (ex.message ?? ex));
       }
     });
   });
 
-async function waitForMockAppToClose() {
-  const messageReceived = new Promise<Context>(async (resolve, reject) => {
-    const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    const listener = await appControlChannel.addContextListener("windowClosed", async (context) => {
-      await wait(constants.WindowCloseWaitTime);
-      resolve(context);
-      listener.unsubscribe();
-    });
-
-    //if no context received reject promise
-    const { promise: sleepPromise } = sleep();
-    await sleepPromise;
-    reject(new Error("windowClosed context not received from app B"));
-  });
-
-  return messageReceived;
+function validateResolutionSource(resolution, appIdentifier) {
+  // check that resolution.source matches the appIdentifier
+  expect(resolution.source.appId, "IntentResolution.source.appId did not match the mock app's AppIdentifier's appId").to.be.equal(appIdentifier.appId);
+  expect(resolution.source.instanceId, "IntentResolution.source.instanceId did not match the mock app's AppIdentifier's instanceId").to.be.equal(appIdentifier.instanceId);
 }
 
-const broadcastCloseWindow = async () => {
-  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  await appControlChannel.broadcast({ type: "closeWindow" });
-};
-
-export interface MetadataContext extends Context {
-  implMetadata?: ImplementationMetadata;
-  contextMetadata?: ContextMetadata;
-}
-
-export interface MetadataAppCommandContext extends Context {
-  command: string;
-}
-
-export enum MetadataAppCommand {
-  sendGetInfoMetadataToTests = "sendGetInfoMetadataToTests",
-  confirmRaisedIntentReceived = "confirmRaisedIntentReceived",
+function validateInstances(instances, appIdentifier, appIdentifier2) {
+  // check that the retrieved instances match the retrieved appIdentifiers
+  if (!instances.some((instance) => JSON.stringify(instance) === JSON.stringify(appIdentifier) || JSON.stringify(instance) === JSON.stringify(appIdentifier2))) {
+    assert.fail(`At least one AppIdentifier object is missing from the AppIdentifier array returned after calling fdc3.findInstances(app: AppIdentifier)${findInstancesDocs}`);
+  }
 }

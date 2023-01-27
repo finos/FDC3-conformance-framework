@@ -1,6 +1,5 @@
 import { assert, expect } from "chai";
-import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, PrivateChannel } from "fdc3_2_0";
-import { Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
+import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, PrivateChannel, Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
@@ -12,7 +11,7 @@ const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent 
 export class RaiseIntentControl2_0 {
   async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContext> {
     let timeout;
-    const appControlChannel = await getOrCreateChannel("app-control");
+    const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     const messageReceived = new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
         resolve(context);
@@ -194,14 +193,6 @@ export class RaiseIntentControl2_0 {
     privateChannel.disconnect();
   }
 }
-
-const broadcastCloseWindow = async (currentTest) => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-  appControlChannel.broadcast({
-    type: "closeWindow",
-    testId: currentTest,
-  } as AppControlContext);
-};
 
 export enum IntentResultType {
   Channel = "Channel",

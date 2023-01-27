@@ -1,7 +1,5 @@
 import { assert, expect } from "chai";
 import { Channel, Context, DesktopAgent, Listener } from "fdc3_1_2";
-import constants from "../../../constants";
-import { wait } from "../../../utils";
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
 import { AppControlContext } from "../../../context-types";
 import { closeMockAppWindow, waitForContext } from "../fdc3-1_2-utils";
@@ -52,15 +50,6 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
       listener.unsubscribe();
       listener = undefined;
     });
-  };
-
-  closeChannelsAppWindow = async (testId: string): Promise<void> => {
-    //Tell ChannelsApp to close window
-    const appControlChannel = await broadcastAppChannelCloseWindow(testId);
-
-    //Wait for ChannelsApp to respond
-    await waitForContext("windowClosed", testId, appControlChannel);
-    await wait(constants.WindowCloseWaitTime);
   };
 
   initCompleteListener = async (testId: string): Promise<AppControlContext> => {
@@ -131,18 +120,6 @@ function validateListenerObject(listenerObject) {
   assert.isTrue(typeof listenerObject === "object", "No listener object found");
   expect(typeof listenerObject.unsubscribe).to.be.equals("function", "Listener does not contain an unsubscribe method");
 }
-
-const broadcastAppChannelCloseWindow = async (testId: string): Promise<Channel> => {
-  const appControlChannel = await fdc3.getOrCreateChannel("app-control");
-  /* tslint:disable-next-line */
-  const closeContext: AppControlContext = {
-    type: "closeWindow",
-    testId: testId,
-  };
-  appControlChannel.broadcast(closeContext);
-  return appControlChannel;
-};
-
 export function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppConfig): ChannelsAppContext {
   return {
     type: "channelsAppContext",

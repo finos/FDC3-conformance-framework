@@ -1,5 +1,3 @@
-import { CommonContext } from "../../../context-types";
-
 export interface OpenControl<X> {
   //test control
   openMockApp(appName?: string, appId?: string, contextType?: string, targetAppAsString?: boolean, malformedContext?: boolean): void;

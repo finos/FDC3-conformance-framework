@@ -1,8 +1,8 @@
 import { assert, expect } from "chai";
-import { Channel, Context, DesktopAgent, Listener, OpenError } from "fdc3_2_0";
+import { Context, DesktopAgent, OpenError } from "fdc3_2_0";
 import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v2.0/general";
-import { sleep, wait } from "../../../utils";
+import { sleep } from "../../../utils";
 import { AppControlContext } from "../../../context-types";
 import { OpenControl } from "../../common/control/open-control";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
@@ -46,6 +46,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
     }
   };
 
+  //Close mock app using the interface implementation so that common tests can switch freely between different closeMockAppWindow implementations
   async closeMockApp(testId: string) {
     await closeMockAppWindow(testId);
   }
@@ -67,7 +68,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
 }
 
 export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
-  //allow open t
   const { timeout, promise } = sleep(constants.NoListenerTimeout);
   let promiseRejected;
 

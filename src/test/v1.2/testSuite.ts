@@ -1,4 +1,4 @@
-import mocha, { Suite } from "mocha";
+import mocha from "mocha";
 import constants from "../../constants";
 
 import fdc3AddContextListener_1_2 from "./basic/fdc3.addContextListener";

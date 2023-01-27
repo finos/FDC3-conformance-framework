@@ -1,11 +1,9 @@
-import { Listener } from "fdc3_1_2";
+import { Listener, DesktopAgent } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
-const documentation =
-  "\r\nDocumentation: " + APIDocumentation1_2.addContextListener + "\r\nCause";
+const documentation = "\r\nDocumentation: " + APIDocumentation1_2.addContextListener + "\r\nCause";
 
 export default () =>
   describe("fdc3.addContextListener", () => {
@@ -22,9 +20,7 @@ export default () =>
       const contextType = "fdc3.contact";
       try {
         listener = fdc3.addContextListener(contextType, (info: any) => {
-          console.log(
-            `Context listener of type ${contextType} triggered with result ${info}`
-          );
+          console.log(`Context listener of type ${contextType} triggered with result ${info}`);
         });
       } catch (ex) {
         assert.fail(documentation + (ex.message ?? ex));
@@ -35,9 +31,7 @@ export default () =>
       try {
         listener = fdc3.addContextListener(null, () => {});
         assert.isTrue(listener && typeof listener === "object", documentation);
-        expect(typeof listener.unsubscribe, documentation).to.be.equals(
-          "function"
-        );
+        expect(typeof listener.unsubscribe, documentation).to.be.equals("function");
       } catch (ex) {
         assert.fail(documentation + (ex.message ?? ex));
       }

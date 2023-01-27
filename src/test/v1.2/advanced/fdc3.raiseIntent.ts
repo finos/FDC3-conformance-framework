@@ -1,13 +1,10 @@
-import { AppMetadata, Channel, Context, IntentResolution, Listener } from "fdc3_1_2";
+import { AppMetadata, Context, IntentResolution, DesktopAgent } from "fdc3_1_2";
 import { assert, expect } from "chai";
 import constants from "../../../constants";
-import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
-import { sleep, wait } from "../../../utils";
+import { sleep } from "../../../utils";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { ContextType, Intent } from "../support/intent-support-1.2";
-import { IntentApp } from "../../v2.0/support/intent-support-2.0";
-import { AppControlContext } from "../../../context-types";
-import { waitForContext } from "../fdc3-1_2-utils";
+import { ContextType, Intent, IntentApp } from "../support/intent-support-1.2";
+import { closeMockAppWindow } from "../fdc3-1_2-utils";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent + "\r\nCause";
@@ -18,7 +15,7 @@ const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent 
 export default () =>
   describe("fdc3.raiseIntent", () => {
     afterEach(async function afterEach() {
-      await closeIntentAppsWindows(this.currentTest.title);
+      await closeMockAppWindow(this.currentTest.title);
     });
 
     const test1 = "(SingleResolve1) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextY'";
@@ -29,7 +26,7 @@ export default () =>
         type: ContextType.testContextY,
       });
 
-      validateIntentResolution("IntentAppB", intentResolution);
+      validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       await result;
     });
 
@@ -85,14 +82,6 @@ const validateIntentResolution = (appName: string, intentResolution: IntentResol
   } else assert.fail("Invalid intent resolution object");
 };
 
-const broadcastCloseWindow = async (currentTest) => {
-  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  appControlChannel.broadcast({
-    type: "closeWindow",
-    testId: currentTest,
-  } as AppControlContext);
-};
-
 // creates a channel and subscribes for broadcast contexts. This is
 // used by the 'mock app' to send messages back to the test runner for validation
 const createReceiver = async (contextType: string) => {
@@ -114,10 +103,3 @@ const createReceiver = async (contextType: string) => {
 
   return messageReceived;
 };
-
-async function closeIntentAppsWindows(testId) {
-  await broadcastCloseWindow(testId);
-  const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  await waitForContext("windowClosed", testId, appControlChannel);
-  await wait(constants.WindowCloseWaitTime);
-}
