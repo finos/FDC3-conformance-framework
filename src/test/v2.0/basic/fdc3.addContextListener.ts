@@ -2,6 +2,7 @@ import { Listener } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
+import { basicCL1 } from "../../common/basic/fdc3.basic";
 
 declare let fdc3: DesktopAgent;
 const documentation =
@@ -17,6 +18,8 @@ export default () =>
       }
     });
 
+    basicCL1(fdc3, documentation, listener);
+
     it("(2.0-BasicCL1) Method is callable", async () => {
       const contextType = "fdc3.contact";
       try {
@@ -25,6 +28,8 @@ export default () =>
             `Context listener of type ${contextType} triggered with result ${info}`
           );
         });
+        assert.isTrue(listener && typeof listener === "object", documentation);
+        expect(typeof listener.unsubscribe, "the listener did not contain an unsubscribe function" + documentation).to.be.equals("function");
       } catch (ex) {
         assert.fail(documentation + (ex.message ?? ex));
       }

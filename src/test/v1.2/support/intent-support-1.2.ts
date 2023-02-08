@@ -6,7 +6,7 @@ export enum ContextType {
 export enum Intent {
   aTestingIntent = "aTestingIntent",
   cTestingIntent = "cTestingIntent",
-  sharedTestingIntent1 = "sharedtestingIntent1",
+  sharedTestingIntent1 = "sharedTestingIntent1",
 }
 
 export enum IntentApp {

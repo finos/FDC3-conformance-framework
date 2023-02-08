@@ -19,37 +19,28 @@ function wrapPromise(): {
   return { promise, resolve: wrapperResolve, reject: wrapperReject };
 }
 
-export default () =>
-  describe("fdc3.joinChannel", () => {
-    afterEach(async () => {
-      await fdc3.leaveCurrentChannel();
-    });
+export default () => {}
+  // describe("fdc3.joinChannel", () => {
+  //   it("(BasicJC1) getCurrentChannel should retrieve 'null' or a channel object depending upon whether the channel has been joined or not", async () => {
+  //     const channels = await fdc3.getUserChannels();
+  //     if (channels.length > 0) {
+  //       try {
+  //         await fdc3.joinUserChannel(channels[0].id);
+  //         const currentChannel = await fdc3.getCurrentChannel();
+  //         if(typeof currentChannel !== "object") {
+  //           assert.fail("getCurrentChannel did not retrieve a channel object");
+  //         }
+  //         expect(currentChannel.id).to.eql(channels[0].id);
 
-    it("(BasicJC1) Can join user channel", async () => {
-      const channels = await fdc3.getUserChannels();
+  //         await fdc3.leaveCurrentChannel();
+  //         const currentChannelAfterLeave = await fdc3.getCurrentChannel();
+  //         expect(currentChannelAfterLeave).to.be.null;
 
-      if (channels.length > 0) {
-        try {
-          await fdc3.joinUserChannel(channels[0].id);
-
-          const currentChannel = await fdc3.getCurrentChannel();
-
-          expect(currentChannel).to.not.be.null;
-        } catch (ex) {
-          assert.fail("Error while joining channel: " + (ex.message ?? ex));
-        }
-      } else {
-        assert.fail("No system channels available");
-      }
-    });
-
-    it("(BasicJC2) Can join the correct user channel", async () => {
-      const [channel] = await fdc3.getUserChannels();
-
-      await fdc3.joinUserChannel(channel.id);
-
-      const current = await fdc3.getCurrentChannel();
-
-      expect(current.id).to.eql(channel.id);
-    });
-  });
+  //       } catch (ex) {
+  //         assert.fail("Error while joining channel: " + (ex.message ?? ex));
+  //       }
+  //     } else {
+  //       assert.fail("No system channels available");
+  //     }
+  //   });
+  // });

@@ -4,13 +4,10 @@ import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
 declare let fdc3: DesktopAgent;
-const docs =
-  "\r\nDocumentation: " +
-  APIDocumentation1_2.raiseIntentForContext +
-  "\r\nCause: ";
+const docs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntentForContext + "\r\nCause: ";
 
 export default () =>
-  describe("fdc3.raiseIntentForContext", async () => {
+  describe("fdc3.basicRI1", async () => {
     it("(BasicRI1) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
       const context = {
         type: "ThisContextDoesNotExist",

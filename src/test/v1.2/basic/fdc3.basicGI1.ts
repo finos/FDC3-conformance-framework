@@ -7,7 +7,7 @@ const getInfoDocs =
   "\r\nDocumentation: " + APIDocumentation1_2.getInfo + "\r\nCause";
 
 export default () =>
-  describe("fdc3.getInfo", () => {
+  describe("fdc3.basicGI1", () => {
     it("(BasicGI1) Returns ImplementationMetadata object", async () => {
       try {
         const info = fdc3.getInfo();

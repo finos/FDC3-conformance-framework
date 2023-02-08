@@ -7,12 +7,18 @@ const getSystemChannelDocs =
   "\r\nDocumentation: " + APIDocumentation1_2.getSystemChannels + "\r\nCause";
 
 export default () =>
-  describe("fdc3.getSystemChannels", () => {
+  describe("fdc3.basicUC1", () => {
     it("(BasicUC1) Channel object is valid", async () => {
+      try {
       const channels = await fdc3.getSystemChannels();
       expect(channels.length, getSystemChannelDocs).to.be.greaterThan(0);
       expect(typeof channels).to.be.equals("object", getSystemChannelDocs);
-      expect(channels[0]).to.have.property("type");
-      expect(channels[0]).to.have.property("id");
+      for(let i=0; i<channels.length; i++) {
+        expect(channels[0]).to.have.property("type");
+        expect(channels[0]).to.have.property("id");
+      }
+    } catch (ex) {
+      assert.fail(getSystemChannelDocs + (ex.message ?? ex));
+    }
     });
   });

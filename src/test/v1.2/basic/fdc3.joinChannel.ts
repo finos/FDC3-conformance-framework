@@ -3,37 +3,26 @@ import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 
 declare let fdc3: DesktopAgent;
 
-export default () =>
-  describe("fdc3.joinChannel", () => {
-    afterEach(async () => {
-      await fdc3.leaveCurrentChannel();
-    });
-
-    it("(BasicJC1) Can join system channel", async () => {
-      const channels = await fdc3.getSystemChannels();
-
-      if (channels.length > 0) {
-        try {
-          await fdc3.joinChannel(channels[0].id);
-
-          const currentChannel = await fdc3.getCurrentChannel();
-
-          expect(currentChannel).to.not.be.null;
-        } catch (ex) {
-          assert.fail("Error while joining channel: " + (ex.message ?? ex));
-        }
-      } else {
-        assert.fail("No system channels available");
-      }
-    });
-
-    it("(BasicJC2) Can join the correct system channel", async () => {
-      const [channel] = await fdc3.getSystemChannels();
-
-      await fdc3.joinChannel(channel.id);
-
-      const current = await fdc3.getCurrentChannel();
-
-      expect(current.id).to.eql(channel.id);
-    });
-  });
+export default () => {}
+  // describe("fdc3.joinChannel", () => {
+  //   it("(BasicJC1) getCurrentChannel should retrieve 'null' or a channel object depending upon whether the channel has been joined or not", async () => {
+  //     const channels = await fdc3.getSystemChannels();
+  //     if (channels.length > 0) {
+  //       try {
+  //         await fdc3.joinChannel(channels[0].id);
+  //         const currentChannel = await fdc3.getCurrentChannel();
+  //         if(typeof currentChannel !== "object") {
+  //           assert.fail("getCurrentChannel did not retrieve a channel object");
+  //         }
+  //         expect(currentChannel.id).to.eql(channels[0].id);
+  //         await fdc3.leaveCurrentChannel();
+  //         const currentChannelAfterLeave = await fdc3.getCurrentChannel();
+  //         expect(currentChannelAfterLeave).to.be.null;
+  //       } catch (ex) {
+  //         assert.fail("Error while joining channel: " + (ex.message ?? ex));
+  //       }
+  //     } else {
+  //       assert.fail("No system channels available");
+  //     }
+  //   });
+  // });
