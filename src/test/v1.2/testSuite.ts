@@ -1,19 +1,9 @@
 import mocha, { Suite } from "mocha";
 import constants from "../../constants";
 
-import fdc3AddContextListener_1_2 from "./basic/fdc3.basicCL1";
-//import fdc3BasicCL1_1_2 from "./basic/fdc3.basicCL1";
-//import fdc3BasicCL2_1_2 from "./basic/fdc3.basicCL2";
-// import fdc3BasicIL1_1_2 from "./basic/fdc3.basicIL1";
 import channels_1_2 from "./advanced/channels";
 import fdc3FindIntent_1_2 from "./advanced/fdc3.findIntent";
 import fdc3FindIntentsByContext_1_2 from "./advanced/fdc3.findIntentsByContext";
-// import fdc3BasicJC1_1_2 from "./basic/fdc3.basicJC1";
-// import fdc3BasicGI1_1_2 from "./basic/fdc3.basicGI1";
-// import fdc3BasicAC1_1_2 from "./basic/fdc3.basicAC1";
-// import fdc3BasicUC1_1_2 from "./basic/fdc3.basicUC1";
-import fdc3JoinChannel_1_2 from "./basic/fdc3.joinChannel";
-import fdc3LeaveCurrentChannel_1_2 from "./basic/fdc3.leaveCurrentChannel";
 import fdc3Open_1_2 from "./advanced/fdc3.open";
 import fdc3RaiseIntent_1_2_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
 import fdc3RaiseIntent_1_2 from "./advanced/fdc3.raiseIntent";

@@ -1,4 +1,4 @@
-export interface BasicControl<X> {
+export interface InfoControl<X> {
     //test control
     getInfo();    
   }

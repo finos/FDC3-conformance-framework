@@ -1,13 +1,13 @@
 import { assert, expect } from "chai";
-import { BasicControl} from "./basic-control";
-import { ChannelControl } from "../control/channel-control";
+import { InfoControl} from "./control/info-control";
+import { ChannelControl } from "./control/channel-control";
 
 export let basicCL1 = (fdc3: any, documentation: string, listener: any) => {
   
   it("(BasicCL1) Method is callable", async () => {
     const contextType = "fdc3.contact";
     try {
-      listener = fdc3.addContextListener(contextType, (info: any) => {
+      listener = await fdc3.addContextListener(contextType, (info: any) => {
         console.log(`Context listener of type ${contextType} triggered with result ${info}`);
       });
       assert.isTrue(listener && typeof listener === "object", documentation);
@@ -25,7 +25,7 @@ export let basicCL1 = (fdc3: any, documentation: string, listener: any) => {
 export let basicCL2 = (fdc3: any, documentation: string, listener: any) => {
   it("(BasicCL2) Returns listener object", async () => {
     try {
-      listener = fdc3.addContextListener(null, () => {});
+      listener = await fdc3.addContextListener(null, () => {});
       assert.isTrue(listener && typeof listener === "object", documentation);
       expect(typeof listener.unsubscribe, documentation).to.be.equals("function");
       if (listener !== undefined) {
@@ -42,7 +42,7 @@ export let basicIL1 = (fdc3: any, documentation: string, listener: any) => {
   it("(BasicIL1) Method is callable", async () => {
     const intentName = "fdc3.conformanceListener";
     try {
-      listener = fdc3.addIntentListener(intentName, (info: any) => {
+      listener = await fdc3.addIntentListener(intentName, (info: any) => {
         console.log(`Intent listener for intent ${intentName} triggered with result ${info}`);
       });
       expect(listener).to.have.property("unsubscribe").that.is.a("function");
@@ -51,12 +51,14 @@ export let basicIL1 = (fdc3: any, documentation: string, listener: any) => {
         listener = undefined;
       }
     } catch (ex) {
-      assert.fail(documentation + (ex.message ?? ex));
+      assert.fail("\r\nDocumentation: " +
+      documentation +
+      "\r\nCause"  + (ex.message ?? ex));
     }
   });
 }
 
-export let basicGI1 = (control: BasicControl<any>,documentation: string) => {
+export let basicGI1 = (control: InfoControl<any>,documentation: string) => {
   console.log('coming here in');
   it("(BasicGI1) Returns ImplementationMetadata object", async () => { 
     try {

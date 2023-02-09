@@ -4,7 +4,7 @@ import { BasicControl2_0 } from "./basic-support-2.0";
 import { ChannelControl2_0 } from "../support/channels-support-2.0";
 
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
-import { basicAC1, basicCL1, basicCL2, basicGI1, basicIL1, basicJC1, basicRI1, basicUC1 } from "../../common/basic/fdc3.basic";
+import { basicAC1, basicCL1, basicCL2, basicGI1, basicIL1, basicJC1, basicRI1, basicUC1 } from "../../common/fdc3.basic";
 
 declare let fdc3: DesktopAgent;
 let listener: Listener;
@@ -25,5 +25,5 @@ export let fdc3BasicIL1_2_0 = () => describe("fdc3.basicIL1_2.0", () => basicIL1
 export let fdc3BasicGI1_2_0 = () => describe("fdc3.basicGI1_2.0", () => basicGI1(control, documentation_GI));
 export let fdc3BasicAC1_2_0 = () => describe("fdc3.basicAC1_2.0", () => basicAC1(fdc3, documentation_AC));
 export let fdc3BasicUC1_2_0 = () => describe("fdc3.basicUC1_2.0", () => basicUC1(cc,documentation_UC));
-export let fdc3BasicJC1_2_0  = () => describe("fdc3.basicUC1_2.0", () => basicJC1(cc, fdc3, documentation_JC));
+export let fdc3BasicJC1_2_0  = () => describe("fdc3.basicJC1_2.0", () => basicJC1(cc, fdc3, documentation_JC));
 export let fdc3BasicRI1_2_0  = () => describe("fdc3.basicRI1_2.0", () => basicRI1(fdc3, documentation_RI, ResolveError.NoAppsFound));
