@@ -1,13 +1,12 @@
 import mocha, { Suite } from "mocha";
 import constants from "../../constants";
-
 import channels_1_2 from "./advanced/channels";
 import fdc3FindIntent_1_2 from "./advanced/fdc3.findIntent";
 import fdc3FindIntentsByContext_1_2 from "./advanced/fdc3.findIntentsByContext";
 import fdc3Open_1_2 from "./advanced/fdc3.open";
 import fdc3RaiseIntent_1_2_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
 import fdc3RaiseIntent_1_2 from "./advanced/fdc3.raiseIntent";
-// import fdc3BasicRI1_1_2 from "./basic/fdc3.basicRI1";
+import fdc3GetInfo_1_2 from "./advanced/fdc3.getInfo";
 import {fdc3BasicCL1_1_2, fdc3BasicCL2_1_2, fdc3BasicIL1_1_2, fdc3BasicGI1_1_2 , fdc3BasicAC1_1_2 , fdc3BasicUC1_1_2, fdc3BasicJC1_1_2, fdc3BasicRI1_1_2} from './basic/fdc3.basic';
 
 type testSet = { [key: string]: (() => void)[] };
@@ -25,6 +24,7 @@ const basicSuite_1_2: testSet = {
 
 const advancedSuite_1_2: testSet = {
   "fdc3.open 1.2": [fdc3Open_1_2],
+  "fdc3.getInfo 1.2": [fdc3GetInfo_1_2],
   "channels 1.2": [channels_1_2],
   "fdc3.findIntent 1.2": [fdc3FindIntent_1_2],
   "fdc3.raiseIntent 1.2": [fdc3RaiseIntent_1_2],
