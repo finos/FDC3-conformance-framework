@@ -1,4 +1,4 @@
-import mocha, { Suite } from "mocha";
+import mocha from "mocha";
 import constants from "../../constants";
 import channels_1_2 from "./advanced/channels";
 import fdc3FindIntent_1_2 from "./advanced/fdc3.findIntent";

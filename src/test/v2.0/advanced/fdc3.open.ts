@@ -30,6 +30,5 @@ export default () =>
     const AOpensBNoListen = "(2.0-AOpensBNoListen) Received App timeout when opening app B with fake context, app b not listening for any context";
     it(AOpensBNoListen, async () => {
       await expectAppTimeoutErrorOnOpen(openApp.e.id);
-      await control.closeMockApp(AOpensBNoListen);
     }).timeout(constants.NoListenerTimeout + 1000);
   });
