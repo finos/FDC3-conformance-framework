@@ -1,21 +1,11 @@
 import mocha from "mocha";
 import constants from "../../constants";
-
-import fdc3AddContextListener_1_2 from "./basic/fdc3.addContextListener";
-import fdc3AddIntentListener_1_2 from "./basic/fdc3.addIntentListener";
 import channels_1_2 from "./advanced/channels";
 import fdc3FindIntent_1_2 from "./advanced/fdc3.findIntent";
 import fdc3FindIntentsByContext_1_2 from "./advanced/fdc3.findIntentsByContext";
-import fdc3GetCurrentChannel_1_2 from "./basic/fdc3.getCurrentChannel";
-import fdc3GetInfo_1_2 from "./basic/fdc3.getInfo";
-import fdc3GetOrCreateChannel_1_2 from "./basic/fdc3.getOrCreateChannel";
-import fdc3GetSystemChannels_1_2 from "./basic/fdc3.getSystemChannels";
-import fdc3JoinChannel_1_2 from "./basic/fdc3.joinChannel";
-import fdc3LeaveCurrentChannel_1_2 from "./basic/fdc3.leaveCurrentChannel";
 import fdc3Open_1_2 from "./advanced/fdc3.open";
 import fdc3RaiseIntent_1_2_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
 import fdc3RaiseIntent_1_2 from "./advanced/fdc3.raiseIntent";
-import fdc3RaiseIntentForContext_1_2 from "./basic/fdc3.raiseIntentForContext";
 import {fdc3BasicCL1_1_2, fdc3BasicCL2_1_2, fdc3BasicIL1_1_2, fdc3BasicGI1_1_2 , fdc3BasicAC1_1_2 , fdc3BasicUC1_1_2, fdc3BasicJC1_1_2, fdc3BasicRI1_1_2} from './basic/fdc3.basic';
 
 
@@ -30,15 +20,6 @@ const basicSuite_1_2: testSet = {
   "fdc3.basicUC1 1.2": [fdc3BasicUC1_1_2],
   "fdc3.basicJC1 1.2": [fdc3BasicJC1_1_2],
   "fdc3.basicRI1 1.2": [fdc3BasicRI1_1_2],
-  // "fdc3.addContextListener 1.2": [fdc3AddContextListener_1_2],
-  // "fdc3.addIntentListener 1.2": [fdc3AddIntentListener_1_2],
-  // "fdc3.getCurrentChannel 1.2": [fdc3GetCurrentChannel_1_2],
-  // "fdc3.getInfo 1.2": [fdc3GetInfo_1_2],
-  // "fdc3.getOrCreateChannel 1.2": [fdc3GetOrCreateChannel_1_2],
-  // "fdc3.getSystemChannels 1.2": [fdc3GetSystemChannels_1_2],
-  // "fdc3.joinChannel 1.2": [fdc3JoinChannel_1_2],
-  // "fdc3.leaveCurrentChannel 1.2": [fdc3LeaveCurrentChannel_1_2],
-  // "fdc3.raiseIntentForContext 1.2": [fdc3RaiseIntentForContext_1_2],
 };
 
 const advancedSuite_1_2: testSet = {
