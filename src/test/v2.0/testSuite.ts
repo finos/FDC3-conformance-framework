@@ -10,7 +10,7 @@ import fdc3Open_2_0 from "./advanced/fdc3.open";
 import fdc3RaiseIntent_2_0 from "./advanced/fdc3.raiseIntent";
 import fdc3RaiseIntent_2_0_Result from "./advanced/fdc3.raiseIntent-result";
 import fdc3RaiseIntent_2_0_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
-import {fdc3BasicCL1_2_0, fdc3BasicCL2_2_0, fdc3BasicIL1_2_0, fdc3BasicGI1_2_0 , fdc3BasicAC1_2_0 , fdc3BasicUC1_2_0, fdc3BasicJC1_2_0, fdc3BasicRI1_2_0} from './basic/fdc3.basic';
+import {fdc3BasicCL1_2_0, fdc3BasicCL2_2_0, fdc3BasicIL1_2_0, fdc3BasicGI1_2_0 , fdc3BasicAC1_2_0 , fdc3BasicUC1_2_0, fdc3BasicJC1_2_0, fdc3BasicRI1_2_0, fdc3BasicRI2_2_0 } from './basic/fdc3.basic';
 
 
 type testSet = { [key: string]: (() => void)[] };
@@ -24,6 +24,7 @@ const basicSuite_2_0: testSet = {
   "fdc3.basicUC1 2.0": [fdc3BasicUC1_2_0],
   "fdc3.basicJC1 2.0": [fdc3BasicJC1_2_0], 
   "fdc3.basicRI1 2.0": [fdc3BasicRI1_2_0],
+  "fdc3.basicRI2 2.0": [fdc3BasicRI2_2_0],
 };
 
 const advancedSuite_2_0: testSet = {
