@@ -3,6 +3,7 @@ import { getCommonOpenTests } from "../../common/fdc3.open";
 import { openApp, OpenCommonConfig } from "../../common/control/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
+import { TargetApp } from "fdc3_1_2";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
@@ -22,7 +23,7 @@ export default () =>
     //run 1.2-only tests
 
     const AOpensB1 = `(AOpensB1) Can open app B from app A with no context and ensure that the correct app was opened`;
-    it.only(AOpensB1, async () => {
+    it(AOpensB1, async () => {
       const result = control.contextReceiver("fdc3-conformance-opened");
       await control.openMockAppNew(openApp.b.name);
       await result;
@@ -31,16 +32,20 @@ export default () =>
 
     const AOpensB2Test = "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
     it(AOpensB2Test, async () => {
+      let targetApp: TargetApp;
+      targetApp = { name: openApp.b.name};
       const result = control.contextReceiver("fdc3-conformance-opened");
-      await control.openMockApp(openApp.b.name);
+      await control.openMockAppNew(targetApp);
       await result;
       await control.closeMockApp(AOpensB2Test);
     });
 
     const AOpensB3Test = "(AOpensB3) Can open app B from app A with no context and AppMetadata (name and appId) as target";
     it(AOpensB3Test, async () => {
+      let targetApp: TargetApp;
+      targetApp = { name: openApp.b.name, appId:openApp.b.id};
       const result = control.contextReceiver("fdc3-conformance-opened");
-      await control.openMockApp(openApp.b.name, openApp.b.id);
+      await control.openMockAppNew(targetApp);
       await result;
       await control.closeMockApp(AOpensB3Test);
     });
