@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { InfoControl} from "./control/info-control";
 import { ChannelControl } from "./control/channel-control";
-// import { closeMockAppWindow } from "../v1.2/fdc3-1_2-utils";
+
 
 export let basicCL1 = (fdc3: any, documentation: string, listener: any) => {
   
@@ -130,58 +130,28 @@ export let basicJC1 = (control: ChannelControl<any, any, any>,fdc3: any, documen
 }
 
 
-// export let basicRI1 = (fdc3: any, documentation: string, intent: string, testContext:string,) => {
-//   after(async function after() {
-//     await closeMockAppWindow(this.currentTest.title);
-//   });
+export let basicRI1 = (fdc3: any, documentation: string, intent: string, contextType: string) => {
+  const basicRI1 = "(BasicRI1) application should be able to raise an intent by passing Intent name and gets a promise in return"
+  it(basicRI1, async () => {
+    try {
+      await fdc3.raiseIntent(intent, { type: contextType });
+    } catch (ex) {
+      assert.fail(documentation + (ex.message ?? ex));
+    }
+  });
+}
 
-//   const basicRI1 = "(BasicRI1) application should be able to raise an intent by passing Intent name and gets a promise in return"
-//   it(basicRI1, async () => {
-    
-//     try {
-//       const intentResolution =  await fdc3.raiseIntent(intent, {
-//         type: testContext,
-//       });
-//       expect(intentResolution).to.be.not.null;
-//       expect(intentResolution.source).to.be.not.null;
-//     } catch (ex) {
-//       assert.fail(documentation + (ex.message ?? ex));
-//     }
-//   });
-// }
-
-// export let basicRI2 = (fdc3: any, documentation: string,  contextType: string) => {
-//   after(async function after() {
-//     await closeMockAppWindow(this.currentTest.title);
-//   });
-
-//   const basicRI2 = "(BasicRI2) application should be able to raise an intent for some item by passing context and gets a promise in return";
-//   it(basicRI2, async () => {
-//     const context = {
-//       type: contextType,
-//     };
-
-//     try {
-//       const intentResolution =  await fdc3.raiseIntentForContext(context);
-//       expect(intentResolution).to.be.not.null;
-//       expect(intentResolution.source).to.be.not.null;
-//     } catch (ex) {
-//       assert.fail(documentation + (ex.message ?? ex));
-//     }
-//   });
-// }
-
-export let basicRI1 = (fdc3: any, documentation: string, NoAppsFound: string) => {
-  it("(BasicRI1) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
+export let basicRI2 = (fdc3: any, documentation: string,  contextType: string) => {
+  const basicRI2 = "(BasicRI2) application should be able to raise an intent for some item by passing context and gets a promise in return";
+  it(basicRI2, async () => {
     const context = {
-      type: "ThisContextDoesNotExist",
+      type: contextType,
     };
 
     try {
       await fdc3.raiseIntentForContext(context);
-      assert.fail("Expected error NoAppsFound not thrown", documentation);
     } catch (ex) {
-      expect(ex).to.have.property("message", NoAppsFound, documentation);
+      assert.fail(documentation + (ex.message ?? ex));
     }
   });
 }

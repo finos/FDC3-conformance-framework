@@ -2,10 +2,10 @@ import { Listener, ResolveError, DesktopAgent } from "fdc3_1_2";
 
 import { BasicControl1_2 } from "./basic-support-1.2";
 import { ChannelControl1_2 } from "../support/channels-support-1.2";
-// import { ContextType, Intent, IntentApp } from "../support/intent-support-1.2";
-
+import { ContextType, Intent, IntentApp } from "../support/intent-support-1.2";
+import { closeMockAppWindow } from "../fdc3-1_2-utils";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { basicAC1, basicCL1, basicCL2, basicGI1, basicIL1, basicJC1, basicRI1, basicUC1 } from "../../common/fdc3.basic";
+import { basicAC1, basicCL1, basicCL2, basicGI1, basicIL1, basicJC1, basicRI1, basicRI2, basicUC1 } from "../../common/fdc3.basic";
 
 declare let fdc3: DesktopAgent;
 let listener: Listener;
@@ -27,4 +27,15 @@ export let fdc3BasicGI1_1_2 = () => describe("fdc3.basicGI1", () => basicGI1(con
 export let fdc3BasicAC1_1_2 = () => describe("fdc3.basicAC1", () => basicAC1(fdc3, documentation_AC));
 export let fdc3BasicUC1_1_2 = () => describe("fdc3.basicUC1", () => basicUC1(cc,documentation_UC));
 export let fdc3BasicJC1_1_2  = () => describe("fdc3.basicJC1", () => basicJC1(cc, fdc3, documentation_JC));
-export let fdc3BasicRI1_1_2  = () => describe("fdc3.basicRI1", () => basicRI1(fdc3, documentation_RI, ResolveError.NoAppsFound));
+export let fdc3BasicRI1_1_2  = () => describe("fdc3.basicRI1", () => { 
+    after(async function after() {
+        await closeMockAppWindow(this.currentTest.title);
+    });
+    basicRI1(fdc3, documentation_RI, Intent.aTestingIntent, ContextType.testContextX)
+});
+export let fdc3BasicRI2_1_2  = () => describe("fdc3.basicRI2", () => { 
+    after(async function after() {
+        await closeMockAppWindow(this.currentTest.title);
+    });
+    basicRI2(fdc3, documentation_RI, ContextType.testContextX)
+});
