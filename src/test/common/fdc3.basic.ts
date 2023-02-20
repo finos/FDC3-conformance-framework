@@ -149,24 +149,9 @@ export let basicRI2 = (fdc3: any, documentation: string,  contextType: string) =
     };
 
     try {
-      const contextResolution = await fdc3.raiseIntentForContext(context);
+      await fdc3.raiseIntentForContext(context);
     } catch (ex) {
       assert.fail(documentation + (ex.message ?? ex));
     }
   });
 }
-
-// export let basicRI1 = (fdc3: any, documentation: string, NoAppsFound: string) => {
-//   it("(BasicRI1) Passing an invalid context causes a NoAppsFound error to be thrown", async () => {
-//     const context = {
-//       type: "ThisContextDoesNotExist",
-//     };
-
-//     try {
-//       await fdc3.raiseIntentForContext(context);
-//       assert.fail("Expected error NoAppsFound not thrown", documentation);
-//     } catch (ex) {
-//       expect(ex).to.have.property("message", NoAppsFound, documentation);
-//     }
-//   });
-// }
