@@ -44,9 +44,9 @@ export function createUserChannelTests(
       
       await resolveExecutionCompleteListener;
       
-     // if (!receivedContext) {
-     //   assert.fail("No context received" + errorMessage);
-     // }
+      if (!receivedContext) {
+        assert.fail("No context received" + errorMessage);
+      }
     });
 
     const scTestId2 =
@@ -70,9 +70,9 @@ export function createUserChannelTests(
       await cc.openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
 
-    //  if (!receivedContext) {
-     //   assert.fail(`No context received!\n${errorMessage}`);
-     // }
+      if (!receivedContext) {
+        assert.fail(`No context received!\n${errorMessage}`);
+      }
     });
 
     const scTestId3 =
@@ -97,9 +97,9 @@ export function createUserChannelTests(
       );
       await resolveExecutionCompleteListener;
 
- //  if (!receivedContext) {
-   //     assert.fail(`No context received!\n${errorMessage}`);
-   //   }
+   if (!receivedContext) {
+        assert.fail(`No context received!\n${errorMessage}`);
+      }
     });
 
     const scTestId4 =
@@ -123,9 +123,9 @@ export function createUserChannelTests(
       await cc.openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
 
-   //   if (!receivedContext) {
-   //     assert.fail(`No context received!\n${errorMessage}`);
-   //   }
+      if (!receivedContext) {
+         assert.fail(`No context received!\n${errorMessage}`);
+       }
     });
 
     const scTestId5 =
@@ -143,18 +143,18 @@ export function createUserChannelTests(
       const contextId = cc.getRandomId();
 
       function checkIfBothContextsReceived() {
-       // if (contextTypes.length === 2) {
-        //  console.warn(JSON.stringify(contextTypes));
+        if (contextTypes.length === 2) {
+          console.warn(JSON.stringify(contextTypes));
           if (
-            contextTypes.includes(`fdc3.contact_${contextId}`) &&
-            contextTypes.includes(`fdc3.instrument_${contextId}`)
-          ) {
-           // assert.fail("Incorrect context received", errorMessage);
-          //} else {
+              !contextTypes.includes(`fdc3.contact_${contextId}`) ||
+              !contextTypes.includes(`fdc3.instrument_${contextId}`)
+            ) {
+            assert.fail("Incorrect context received", errorMessage);
+          } else {
             receivedContext = true;
-          //}
-       // }
-      }}
+          }
+        }
+      }
 
       await cc.setupAndValidateListener1(
         null,
@@ -189,9 +189,9 @@ export function createUserChannelTests(
       );
       await resolveExecutionCompleteListener;
 
-    //  if (!receivedContext) {
-     //   assert.fail(`At least one context was not received!\n${errorMessage}`);
-    //  }
+      if (!receivedContext) {
+        assert.fail(`At least one context was not received!\n${errorMessage}`);
+      }
     });
 
     const scTestId6 =

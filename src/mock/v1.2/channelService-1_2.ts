@@ -2,6 +2,8 @@ import { Channel, DesktopAgent } from "fdc3_1_2";
 import constants from "../../constants";
 import { AppControlContext, ChannelsAppConfig } from "../../test/common/channel-control";
 import { commands, channelType } from "../constants";
+import { wait } from '../../utils';
+
 declare let fdc3: DesktopAgent
 
 

@@ -1,9 +1,11 @@
 import { createAgent } from '@connectifi/agent-web';
 
 const connect = async () => {
+  const appName = '*';
     const api = await createAgent(
-        'https://nicholaskolba.connectifi-interop.com',
-        'IntentAppA@Conformance-1.2',
+       // 'https://newdev.connectifi-interop.com',
+       'https://nicholaskolba.connectifi-interop.com',
+        `${appName}@Conformance-1.2`,
     );
 
     console.log("connectifi ready");
@@ -12,4 +14,4 @@ const connect = async () => {
 }
 
 document.addEventListener("DOMContentLoaded", connect);
-//connect();
+connect();
