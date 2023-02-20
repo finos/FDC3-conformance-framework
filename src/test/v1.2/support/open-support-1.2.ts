@@ -63,6 +63,18 @@ export class OpenControl1_2 implements OpenControl<Context> {
     }
   };
 
+
+  openMockAppNew = async (targetApp: TargetApp, context?: Context) => {
+    
+      //set context parameter
+    if (context) {
+      await fdc3.open(targetApp, context);
+    } else {
+      await fdc3.open(targetApp);
+    }
+    
+  };
+
   //Close mock app using the interface implementation so that common tests can switch freely between different closeMockAppWindow implementations
   async closeMockApp(testId: string) {
     await closeMockAppWindow(testId);

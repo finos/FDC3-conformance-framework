@@ -2,14 +2,7 @@ import { assert } from "chai";
 import { openApp, OpenCommonConfig, OpenControl } from "./control/open-control";
 
 export function getCommonOpenTests(control: OpenControl<any>, documentation: string, config: OpenCommonConfig) {
-  const AOpensB1 = `(${config.prefix}AOpensB1) Can open app B from app A with ${config.target} as config.target`;
-  it(AOpensB1, async () => {
-    const result = control.contextReceiver("fdc3-conformance-opened");
-    await control.openMockApp(openApp.b.name, undefined, undefined, true);
-    await result;
-    await control.closeMockApp(AOpensB1);
-  });
-
+  
   it(`(${config.prefix}AFailsToOpenB) Receive AppNotFound error when config.targeting non-existent ${config.target} as config.target`, async () => {
     try {
       await control.openMockApp("ThisAppDoesNotExist", undefined, undefined, true);

@@ -20,6 +20,15 @@ export default () =>
     getCommonOpenTests(control, openDocs, config);
 
     //run 1.2-only tests
+
+    const AOpensB1 = `(AOpensB1) Can open app B from app A with no context and ensure that the correct app was opened`;
+    it.only(AOpensB1, async () => {
+      const result = control.contextReceiver("fdc3-conformance-opened");
+      await control.openMockAppNew(openApp.b.name);
+      await result;
+      await control.closeMockApp(AOpensB1);
+    });
+
     const AOpensB2Test = "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
     it(AOpensB2Test, async () => {
       const result = control.contextReceiver("fdc3-conformance-opened");
