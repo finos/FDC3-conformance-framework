@@ -3,15 +3,6 @@ import { openApp, OpenCommonConfig, OpenControl } from "./control/open-control";
 
 export function getCommonOpenTests(control: OpenControl<any>, documentation: string, config: OpenCommonConfig) {
   
-  it(`(${config.prefix}AFailsToOpenB) Receive AppNotFound error when config.targeting non-existent ${config.target} as config.target`, async () => {
-    try {
-      await control.openMockApp("ThisAppDoesNotExist", undefined, undefined, true);
-      assert.fail("No error was thrown", documentation);
-    } catch (ex) {
-      control.confirmAppNotFoundErrorReceived(ex);
-    }
-  });
-
   const AOpensBWithContext = `(${config.prefix}AOpensBWithContext) Can open app B from app A with context and ${config.target} as config.target but app B listening for null context`;
   it(AOpensBWithContext, async () => {
     const receiver = control.contextReceiver("context-received");

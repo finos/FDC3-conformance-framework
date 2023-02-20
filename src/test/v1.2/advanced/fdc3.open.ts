@@ -50,6 +50,15 @@ export default () =>
       await control.closeMockApp(AOpensB3Test);
     });
 
+    it(`(AFailsToOpenB1) Receive AppNotFound error when targeting non-existent app`, async () => {
+      try {
+        await control.openMockAppNew("ThisAppDoesNotExist");
+        assert.fail("No error was thrown", openDocs);
+      } catch (ex) {
+        control.confirmAppNotFoundErrorReceived(ex);
+      }
+    });
+
     const AFailsToOpenB2Test = "(AFailsToOpenB2) Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target";
     it(AFailsToOpenB2Test, async () => {
       try {
