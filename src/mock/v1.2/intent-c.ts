@@ -23,4 +23,3 @@ onFdc3Ready().then(async () => {
     } as ContextToSend);
   });
 });
-

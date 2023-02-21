@@ -14,4 +14,3 @@ const connect = async () => {
 }
 
 document.addEventListener("DOMContentLoaded", connect);
-connect();

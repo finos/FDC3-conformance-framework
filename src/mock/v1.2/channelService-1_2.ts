@@ -33,7 +33,6 @@ export class Fdc3CommandExecutor1_2 {
             config.historyItems,
             config.testId
           );
-         
           break;
         }
         case commands.broadcastContactContext: {
@@ -44,7 +43,6 @@ export class Fdc3CommandExecutor1_2 {
             config.historyItems,
             config.testId
           );
-        
           break;
         }
       }
