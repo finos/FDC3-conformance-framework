@@ -81,6 +81,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     );
     
     await wait(constants.ShortWait)
+
     return receivedContext;
   }
 
@@ -143,6 +144,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
 
     validateListenerObject(listener2);
   }
+  
   setupContextChecker = async (channel: Channel,  requestedContextType: string, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void): Promise<void> => {
     //Retrieve current context from channel
     const context = (requestedContextType == undefined) ? await channel.getCurrentContext() : await channel.getCurrentContext(requestedContextType);

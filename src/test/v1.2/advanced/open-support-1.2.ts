@@ -41,7 +41,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
           }
         );
         //if no context received reject promise
-       const { promise: thePromise, timeout: theTimeout } = sleep();
+        const { promise: thePromise, timeout: theTimeout } = sleep();
         timeout = theTimeout;
         await thePromise;
         if (!expectNotToReceiveContext) {

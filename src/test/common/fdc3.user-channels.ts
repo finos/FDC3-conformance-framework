@@ -38,11 +38,8 @@ export function createUserChannelTests(
         () => (receivedContext = true)
       );
       const channel = await cc.retrieveAndJoinChannel(1);
-      
-      await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
-      
-      await resolveExecutionCompleteListener;
-      
+      await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST); 
+      await resolveExecutionCompleteListener;  
       if (!receivedContext) {
         assert.fail("No context received" + errorMessage);
       }
@@ -57,7 +54,7 @@ export function createUserChannelTests(
 
       const resolveExecutionCompleteListener =
         cc.initCompleteListener(scTestId2);
-      const channel = await cc.retrieveAndJoinChannel(2);
+      const channel = await cc.retrieveAndJoinChannel(1);
       let receivedContext = false;
       await cc.setupAndValidateListener1(
         null,
@@ -202,7 +199,7 @@ export function createUserChannelTests(
    // const testId = cc.getRandomId();
     await cc.setupAndValidateListener1(
       null,
-      `fdc3.instrument`,
+      "fdc3.instrument",
       "unexpected-context",
       errorMessage,
       () => {
@@ -211,7 +208,7 @@ export function createUserChannelTests(
     );
     await cc.setupAndValidateListener2(
       null,
-      `fdc3.instrument`,
+      "fdc3.contact",
       "unexpected-context",
       errorMessage,
       () => {
@@ -227,10 +224,7 @@ export function createUserChannelTests(
     await cc.openChannelApp(
       scTestId6,
       channels[1].id,
-      JOIN_AND_BROADCAST_TWICE,
-    //  undefined,
-     // true,
-     // testId
+      JOIN_AND_BROADCAST_TWICE
     );
     await wait();
   });
@@ -246,7 +240,7 @@ it(scTestId7, async () => {
     cc.initCompleteListener(scTestId7);
   await cc.setupAndValidateListener1(
     null,
-    `fdc3.instrument`,
+    "fdc3.instrument",
     "unexpected-context",
     errorMessage,
     () => {
@@ -255,7 +249,7 @@ it(scTestId7, async () => {
   );
   await cc.setupAndValidateListener2(
     null,
-    `fdc3.contact`,
+    "fdc3.contact",
     "unexpected-context",
     errorMessage,
     () => {

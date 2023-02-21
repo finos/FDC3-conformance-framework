@@ -18,7 +18,7 @@ export default () =>
       }
     });
 
-    it("(BasicCL1) Method is callable", async () => {    
+    it("(BasicCL1) Method is callable", async () => {
       const contextType = "fdc3.contact";
       try {
         listener = fdc3.addContextListener(contextType, (info: any) => {

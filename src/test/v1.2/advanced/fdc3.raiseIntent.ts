@@ -32,6 +32,7 @@ export default () =>
       const intentResolution = await fdc3.raiseIntent("sharedTestingIntent1", {
         type: "testContextY",
       });
+
       validateIntentResolution("IntentAppB", intentResolution);
       await result;
     });
@@ -119,7 +120,7 @@ const createReceiver = async (contextType: string) => {
       contextType,
       (context) => {
         resolve(context);
-       // clearTimeout(timeout);
+        clearTimeout(timeout);
         listener.unsubscribe();
       }
     );
