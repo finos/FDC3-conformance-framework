@@ -3,7 +3,7 @@ import { getCommonOpenTests } from "../../common/fdc3.open";
 import { openApp, OpenCommonConfig } from "../../common/control/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
-import { TargetApp } from "fdc3_1_2";
+import { Context, TargetApp } from "fdc3_1_2";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
@@ -24,8 +24,10 @@ export default () =>
 
     const AOpensB1 = `(AOpensB1) Can open app B from app A with no context and ensure that the correct app was opened`;
     it(AOpensB1, async () => {
+      let targetApp: TargetApp;
+      targetApp = openApp.b.name;
       const result = control.contextReceiver("fdc3-conformance-opened");
-      await control.openMockAppNew(openApp.b.name);
+      await control.openMockAppNew(targetApp);
       await result;
       await control.closeMockApp(AOpensB1);
     });
@@ -83,20 +85,37 @@ export default () =>
       }
     });
 
-    const AOpensBWithContext2Test = "(AOpensBWithContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds generic listener";
-    it(AOpensBWithContext2Test, async () => {
+    const AOpensBWithContext1 = `(AOpensBWithContext1) Can open app B from app A with context and appName as target, and app B listenss to that same context`;
+    it(AOpensBWithContext1, async () => {
+      let context: Context, targetApp: TargetApp;
+      context = { type: "fdc3.instrument", name: "context" };
+      targetApp = openApp.c.name;
       const receiver = control.contextReceiver("context-received");
-      await control.openMockApp(openApp.c.name, undefined, "fdc3.instrument");
+      await control.openMockAppNew(targetApp, context );
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
-      await control.closeMockApp(AOpensBWithContext2Test);
+      await control.closeMockApp(AOpensBWithContext1);
     });
 
-    const AOpensBWithContext3Test = "(AOpensBWithContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds generic listener";
-    it(AOpensBWithContext3Test, async () => {
+    const AOpensBWithContext2 = "(AOpensBWithContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds generic listener";
+    it(AOpensBWithContext2, async () => {
+      let context: Context, targetApp: TargetApp;
+      context = { type: "fdc3.instrument", name: "context" };
+      targetApp = { name: openApp.c.name};
       const receiver = control.contextReceiver("context-received");
-      await control.openMockApp(openApp.c.name, openApp.c.id, "fdc3.instrument");
+      await control.openMockAppNew(targetApp, context );
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
-      await control.closeMockApp(AOpensBWithContext3Test);
+      await control.closeMockApp(AOpensBWithContext2);
+    });
+
+    const AOpensBWithContext3 = "(AOpensBWithContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds generic listener";
+    it(AOpensBWithContext3, async () => {
+      let context: Context, targetApp: TargetApp;
+      context = { type: "fdc3.instrument", name: "context" };
+      targetApp = { name: openApp.c.name, appId: openApp.c.id};
+      const receiver = control.contextReceiver("context-received");
+      await control.openMockAppNew(targetApp, context);
+      await control.validateReceivedContext(await receiver, "fdc3.instrument");
+      await control.closeMockApp(AOpensBWithContext3);
     });
 
     const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;

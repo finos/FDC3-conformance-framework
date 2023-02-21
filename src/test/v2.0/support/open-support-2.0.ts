@@ -46,6 +46,15 @@ export class OpenControl2_0 implements OpenControl<Context> {
     }
   };
 
+  openMockAppNew = async (targetApp: any, contextType?: any) => {
+    
+    if (contextType) {
+      await fdc3.open({ appId: targetApp }, contextType);
+    } else {
+      await fdc3.open({ appId: targetApp });
+    }
+  };
+
   //Close mock app using the interface implementation so that common tests can switch freely between different closeMockAppWindow implementations
   async closeMockApp(testId: string) {
     await closeMockAppWindow(testId);
@@ -64,6 +73,10 @@ export class OpenControl2_0 implements OpenControl<Context> {
 
   validateReceivedContext = async (context: ContextSender, expectedContextType: string) => {
     expect(context.context.type).to.eq(expectedContextType, openDocs);
+  };
+
+  inValidateReceivedContext = async (context: ContextSender, expectedContextType: string) => {
+    expect(context.context.type).not.to.eq(expectedContextType, openDocs);
   };
 }
 

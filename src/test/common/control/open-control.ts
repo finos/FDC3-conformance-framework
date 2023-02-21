@@ -1,6 +1,7 @@
 export interface OpenControl<X> {
   //test control
   openMockApp(appName?: string, appId?: string, contextType?: string, targetAppAsString?: boolean, malformedContext?: boolean): void;
+  openMockAppNew(targetApp: any, context: any): void;
   closeMockApp(testId: string): Promise<void>;
 
   //listening
@@ -10,6 +11,7 @@ export interface OpenControl<X> {
   //validation
   confirmAppNotFoundErrorReceived(exception: DOMException): void;
   validateReceivedContext(contextReceiver: X, expectedContextType: string): Promise<void>;
+  inValidateReceivedContext(contextReceiver: X, expectedContextType: string): Promise<void>;
 }
 
 export const openApp = {
