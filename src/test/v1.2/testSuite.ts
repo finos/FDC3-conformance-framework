@@ -79,6 +79,5 @@ export const executeTestsInBrowser = (pack: string) => {
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allTests[pack];
   suite.forEach((s) => s());
-  
   mocha.run();
 };

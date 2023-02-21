@@ -36,4 +36,4 @@ onFdc3Ready().then(async () => {
     await sendContextToTests({
         type: "fdc3-intent-b-opened"
     });
-});
+  });

@@ -43,6 +43,4 @@ function hideVersionSelector() {
   }
 }
 
-
-
 document.getElementById("runButton").addEventListener("click", executeTests);

@@ -2,8 +2,6 @@ import { Channel, DesktopAgent } from "fdc3_1_2";
 import constants from "../../constants";
 import { AppControlContext, ChannelsAppConfig } from "../../test/common/channel-control";
 import { commands, channelType } from "../constants";
-import { wait } from '../../utils';
-
 declare let fdc3: DesktopAgent
 
 
@@ -28,7 +26,7 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.broadcastInstrumentContext: {
-          const contextType = config.contextId ? `fdc3.instrument_${config.contextId}` : "fdc3.instrument";
+          const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : "fdc3.instrument";
           this.broadcastContextItem(
             contextType,
             channel,
@@ -39,7 +37,7 @@ export class Fdc3CommandExecutor1_2 {
           break;
         }
         case commands.broadcastContactContext: {
-          const contextType = config.contextId ? `fdc3.contact_${config.contextId}` : "fdc3.contact";
+          const contextType = config.contextId ? `fdc3.contact.${config.contextId}` : "fdc3.contact";
           this.broadcastContextItem(
             contextType,
             channel,
@@ -97,7 +95,6 @@ export class Fdc3CommandExecutor1_2 {
             name: `History-item-${i + 1}`,
             testId
           };
-      
           channel.broadcast(context);
         }
       }
@@ -113,7 +110,6 @@ export class Fdc3CommandExecutor1_2 {
           name: `History-item-${i + 1}`,
           testId
         };
-
         fdc3.broadcast(context);
       }
     },
@@ -133,7 +129,6 @@ export class Fdc3CommandExecutor1_2 {
         window.close();
       }, 1);
     });
-    return;
   }
 
   async notifyAppAOnCompletion(testId: string) {

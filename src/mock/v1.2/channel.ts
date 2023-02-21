@@ -3,7 +3,6 @@ import { onFdc3Ready } from './mock-functions'
 import { DesktopAgent } from 'fdc3_1_2';
 import { ChannelsAppContext } from '../../test/common/channel-control';
 
-
 declare let fdc3 : DesktopAgent
 
 onFdc3Ready().then(() => {

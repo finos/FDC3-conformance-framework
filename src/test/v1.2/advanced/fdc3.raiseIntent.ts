@@ -32,7 +32,6 @@ export default () =>
       const intentResolution = await fdc3.raiseIntent("sharedTestingIntent1", {
         type: "testContextY",
       });
-      console.log("************** intentResolution ", intentResolution);
       validateIntentResolution("IntentAppB", intentResolution);
       await result;
     });
@@ -119,7 +118,6 @@ const createReceiver = async (contextType: string) => {
     const listener = appControlChannel.addContextListener(
       contextType,
       (context) => {
-        console.log("***************** createReceiver - message received", contextType);
         resolve(context);
        // clearTimeout(timeout);
         listener.unsubscribe();
@@ -127,10 +125,10 @@ const createReceiver = async (contextType: string) => {
     );
 
     //if no context received reject promise
-   // const { promise: sleepPromise, timeout: theTimeout } = sleep();
-  //  timeout = theTimeout;
-   // await sleepPromise;
-   // reject(new Error("No context received from app B"));
+    const { promise: sleepPromise, timeout: theTimeout } = sleep();
+    timeout = theTimeout;
+    await sleepPromise;
+    reject(new Error("No context received from app B"));
   });
 
   return messageReceived;
@@ -142,7 +140,7 @@ async function closeIntentAppsWindows(testId) {
     constants.ControlChannel
   );
   await waitForContext("windowClosed", testId, appControlChannel);
- // await wait(constants.WindowCloseWaitTime);
+  await wait(constants.WindowCloseWaitTime);
 }
 
 const waitForContext = (
@@ -221,7 +219,7 @@ and type "${context?.type}" (${
           }
         }
       };
-     // channel.getCurrentContext().then(ccHandler);
+      channel.getCurrentContext().then(ccHandler);
     }
   });
 };

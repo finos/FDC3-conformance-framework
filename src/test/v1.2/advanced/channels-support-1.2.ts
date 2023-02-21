@@ -74,7 +74,6 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
   }
 
   initCompleteListener = async (testId: string) : Promise<Context>  => {
-    console.log("#################### initCompleteListener");
     const receivedContext = await waitForContext(
       "executionComplete",
       testId,
@@ -82,7 +81,6 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     );
     
     await wait(constants.ShortWait)
-    console.log("**************returning receivedContext", receivedContext);
     return receivedContext;
   }
 
@@ -96,7 +94,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context> {
     };
 
     if (historyItems) {
-     channelsAppConfig.historyItems = historyItems;
+      channelsAppConfig.historyItems = historyItems;
     }
 
     //Open ChannelsApp then execute commands in order
@@ -197,7 +195,6 @@ const waitForContext = (
     );
 
     const handler = (context: AppControlContext) => {
-      console.log("####################### waitForContext, got context", context, testId);
       if (testId) {
         if (testId == context.testId) {
           console.log(

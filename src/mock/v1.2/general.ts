@@ -5,7 +5,6 @@ import { sendContextToTests } from "../v1.2/mock-functions";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
-  
   await closeWindowOnCompletion();
   // broadcast that this app has opened
 
