@@ -3,12 +3,23 @@ import constants from "../../constants";
 import { openApp, OpenCommonConfig, OpenControl } from "./control/open-control";
 
 export function getCommonOpenTests(control: OpenControl<any>, documentation: string, config: OpenCommonConfig) {
+
+  const AOpensB3 = `(${config.prefix}AOpensB3) Can open app B from app A with no context and ${config.targetMultiple} as config.target`;
+  it(AOpensB3, async () => {
+    let targetApp: any;
+    targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
+    console.log('***************************** targetApp**********',targetApp);
+    const result = control.contextReceiver("fdc3-conformance-opened");
+    await control.openMockAppNew(targetApp);
+    await result;
+    await control.closeMockApp(AOpensB3);
+  });
   
   const AOpensBWithSpecificContext = `(${config.prefix}AOpensBWithSpecificContext) Can open app B from app A with context and ${config.targetMultiple} as config.target and app B is expecting context`;
   it(AOpensBWithSpecificContext, async () => {
     let context: any, targetApp: any;
     context = { type: "fdc3.instrument", name: "context" };
-    targetApp = { name: openApp.b.name, appId: openApp.b.id};
+    targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
     const receiver = control.contextReceiver("context-received");
     await control.openMockAppNew(targetApp, context);
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
@@ -19,7 +30,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
   it(AOpensBMultipleListen, async () => {
     let context: any, targetApp: any;
     context = { type: "fdc3.instrument", name: "context" };
-    targetApp = { name: openApp.b.name, appId: openApp.b.id};
+    targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
     const receiver = control.contextReceiver("context-received");
     await control.openMockAppNew(targetApp, context);
     await receiver;
@@ -33,4 +44,5 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     await control.expectAppTimeoutErrorOnOpen(openApp.b.name);
     await control.closeMockApp(AOpensBWithWrongContext);
   }).timeout(constants.NoListenerTimeout + 1000);
+  
 }

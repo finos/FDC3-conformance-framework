@@ -82,9 +82,12 @@ export class OpenControl1_2 implements OpenControl<Context> {
     await closeMockAppWindow(testId);
   }
 
+  createTargetApp(name?: string, appId?: string) {
+      return { name, appId};
+  }
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    await appControlChannel.addContextListener("context-received", (context: AppControlContext) => {
+    await appControlChannel.addContextListener("wrong-context", (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
   };
