@@ -75,23 +75,25 @@ export class OpenControl2_0 implements OpenControl<Context> {
     expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
 
+  expectAppTimeoutErrorOnOpen = async (appId: string) => {
+    const { timeout, promise } = sleep(constants.NoListenerTimeout);
+    let promiseRejected;
+  
+    //wait for the open promise to be rejected
+    try {
+      await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
+      await promise;
+    } catch (ex) {
+      expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
+      promiseRejected = true;
+      clearTimeout(timeout);
+    }
+  
+    if (!promiseRejected) {
+      assert.fail(testTimeoutMessage + openDocs);
+    }
+  };
+
 }
 
-export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
-  const { timeout, promise } = sleep(constants.NoListenerTimeout);
-  let promiseRejected;
 
-  //wait for the open promise to be rejected
-  try {
-    await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
-    await promise;
-  } catch (ex) {
-    expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-    promiseRejected = true;
-    clearTimeout(timeout);
-  }
-
-  if (!promiseRejected) {
-    assert.fail(testTimeoutMessage + openDocs);
-  }
-};

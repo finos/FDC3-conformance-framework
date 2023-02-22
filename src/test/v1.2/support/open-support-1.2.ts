@@ -10,6 +10,8 @@ import { closeMockAppWindow } from "../fdc3-1_2-utils";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause:";
+const testTimeoutMessage = `Test timeout - An error was not thrown within the allocated timeout of ${constants.NoListenerTimeout}. This timeout is not defined by the standard, rather by each implementation. Hence, if you DA implementation uses a longer timeout the constants.NoListenerTimeout in the test framework will need to be increased.`;
+
 
 export class OpenControl1_2 implements OpenControl<Context> {
   contextReceiver = async (contextType: string, expectNotToReceiveContext?: boolean): Promise<Context> => {
@@ -94,5 +96,24 @@ export class OpenControl1_2 implements OpenControl<Context> {
   validateReceivedContext = async (context: ContextSender, expectedContextType: string): Promise<void> => {
     expect(context.context.name).to.eq("context", openDocs);
     expect(context.context.type).to.eq(expectedContextType, openDocs);
+  };
+
+  expectAppTimeoutErrorOnOpen = async (appName: string) => {
+    const { timeout, promise } = sleep(constants.NoListenerTimeout);
+    let promiseRejected;
+  
+    //wait for the open promise to be rejected
+    try {
+      await fdc3.open({ name: appName }, { type: "fdc3.contextDoesNotExist" });
+      await promise;
+    } catch (ex) {
+      expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
+      promiseRejected = true;
+      clearTimeout(timeout);
+    }
+  
+    if (!promiseRejected) {
+      assert.fail(testTimeoutMessage + openDocs);
+    }
   };
 }

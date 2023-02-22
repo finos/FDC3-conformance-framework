@@ -1,4 +1,5 @@
 import { assert } from "chai";
+import constants from "../../constants";
 import { openApp, OpenCommonConfig, OpenControl } from "./control/open-control";
 
 export function getCommonOpenTests(control: OpenControl<any>, documentation: string, config: OpenCommonConfig) {
@@ -25,4 +26,11 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeMockApp(AOpensBMultipleListen);
   });
+
+  const AOpensBWithWrongContext = `(${config.prefix}AOpensBWithWrongContext) Received App timeout when opening app B with fake context, app b listening for different context`;
+  it(AOpensBWithWrongContext, async () => {
+    await control.addListenerAndFailIfReceived();
+    await control.expectAppTimeoutErrorOnOpen(openApp.b.name);
+    await control.closeMockApp(AOpensBWithWrongContext);
+  }).timeout(constants.NoListenerTimeout + 1000);
 }
