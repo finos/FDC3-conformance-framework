@@ -15,14 +15,13 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
   });
 
   const AOpensBMultipleListen = `(${config.prefix}AOpensBMultipleListen) Can open app B from app A with context and ${config.targetMultiple} as config.target but app B has multiple listeners added before the correct one`;
-  it.only(AOpensBMultipleListen, async () => {
+  it(AOpensBMultipleListen, async () => {
     let context: any, targetApp: any;
     context = { type: "fdc3.instrument", name: "context" };
     targetApp = { name: openApp.b.name, appId: openApp.b.id};
     const receiver = control.contextReceiver("context-received");
     await control.openMockAppNew(targetApp, context);
     await receiver;
-    await control.inValidateReceivedContext(await receiver, "fdc3.contact");
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeMockApp(AOpensBMultipleListen);
   });

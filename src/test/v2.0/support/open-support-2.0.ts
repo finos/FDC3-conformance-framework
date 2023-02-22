@@ -75,9 +75,6 @@ export class OpenControl2_0 implements OpenControl<Context> {
     expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
 
-  inValidateReceivedContext = async (context: ContextSender, expectedContextType: string) => {
-    expect(context.context.type).not.to.eq(expectedContextType, openDocs);
-  };
 }
 
 export const expectAppTimeoutErrorOnOpen = async (appId: string) => {

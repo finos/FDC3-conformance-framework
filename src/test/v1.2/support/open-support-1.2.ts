@@ -95,8 +95,4 @@ export class OpenControl1_2 implements OpenControl<Context> {
     expect(context.context.name).to.eq("context", openDocs);
     expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
-  
-  inValidateReceivedContext = async (context: ContextSender, expectedContextType: string): Promise<void> => {
-    expect(context.context.type).not.to.eq(expectedContextType, openDocs);
-  };
 }

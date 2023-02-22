@@ -11,7 +11,6 @@ export interface OpenControl<X> {
   //validation
   confirmAppNotFoundErrorReceived(exception: DOMException): void;
   validateReceivedContext(contextReceiver: X, expectedContextType: string): Promise<void>;
-  inValidateReceivedContext(contextReceiver: X, expectedContextType: string): Promise<void>;
 }
 
 export const openApp = {
