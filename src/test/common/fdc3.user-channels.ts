@@ -19,7 +19,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId1);
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
-      const channel = await cc.retrieveAndJoinChannel(1);
+      const channel = await cc.retrieveAndJoinNonGlobalChannel();
       await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
       cc.unsubscribeListeners([listener]);
@@ -33,7 +33,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A joins channel 1\r\n- Add listener of type fdc3.instrument to App A\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId2);
-      const channel = await cc.retrieveAndJoinChannel(1);
+      const channel = await cc.retrieveAndJoinNonGlobalChannel();
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
@@ -49,7 +49,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId3);
-      const channel = await cc.getUserChannel(1);
+      const channel = await cc.getNonGlobalUserChannel();
       await cc.openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.joinChannel(channel);
@@ -66,7 +66,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCBasicUsage4);
-      const channel = await cc.getUserChannel(1);
+      const channel = await cc.getNonGlobalUserChannel();
       await cc.openChannelApp(UCBasicUsage4, channel.id, JOIN_AND_BROADCAST);
       await cc.joinChannel(channel);
       let receivedContext = false;
@@ -85,7 +85,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4);
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
-      const channel = await cc.retrieveAndJoinChannel(1);
+      const channel = await cc.retrieveAndJoinNonGlobalChannel();
       await cc.openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
       cc.unsubscribeListeners([listener]);
@@ -100,7 +100,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage2);
       let receivedContext = false;
-      const channel = await cc.retrieveAndJoinChannel(1);
+      const channel = await cc.retrieveAndJoinNonGlobalChannel();
       let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.openChannelApp(UCFilteredUsage2, channel.id, JOIN_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
@@ -115,7 +115,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage3);
-      const userChannels = await cc.getSystemChannels();
+      const userChannels = await cc.getNonGlobalSystemChannels();
       await cc.openChannelApp(UCFilteredUsage3, userChannels[0].id, JOIN_AND_BROADCAST_TWICE, undefined, true);
       await resolveExecutionCompleteListener;
 
@@ -137,7 +137,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage4);
-      const userChannels = await cc.getSystemChannels();
+      const userChannels = await cc.getNonGlobalSystemChannels();
       await cc.openChannelApp(UCFilteredUsage4, userChannels[0].id, JOIN_AND_BROADCAST_TWICE, undefined, true);
       await resolveExecutionCompleteListener;
       await cc.joinChannel(userChannels[0]);
@@ -182,7 +182,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
         checkIfBothContextsReceived();
       });
 
-      const channel = await cc.retrieveAndJoinChannel(1);
+      const channel = await cc.retrieveAndJoinNonGlobalChannel();
       await cc.openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
       cc.unsubscribeListeners([listener, listener2]);
@@ -202,7 +202,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
         /* noop */
       });
 
-      const channels = await cc.getSystemChannels();
+      const channels = await cc.getNonGlobalSystemChannels();
       if (channels.length < 1) assert.fail("No system channels available for app A");
 
       await cc.joinChannel(channels[0]);
@@ -222,7 +222,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       let listener2 = await cc.setupAndValidateListener(null, "fdc3.contact", "unexpected-context", errorMessage, () => {
         /* noop */
       });
-      const channel = await cc.retrieveAndJoinChannel(1);
+      const channel = await cc.retrieveAndJoinNonGlobalChannel();
       cc.unsubscribeListeners([listener, listener2]);
       await cc.openChannelApp(scTestId7, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
@@ -240,7 +240,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
         /* noop */
       });
 
-      const channels = await cc.getSystemChannels();
+      const channels = await cc.getNonGlobalSystemChannels();
       if (channels.length < 1) {
         assert.fail("No system channels available for app A");
       }
@@ -267,7 +267,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
         assert.fail("fdc3.contact context received");
       });
 
-      const channel = await cc.retrieveAndJoinChannel(1);
+      const channel = await cc.retrieveAndJoinNonGlobalChannel();
       await cc.leaveChannel();
       await cc.openChannelApp(UCFilteredUsageLeave, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
@@ -278,7 +278,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
     const UCFilteredUsageJoin = "(" + prefix + "UCFilteredUsageJoin) getCurrentChannel retrieves the channel that was joined";
     it(UCFilteredUsageJoin, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves user channels\r\n- App A joins the third channel\r\n- App A gets current channel${documentation}`;
-      const channels = await cc.getSystemChannels();
+      const channels = await cc.getNonGlobalSystemChannels();
       if (channels.length < 1) {
         assert.fail("No system channels available for app A");
       }

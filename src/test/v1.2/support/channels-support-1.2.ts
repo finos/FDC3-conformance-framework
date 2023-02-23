@@ -15,9 +15,20 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
     return channel;
   };
 
+  retrieveAndJoinNonGlobalChannel = async (): Promise<Channel> => {
+    const channel = await this.getNonGlobalUserChannel();
+    await fdc3.joinChannel(channel.id);
+    return channel;
+  };
+
   getSystemChannels = async () => {
     return await fdc3.getSystemChannels();
   };
+
+  getNonGlobalSystemChannels = async () => {
+    const channels = await fdc3.getSystemChannels();
+    return channels.filter(channel => channel.id.indexOf('global') === -1);
+  }
 
   leaveChannel = async () => {
     return await fdc3.leaveCurrentChannel();
@@ -31,6 +42,15 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
       assert.fail("No system channels available for app A");
     }
   };
+
+  getNonGlobalUserChannel = async (): Promise<Channel> => {
+    const channels = await fdc3.getSystemChannels();
+    if (channels.length > 0) {
+      return channels.find((channel) => channel.id.indexOf('global') === -1);
+    } else {
+      assert.fail("No system channels available for app A");
+    }
+  }
 
   joinChannel = async (channel: Channel): Promise<void> => {
     return await fdc3.joinChannel(channel.id);
@@ -120,6 +140,7 @@ function validateListenerObject(listenerObject) {
   assert.isTrue(typeof listenerObject === "object", "No listener object found");
   expect(typeof listenerObject.unsubscribe).to.be.equals("function", "Listener does not contain an unsubscribe method");
 }
+
 export function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppConfig): ChannelsAppContext {
   return {
     type: "channelsAppContext",
