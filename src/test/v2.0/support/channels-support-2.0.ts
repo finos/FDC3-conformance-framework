@@ -24,9 +24,29 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     }
   };
 
+  retrieveAndJoinNonGlobalChannel = async (): Promise<Channel> => {
+    const channel = await this.getNonGlobalUserChannel();
+    await fdc3.joinUserChannel(channel.id);
+    return channel;
+  };
+
   getSystemChannels = async () => {
     return await fdc3.getUserChannels();
   };
+
+  getNonGlobalSystemChannels = async () => {
+    const channels = await fdc3.getUserChannels();
+    return channels.filter(channel => channel.id.indexOf('global') === -1);
+  }
+
+  getNonGlobalUserChannel = async (): Promise<Channel> => {
+    const channels = await fdc3.getUserChannels();
+    if (channels.length > 0) {
+      return channels.find((channel) => channel.id.indexOf('global') === -1);
+    } else {
+      assert.fail("No system channels available for app A");
+    }
+  }
 
   leaveChannel = async () => {
     return await fdc3.leaveCurrentChannel();
