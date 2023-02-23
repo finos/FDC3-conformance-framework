@@ -101,13 +101,13 @@ export class OpenControl1_2 implements OpenControl<Context> {
     expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
 
-  expectAppTimeoutErrorOnOpen = async (appName: string) => {
+  expectAppTimeoutErrorOnOpen = async (targetApp: any) => {
     const { timeout, promise } = sleep(constants.NoListenerTimeout);
     let promiseRejected;
   
     //wait for the open promise to be rejected
     try {
-      await fdc3.open({ name: appName }, { type: "fdc3.contextDoesNotExist" });
+      await fdc3.open(targetApp, { type: "fdc3.contextDoesNotExist" });
       await promise;
     } catch (ex) {
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);

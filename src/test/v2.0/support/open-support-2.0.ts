@@ -46,13 +46,16 @@ export class OpenControl2_0 implements OpenControl<Context> {
     }
   };
 
-  openMockAppNew = async (targetApp: any, contextType?: any) => {
-    
-    if (contextType) {
-      await fdc3.open({ appId: targetApp }, contextType);
-    } else {
-      await fdc3.open({ appId: targetApp });
+  openMockAppNew = async (targetApp: any, context?: any) => {
+    let instanceIdentifier : any;
+    if(context) {
+      instanceIdentifier = await fdc3.open(targetApp, context);
     }
+    else {
+      instanceIdentifier = await fdc3.open(targetApp)
+      
+    }
+    return instanceIdentifier;
   };
 
   //Close mock app using the interface implementation so that common tests can switch freely between different closeMockAppWindow implementations
@@ -78,15 +81,16 @@ export class OpenControl2_0 implements OpenControl<Context> {
     expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
 
-  expectAppTimeoutErrorOnOpen = async (appId: string) => {
+  expectAppTimeoutErrorOnOpen = async (targetApp: any) => {
     const { timeout, promise } = sleep(constants.NoListenerTimeout);
     let promiseRejected;
   
     //wait for the open promise to be rejected
     try {
-      await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
+      await fdc3.open(targetApp, { type: "fdc3.contextDoesNotExist" });
       await promise;
     } catch (ex) {
+      console.log('************************ex is ***************************',ex)
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
       promiseRejected = true;
       clearTimeout(timeout);
