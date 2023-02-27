@@ -5,7 +5,6 @@ const isProduction = process.env.NODE_ENV == "production";
 
 const config = {
   entry: {
-    'connectifi-adapter': "./src/mock/connectifiAdapter.ts",
     'fdc3-compliance-v1.2': "./src/test/v1.2/index.ts",
     'channel-v1.2': "./src/mock/v1.2/channel.ts",
     'general-v1.2': "./src/mock/v1.2/general.ts",

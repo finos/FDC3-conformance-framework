@@ -21,8 +21,7 @@
     "source-map-support": "^0.5.21",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.4",
-    "window": "^1.0.0",
-    "@connectifi/agent-web": "^0.0.65"
+    "window": "^1.0.0"
   },
   "devDependencies": {
     "@types/chai": "^4.3.0",
