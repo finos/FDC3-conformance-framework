@@ -27,7 +27,7 @@ export default () =>
     it(AOpensB4, async () => {
       const result = control.contextReceiver("fdc3-conformance-opened");
       const targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
-      const instanceIdentifier = await control.openMockAppNew(targetApp);
+      const instanceIdentifier = await control.openMockApp(targetApp);
       expect(instanceIdentifier.appId).to.eq(openApp.b.id);
       expect(instanceIdentifier).to.have.property("instanceId");
       await result;

@@ -9,7 +9,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     let targetApp: any;
     targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
     const result = control.contextReceiver("fdc3-conformance-opened");
-    await control.openMockAppNew(targetApp);
+    await control.openMockApp(targetApp);
     await result;
     await control.closeMockApp(AOpensB3);
   });
@@ -19,7 +19,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     try {
       let targetApp: any;
       targetApp = control.createTargetApp("ThisAppDoesNotExist","ThisAppDoesNotExist");
-      await control.openMockAppNew(targetApp);
+      await control.openMockApp(targetApp);
       assert.fail("No error was not thrown", documentation);
     } catch (ex) {
       control.confirmAppNotFoundErrorReceived(ex);
@@ -32,7 +32,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     context = { type: "fdc3.instrument", name: "context" };
     targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
     const receiver = control.contextReceiver("context-received");
-    await control.openMockAppNew(targetApp, context);
+    await control.openMockApp(targetApp, context);
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeMockApp(AOpensBWithContext3);
   });
@@ -43,7 +43,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     context = { type: "fdc3.instrument", name: "context" };
     targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
     const receiver = control.contextReceiver("context-received");
-    await control.openMockAppNew(targetApp, context);
+    await control.openMockApp(targetApp, context);
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeMockApp(AOpensBWithSpecificContext);
   });
@@ -54,7 +54,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     context = { type: "fdc3.instrument", name: "context" };
     targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
     const receiver = control.contextReceiver("context-received");
-    await control.openMockAppNew(targetApp, context);
+    await control.openMockApp(targetApp, context);
     await receiver;
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeMockApp(AOpensBMultipleListen);

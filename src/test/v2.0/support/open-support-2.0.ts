@@ -36,17 +36,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
     return messageReceived;
   };
 
-  openMockApp = async (appName: string, appId?: string, contextType?: string) => {
-    appId = `${appName}Id`;
-    if (contextType) {
-      const context = { type: contextType };
-      await fdc3.open({ appId: appId }, context);
-    } else {
-      await fdc3.open({ appId: appId });
-    }
-  };
-
-  openMockAppNew = async (targetApp: any, context?: any) => {
+  openMockApp = async (targetApp: any, context?: any) => {
     let instanceIdentifier : any;
     if(context) {
       instanceIdentifier = await fdc3.open(targetApp, context);
