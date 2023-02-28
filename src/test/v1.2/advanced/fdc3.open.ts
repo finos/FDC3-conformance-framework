@@ -83,12 +83,4 @@ export default () =>
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
       await control.closeMockApp(AOpensBWithContext2);
     });
-
-    // const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
-    // it(AOpensBMalformedContext, async () => {
-    //   const receiver = control.contextReceiver("context-received", true);
-    //   await control.openMockApp(openApp.f.name, undefined, undefined, true, true);
-    //   await receiver;
-    //   await control.closeMockApp(AOpensBMalformedContext);
-    // });
   });
