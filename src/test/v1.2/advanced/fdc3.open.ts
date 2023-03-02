@@ -26,7 +26,7 @@ export default () =>
     it(AOpensB1, async () => {
       let targetApp = openApp.b.name;
       const result = control.contextReceiver("fdc3-conformance-opened");
-      await control.openMockAppNew(targetApp);
+      await control.openMockApp(targetApp);
       await result;
       await control.closeMockApp(AOpensB1);
     });
@@ -36,14 +36,14 @@ export default () =>
       let targetApp: TargetApp;
       targetApp = { name: openApp.b.name};
       const result = control.contextReceiver("fdc3-conformance-opened");
-      await control.openMockAppNew(targetApp);
+      await control.openMockApp(targetApp);
       await result;
       await control.closeMockApp(AOpensB2);
     });
 
     it(`(AFailsToOpenB1) Receive AppNotFound error when targeting non-existent app`, async () => {
       try {
-        await control.openMockAppNew("ThisAppDoesNotExist");
+        await control.openMockApp("ThisAppDoesNotExist");
         assert.fail("No error was thrown", openDocs);
       } catch (ex) {
         control.confirmAppNotFoundErrorReceived(ex);
@@ -55,7 +55,7 @@ export default () =>
       try {
         let targetApp: TargetApp;
         targetApp = { name: "ThisAppDoesNotExist"};
-        await control.openMockAppNew(targetApp);
+        await control.openMockApp(targetApp);
         assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
         control.confirmAppNotFoundErrorReceived(ex);
@@ -68,7 +68,7 @@ export default () =>
       context = { type: "fdc3.instrument", name: "context" };
       targetApp = openApp.c.name;
       const receiver = control.contextReceiver("context-received");
-      await control.openMockAppNew(targetApp, context );
+      await control.openMockApp(targetApp, context );
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
       await control.closeMockApp(AOpensBWithContext1);
     });
@@ -79,16 +79,8 @@ export default () =>
       context = { type: "fdc3.instrument", name: "context" };
       targetApp = { name: openApp.c.name};
       const receiver = control.contextReceiver("context-received");
-      await control.openMockAppNew(targetApp, context );
+      await control.openMockApp(targetApp, context );
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
       await control.closeMockApp(AOpensBWithContext2);
     });
-
-    // const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
-    // it(AOpensBMalformedContext, async () => {
-    //   const receiver = control.contextReceiver("context-received", true);
-    //   await control.openMockApp(openApp.f.name, undefined, undefined, true, true);
-    //   await receiver;
-    //   await control.closeMockApp(AOpensBMalformedContext);
-    // });
   });

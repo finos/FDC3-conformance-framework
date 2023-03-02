@@ -38,35 +38,7 @@ export class OpenControl1_2 implements OpenControl<Context> {
     return messageReceived;
   };
 
-  openMockApp = async (appName: string, appId?: string, contextType?: string, targetAppAsString?: boolean, malformedContext?: boolean) => {
-    let targetApp: TargetApp;
-    let context: Context;
-
-    if (malformedContext) {
-      // @ts-ignore
-      await fdc3.open(appName, { name: "this is a malformed context" });
-    } else {
-      //set TargetApp parameter
-      if (appId) {
-        targetApp = { name: appName, appId: appId };
-      } else if (targetAppAsString) {
-        targetApp = appName;
-      } else {
-        targetApp = { name: appName };
-      }
-
-      //set context parameter
-      if (contextType) {
-        context = { type: contextType, name: "context" };
-        await fdc3.open(targetApp, context);
-      } else {
-        await fdc3.open(targetApp);
-      }
-    }
-  };
-
-
-  openMockAppNew = async (targetApp: TargetApp, context?: Context) => {
+  openMockApp = async (targetApp: TargetApp, context?: Context) => {
     
       //set context parameter
     if (context) {
