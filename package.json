@@ -4,11 +4,12 @@
     "copy": "shx mkdir -p ./dist && shx cp -R static/* ./dist",
     "compile": "webpack build",
     "replace-glue-core": "npm run copy && npx replace-in-file --configFile=options/glue-core-app-1.2.js && npx replace-in-file --configFile=options/glue-core-support-1.2.js && npx replace-in-file --configFile=options/glue-core-app-2.0.js && npx replace-in-file --configFile=options/glue-core-support-2.0.js",
+    "copy-glue-libs" : "shx cp -R options/glue/* ./dist",
     "replace-connectifi": "npm run copy && npx replace-in-file --configFile=options/connectifi-adapter.js",
     "serve": "npx http-server ./dist -p 3001 -c-1",
     "start": "npm run copy && npm run compile && npm run serve",
     "start-connectifi": "npm run compile && npm run copy && npm run replace-connectifi && npm run serve",
-    "start-glue-core": "npm run compile && npm run copy && npm run replace-glue-core && npm run serve",
+    "start-glue-core": "npm run compile && npm run copy && npm run replace-glue-core && npm run copy-glue-libs && npm run serve",
     "build-static": "npm run compile && npm run copy"
   },
   "dependencies": {
