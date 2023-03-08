@@ -1,4 +1,4 @@
-# Options Directory
+# Options Directory
 
 For maintainers: Please add all vendor-specific code in this directory.  
 
