@@ -36,14 +36,16 @@ export class OpenControl2_0 implements OpenControl<Context> {
     return messageReceived;
   };
 
-  openMockApp = async (appName: string, appId?: string, contextType?: string) => {
-    appId = `${appName}Id`;
-    if (contextType) {
-      const context = { type: contextType };
-      await fdc3.open({ appId: appId }, context);
-    } else {
-      await fdc3.open({ appId: appId });
+  openMockApp = async (targetApp: any, context?: any) => {
+    let instanceIdentifier : any;
+    if(context) {
+      instanceIdentifier = await fdc3.open(targetApp, context);
     }
+    else {
+      instanceIdentifier = await fdc3.open(targetApp)
+      
+    }
+    return instanceIdentifier;
   };
 
   //Close mock app using the interface implementation so that common tests can switch freely between different closeMockAppWindow implementations
@@ -51,6 +53,9 @@ export class OpenControl2_0 implements OpenControl<Context> {
     await closeMockAppWindow(testId);
   }
 
+  createTargetApp(name?: string, appId?: string) {
+      return {appId};
+  }
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
     await appControlChannel.addContextListener("context-received", (context: AppControlContext) => {
@@ -65,23 +70,27 @@ export class OpenControl2_0 implements OpenControl<Context> {
   validateReceivedContext = async (context: ContextSender, expectedContextType: string) => {
     expect(context.context.type).to.eq(expectedContextType, openDocs);
   };
+
+  expectAppTimeoutErrorOnOpen = async (targetApp: any) => {
+    const { timeout, promise } = sleep(constants.NoListenerTimeout);
+    let promiseRejected;
+  
+    //wait for the open promise to be rejected
+    try {
+      await fdc3.open(targetApp, { type: "fdc3.contextDoesNotExist" });
+      await promise;
+    } catch (ex) {
+      console.log('************************ex is ***************************',ex)
+      expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
+      promiseRejected = true;
+      clearTimeout(timeout);
+    }
+  
+    if (!promiseRejected) {
+      assert.fail(testTimeoutMessage + openDocs);
+    }
+  };
+
 }
 
-export const expectAppTimeoutErrorOnOpen = async (appId: string) => {
-  const { timeout, promise } = sleep(constants.NoListenerTimeout);
-  let promiseRejected;
 
-  //wait for the open promise to be rejected
-  try {
-    await fdc3.open({ appId: appId }, { type: "fdc3.contextDoesNotExist" });
-    await promise;
-  } catch (ex) {
-    expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
-    promiseRejected = true;
-    clearTimeout(timeout);
-  }
-
-  if (!promiseRejected) {
-    assert.fail(testTimeoutMessage + openDocs);
-  }
-};

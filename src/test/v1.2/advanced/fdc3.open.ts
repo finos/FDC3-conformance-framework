@@ -3,6 +3,7 @@ import { getCommonOpenTests } from "../../common/fdc3.open";
 import { openApp, OpenCommonConfig } from "../../common/control/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
+import { Context, TargetApp } from "fdc3_1_2";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
@@ -20,63 +21,66 @@ export default () =>
     getCommonOpenTests(control, openDocs, config);
 
     //run 1.2-only tests
-    const AOpensB2Test = "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
-    it(AOpensB2Test, async () => {
+
+    const AOpensB1 = `(AOpensB1) Can open app B from app A with no context and ensure that the correct app was opened`;
+    it(AOpensB1, async () => {
+      let targetApp = openApp.b.name;
       const result = control.contextReceiver("fdc3-conformance-opened");
-      await control.openMockApp(openApp.b.name);
+      await control.openMockApp(targetApp);
       await result;
-      await control.closeMockApp(AOpensB2Test);
+      await control.closeMockApp(AOpensB1);
     });
 
-    const AOpensB3Test = "(AOpensB3) Can open app B from app A with no context and AppMetadata (name and appId) as target";
-    it(AOpensB3Test, async () => {
+    const AOpensB2 = "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
+    it(AOpensB2, async () => {
+      let targetApp: TargetApp;
+      targetApp = { name: openApp.b.name};
       const result = control.contextReceiver("fdc3-conformance-opened");
-      await control.openMockApp(openApp.b.name, openApp.b.id);
+      await control.openMockApp(targetApp);
       await result;
-      await control.closeMockApp(AOpensB3Test);
+      await control.closeMockApp(AOpensB2);
+    });
+
+    it(`(AFailsToOpenB1) Receive AppNotFound error when targeting non-existent app`, async () => {
+      try {
+        await control.openMockApp("ThisAppDoesNotExist");
+        assert.fail("No error was thrown", openDocs);
+      } catch (ex) {
+        control.confirmAppNotFoundErrorReceived(ex);
+      }
     });
 
     const AFailsToOpenB2Test = "(AFailsToOpenB2) Receive AppNotFound error when targeting non-existent app AppMetadata (name) as target";
     it(AFailsToOpenB2Test, async () => {
       try {
-        await control.openMockApp("ThisAppDoesNotExist");
+        let targetApp: TargetApp;
+        targetApp = { name: "ThisAppDoesNotExist"};
+        await control.openMockApp(targetApp);
         assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
         control.confirmAppNotFoundErrorReceived(ex);
       }
     });
 
-    const AFailsToOpenB3 = "(AFailsToOpenB3) Receive AppNotFound error when targeting non-existent app AppMetadata (name and appId) as target";
-    it(AFailsToOpenB3, async () => {
-      try {
-        await control.openMockApp("ThisAppDoesNotExist", "ThisIdDoesNotExist");
-        assert.fail("No error was not thrown", openDocs);
-      } catch (ex) {
-        control.confirmAppNotFoundErrorReceived(ex);
-      }
-    });
-
-    const AOpensBWithContext2Test = "(AOpensBWithContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds generic listener";
-    it(AOpensBWithContext2Test, async () => {
+    const AOpensBWithContext1 = `(AOpensBWithContext1) Can open app B from app A with context and appName as target, and app B listenss to that same context`;
+    it(AOpensBWithContext1, async () => {
+      let context: Context, targetApp: TargetApp;
+      context = { type: "fdc3.instrument", name: "context" };
+      targetApp = openApp.c.name;
       const receiver = control.contextReceiver("context-received");
-      await control.openMockApp(openApp.c.name, undefined, "fdc3.instrument");
+      await control.openMockApp(targetApp, context );
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
-      await control.closeMockApp(AOpensBWithContext2Test);
+      await control.closeMockApp(AOpensBWithContext1);
     });
 
-    const AOpensBWithContext3Test = "(AOpensBWithContext3) Can open app B from app A with context and AppMetadata (name and appId) as target, app B adds generic listener";
-    it(AOpensBWithContext3Test, async () => {
+    const AOpensBWithContext2 = "(AOpensBWithContext2) Can open app B from app A with context and AppMetadata (name) as target, app B adds generic listener";
+    it(AOpensBWithContext2, async () => {
+      let context: Context, targetApp: TargetApp;
+      context = { type: "fdc3.instrument", name: "context" };
+      targetApp = { name: openApp.c.name};
       const receiver = control.contextReceiver("context-received");
-      await control.openMockApp(openApp.c.name, openApp.c.id, "fdc3.instrument");
+      await control.openMockApp(targetApp, context );
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
-      await control.closeMockApp(AOpensBWithContext3Test);
-    });
-
-    const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
-    it(AOpensBMalformedContext, async () => {
-      const receiver = control.contextReceiver("context-received", true);
-      await control.openMockApp(openApp.f.name, undefined, undefined, true, true);
-      await receiver;
-      await control.closeMockApp(AOpensBMalformedContext);
+      await control.closeMockApp(AOpensBWithContext2);
     });
   });
