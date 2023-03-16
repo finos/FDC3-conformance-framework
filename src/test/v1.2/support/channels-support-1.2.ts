@@ -34,14 +34,14 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
     return await fdc3.leaveCurrentChannel();
   };
 
-  getUserChannel = async (channel: number): Promise<Channel> => {
-    const channels = await fdc3.getSystemChannels();
-    if (channels.length > 0) {
-      return channels[channel - 1];
-    } else {
-      assert.fail("No system channels available for app A");
-    }
-  };
+  // getUserChannel = async (channel: number): Promise<Channel> => {
+  //   const channels = await fdc3.getSystemChannels();
+  //   if (channels.length > 0) {
+  //     return channels[channel - 1];
+  //   } else {
+  //     assert.fail("No system channels available for app A");
+  //   }
+  // };
 
   getNonGlobalUserChannel = async (): Promise<Channel> => {
     const channels = await fdc3.getSystemChannels();

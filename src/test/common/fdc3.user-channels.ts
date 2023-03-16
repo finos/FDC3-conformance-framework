@@ -20,8 +20,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
       // const channel = await cc.retrieveAndJoinNonGlobalChannel();
-      const channels = await cc.getNonGlobalUserChannels();
-      const channel= channels[0];
+      const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
       await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
@@ -37,8 +36,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId2);
       // const channel = await cc.retrieveAndJoinNonGlobalChannel();
-      const channels = await cc.getNonGlobalUserChannels();
-      const channel= channels[0];
+      const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
@@ -91,9 +89,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId4);
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
-      // const channel = await cc.retrieveAndJoinNonGlobalChannel();
-      const channels = await cc.getNonGlobalUserChannels();
-      const channel= channels[0];
+      const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
       await cc.openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
@@ -110,8 +106,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage2);
       let receivedContext = false;
       // const channel = await cc.retrieveAndJoinNonGlobalChannel();
-      const channels = await cc.getNonGlobalUserChannels();
-      const channel= channels[0];
+      const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
       let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.openChannelApp(UCFilteredUsage2, channel.id, JOIN_AND_BROADCAST_TWICE);
@@ -127,8 +122,8 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A adds fdc3.instrument context listener\r\n- App A joins channel 1${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage3);
-      const userChannels = await cc.getNonGlobalUserChannels();
-      await cc.openChannelApp(UCFilteredUsage3, userChannels[0].id, JOIN_AND_BROADCAST_TWICE, undefined, true);
+      const userChannel = await cc.getNonGlobalUserChannel();
+      await cc.openChannelApp(UCFilteredUsage3, userChannel.id, JOIN_AND_BROADCAST_TWICE, undefined, true);
       await resolveExecutionCompleteListener;
 
       let timeout;
@@ -137,7 +132,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
         wrapper.resolve();
         clearTimeout(timeout);
       });
-      await cc.joinChannel(userChannels[0]);
+      await cc.joinChannel(userChannel);
       timeout = failOnTimeout("No context received!\n" + errorMessage);
       await wrapper.promise;
 
@@ -149,10 +144,10 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const errorMessage = `\r\nSteps to reproduce:\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument and fdc3.contact\r\n- App A joins channel 1\r\n- App A adds fdc3.instrument context listener${documentation}`;
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage4);
-      const userChannels = await cc.getNonGlobalUserChannels();
-      await cc.openChannelApp(UCFilteredUsage4, userChannels[0].id, JOIN_AND_BROADCAST_TWICE, undefined, true);
+      const userChannel = await cc.getNonGlobalUserChannel();
+      await cc.openChannelApp(UCFilteredUsage4, userChannel.id, JOIN_AND_BROADCAST_TWICE, undefined, true);
       await resolveExecutionCompleteListener;
-      await cc.joinChannel(userChannels[0]);
+      await cc.joinChannel(userChannel);
 
       let timeout;
       const wrapper = wrapPromise();
@@ -195,8 +190,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       });
 
       // const channel = await cc.retrieveAndJoinNonGlobalChannel();
-      const channels = await cc.getNonGlobalUserChannels();
-      const channel= channels[0];
+      const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
       await cc.openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
@@ -238,8 +232,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
         /* noop */
       });
       // const channel = await cc.retrieveAndJoinNonGlobalChannel();
-      const channels = await cc.getNonGlobalUserChannels();
-      const channel= channels[0];
+      const channel = await cc.getNonGlobalUserChannel();
       await cc.joinChannel(channel);
       cc.unsubscribeListeners([listener, listener2]);
       await cc.openChannelApp(scTestId7, channel.id, JOIN_AND_BROADCAST);
@@ -286,8 +279,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       });
 
       // const channel = await cc.retrieveAndJoinNonGlobalChannel();
-      const channels = await cc.getNonGlobalUserChannels();
-      const channel= channels[0];
+      const channel = await cc.getNonGlobalUserChannel();;
       await cc.joinChannel(channel);
       await cc.leaveChannel();
       await cc.openChannelApp(UCFilteredUsageLeave, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);

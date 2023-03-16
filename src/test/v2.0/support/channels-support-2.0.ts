@@ -24,11 +24,11 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
   //   }
   // };
 
-  retrieveAndJoinNonGlobalChannel = async (): Promise<Channel> => {
-    const channel = await this.getNonGlobalUserChannel();
-    await fdc3.joinUserChannel(channel.id);
-    return channel;
-  };
+  // retrieveAndJoinNonGlobalChannel = async (): Promise<Channel> => {
+  //   const channel = await this.getNonGlobalUserChannel();
+  //   await fdc3.joinUserChannel(channel.id);
+  //   return channel;
+  // };
 
   // getUserChannels = async () => {
   //   return await fdc3.getUserChannels();
@@ -52,20 +52,20 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     return await fdc3.leaveCurrentChannel();
   };
 
-  getUserChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
-    const channels = await fdc3.getUserChannels();
-    if (channels.length > 0) {
-      if (channelNumber) {
-        return channels[channelNumber - 1];
-      } else if (channelId) {
-        return channels.find((channel) => channel.id === channelId);
-      } else {
-        throw new Error("The getUserChannel function requires at least one parameter to be passed to it");
-      }
-    } else {
-      assert.fail("No system channels available for app A");
-    }
-  };
+  // getUserChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
+  //   const channels = await fdc3.getUserChannels();
+  //   if (channels.length > 0) {
+  //     if (channelNumber) {
+  //       return channels[channelNumber - 1];
+  //     } else if (channelId) {
+  //       return channels.find((channel) => channel.id === channelId);
+  //     } else {
+  //       throw new Error("The getUserChannel function requires at least one parameter to be passed to it");
+  //     }
+  //   } else {
+  //     assert.fail("No system channels available for app A");
+  //   }
+  // };
 
   joinChannel = async (channel: Channel) => {
     return await fdc3.joinUserChannel(channel.id);
