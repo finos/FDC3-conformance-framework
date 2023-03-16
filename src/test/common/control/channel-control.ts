@@ -3,12 +3,8 @@
  */
 export interface ChannelControl<X, Y, Z> {
   // channels
-  // retrieveAndJoinChannel(channelNumber: number): Promise<X>;
-  // retrieveAndJoinNonGlobalChannel(): Promise<X>;
-  // getUserChannels(): Promise<X[]>;
   getNonGlobalUserChannels(): Promise<X[]>;
   leaveChannel(): Promise<void>;
-  // getUserChannel(cn: number): Promise<X>;
   getNonGlobalUserChannel(): Promise<X>;
   joinChannel(channel: X): Promise<void>;
   createRandomTestChannel(): Promise<X>;

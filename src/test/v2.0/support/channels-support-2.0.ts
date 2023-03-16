@@ -10,30 +10,6 @@ declare let fdc3: DesktopAgent;
 export class ChannelControl2_0 implements ChannelControl<Channel, Context, Listener> {
   private readonly testAppChannelName = "test-channel";
 
-  // retrieveAndJoinChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
-  //   if (channelNumber) {
-  //     const channel = await this.getUserChannel(channelNumber);
-  //     await fdc3.joinUserChannel(channel.id);
-  //     return channel;
-  //   } else if (channelId) {
-  //     const channel = await this.getUserChannel(undefined, channelId);
-  //     await fdc3.joinUserChannel(channelId);
-  //     return channel;
-  //   } else {
-  //     throw new Error("The retrieveAndJoinChannel function requires at least one parameter to be passed to it");
-  //   }
-  // };
-
-  // retrieveAndJoinNonGlobalChannel = async (): Promise<Channel> => {
-  //   const channel = await this.getNonGlobalUserChannel();
-  //   await fdc3.joinUserChannel(channel.id);
-  //   return channel;
-  // };
-
-  // getUserChannels = async () => {
-  //   return await fdc3.getUserChannels();
-  // };
-
   getNonGlobalUserChannels = async () => {
     const channels = await fdc3.getUserChannels();
     return channels.filter(channel => channel.id.indexOf('global') === -1);
@@ -51,21 +27,6 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
   leaveChannel = async () => {
     return await fdc3.leaveCurrentChannel();
   };
-
-  // getUserChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
-  //   const channels = await fdc3.getUserChannels();
-  //   if (channels.length > 0) {
-  //     if (channelNumber) {
-  //       return channels[channelNumber - 1];
-  //     } else if (channelId) {
-  //       return channels.find((channel) => channel.id === channelId);
-  //     } else {
-  //       throw new Error("The getUserChannel function requires at least one parameter to be passed to it");
-  //     }
-  //   } else {
-  //     assert.fail("No system channels available for app A");
-  //   }
-  // };
 
   joinChannel = async (channel: Channel) => {
     return await fdc3.joinUserChannel(channel.id);
