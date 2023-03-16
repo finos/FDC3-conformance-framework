@@ -9,23 +9,23 @@ declare let fdc3: DesktopAgent;
 export class ChannelControl1_2 implements ChannelControl<Channel, Context, Listener> {
   private readonly testAppChannelName = "test-channel";
 
-  retrieveAndJoinChannel = async (channelNumber: number): Promise<Channel> => {
-    const channel = await this.getUserChannel(channelNumber);
-    await fdc3.joinChannel(channel.id);
-    return channel;
-  };
+  // retrieveAndJoinChannel = async (channelNumber: number): Promise<Channel> => {
+  //   const channel = await this.getUserChannel(channelNumber);
+  //   await fdc3.joinChannel(channel.id);
+  //   return channel;
+  // };
 
-  retrieveAndJoinNonGlobalChannel = async (): Promise<Channel> => {
-    const channel = await this.getNonGlobalUserChannel();
-    await fdc3.joinChannel(channel.id);
-    return channel;
-  };
+  // retrieveAndJoinNonGlobalChannel = async (): Promise<Channel> => {
+  //   const channel = await this.getNonGlobalUserChannel();
+  //   await fdc3.joinChannel(channel.id);
+  //   return channel;
+  // };
 
-  getSystemChannels = async () => {
-    return await fdc3.getSystemChannels();
-  };
+  // getUserChannels = async () => {
+  //   return await fdc3.getSystemChannels();
+  // };
 
-  getNonGlobalSystemChannels = async () => {
+  getNonGlobalUserChannels = async () => {
     const channels = await fdc3.getSystemChannels();
     return channels.filter(channel => channel.id.indexOf('global') === -1);
   }

@@ -10,19 +10,19 @@ declare let fdc3: DesktopAgent;
 export class ChannelControl2_0 implements ChannelControl<Channel, Context, Listener> {
   private readonly testAppChannelName = "test-channel";
 
-  retrieveAndJoinChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
-    if (channelNumber) {
-      const channel = await this.getUserChannel(channelNumber);
-      await fdc3.joinUserChannel(channel.id);
-      return channel;
-    } else if (channelId) {
-      const channel = await this.getUserChannel(undefined, channelId);
-      await fdc3.joinUserChannel(channelId);
-      return channel;
-    } else {
-      throw new Error("The retrieveAndJoinChannel function requires at least one parameter to be passed to it");
-    }
-  };
+  // retrieveAndJoinChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
+  //   if (channelNumber) {
+  //     const channel = await this.getUserChannel(channelNumber);
+  //     await fdc3.joinUserChannel(channel.id);
+  //     return channel;
+  //   } else if (channelId) {
+  //     const channel = await this.getUserChannel(undefined, channelId);
+  //     await fdc3.joinUserChannel(channelId);
+  //     return channel;
+  //   } else {
+  //     throw new Error("The retrieveAndJoinChannel function requires at least one parameter to be passed to it");
+  //   }
+  // };
 
   retrieveAndJoinNonGlobalChannel = async (): Promise<Channel> => {
     const channel = await this.getNonGlobalUserChannel();
@@ -30,11 +30,11 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
     return channel;
   };
 
-  getSystemChannels = async () => {
-    return await fdc3.getUserChannels();
-  };
+  // getUserChannels = async () => {
+  //   return await fdc3.getUserChannels();
+  // };
 
-  getNonGlobalSystemChannels = async () => {
+  getNonGlobalUserChannels = async () => {
     const channels = await fdc3.getUserChannels();
     return channels.filter(channel => channel.id.indexOf('global') === -1);
   }

@@ -87,11 +87,11 @@ export let basicAC1 = (fdc3: any, documentation: string) => {
   });
 }
 
-export let basicUC1 = (control: ChannelControl<any, any, any>, documentation: string) => {
+export let basicUC1 = (fdc3: any, documentation: string) => {
   it("(BasicUC1) Channel object is valid", async () => {
     try {
-    //   const channels = await fdc3.getSystemChannels();
-      const channels = await control.getSystemChannels();
+       const channels = await fdc3.getUserChannels();
+      // const channels = await control.getUserChannels();
       expect(channels.length, documentation).to.be.greaterThan(0);
       expect(typeof channels).to.be.equals("object", documentation);
       for(let i=0; i<channels.length; i++) {
