@@ -11,7 +11,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
 
   getNonGlobalUserChannels = async () => {
     const channels = await fdc3.getSystemChannels();
-    return channels.filter(channel => channel.id.indexOf('global') === -1);
+     return channels.filter(channel => channel.id.indexOf('global') === -1);
   }
 
   leaveChannel = async () => {
@@ -19,9 +19,9 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
   };
 
   getNonGlobalUserChannel = async (): Promise<Channel> => {
-    const channels = await fdc3.getSystemChannels();
+    const channels = await this.getNonGlobalUserChannels();
     if (channels.length > 0) {
-      return channels.find((channel) => channel.id.indexOf('global') === -1);
+      return channels[0];
     } else {
       assert.fail("No system channels available for app A");
     }

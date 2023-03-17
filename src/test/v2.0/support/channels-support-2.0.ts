@@ -12,13 +12,16 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
 
   getNonGlobalUserChannels = async () => {
     const channels = await fdc3.getUserChannels();
+    if(channels.find((channel) => channel.id.indexOf('global') >=0 )) {
+      assert.fail("Global channel recieved ");
+    }
     return channels.filter(channel => channel.id.indexOf('global') === -1);
   }
 
   getNonGlobalUserChannel = async (): Promise<Channel> => {
-    const channels = await fdc3.getUserChannels();
+    const channels = await this.getNonGlobalUserChannels();
     if (channels.length > 0) {
-      return channels.find((channel) => channel.id.indexOf('global') === -1);
+      return channels[0];
     } else {
       assert.fail("No system channels available for app A");
     }
