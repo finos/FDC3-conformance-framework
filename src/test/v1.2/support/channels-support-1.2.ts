@@ -9,28 +9,23 @@ declare let fdc3: DesktopAgent;
 export class ChannelControl1_2 implements ChannelControl<Channel, Context, Listener> {
   private readonly testAppChannelName = "test-channel";
 
-  retrieveAndJoinChannel = async (channelNumber: number): Promise<Channel> => {
-    const channel = await this.getUserChannel(channelNumber);
-    await fdc3.joinChannel(channel.id);
-    return channel;
-  };
-
-  getSystemChannels = async () => {
-    return await fdc3.getSystemChannels();
-  };
+  getNonGlobalUserChannels = async () => {
+    const channels = await fdc3.getSystemChannels();
+     return channels.filter(channel => channel.id.indexOf('global') === -1);
+  }
 
   leaveChannel = async () => {
     return await fdc3.leaveCurrentChannel();
   };
 
-  getUserChannel = async (channel: number): Promise<Channel> => {
-    const channels = await fdc3.getSystemChannels();
+  getNonGlobalUserChannel = async (): Promise<Channel> => {
+    const channels = await this.getNonGlobalUserChannels();
     if (channels.length > 0) {
-      return channels[channel - 1];
+      return channels[0];
     } else {
       assert.fail("No system channels available for app A");
     }
-  };
+  }
 
   joinChannel = async (channel: Channel): Promise<void> => {
     return await fdc3.joinChannel(channel.id);
@@ -120,6 +115,7 @@ function validateListenerObject(listenerObject) {
   assert.isTrue(typeof listenerObject === "object", "No listener object found");
   expect(typeof listenerObject.unsubscribe).to.be.equals("function", "Listener does not contain an unsubscribe method");
 }
+
 export function buildChannelsAppContext(mockAppCommands: string[], config: ChannelsAppConfig): ChannelsAppContext {
   return {
     type: "channelsAppContext",

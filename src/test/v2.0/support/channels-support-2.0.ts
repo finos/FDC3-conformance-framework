@@ -10,41 +10,25 @@ declare let fdc3: DesktopAgent;
 export class ChannelControl2_0 implements ChannelControl<Channel, Context, Listener> {
   private readonly testAppChannelName = "test-channel";
 
-  retrieveAndJoinChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
-    if (channelNumber) {
-      const channel = await this.getUserChannel(channelNumber);
-      await fdc3.joinUserChannel(channel.id);
-      return channel;
-    } else if (channelId) {
-      const channel = await this.getUserChannel(undefined, channelId);
-      await fdc3.joinUserChannel(channelId);
-      return channel;
-    } else {
-      throw new Error("The retrieveAndJoinChannel function requires at least one parameter to be passed to it");
-    }
-  };
-
-  getSystemChannels = async () => {
-    return await fdc3.getUserChannels();
-  };
-
-  leaveChannel = async () => {
-    return await fdc3.leaveCurrentChannel();
-  };
-
-  getUserChannel = async (channelNumber: number, channelId?: string): Promise<Channel> => {
+  getNonGlobalUserChannels = async () => {
     const channels = await fdc3.getUserChannels();
+    if(channels.find((channel) => channel.id.indexOf('global') >=0 )) {
+      assert.fail("Global channel recieved ");
+    }
+    return channels.filter(channel => channel.id.indexOf('global') === -1);
+  }
+
+  getNonGlobalUserChannel = async (): Promise<Channel> => {
+    const channels = await this.getNonGlobalUserChannels();
     if (channels.length > 0) {
-      if (channelNumber) {
-        return channels[channelNumber - 1];
-      } else if (channelId) {
-        return channels.find((channel) => channel.id === channelId);
-      } else {
-        throw new Error("The getUserChannel function requires at least one parameter to be passed to it");
-      }
+      return channels[0];
     } else {
       assert.fail("No system channels available for app A");
     }
+  }
+
+  leaveChannel = async () => {
+    return await fdc3.leaveCurrentChannel();
   };
 
   joinChannel = async (channel: Channel) => {
