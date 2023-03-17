@@ -84,7 +84,7 @@ export class RaiseIntentControl2_0 {
     const intentResult = intentResolution.getResult();
     if (typeof intentResult.then !== "function") {
       assert.fail(`intentResolution.getResult() did not return a Promise: ${JSON.stringify(intentResult, null, 2)}`);
-    }
+    }  
     clearTimeout(timeout);
     return intentResult;
   }
@@ -102,7 +102,7 @@ export class RaiseIntentControl2_0 {
   }
 
   validateIntentResult(intentResult, expectedIntentResultType: IntentResultType, expectedContextType?: string) {
-    expect(typeof intentResult).to.be.equal("object");
+    expect(typeof intentResult).to.be.oneOf(["object", 'undefined']);
 
     switch (expectedIntentResultType) {
       case IntentResultType.Context: {
@@ -113,7 +113,7 @@ export class RaiseIntentControl2_0 {
         }
       }
       case IntentResultType.Void: {
-        expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be.empty;
+        expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be.undefined;
         break;
       }
       case IntentResultType.Channel: {

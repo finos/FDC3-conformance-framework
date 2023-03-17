@@ -200,7 +200,7 @@
             "sharedTestingIntent1": {
               "displayName": "Shared Testing Intent",
               "contexts": ["testContextX", "testContextY"],
-              "resultType": "testContextZ"
+              "resultType": "testContextY"
             }
           }
         }

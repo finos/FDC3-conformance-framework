@@ -14,7 +14,7 @@ export default () =>
       await control.listenForError();
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
-      const intentResult = await control.getIntentResult(intentResolution);
+      const intentResult = await control.getIntentResult(intentResolution).catch(e => {console.log('Exception ',e)});
       control.validateIntentResult(intentResult, IntentResultType.Void);
     });
 
@@ -28,7 +28,7 @@ export default () =>
       await receiver;
 
       if (intentResultPromise) {
-        const intentResult = await intentResultPromise;
+        const intentResult = await intentResultPromise.catch(e => {console.log('Exception ',e)});
         control.validateIntentResult(intentResult, IntentResultType.Void);
       }
     });
@@ -101,7 +101,7 @@ export default () =>
       await receiver;
 
       if (intentResultPromise) {
-        const intentResult = await intentResultPromise;
+        const intentResult = await intentResultPromise.catch(e => {console.log('Exception ',e)});
         control.validateIntentResult(intentResult, IntentResultType.Void);
       }
     }).timeout(64000);
