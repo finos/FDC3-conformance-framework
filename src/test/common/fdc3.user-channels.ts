@@ -32,7 +32,7 @@ export function createUserChannelTests(
       let receivedContext = false;
       await cc.setupAndValidateListener1(
         null,
-        null,
+        "fdc3.instrument",
         "fdc3.instrument",
         errorMessage,
         () => (receivedContext = true)
@@ -59,7 +59,7 @@ export function createUserChannelTests(
       let receivedContext = false;
       await cc.setupAndValidateListener1(
         null,
-        null,
+        "fdc3.instrument",
         "fdc3.instrument",
         errorMessage,
         () => (receivedContext = true)
@@ -87,7 +87,7 @@ export function createUserChannelTests(
       let receivedContext = false;
       await cc.setupAndValidateListener1(
         null,
-        null,
+        "fdc3.instrument",
         "fdc3.instrument",
         errorMessage,
         () => (receivedContext = true)
