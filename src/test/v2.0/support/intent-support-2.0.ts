@@ -213,13 +213,15 @@ export enum IntentApp {
   IntentAppI = "IntentAppIId",
   IntentAppJ = "IntentAppJId",
   IntentAppK = "IntentAppKId",
+  IntentAppL = "IntentAppLId",
 }
 
 export enum ContextType {
   testContextX = "testContextX",
   testContextY = "testContextY",
   testContextZ = "testContextZ",
-  nonExistentContext = "nonExistentContext ",
+  testContextL = "testContextL",
+  nonExistentContext = "nonExistentContext",
   privateChannelDetails = "privateChannelDetails",
 }
 
@@ -228,6 +230,7 @@ export enum Intent {
   bTestingIntent = "bTestingIntent",
   cTestingIntent = "cTestingIntent",
   kTestingIntent = "kTestingIntent",
+  lTestingIntent = "LTestingIntent",
   sharedTestingIntent1 = "sharedTestingIntent1",
   sharedTestingIntent2 = "sharedTestingIntent2",
   privateChannelIsPrivate = "privateChannelIsPrivate",

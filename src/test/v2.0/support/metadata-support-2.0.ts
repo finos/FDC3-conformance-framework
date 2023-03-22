@@ -7,7 +7,7 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
 const getInfoDocs = "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
 declare let fdc3: DesktopAgent;
-const validAppMetaDataProperties = ['appId', 'instanceId', 'name','version', 'instanceMetadata', 'title','tootip','description','icons','screenshot','resultType'];
+const validAppMetaDataProperties = ['appId', 'instanceId', 'name','version', 'instanceMetadata', 'title','tooltip','description','icons','screenshots','resultType'];
 export class MetadataValidator {
   validateAppMetadata(metadata: AppMetadata) {
     expect(metadata, `The AppMetadata object does not contain an appId property${getMetadataDocs}`).to.have.property("appId");
