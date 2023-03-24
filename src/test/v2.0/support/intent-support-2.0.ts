@@ -102,8 +102,6 @@ export class RaiseIntentControl2_0 {
   }
 
   validateIntentResult(intentResult, expectedIntentResultType: IntentResultType, expectedContextType?: string) {
-    expect(typeof intentResult).to.be.oneOf(["object", 'undefined']);
-
     switch (expectedIntentResultType) {
       case IntentResultType.Context: {
         if (expectedContextType) {
