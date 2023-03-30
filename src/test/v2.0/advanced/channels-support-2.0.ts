@@ -105,17 +105,17 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     );
   }
 
-  setupAndValidateListener1 = async (channel: Channel,  listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void) => {
+  setupAndValidateListener1 = async (channel: Channel,  listenContextType: string | null, expectedContextType: string | null, errorMessage: string, onComplete: (ctx: Context) => void, testId: string) => {
     if (channel) {
       listener1 = await channel.addContextListener(listenContextType, (context) => {
-        if (expectedContextType != null) {
+        if (expectedContextType != null && context['testId'] === testId) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
         onComplete(context);
       });
     } else {
       listener1 = await fdc3.addContextListener(expectedContextType, (context) => {
-        if (expectedContextType != null) {
+        if (expectedContextType != null && context['testId'] === testId) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
         onComplete(context);
@@ -125,17 +125,17 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context> {
     validateListenerObject(listener1);
   }
 
-  setupAndValidateListener2 = async (channel: Channel, listenContextType: string | null, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void) => {
+  setupAndValidateListener2 = async (channel: Channel, listenContextType: string | null, expectedContextType: string, errorMessage: string, onComplete: (ctx: Context) => void, testId: string) => {
     if (channel) {
       listener2 = await channel.addContextListener(listenContextType, (context) => {
-        if (expectedContextType != null) {
+        if (expectedContextType != null && context['testId'] === testId) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
         onComplete(context);
       });
     } else {
       listener2 = await fdc3.addContextListener(expectedContextType, (context) => {
-        if (expectedContextType != null) {
+        if (expectedContextType != null && context['testId'] === testId) {
           expect(context.type).to.be.equals(expectedContextType, errorMessage);
         }
         onComplete(context);
