@@ -84,7 +84,7 @@ export class RaiseIntentControl2_0 {
     const intentResult = intentResolution.getResult();
     if (typeof intentResult.then !== "function") {
       assert.fail(`intentResolution.getResult() did not return a Promise: ${JSON.stringify(intentResult, null, 2)}`);
-    }
+    }  
     clearTimeout(timeout);
     return intentResult;
   }
@@ -102,8 +102,6 @@ export class RaiseIntentControl2_0 {
   }
 
   validateIntentResult(intentResult, expectedIntentResultType: IntentResultType, expectedContextType?: string) {
-    expect(typeof intentResult).to.be.equal("object");
-
     switch (expectedIntentResultType) {
       case IntentResultType.Context: {
         if (expectedContextType) {
@@ -113,7 +111,7 @@ export class RaiseIntentControl2_0 {
         }
       }
       case IntentResultType.Void: {
-        expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be.empty;
+        expect(intentResult, "The promise received by Test from resolution.getResult() should resolve to void").to.be.undefined;
         break;
       }
       case IntentResultType.Channel: {
@@ -213,13 +211,15 @@ export enum IntentApp {
   IntentAppI = "IntentAppIId",
   IntentAppJ = "IntentAppJId",
   IntentAppK = "IntentAppKId",
+  IntentAppL = "IntentAppLId",
 }
 
 export enum ContextType {
   testContextX = "testContextX",
   testContextY = "testContextY",
   testContextZ = "testContextZ",
-  nonExistentContext = "nonExistentContext ",
+  testContextL = "testContextL",
+  nonExistentContext = "nonExistentContext",
   privateChannelDetails = "privateChannelDetails",
 }
 
@@ -228,6 +228,7 @@ export enum Intent {
   bTestingIntent = "bTestingIntent",
   cTestingIntent = "cTestingIntent",
   kTestingIntent = "kTestingIntent",
+  lTestingIntent = "LTestingIntent",
   sharedTestingIntent1 = "sharedTestingIntent1",
   sharedTestingIntent2 = "sharedTestingIntent2",
   privateChannelIsPrivate = "privateChannelIsPrivate",

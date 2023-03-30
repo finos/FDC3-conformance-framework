@@ -26,6 +26,7 @@ const config = {
     "intent-i-v2.0": "./src/mock/v2.0/intent-i.ts",
     "intent-j-v2.0": "./src/mock/v2.0/intent-j.ts",
     "intent-k-v2.0": "./src/mock/v2.0/intent-k.ts",
+    "basic-v2.0": "./src/mock/v2.0/basic.ts",
     "open-a-v2.0": "./src/mock/v2.0/open-a.ts",
   },
   devtool: "source-map",
