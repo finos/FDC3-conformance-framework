@@ -35,7 +35,8 @@ export function createUserChannelTests(
         null,
         "fdc3.instrument",
         errorMessage,
-        () => (receivedContext = true)
+        () => (receivedContext = true),
+        scTestId1
       );
       const channel = await cc.retrieveAndJoinChannel(1);
       await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
@@ -62,7 +63,8 @@ export function createUserChannelTests(
         null,
         "fdc3.instrument",
         errorMessage,
-        () => (receivedContext = true)
+        () => (receivedContext = true),
+        scTestId2
       );
       await cc.openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
@@ -90,7 +92,8 @@ export function createUserChannelTests(
         null,
         "fdc3.instrument",
         errorMessage,
-        () => (receivedContext = true)
+        () => (receivedContext = true),
+        scTestId3
       );
       await resolveExecutionCompleteListener;
 
@@ -114,7 +117,8 @@ export function createUserChannelTests(
         "fdc3.instrument",
         "fdc3.instrument",
         errorMessage,
-        () => (receivedContext = true)
+        () => (receivedContext = true),
+        scTestId4
       );
       const channel = await cc.retrieveAndJoinChannel(1);
       await cc.openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST);
@@ -161,7 +165,8 @@ export function createUserChannelTests(
         (context) => {
           contextTypes.push(context.type);
           checkIfBothContextsReceived();
-        }
+        },
+        scTestId5
       );
 
       await cc.setupAndValidateListener2(
@@ -172,7 +177,8 @@ export function createUserChannelTests(
         (context) => {
           contextTypes.push(context.type);
           checkIfBothContextsReceived();
-        }
+        },
+        scTestId5
       );
 
       const channel = await cc.retrieveAndJoinChannel(1);
@@ -205,7 +211,8 @@ export function createUserChannelTests(
         errorMessage,
         () => {
           /* noop */
-        }
+        },
+        scTestId6
       );
       await cc.setupAndValidateListener2(
         null,
@@ -214,7 +221,8 @@ export function createUserChannelTests(
         errorMessage,
         () => {
           /* noop */
-        }
+        },
+        scTestId6
       );
 
       const channels = await cc.getSystemChannels();
@@ -246,7 +254,8 @@ export function createUserChannelTests(
         errorMessage,
         () => {
           /* noop */
-        }
+        },
+        scTestId7
       );
       await cc.setupAndValidateListener2(
         null,
@@ -255,7 +264,8 @@ export function createUserChannelTests(
         errorMessage,
         () => {
           /* noop */
-        }
+        },
+        scTestId7
       );
       const channel = await cc.retrieveAndJoinChannel(1);
       await cc.unsubscribeListeners();
@@ -278,7 +288,8 @@ export function createUserChannelTests(
         errorMessage,
         async () => {
           /* noop */
-        }
+        },
+        scTestId8
       );
       await cc.setupAndValidateListener2(
         null,
@@ -287,7 +298,8 @@ export function createUserChannelTests(
         errorMessage,
         () => {
           /* noop */
-        }
+        },
+        scTestId8
       );
 
       const channels = await cc.getSystemChannels();
