@@ -282,6 +282,24 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       cc.unsubscribeListeners([listener, listener2]);
     });
 
+
+    const scTestId9 = "(" + prefix + "UCFilteredUsageNoJoin) Should not receive context when A doesn't join a user channel before app B broadcasts the listened type to that channel";
+    it(scTestId9, async () => {
+      const errorMessage = `\r\nSteps to reproduce:\r\n- App A adds context listener of type fdc3.instrument\r\n- App A unsubscribes the listener\r\n- App B joins channel 1\r\n- App B broadcasts context of type fdc3.instrument${documentation}`;
+
+      const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId9);
+      let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "unexpected-context", errorMessage, () => {
+        /* noop */
+      });
+      let listener2 = await cc.setupAndValidateListener(null, "fdc3.contact", "unexpected-context", errorMessage, () => {
+        /* noop */
+      });
+      const channel = await cc.getNonGlobalUserChannel();
+      await cc.openChannelApp(scTestId9, channel.id, JOIN_AND_BROADCAST);
+      await resolveExecutionCompleteListener;
+      await wait();
+    });
+
     const UCFilteredUsageJoin = "(" + prefix + "UCFilteredUsageJoin) getCurrentChannel retrieves the channel that was joined";
     it(UCFilteredUsageJoin, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- App A retrieves user channels\r\n- App A joins the third channel\r\n- App A gets current channel${documentation}`;
