@@ -66,7 +66,7 @@ export default () =>
     it(AOpensBWithContext1, async () => {
       let context: Context, targetApp: TargetApp;
       context = { type: "fdc3.instrument", name: "context" };
-      targetApp = openApp.c.name;
+      targetApp = openApp.b.name;
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(targetApp, context );
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
@@ -77,7 +77,7 @@ export default () =>
     it(AOpensBWithContext2, async () => {
       let context: Context, targetApp: TargetApp;
       context = { type: "fdc3.instrument", name: "context" };
-      targetApp = { name: openApp.c.name};
+      targetApp = { name: openApp.b.name};
       const receiver = control.contextReceiver("context-received");
       await control.openMockApp(targetApp, context );
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
