@@ -32,6 +32,8 @@ Currently, in order to grow the standard adoption, certification is provided fre
 
 These fees are to cover work done by the FINOS for the formal certification process and badge issuance. 
 
+A _unit_ here refers to a particular vendor software version and FDC3 version _combination_, as described in the [Terms and Conditions](terms-conditions/FDC3-Certified-Terms)
+
 ## 5.  Failed Tests
 
 If your desktop agent fails any of the conformance tests, the maintainers will inform you via the issue you opened in order that you can make fixes to your software and retry the process.
