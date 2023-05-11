@@ -21,7 +21,15 @@ Maintainers of the FDC3 Conformance Framework will aim to replicate your test re
 
 ## 4.  Fees
 
-Since certification requires work from the FINOS team, it is expected that in the future a fee might be charged for the the formal certification process and badge issuance. Currently, in order to grow the standard adoption, certification is provided free of charge until October 2023. 
+Currently, in order to grow the standard adoption, certification is provided free of charge until 1st October 2023.  
+
+|FINOS Membership Level        |Fee per Unit*     |
+|Platinum|Free (unlimited units) |
+|Gold    |Free (up to 3 units) |
+|Silver |Free (for first unit)|
+|Additional Units / Non Members |$20,000 per unit|
+
+These fees are to cover work done by the FINOS for the formal certification process and badge issuance. 
 
 ## 5.  Failed Tests
 
