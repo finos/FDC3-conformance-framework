@@ -24,6 +24,7 @@ Maintainers of the FDC3 Conformance Framework will aim to replicate your test re
 Currently, in order to grow the standard adoption, certification is provided free of charge until 1st October 2023.  
 
 |FINOS Membership Level        |Fee per Unit*     |
+|------------------------------|------------------|
 |Platinum|Free (unlimited units) |
 |Gold    |Free (up to 3 units) |
 |Silver |Free (for first unit)|
