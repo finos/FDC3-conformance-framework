@@ -32,7 +32,7 @@ Currently, in order to grow the standard adoption, certification is provided fre
 
 These fees are to cover work done by the FINOS for the formal certification process and badge issuance. 
 
-A _unit_ here refers to a particular vendor software version and FDC3 version _combination_, as described in the [Terms and Conditions](terms-conditions/FDC3-Certified-Terms)
+A _unit_ here refers to a particular vendor software version and FDC3 version _combination_, as described in the [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md)
 
 ## 5.  Failed Tests
 
