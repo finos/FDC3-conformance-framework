@@ -26,8 +26,8 @@ Currently, in order to grow the standard adoption, certification is provided fre
 |FINOS Membership Level        |Fee per Unit*     |
 |------------------------------|------------------|
 |Platinum|Free (unlimited units) |
-|Gold    |Free (up to 3 units) |
-|Silver |Free (for first unit)|
+|Gold    |Free (up to 3 units each membership year) |
+|Silver |Free (first unit each membership year)|
 |Additional Units / Non Members |$20,000 per unit|
 
 These fees are to cover work done by the FINOS for the formal certification process and badge issuance. 
