@@ -15,13 +15,14 @@ export default () =>
     it("(2.0-FindIntentByContextSingleContext) Should find intents by context 'testContextX'", async () => {
       try {
         const intents = await fdc3.findIntentsByContext({ type: ContextType.testContextX });
-        expect(intents).to.have.length(4);
+        expect(intents).to.have.length(5);
         const intentNames = intents.map((appIntent) => appIntent.intent.name);
-        expect(intentNames).to.have.all.members([Intent.aTestingIntent, Intent.sharedTestingIntent1, Intent.cTestingIntent, Intent.kTestingIntent]);
+        expect(intentNames).to.have.all.members([Intent.aTestingIntent, Intent.sharedTestingIntent1, Intent.cTestingIntent, Intent.sharedTestingIntent2, Intent.kTestingIntent]);
 
         validateIntents(intents, Intent.aTestingIntent, 1, [IntentApp.IntentAppA]);
         validateIntents(intents, Intent.sharedTestingIntent1, 2, [IntentApp.IntentAppA, IntentApp.IntentAppB]);
         validateIntents(intents, Intent.cTestingIntent, 1, [IntentApp.IntentAppC]);
+        validateIntents(intents, Intent.sharedTestingIntent2, 1, [IntentApp.IntentAppD]);
         validateIntents(intents, Intent.kTestingIntent, 1, [IntentApp.IntentAppK]);
       } catch (ex) {
         assert.fail(ex.message ?? ex + findIntentsByContextDocs);
