@@ -44,9 +44,9 @@ export default () =>
       validateAppIntent(appIntent, 6, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent" }, IntentApp.IntentAppD);
     });
 
-    it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent1' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextY'", async () => {
+    it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent2' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextY'", async () => {
       const appIntent = await fdc3.findIntent(Intent.sharedTestingIntent2, { type: ContextType.testContextY });
-      validateAppIntent(appIntent, 6, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent" }, IntentApp.IntentAppD);
+      validateAppIntent(appIntent, 5, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent" }, IntentApp.IntentAppE);
     });
 
     it("(2.0-FindIntentAppDByResultSingle) Should find intent 'cTestingIntent' belonging only to app intent-c with context 'testContextX' and result type 'testContextZ'", async () => {

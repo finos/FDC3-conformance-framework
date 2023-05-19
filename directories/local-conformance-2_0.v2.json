@@ -307,7 +307,7 @@
 			"listensFor": {
 			  "sharedTestingIntent2": {
 				"displayName": "Shared Testing Intent",
-				"contexts": ["testContextY"],
+				"contexts": ["testContextX"],
 				"resultType": "testContextZ"
 			  }
 			}
