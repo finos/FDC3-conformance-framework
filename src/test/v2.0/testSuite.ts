@@ -11,7 +11,7 @@ import fdc3RaiseIntent_2_0 from "./advanced/fdc3.raiseIntent";
 import fdc3RaiseIntent_2_0_Result from "./advanced/fdc3.raiseIntent-result";
 import fdc3RaiseIntent_2_0_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
 import {fdc3BasicCL1_2_0, fdc3BasicCL2_2_0, fdc3BasicIL1_2_0, fdc3BasicGI1_2_0 , fdc3BasicAC1_2_0 , fdc3BasicUC1_2_0, fdc3BasicJC1_2_0, fdc3BasicRI1_2_0, fdc3BasicRI2_2_0 } from './basic/fdc3.basic';
-
+import {fdc3ResolveAmbiguousIntentTarget_2_0, fdc3ResolveAmbiguousContextTarget_2_0, fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0, fdc3ResolveAmbiguousContextTargetMultiInstance_2_0} from './manual/fdc3.manual';
 
 type testSet = { [key: string]: (() => void)[] };
 
@@ -40,6 +40,13 @@ const advancedSuite_2_0: testSet = {
   "fdc3.raiseIntent 2.0 (throws error)": [fdc3RaiseIntent_2_0_NoAppsFound],
 };
 
+const ambiguousTests_2_0: testSet = {
+  "fdc3.ResolveAmbiguousIntentTarget 2.0": [fdc3ResolveAmbiguousIntentTarget_2_0],
+  "fdc3.ResolveAmbiguousContextTarget 2.0": [fdc3ResolveAmbiguousContextTarget_2_0],
+  "fdc3.ResolveAmbiguousIntentTargetMultiInstance 2.0": [fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0],
+  "fdc3.ResolveAmbiguousContextTargetMultiInstance 2.0": [fdc3ResolveAmbiguousContextTargetMultiInstance_2_0]
+}
+
 function stripSuites(ts: testSet[]): (() => void)[] {
   const out: (() => void)[] = [];
   ts.map((item) => {
@@ -56,6 +63,10 @@ export const allTests: testSet = {
   ...basicSuite_2_0,
   ...advancedSuite_2_0,
 };
+
+export const allManualTests: testSet = {
+  ...ambiguousTests_2_0,
+}
 
 export const packs: { [index: string]: string[] } = {
   "2.0 (Combined)": ["All 2.0", "Basic 2.0", "Advanced 2.0"],
@@ -78,6 +89,19 @@ export function getPackMembers(packName: string): string[] {
 export const executeTestsInBrowser = (pack: string) => {
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allTests[pack];
+  suite.forEach((s) => s());
+  mocha.run();
+};
+
+/**
+ * Intended for running Manual tests in container with results shown
+ * in HTML page
+ */
+export const executeManualTestsInBrowser = (pack: string) => {
+  console.log('Pack',pack);
+  (mocha as any).timeout(constants.TestTimeout);
+  const suite = allManualTests[pack];
+  console.log('************ found suite******', suite)
   suite.forEach((s) => s());
   mocha.run();
 };
