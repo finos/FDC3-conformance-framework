@@ -20,9 +20,19 @@
 </button>
   <div id="mocha"></div>
   <div class="center" id="version-selector">
-    <label for="version">Test suite:</label>
-    <select id="version"></select>
+    <label for="version" style="margin-right: 23;">Test suite:</label>
+    <select id="version" style="width: 250px;"></select>
     <input id="runButton" value="Run" type="button" />
+  </div>
+  <div class="center" id="manualTests-selector">
+    <label for="manualTests">Manual Tests:</label>
+    <select id="manualTests" style="width: 250px;">
+      <option value="test1">fdc3.ResolveAmbiguousIntentTarget 2.0</option>
+      <option value="test2">fdc3.ResolveAmbiguousContextTarget 2.0</option>
+      <option value="test3">fdc3.ResolveAmbiguousIntentTargetMultiInstance 2.0</option>
+      <option value="test4">fdc3.ResolveAmbiguousContextTargetMultiInstance 2.0</option>
+    </select>
+    <input id="manualTestsRunButton" value="Run" type="button" />
   </div>
   <p id="context"></p>
   <script src="../../lib/fdc3-compliance-v2.0.js"></script>

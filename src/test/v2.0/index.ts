@@ -1,5 +1,5 @@
 export * from "./testSuite";
-import { getPackMembers, getPackNames, executeTestsInBrowser } from "./testSuite";
+import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from "./testSuite";
 
 require("mocha/mocha.css");
 require("source-map-support/browser-source-map-support.js");
@@ -34,16 +34,33 @@ function executeTests() {
   }
 }
 
+function executeManualTests() {
+  toggleVersionSelector();
+  toggleBackButton();
+  const manualTests = document.getElementById("manualTests") as HTMLSelectElement;
+  var selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
+  console.log('******** Selected manual test is',selectedManualTest);
+  const action = () => executeManualTestsInBrowser(selectedManualTest);
+  if (window.fdc3) {
+    action();
+  } else {
+    window.addEventListener("fdc3Ready", action);
+  }
+}
+
 function returnToTestSelection() {
   location.reload();
 }
 
 function toggleVersionSelector() {
   const versionSelector = document.getElementById("version-selector");
+  const manualSelector = document.getElementById("manualTests-selector");  
   if (versionSelector.style.display === "none") {
     versionSelector.style.display = "block";
+    manualSelector.style.display = "block";
   } else {
     versionSelector.style.display = "none";
+    manualSelector.style.display = "none";
   }
 }
 
@@ -58,3 +75,4 @@ function toggleBackButton() {
 
 document.getElementById("runButton").addEventListener("click", executeTests);
 document.getElementById("back-button").addEventListener("click", returnToTestSelection);
+document.getElementById("manualTestsRunButton").addEventListener("click", executeManualTests);
