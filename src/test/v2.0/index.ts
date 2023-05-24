@@ -54,10 +54,13 @@ function returnToTestSelection() {
 
 function toggleVersionSelector() {
   const versionSelector = document.getElementById("version-selector");
+  const manualSelector = document.getElementById("manualTests-selector");  
   if (versionSelector.style.display === "none") {
     versionSelector.style.display = "block";
+    manualSelector.style.display = "block";
   } else {
     versionSelector.style.display = "none";
+    manualSelector.style.display = "none";
   }
 }
 
