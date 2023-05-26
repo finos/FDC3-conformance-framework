@@ -2,11 +2,13 @@ import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../../v2.0/apiDocuments-2.0";
 import { failOnTimeout, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
-import { AppControlContext } from "../../../context-types";
+import { IntentUtilityContext } from "../../../context-types";
 import { MetadataFdc3Api } from "../support/metadata-support-2.0";
-import { ContextType, Intent } from "../support/intent-support-2.0";
+import { ContextType, Intent, IntentApp, RaiseIntentControl2_0 } from "../support/intent-support-2.0";
 
 const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause: ";
+
+const control = new RaiseIntentControl2_0();
 
 export default () =>
   describe("fdc3.findInstances", () => {
@@ -14,17 +16,17 @@ export default () =>
       await closeMockAppWindow(this.currentTest.title);
     });
 
-    const findInstances = "(2.0-FindInstances) valid metadata when opening multiple instances of the same app";
+    const findInstances = "(2.0-FindInstances) valid appID when opening multiple instances of the same app";
     it(findInstances, async () => {
       const api = new MetadataFdc3Api();
       try {
-        const appIdentifier = await api.openMetadataApp(); // open metadataApp
-        const appIdentifier2 = await api.openMetadataApp(); // open second instance of metadataApp
+        const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA); // open IntentAppA
+        const appIdentifier2 = await control.openIntentApp(IntentApp.IntentAppA); // open second instance of IntentAppA
 
         //confirm that the instanceId for both app instantiations is different
         expect(appIdentifier.instanceId, `The AppIdentifier's instanceId property for both instances of the opened app should not be the same.${findInstancesDocs}`).to.not.equal(appIdentifier2.instanceId);
 
-        let instances = await api.getAppInstances();
+        let instances = await control.findInstances(IntentApp.IntentAppA);
         validateInstances(instances, appIdentifier, appIdentifier2);
 
         let timeout;
@@ -32,16 +34,16 @@ export default () =>
         const appControlChannel = await api.retrieveAppControlChannel();
 
         //ensure appIdentifier received the raised intent
-        await appControlChannel.addContextListener("intent-listener-triggered", (context: AppControlContext) => {
-          expect(context.instanceId, "the raised intent was received by a different instance of the mock app than expected").to.be.equals(appIdentifier.instanceId);
+        await appControlChannel.addContextListener("aTestingIntent-listener-triggered", (context: IntentUtilityContext) => {
+          expect(context['instanceId'], "the raised intent was received by a different instance of the mock app than expected").to.be.equals(appIdentifier.instanceId);
           clearTimeout(timeout);
           wrapper.resolve();
         });
 
         const resolution = await api.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, appIdentifier); // raise an intent that targets appIdentifier
         validateResolutionSource(resolution, appIdentifier);
-        timeout = failOnTimeout("intent-listener-triggered' context not received from mock app"); // fail if expected context not received
-        await wrapper.promise; // wait for context from MetadataApp
+        timeout = failOnTimeout("'aTestingIntent-listener-triggered' context not received from mock app"); // fail if expected context not received
+        await wrapper.promise; // wait for context from IntentAppA
       } catch (ex) {
         assert.fail(findInstancesDocs + (ex.message ?? ex));
       }

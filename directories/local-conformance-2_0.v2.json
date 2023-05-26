@@ -820,10 +820,6 @@
 					"interop": {
 						"intents": {
 							"listensFor": {
-								"aTestingIntent": {
-									"displayName": "A Testing Intent",
-									"contexts": ["testContextX"]
-								}
 							}
 						}
 					}
