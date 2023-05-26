@@ -24,12 +24,12 @@ export class Fdc3CommandExecutor {
         }
         case commands.broadcastInstrumentContext: {
           const contextType = config.contextId ? `fdc3.instrument.${config.contextId}` : "fdc3.instrument";
-          channelService.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
+          await channelService.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
           break;
         }
         case commands.broadcastContactContext: {
           const contextType = config.contextId ? `fdc3.contact.${config.contextId}` : "fdc3.contact";
-          channelService.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
+          await channelService.broadcastContextItem(contextType, channel, config.historyItems, config.testId);
           break;
         }
       }
