@@ -86,7 +86,7 @@ export default () =>
         clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
-      await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
+      await closeMockAppWindow(RaiseIntentFailTargetedAppResolve3);
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const RaiseIntentFailTargetedAppResolve4 = "(RaiseIntentFailTargetedAppResolve4) Should throw an IntentDeliveryFailed error when raising intent with targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2'";
@@ -101,6 +101,6 @@ export default () =>
         clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
-      await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
+      await closeMockAppWindow(RaiseIntentFailTargetedAppResolve4);
     }).timeout(constants.NoListenerTimeout + 1000);
   });
