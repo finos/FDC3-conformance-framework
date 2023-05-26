@@ -32,7 +32,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
   };
 
   joinChannel = async (channel: Channel) => {
-    return await fdc3.joinUserChannel(channel.id);
+    return fdc3.joinUserChannel(channel.id);
   };
 
   createRandomTestChannel = async (name: string = "test-channel") => {
