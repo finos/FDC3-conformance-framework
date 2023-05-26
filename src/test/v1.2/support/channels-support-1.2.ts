@@ -28,7 +28,7 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
   }
 
   joinChannel = async (channel: Channel): Promise<void> => {
-    return await fdc3.joinChannel(channel.id);
+    return fdc3.joinChannel(channel.id);
   };
 
   createRandomTestChannel = async (): Promise<Channel> => {

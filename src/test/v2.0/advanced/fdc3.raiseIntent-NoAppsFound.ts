@@ -76,31 +76,23 @@ export default () =>
 
     const RaiseIntentFailTargetedAppResolve3 = "(RaiseIntentFailTargetedAppResolve3) Should fail to raise intent when targeting a non-existant app id, context 'testContextY', intent 'sharedTestingIntent2' and throw IntentDeliveryFailed error";
     it(RaiseIntentFailTargetedAppResolve3, async () => {
-      const { timeout, promise } = sleep(constants.NoListenerTimeout);
-
       try {
         await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, { appId: IntentApp.IntentAppH });
-        await promise;
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
-        clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
-      await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
+      await closeMockAppWindow(RaiseIntentFailTargetedAppResolve3);
     }).timeout(constants.NoListenerTimeout + 1000);
 
     const RaiseIntentFailTargetedAppResolve4 = "(RaiseIntentFailTargetedAppResolve4) Should throw an IntentDeliveryFailed error when raising intent with targeted app intent-i, context 'testContextY', intent 'sharedTestingIntent2'";
     it(RaiseIntentFailTargetedAppResolve4, async () => {
-      const { timeout, promise } = sleep(constants.NoListenerTimeout);
-
       try {
         await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, { appId: IntentApp.IntentAppI });
-        await promise;
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
-        clearTimeout(timeout);
         expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
       }
-      await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
+      await closeMockAppWindow(RaiseIntentFailTargetedAppResolve4);
     }).timeout(constants.NoListenerTimeout + 1000);
   });

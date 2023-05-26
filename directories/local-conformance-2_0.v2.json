@@ -661,58 +661,6 @@
 			}
 		},
 		{
-			"appId": "IntentAppLId",
-			"name": "IntentAppL",
-			"title": "Intent App L",
-			"description": "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
-			"type": "web",
-			"details": {
-				"url": "http://localhost:3001/v2.0/intent-L"
-			},
-			"hostManifests": {
-				"sail": {
-					"inject-api": "2.0",
-					"searchable": false,
-					"forceNewWindow": true
-				},
-				"Finsemble": {
-					"window": {
-						"top": "center",
-						"right": 0,
-						"width": 600,
-						"height": 400
-					},
-					"foreign": {
-						"components": {
-							"App Launcher": {
-								"launchableByUser": false
-							},
-							"Window Manager": {
-								"FSBLHeader": true,
-								"titlebarType": "injected"
-							}
-						}
-					}
-				}
-			},
-			"version": "1.0.0",
-			"publisher": "FINOS",
-			"icons": [{
-				"src": "http://localhost:3001/finos-icon-256.png"
-			}],
-			"interop": {
-				"intents": {
-					"listensFor": {
-						"lTestingIntent": {
-							"displayName": "L Testing Intent",
-							"contexts": ["testContextL"],
-							"resultType": "testContextZ"
-						}
-					}
-				}
-			}
-		},
-		{
 			"appId": "OpenAppAId",
 			"name": "OpenAppA",
 			"title": "Open App A",
@@ -872,10 +820,6 @@
 					"interop": {
 						"intents": {
 							"listensFor": {
-								"aTestingIntent": {
-									"displayName": "A Testing Intent",
-									"contexts": ["testContextX"]
-								}
 							}
 						}
 					}

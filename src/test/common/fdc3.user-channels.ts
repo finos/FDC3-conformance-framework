@@ -307,7 +307,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       if (channels.length < 1) {
         assert.fail("No system channels available for app A");
       }
-      cc.joinChannel(channels[2]);
+      await cc.joinChannel(channels[2]);
       const currentChannel = await cc.getCurrentChannel();
       expect(channels[2].id, errorMessage).to.be.equal(currentChannel.id);
     });
