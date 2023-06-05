@@ -25,7 +25,7 @@ export let fdc3BasicCL2_1_2 = () => describe("fdc3.basicCL2", () => basicCL2(fdc
 export let fdc3BasicIL1_1_2 = () => describe("fdc3.basicIL1", () => basicIL1(fdc3, documentation_IL, listener));
 export let fdc3BasicGI1_1_2 = () => describe("fdc3.basicGI1", () => basicGI1(control, documentation_GI));
 export let fdc3BasicAC1_1_2 = () => describe("fdc3.basicAC1", () => basicAC1(fdc3, documentation_AC));
-export let fdc3BasicUC1_1_2 = () => describe("fdc3.basicUC1", () => basicUC1(fdc3,documentation_UC));
+export let fdc3BasicUC1_1_2 = () => describe("fdc3.basicUC1", () => basicUC1(control,documentation_UC));
 export let fdc3BasicJC1_1_2  = () => describe("fdc3.basicJC1", () => basicJC1(cc, fdc3, documentation_JC));
 export let fdc3BasicRI1_1_2  = () => describe("fdc3.basicRI1", () => { 
     after(async function after() {
