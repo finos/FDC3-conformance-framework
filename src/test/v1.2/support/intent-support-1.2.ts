@@ -1,6 +1,7 @@
 export enum ContextType {
   testContextX = "testContextX",
   testContextY = "testContextY",
+  testContextZ = "testContextZ",
 }
 
 export enum Intent {
