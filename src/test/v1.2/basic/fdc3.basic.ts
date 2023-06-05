@@ -37,5 +37,5 @@ export let fdc3BasicRI2_1_2  = () => describe("fdc3.basicRI2", () => {
     after(async function after() {
         await closeMockAppWindow(this.currentTest.title);
     });
-    basicRI2(fdc3, documentation_RI, ContextType.testContextX)
+    basicRI2(fdc3, documentation_RI, ContextType.testContextZ)
 });
