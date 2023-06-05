@@ -19,6 +19,7 @@ export default () =>
     const findInstances = "(2.0-FindInstances) valid appID when opening multiple instances of the same app";
     it(findInstances, async () => {
       const api = new MetadataFdc3Api();
+      let listener;
       try {
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA); // open IntentAppA
         const appIdentifier2 = await control.openIntentApp(IntentApp.IntentAppA); // open second instance of IntentAppA
@@ -34,7 +35,7 @@ export default () =>
         const appControlChannel = await api.retrieveAppControlChannel();
 
         //ensure appIdentifier received the raised intent
-        await appControlChannel.addContextListener("aTestingIntent-listener-triggered", (context: IntentUtilityContext) => {
+        listener = await appControlChannel.addContextListener("aTestingIntent-listener-triggered", (context: IntentUtilityContext) => {
           expect(context['instanceId'], "the raised intent was received by a different instance of the mock app than expected").to.be.equals(appIdentifier.instanceId);
           clearTimeout(timeout);
           wrapper.resolve();
@@ -44,8 +45,12 @@ export default () =>
         validateResolutionSource(resolution, appIdentifier);
         timeout = failOnTimeout("'aTestingIntent-listener-triggered' context not received from mock app"); // fail if expected context not received
         await wrapper.promise; // wait for context from IntentAppA
+        
       } catch (ex) {
         assert.fail(findInstancesDocs + (ex.message ?? ex));
+      }
+      finally {
+        control.unsubscribeListener(listener);
       }
     });
   });
