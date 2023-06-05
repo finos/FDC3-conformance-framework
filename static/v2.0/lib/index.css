@@ -30,3 +30,15 @@ body {
     border: none !important;
   }
 
+  .manualTests {
+	width: 250px;
+}
+
+.manualTestsInfo {
+	padding-left: 100;
+	padding-right: 50;
+}
+
+.bold {
+	font-weight: bold;
+}
