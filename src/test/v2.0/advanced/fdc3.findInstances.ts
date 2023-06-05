@@ -30,7 +30,7 @@ export default () =>
         let instances = await control.findInstances(IntentApp.IntentAppA);
         validateInstances(instances, appIdentifier, appIdentifier2);
 
-        let timeout;
+        const timeout = failOnTimeout("'aTestingIntent-listener-triggered' context not received from mock app"); // fail if expected context not received
         const wrapper = wrapPromise();
         const appControlChannel = await api.retrieveAppControlChannel();
 
@@ -43,7 +43,6 @@ export default () =>
 
         const resolution = await api.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, appIdentifier); // raise an intent that targets appIdentifier
         validateResolutionSource(resolution, appIdentifier);
-        timeout = failOnTimeout("'aTestingIntent-listener-triggered' context not received from mock app"); // fail if expected context not received
         await wrapper.promise; // wait for context from IntentAppA
         
       } catch (ex) {

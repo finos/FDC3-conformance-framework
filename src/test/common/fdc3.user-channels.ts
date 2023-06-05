@@ -53,9 +53,9 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const resolveExecutionCompleteListener = cc.initCompleteListener(scTestId3);
       const channel = await cc.getNonGlobalUserChannel();
       await cc.openChannelApp(scTestId3, channel.id, JOIN_AND_BROADCAST);
+      let receivedContext = false;
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.joinChannel(channel);
-      let receivedContext = false;
       await resolveExecutionCompleteListener;
       cc.unsubscribeListeners([listener]);
       if (!receivedContext) {
@@ -123,14 +123,13 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await cc.openChannelApp(UCFilteredUsage3, userChannel.id, JOIN_AND_BROADCAST_TWICE, undefined, true);
       await resolveExecutionCompleteListener;
 
-      let timeout;
+      const timeout = failOnTimeout("No context received!\n" + errorMessage);
       const wrapper = wrapPromise();
       let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
         wrapper.resolve();
         clearTimeout(timeout);
       });
       await cc.joinChannel(userChannel);
-      timeout = failOnTimeout("No context received!\n" + errorMessage);
       await wrapper.promise;
 
       cc.unsubscribeListeners([listener]);
@@ -146,13 +145,12 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await resolveExecutionCompleteListener;
       await cc.joinChannel(userChannel);
 
-      let timeout;
       const wrapper = wrapPromise();
+      const timeout = failOnTimeout("No context received!\n" + errorMessage);
       let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
         wrapper.resolve();
         clearTimeout(timeout);
       });
-      timeout = failOnTimeout("No context received!\n" + errorMessage);
       await wrapper.promise;
       cc.unsubscribeListeners([listener]);
     });

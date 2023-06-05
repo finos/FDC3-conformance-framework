@@ -32,7 +32,7 @@ export default () =>
         await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY, appIdentifier);
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
-        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
+        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
@@ -49,7 +49,6 @@ export default () =>
       } catch (ex) {
         expect(ex).to.have.property("message", ResolveError.TargetInstanceUnavailable);
       }
-      await closeMockAppWindow(RaiseIntentFailTargetedAppInstanceResolve2);
     });
 
     const RaiseIntentFailTargetedAppResolve1 = "(RaiseIntentFailTargetedAppResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY', intent 'aTestingIntent' and AppIdentifier IntentAppAId do not correlate";
@@ -59,7 +58,7 @@ export default () =>
         await wait(); // give test time to throw error
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
-        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
+        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
