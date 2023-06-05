@@ -11,5 +11,9 @@ export class BasicControl1_2 implements InfoControl<Context> {
     return info;
   }
   
+  getUserChannels = async () => {
+     const channels = await fdc3.getSystemChannels();
+     return channels;
+  }
   
 }

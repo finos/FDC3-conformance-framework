@@ -11,5 +11,11 @@ export class BasicControl2_0 implements InfoControl<Context> {
     const info = await fdc3.getInfo();
     return info;
   } 
+
+  getUserChannels = async () => {
+    const channels = await fdc3.getUserChannels();
+    return channels;
+      
+  }
   
 }
