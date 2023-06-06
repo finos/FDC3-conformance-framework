@@ -130,7 +130,6 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       let listener2 = await cc.setupAndValidateListener(differentAppChannel, "fdc3.instrument", "unexpected-context", errorMessage, () => {
         /*noop*/
       });
-      debugger;
       await cc.openChannelApp(acTestId9, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
       cc.unsubscribeListeners([listener, listener2]);
