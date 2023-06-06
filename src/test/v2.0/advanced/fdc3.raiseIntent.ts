@@ -1,4 +1,4 @@
-import { ChannelError, PrivateChannel } from "fdc3_2_0";
+import { ChannelError, PrivateChannel, Listener } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextType, Intent } from "../support/intent-support-2.0";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
@@ -10,13 +10,20 @@ const control = new RaiseIntentControl2_0();
  */
 export default () =>
   describe("fdc3.raiseIntent", () => {
+    let errorListener: Listener = undefined;
+
     afterEach(async function afterEach() {
       await closeMockAppWindow(this.currentTest.title);
+
+      if (errorListener) {
+        errorListener.unsubscribe();
+        errorListener = undefined;
+      }
     });
 
     const RaiseIntentSingleResolve = "(2.0-RaiseIntentSingleResolve) Should start app intent-a when raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentSingleResolve, async () => {
-      await control.listenForError();
+      errorListener = await control.listenForError();
       const result = control.receiveContext("aTestingIntent-listener-triggered");
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
@@ -25,7 +32,7 @@ export default () =>
 
     const RaiseIntentTargetedAppResolve = "(2.0-RaiseIntentTargetedAppResolve) Should start app intent-b when raising intent 'sharedTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedAppResolve, async () => {
-      await control.listenForError();
+      errorListener = await control.listenForError();
       const result = control.receiveContext("sharedTestingIntent1-listener-triggered");
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextX, {
         appId: IntentApp.IntentAppB,
@@ -37,7 +44,7 @@ export default () =>
     const RaiseIntentTargetedInstanceResolveOpen = "(2.0-RaiseIntentTargetedInstanceResolveOpen) Should target running instance of intent-a app when raising intent 'aTestingIntent1' with context 'testContextX' after opening intent-a app";
     it(RaiseIntentTargetedInstanceResolveOpen, async () => {
       // add app control listeners
-      await control.listenForError();
+      errorListener = await control.listenForError();
       const confirmAppOpened = control.receiveContext("intent-app-a-opened");
       const result = control.receiveContext("aTestingIntent-listener-triggered");
 
@@ -54,7 +61,7 @@ export default () =>
     const RaiseIntentTargetedInstanceResolveFindInstances = "(2.0-RaiseIntentTargetedInstanceResolveFindInstances) Should start app intent-a when targeted by raising intent 'aTestingIntent1' with context 'testContextX'";
     it(RaiseIntentTargetedInstanceResolveFindInstances, async () => {
       // add app control listeners
-      await control.listenForError();
+      errorListener = await control.listenForError();
       const confirmAppOpened = control.receiveContext("intent-app-a-opened");
       const result = control.receiveContext("aTestingIntent-listener-triggered");
 
@@ -73,7 +80,7 @@ export default () =>
 
     const PrivateChannelsAreNotAppChannels = "(2.0-PrivateChannelsAreNotAppChannels) Cannot create an app channel using a private channel id";
     it(PrivateChannelsAreNotAppChannels, async () => {
-      await control.listenForError();
+      errorListener = await control.listenForError();
       const privChan = await control.createPrivateChannel();
       control.validatePrivateChannel(privChan);
       const privChan2 = await control.createPrivateChannel();
@@ -95,7 +102,7 @@ export default () =>
 
     const PrivateChannelsLifecycleEvents = "(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected";
     it(PrivateChannelsLifecycleEvents, async () => {
-      await control.listenForError();
+      errorListener = await control.listenForError();
       let onUnsubscribeReceiver = control.receiveContext("onUnsubscribeTriggered");
       const intentResolution = await control.raiseIntent(Intent.kTestingIntent, ContextType.testContextX, {
         appId: IntentApp.IntentAppK,

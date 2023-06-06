@@ -123,14 +123,13 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await cc.openChannelApp(UCFilteredUsage3, userChannel.id, JOIN_AND_BROADCAST_TWICE, undefined, true);
       await resolveExecutionCompleteListener;
 
-      let timeout = failOnTimeout("No context received!\n" + errorMessage);
+      const timeout = failOnTimeout("No context received!\n" + errorMessage);
       const wrapper = wrapPromise();
       let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
         wrapper.resolve();
         clearTimeout(timeout);
       });
       await cc.joinChannel(userChannel);
-      
       await wrapper.promise;
 
       cc.unsubscribeListeners([listener]);
@@ -146,8 +145,8 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await resolveExecutionCompleteListener;
       await cc.joinChannel(userChannel);
 
-      let timeout = failOnTimeout("No context received!\n" + errorMessage);
       const wrapper = wrapPromise();
+      const timeout = failOnTimeout("No context received!\n" + errorMessage);
       let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
         wrapper.resolve();
         clearTimeout(timeout);

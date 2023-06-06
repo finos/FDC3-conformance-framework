@@ -153,7 +153,7 @@ export class RaiseIntentControl2_0 {
 
   async listenForError() {
     const appControlChannel = await getOrCreateChannel("app-control");
-    appControlChannel.addContextListener("error", (context: AppControlContext) => {
+    return appControlChannel.addContextListener("error", (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
   }

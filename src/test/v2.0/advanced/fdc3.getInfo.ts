@@ -43,7 +43,7 @@ export default () =>
       let implMetadata: ImplementationMetadata;
       const appControlChannel = await api.retrieveAppControlChannel();
 
-      let timeout = failOnTimeout("did not receive MetadataContext from metadata app"); // fail if no metadataContext received
+      const timeout = failOnTimeout("did not receive MetadataContext from metadata app"); // fail if no metadataContext received
       const wrapper = wrapPromise();
 
       listener = await appControlChannel.addContextListener("context-listener-triggered", async (context: MetadataContext) => {
@@ -55,7 +55,6 @@ export default () =>
       const appIdentifier = await api.openMetadataApp("metadataAppContext");
       validator.validateAppIdentifier(appIdentifier);
 
-      
       await wrapper.promise; // wait for listener above to receive context
 
       // validate ImplementationMetadata
