@@ -7,8 +7,9 @@ declare let fdc3: DesktopAgent;
 
 export async function closeMockAppWindow(testId: string) {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  waitForContext("windowClosed", testId, appControlChannel);
+  const contextPromise = waitForContext("windowClosed", testId, appControlChannel);
   await broadcastCloseWindow(testId);
+  await contextPromise;
   await wait(constants.WindowCloseWaitTime); // wait for window to close
 }
 
