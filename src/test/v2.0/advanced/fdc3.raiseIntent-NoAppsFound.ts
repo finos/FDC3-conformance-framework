@@ -32,7 +32,7 @@ export default () =>
         await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextY, appIdentifier);
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
-        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
+        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
@@ -58,7 +58,7 @@ export default () =>
         await wait(); // give test time to throw error
         assert.fail("Expected the raised intent to be rejected with an error but no error was thrown");
       } catch (ex) {
-        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.IntentDeliveryFailed);
+        expect(ex, raiseIntentDocs).to.have.property("message", ResolveError.NoAppsFound);
       }
     });
 
