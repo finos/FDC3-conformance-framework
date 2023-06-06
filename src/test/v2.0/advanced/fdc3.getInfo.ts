@@ -1,7 +1,7 @@
 import { assert, expect } from "chai";
 import { failOnTimeout, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
-import { ImplementationMetadata } from "fdc3_2_0";
+import { ImplementationMetadata, Listener } from "fdc3_2_0";
 import { MetadataValidator, MetadataContext, MetadataFdc3Api } from "../support/metadata-support-2.0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 
@@ -11,8 +11,15 @@ const api = new MetadataFdc3Api();
 
 export default () =>
   describe("fdc3.getInfo", () => {
+    let listener: Listener | undefined;
+
     after(async function after() {
       await closeMockAppWindow(this.currentTest.title);
+
+      if (listener) {
+        listener.unsubscribe();
+        listener = undefined;
+      }
     });
 
     it("Method is callable", async () => {
@@ -36,10 +43,10 @@ export default () =>
       let implMetadata: ImplementationMetadata;
       const appControlChannel = await api.retrieveAppControlChannel();
 
-      let timeout;
+      let timeout = failOnTimeout("did not receive MetadataContext from metadata app"); // fail if no metadataContext received
       const wrapper = wrapPromise();
 
-      appControlChannel.addContextListener("context-listener-triggered", async (context: MetadataContext) => {
+      listener = await appControlChannel.addContextListener("context-listener-triggered", async (context: MetadataContext) => {
         implMetadata = context.implMetadata;
         wrapper.resolve();
         clearTimeout(timeout);
@@ -48,7 +55,7 @@ export default () =>
       const appIdentifier = await api.openMetadataApp("metadataAppContext");
       validator.validateAppIdentifier(appIdentifier);
 
-      timeout = failOnTimeout("did not receive MetadataContext from metadata app"); // fail if no metadataContext received
+      
       await wrapper.promise; // wait for listener above to receive context
 
       // validate ImplementationMetadata
