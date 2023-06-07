@@ -22,6 +22,7 @@ getPackNames().forEach((pn) => {
 });
 
 function executeTests() {
+  console.log('************** executing test **************');
   toggleVersionSelector();
   toggleBackButton();
   const fdc3Versions = document.getElementById("version") as HTMLSelectElement;
@@ -49,7 +50,8 @@ function executeManualTests() {
 }
 
 function returnToTestSelection() {
-  location.reload();
+  location.href = 'http://localhost:3001/v2.0/app/index.html'
+  //location.reload();
 }
 
 function toggleVersionSelector() {
@@ -73,6 +75,35 @@ function toggleBackButton() {
   }
 }
 
+function executeSingleTest(testName: string) {
+  console.log('************** executing test **************', testName);
+  toggleVersionSelector();
+  toggleBackButton();
+  //const fdc3Versions = document.getElementById("version") as HTMLSelectElement;
+  var selectedVersion = testName;
+  const action = () => executeTestsInBrowser(selectedVersion);
+  if (window.fdc3) {
+    action();
+  } else {
+    window.addEventListener("fdc3Ready", action);
+  }
+}
+
+function parseQueryString(queryString) {
+  let newStr = queryString.split('=')[1].split('(')[0];
+  newStr = decodeURI(newStr).replace(/\\/g, "").replace(/_/g, " ").trim();
+  console.log(newStr);
+  return newStr;
+}
+
+const queryString = window.location.search;
+console.log('********** query string now is **************',queryString);
+console.log('Window location is ',window.location);
+if(queryString !== undefined && queryString !== '') {
+  console.log(' ********* going to run single test ***********');
+  let singleTest = parseQueryString(queryString);
+  executeSingleTest(singleTest);
+}
 document.getElementById("runButton").addEventListener("click", executeTests);
 document.getElementById("back-button").addEventListener("click", returnToTestSelection);
 document.getElementById("manualTestsRunButton").addEventListener("click", executeManualTests);
