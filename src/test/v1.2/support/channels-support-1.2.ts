@@ -3,6 +3,8 @@ import { Channel, Context, DesktopAgent, Listener } from "fdc3_1_2";
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
 import { AppControlContext } from "../../../context-types";
 import { closeMockAppWindow, waitForContext } from "../fdc3-1_2-utils";
+import constants from "../../../constants";
+import { wait } from "../../../utils";
 
 declare let fdc3: DesktopAgent;
 
@@ -49,6 +51,8 @@ export class ChannelControl1_2 implements ChannelControl<Channel, Context, Liste
 
   initCompleteListener = async (testId: string): Promise<AppControlContext> => {
     const receivedContext = await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel("app-control"));
+
+    await wait(constants.ShortWait)
     return receivedContext;
   };
 
