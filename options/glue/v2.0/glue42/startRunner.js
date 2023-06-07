@@ -3,6 +3,13 @@ const init = async () => {
         applications: {
             local: [
                 {
+                    name: "intentsResolver",
+                    type: "window",
+                    details: {
+                        url: "http://localhost:3001/v2.0/glue42/ir/index.html"
+                    }
+                },
+                {
                     name: "ChannelsAppId",
                     title: "Channels App",
                     description: "Part of the FDC3 2.0 Conformance Tests - developed for FINOS by Scott Logic",
@@ -435,7 +442,7 @@ const init = async () => {
             ],
         },
         intents: {
-            enableIntentsResolverUI: false,
+            enableIntentsResolverUI: true,
         },
     };
 
