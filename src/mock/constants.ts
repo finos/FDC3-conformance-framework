@@ -1,12 +1,12 @@
 export const channelType = {
-    system: "system",
-    app: "app",
-  };
-  
+  system: "system",
+  app: "app",
+};
+
 export const commands = {
-    joinRetrievedUserChannel: "joinRetrievedUserChannel",
-    retrieveTestAppChannel: "retrieveTestAppChannel",
-    broadcastInstrumentContext: "broadcastInstrumentContext",
-    broadcastContactContext: "broadcastContactContext",
-    joinUserChannelOne: "joinUserChannelOne"   // v2.0
+  joinRetrievedUserChannel: "joinRetrievedUserChannel",
+  retrieveTestAppChannel: "retrieveTestAppChannel",
+  broadcastInstrumentContext: "broadcastInstrumentContext",
+  broadcastContactContext: "broadcastContactContext",
+  joinUserChannelOne: "joinUserChannelOne", // v2.0
 };
