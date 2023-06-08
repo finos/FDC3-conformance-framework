@@ -64,8 +64,11 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
   it(AOpensBWithWrongContext, async () => {
     await control.addListenerAndFailIfReceived();
     let targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
+    setTimeout(() => {
+      control.closeMockApp(AOpensBWithWrongContext);
+    }, constants.NoListenerTimeout+100);
+
     await control.expectAppTimeoutErrorOnOpen(targetApp);
-    await control.closeMockApp(AOpensBWithWrongContext);
-  }).timeout(constants.NoListenerTimeout + 1000);
+  }).timeout(constants.NoListenerTimeout + 2000);
   
 }
