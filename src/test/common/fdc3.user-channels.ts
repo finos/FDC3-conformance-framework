@@ -120,19 +120,15 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
 
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage3);
       const userChannel = await cc.getNonGlobalUserChannel();
+      let receivedContext = false;
       await cc.openChannelApp(UCFilteredUsage3, userChannel.id, JOIN_AND_BROADCAST_TWICE, undefined, true);
-      await resolveExecutionCompleteListener;
-
-      const timeout = failOnTimeout("No context received!\n" + errorMessage);
-      const wrapper = wrapPromise();
-      let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
-        wrapper.resolve();
-        clearTimeout(timeout);
-      });
+      let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.joinChannel(userChannel);
-      await wrapper.promise;
-
+      await resolveExecutionCompleteListener;
       cc.unsubscribeListeners([listener]);
+      if (!receivedContext) {
+        assert.fail(`No context received!\n${errorMessage}`);
+      }
     });
 
     const UCFilteredUsage4 = "(" + prefix + "UCFilteredUsage4) Should receive context when B broadcasts to a user channel before A joins the same channel and listens for the broadcast type";
@@ -142,17 +138,14 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       const resolveExecutionCompleteListener = cc.initCompleteListener(UCFilteredUsage4);
       const userChannel = await cc.getNonGlobalUserChannel();
       await cc.openChannelApp(UCFilteredUsage4, userChannel.id, JOIN_AND_BROADCAST_TWICE, undefined, true);
-      await resolveExecutionCompleteListener;
       await cc.joinChannel(userChannel);
-
-      const wrapper = wrapPromise();
-      const timeout = failOnTimeout("No context received!\n" + errorMessage);
-      let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => {
-        wrapper.resolve();
-        clearTimeout(timeout);
-      });
-      await wrapper.promise;
+      let receivedContext = false;
+      let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
+      await resolveExecutionCompleteListener;
       cc.unsubscribeListeners([listener]);
+      if (!receivedContext) {
+        assert.fail(`No context received!\n${errorMessage}`);
+      }
     });
 
     const scTestId5 = "(" + prefix + "UCFilteredUsage5) Should receive multiple contexts when app B broadcasts the listened types to the same user channel";
