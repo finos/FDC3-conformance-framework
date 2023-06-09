@@ -8,7 +8,7 @@ import fdc3getAppMetadata_2_0 from "./advanced/fdc3.getAppMetadata";
 import fdc3FindInstances_2_0 from "./advanced/fdc3.findInstances";
 import fdc3Open_2_0 from "./advanced/fdc3.open";
 import fdc3RaiseIntent_2_0 from "./advanced/fdc3.raiseIntent";
-import fdc3RaiseIntent_2_0_Result from "./advanced/fdc3.raiseIntent-result";
+import fdc3RaiseIntent_2_0_Result from "./advanced/fdc3.raiseIntent-Result";
 import fdc3RaiseIntent_2_0_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
 import {fdc3BasicCL1_2_0, fdc3BasicCL2_2_0, fdc3BasicIL1_2_0, fdc3BasicGI1_2_0 , fdc3BasicAC1_2_0 , fdc3BasicUC1_2_0, fdc3BasicJC1_2_0, fdc3BasicRI1_2_0, fdc3BasicRI2_2_0 } from './basic/fdc3.basic';
 import {fdc3ResolveAmbiguousIntentTarget_2_0, fdc3ResolveAmbiguousContextTarget_2_0, fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0, fdc3ResolveAmbiguousContextTargetMultiInstance_2_0} from './manual/fdc3.manual';
