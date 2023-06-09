@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
-import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
-import { versionIsAtLeast } from "fdc3_1_2/src/api/Methods"
+import { DesktopAgent } from "fdc3_1_2";
+import { versionIsAtLeast } from "fdc3_1_2"
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 
 declare let fdc3: DesktopAgent;
