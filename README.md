@@ -3,14 +3,13 @@
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6456/badge)](https://bestpractices.coreinfrastructure.org/projects/6456)
 
-|Version    | Release | Specification |
-|-----------|---------|--------|
-|[FDC3 1.2](https://fdc3.finos.org/docs/1.2/fdc3-intro)   | ![GitHub release (latest by date)](https://img.shields.io/github/v/release/finos/FDC3-Conformance-Framework) | [1.2 Tests Specification](https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/FDC3-1.2-Conformance-Test-Cases.md) |
-|[FDC3 2.0](https://fdc3.finos.org/docs/fdc3-intro) | _in development_ | [2.0 Tests Specification](https://github.com/finos/FDC3/blob/8166c0e6aa872b2fc7b755384e5b2eeeaf88c732/toolbox/fdc3-conformance/FDC3-2.0-Conformance-Test-Cases.md) |
-
 # FDC3 Conformance Framework
 
 A framework for testing whether desktop containers implement the [FDC3 standard](https://fdc3.finos.org/).
+
+The tests implemented for each FDC3 version are based on the FDC3 Conformance tests specifications defined by the FDC3 maintainers and provided in the main FDC3 repository. Please see [the README file in that repository](https://github.com/finos/FDC3/blob/master/toolbox/fdc3-conformance/README.md) for further details.
+
+Tests are currently implemented for version [1.2](https://fdc3.finos.org/docs/1.2/fdc3-intro) and [2.0](https://fdc3.finos.org/docs/fdc3-intro) of the FDC3 Standard.
 
 ## What Is It?
 
