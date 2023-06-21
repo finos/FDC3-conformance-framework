@@ -5,7 +5,7 @@ Complete this form for each Participant (company or other entity) that desires t
 
 By signing below and submitting this form to The Linux Foundation (by [DocuSign](https://na3.docusign.net/Member/PowerFormSigning.aspx?PowerFormId=514e8bf9-adcc-4113-898c-071acb40790a&env=na3&acct=f30e10ec-fea1-4dd8-a262-384a61edabb5&v=2) or emailing the [PDF](participation-form.pdf) to [help@finos.org](mailto:help@finos.org)):
 
-1.  The Participant agrees to the Terms and Conditions of the Certified FDC3 Conformance Program (the "**Program Terms**"), available at <https://github.com/finos/fdc3-conformance-testing/tree/master/terms-conditions/FDC3-Certified-Terms.pdf>.
+1.  The Participant agrees to the Terms and Conditions of the Certified FDC3 Conformance Program (the "**Program Terms**"), available at <https://github.com/finos/FDC3-conformance-framework/blob/main/terms-conditions/FDC3-Certified-Terms.pdf>.
 2.  The Participant confirms that the products and services identified below as Qualifying Offerings have passed all of the self-tests described in the Certification Guide, and are Qualifying Offerings under the Program Terms.
 3.  The Participant confirms that it has submitted to FINOS the results of the self-tests prior to its first public use of the Certified FDC3 Marks associated with the corresponding version of FDC3.
 4.  The Participant confirms that it will either (a) maintain conformance of the Qualifying Offerings with later versions of FDC3, or (b) cease use of the Certified FDC3 Marks and Participant FDC3 Combinations at the end of the applicable conformance time period described in the Program Terms.
