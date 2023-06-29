@@ -13,7 +13,7 @@ const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent 
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 export default () =>
-  describe("fdc3.raiseIntent", () => {
+  describe("fdc3.raiseIntent_1.2", () => {
     afterEach(async function afterEach() {
       await closeMockAppWindow(this.currentTest.title);
     });

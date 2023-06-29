@@ -7,7 +7,7 @@ declare let fdc3: DesktopAgent;
 const getInfoDocs = "\r\nDocumentation: " + APIDocumentation1_2.getInfo + "\r\nCause";
 
 export default () =>
-  describe("fdc3.getInfo1", () => {
+  describe("fdc3.getInfo_1.2", () => {
 
     it("Method is callable", async () => {
       try {

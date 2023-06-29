@@ -10,7 +10,7 @@ const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntent 
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 export default () =>
-  describe("fdc3.raiseIntent (throws error)", () => {
+  describe("fdc3.raiseIntent (throws error)_1.2", () => {
     const test5 = "(FailedResolve1) Should fail to raise intent when targeted app intent-a, context 'testContextY' and intent 'aTestingIntent' do not correlate";
     it(test5, async () => {
       try {
