@@ -22,7 +22,6 @@ getPackNames().forEach((pn) => {
 });
 
 function executeTests() {
-  console.log('************** executing test **************');
   toggleVersionSelector();
   toggleBackButton();
   const fdc3Versions = document.getElementById("version") as HTMLSelectElement;
@@ -40,7 +39,6 @@ function executeManualTests() {
   toggleBackButton();
   const manualTests = document.getElementById("manualTests") as HTMLSelectElement;
   var selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
-  console.log('******** Selected manual test is',selectedManualTest);
   const action = () => executeManualTestsInBrowser(selectedManualTest);
   if (window.fdc3) {
     action();
@@ -50,8 +48,7 @@ function executeManualTests() {
 }
 
 function returnToTestSelection() {
-  location.href = '/v2.0/app/index.html'
-  //location.reload();
+  location.href = '/v2.0/app/index.html';
 }
 
 function toggleVersionSelector() {
@@ -75,13 +72,10 @@ function toggleBackButton() {
   }
 }
 
-function executeSingleTest(testName: string) {
-  console.log('************** executing test **************', testName);
+function executeSingleTest(testName: string, manualTest: boolean) {
   toggleVersionSelector();
   toggleBackButton();
-  //const fdc3Versions = document.getElementById("version") as HTMLSelectElement;
-  var selectedVersion = testName;
-  const action = () => executeTestsInBrowser(selectedVersion);
+  const action = () => manualTest? executeManualTestsInBrowser(testName): executeTestsInBrowser(testName);
   if (window.fdc3) {
     action();
   } else {
@@ -90,21 +84,18 @@ function executeSingleTest(testName: string) {
 }
 
 function parseQueryString(queryString) {
-  let newStr = queryString.split('=')[1];//.split('(')[0];
-  newStr = decodeURI(newStr).replace(/\\/g, ""); //.replace(/_/g, " ").trim();
-  newStr = newStr.split('_')[0];
-  newStr+= ' 2.0';
-  console.log(newStr);
-  return newStr;
+  let queryParts = decodeURI(queryString.split('=')[1]).replace(/\\/g, "").split('_');
+  let testName = queryParts[0] + ' 2.0';
+  let manualTest = (queryParts[1] !== undefined && queryParts[1] !== '' && queryParts[1] === 'Manual') ? true: false;
+  return {testName, manualTest};
 }
 
 const queryString = window.location.search;
-console.log('********** query string now is **************',queryString);
-console.log('Window location is ',window.location);
 if(queryString !== undefined && queryString !== '') {
-  console.log(' ********* going to run single test ***********');
-  let singleTest = parseQueryString(queryString);
-  executeSingleTest(singleTest);
+  let testData = parseQueryString(queryString);
+  let testName = testData.testName;
+  let manualTest = testData.manualTest;
+  executeSingleTest(testName, manualTest);
 }
 document.getElementById("runButton").addEventListener("click", executeTests);
 document.getElementById("back-button").addEventListener("click", returnToTestSelection);

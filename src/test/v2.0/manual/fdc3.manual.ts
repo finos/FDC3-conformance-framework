@@ -18,7 +18,7 @@ declare let fdc3: DesktopAgent;
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 
-export let fdc3ResolveAmbiguousIntentTarget_2_0 = () => describe("ResolveAmbiguousIntentTarget_2.0", () => {
+export let fdc3ResolveAmbiguousIntentTarget_2_0 = () => describe("fdc3.ResolveAmbiguousIntentTarget_Manual_2.0", () => {
     after(async function after() {
         await closeMockAppWindow(this.currentTest.title);
     });
@@ -35,7 +35,7 @@ export let fdc3ResolveAmbiguousIntentTarget_2_0 = () => describe("ResolveAmbiguo
     });
   });
 
-  export let fdc3ResolveAmbiguousContextTarget_2_0 = () => describe("ResolveAmbiguousContextTarget_2.0", () => {
+  export let fdc3ResolveAmbiguousContextTarget_2_0 = () => describe("fdc3.ResolveAmbiguousContextTarget_Manual_2.0", () => {
     after(async function after() {
         await closeMockAppWindow(this.currentTest.title);
     });
@@ -52,7 +52,7 @@ export let fdc3ResolveAmbiguousIntentTarget_2_0 = () => describe("ResolveAmbiguo
     });
   });
 
-  export let fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () => describe("ResolveAmbiguousIntentTargetMultiInstance_2.0", () => {
+  export let fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0 = () => describe("fdc3.ResolveAmbiguousIntentTargetMultiInstance_Manual_2.0", () => {
     after(async function after() {
         await closeMockAppWindow(this.currentTest.title);
     });
@@ -75,7 +75,7 @@ export let fdc3ResolveAmbiguousIntentTarget_2_0 = () => describe("ResolveAmbiguo
     });
   });
 
-  export let fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () => describe("ResolveAmbiguousContextTargetMultiInstance_2.0", () => {
+  export let fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 = () => describe("fdc3.ResolveAmbiguousContextTargetMultiInstance_Manual_2.0", () => {
     after(async function after() {
         await closeMockAppWindow(this.currentTest.title);
     });

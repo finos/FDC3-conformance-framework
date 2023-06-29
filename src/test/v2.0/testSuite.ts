@@ -98,10 +98,8 @@ export const executeTestsInBrowser = (pack: string) => {
  * in HTML page
  */
 export const executeManualTestsInBrowser = (pack: string) => {
-  console.log('Pack',pack);
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allManualTests[pack];
-  console.log('************ found suite******', suite)
   suite.forEach((s) => s());
   mocha.run();
 };

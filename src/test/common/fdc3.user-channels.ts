@@ -4,8 +4,6 @@ import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "./control/channel-
 import { ChannelControl } from "./control/channel-control";
 
 export function createUserChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string) {
-  // const channelName = prefix === "" ? "System channels" : "User channels";
-  
     const scTestId1 = "(" + prefix + "UCBasicUsage1) Should receive context when adding a listener then joining a user channel before app B broadcasts context to the same channel";
     it(scTestId1, async () => {
       const errorMessage = `\r\nSteps to reproduce:\r\n- Add fdc3.instrument context listener to app A\r\n- App A joins channel 1\r\n- App B joins channel 1\r\n- App B broadcasts fdc3.instrument context${documentation}`;
