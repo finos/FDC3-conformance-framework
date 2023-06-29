@@ -8,7 +8,7 @@ const validator = new MetadataValidator();
 const api = new MetadataFdc3Api();
 
 export default () =>
-  describe("fdc3.getAppMetadata", () => {
+  describe("fdc3.getAppMetadata_2.0", () => {
     after(async () => {
       await closeMockAppWindow(appInstanceMetadata);
     });

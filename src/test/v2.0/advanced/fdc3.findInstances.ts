@@ -11,7 +11,7 @@ const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstan
 const control = new RaiseIntentControl2_0();
 
 export default () =>
-  describe("fdc3.findInstances", () => {
+  describe("fdc3.findInstances_2.0", () => {
     after(async function after() {
       await closeMockAppWindow(this.currentTest.title);
     });

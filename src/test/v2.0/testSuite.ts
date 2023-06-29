@@ -36,8 +36,8 @@ const advancedSuite_2_0: testSet = {
   "fdc3.findIntent 2.0": [fdc3FindIntent_2_0],
   "fdc3.findIntentsByContext 2.0": [fdc3FindIntentsByContext_2_0],
   "fdc3.raiseIntent 2.0": [fdc3RaiseIntent_2_0],
-  "fdc3.raiseIntent 2.0 (result)": [fdc3RaiseIntent_2_0_Result],
-  "fdc3.raiseIntent 2.0 (throws error)": [fdc3RaiseIntent_2_0_NoAppsFound],
+  "fdc3.raiseIntent (Result) 2.0": [fdc3RaiseIntent_2_0_Result],
+  "fdc3.raiseIntent (throws error) 2.0": [fdc3RaiseIntent_2_0_NoAppsFound],
 };
 
 const ambiguousTests_2_0: testSet = {

@@ -50,7 +50,7 @@ function executeManualTests() {
 }
 
 function returnToTestSelection() {
-  location.href = 'http://localhost:3001/v2.0/app/index.html'
+  location.href = '/v2.0/app/index.html'
   //location.reload();
 }
 
@@ -90,8 +90,10 @@ function executeSingleTest(testName: string) {
 }
 
 function parseQueryString(queryString) {
-  let newStr = queryString.split('=')[1].split('(')[0];
-  newStr = decodeURI(newStr).replace(/\\/g, "").replace(/_/g, " ").trim();
+  let newStr = queryString.split('=')[1];//.split('(')[0];
+  newStr = decodeURI(newStr).replace(/\\/g, ""); //.replace(/_/g, " ").trim();
+  newStr = newStr.split('_')[0];
+  newStr+= ' 2.0';
   console.log(newStr);
   return newStr;
 }
