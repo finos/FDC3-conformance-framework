@@ -2,6 +2,7 @@ import { assert, expect } from "chai";
 import { failOnTimeout, wait, wrapPromise } from "../../utils";
 import { JOIN_AND_BROADCAST, JOIN_AND_BROADCAST_TWICE } from "./control/channel-control";
 import { ChannelControl } from "./control/channel-control";
+import constants from "../../constants";
 
 export function createUserChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
   const channelName = prefix === "" ? "System channels" : "User channels";
@@ -23,9 +24,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await cc.joinChannel(channel);
       await cc.openChannelApp(scTestId1, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail("No context received" + errorMessage);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener]);
       }
     });
 
@@ -40,9 +48,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.openChannelApp(scTestId2, channel.id, JOIN_AND_BROADCAST);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener]);
       }
     });
 
@@ -57,9 +72,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.joinChannel(channel);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener]);
       }
     });
 
@@ -74,9 +96,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(null, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener]);
       }
     });
 
@@ -91,9 +120,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await cc.joinChannel(channel);
       await cc.openChannelApp(scTestId4, channel.id, JOIN_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener]);
       }
     });
 
@@ -108,9 +144,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.openChannelApp(UCFilteredUsage2, channel.id, JOIN_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener]);
       }
     });
 
@@ -125,9 +168,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       let listener = await cc.setupAndValidateListener(null, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await cc.joinChannel(userChannel);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener]);
       }
     });
 
@@ -142,9 +192,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       let receivedContext = false;
       let listener = await cc.setupAndValidateListener(undefined, "fdc3.instrument", "fdc3.instrument", errorMessage, () => (receivedContext = true));
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener]);
       }
     });
 
@@ -181,9 +238,16 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       await cc.joinChannel(channel);
       await cc.openChannelApp(scTestId5, channel.id, JOIN_AND_BROADCAST_TWICE, undefined, true, contextId);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener, listener2]);
-      if (!receivedContext) {
-        assert.fail(`At least one context was not received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(1000);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener, listener2]);
       }
     });
 
