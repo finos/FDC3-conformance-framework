@@ -27,7 +27,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -51,7 +51,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -75,7 +75,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -99,7 +99,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -123,7 +123,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -147,7 +147,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -171,7 +171,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -195,7 +195,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -241,7 +241,7 @@ export function createUserChannelTests(cc: ChannelControl<any, any, any>, docume
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }

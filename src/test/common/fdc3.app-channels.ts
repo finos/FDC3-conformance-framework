@@ -1,5 +1,6 @@
 import { assert, expect } from "chai";
 import { wait } from "../../utils";
+import constants from "../../constants";
 import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, JOIN_AND_BROADCAST_TWICE } from "./control/channel-control";
 
 export function createAppChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
@@ -25,7 +26,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -48,7 +49,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
 
       if (!receivedContext) {
         //allow upto a second for the context to arrive
-        await wait(1000);
+        await wait(constants.ShortWait);
         if (!receivedContext) {
           assert.fail(`No context received!\n${errorMessage}`);
         }
@@ -70,7 +71,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -130,7 +131,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
@@ -160,7 +161,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       try {
         if (!receivedContext) {
           //allow upto a second for the context to arrive
-          await wait(1000);
+          await wait(constants.ShortWait);
           if (!receivedContext) {
             assert.fail(`No context received!\n${errorMessage}`);
           }
