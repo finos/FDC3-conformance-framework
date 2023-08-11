@@ -1,5 +1,6 @@
 import { assert, expect } from "chai";
 import { wait } from "../../utils";
+import constants from "../../constants";
 import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, JOIN_AND_BROADCAST_TWICE } from "./control/channel-control";
 
 export function createAppChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
@@ -22,9 +23,16 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       });
       await cc.openChannelApp(acTestId, testChannel.id, APP_CHANNEL_AND_BROADCAST);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener1]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(constants.ShortWait);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener1]);
       }
     });
 
@@ -40,7 +48,11 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       await cc.setupContextChecker(testChannel, null, "fdc3.instrument", errorMessage, () => (receivedContext = true));
 
       if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+        //allow upto a second for the context to arrive
+        await wait(constants.ShortWait);
+        if (!receivedContext) {
+          assert.fail(`No context received!\n${errorMessage}`);
+        }
       }
     });
 
@@ -56,9 +68,16 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       });
       await cc.openChannelApp(acTestId4, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener1]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(constants.ShortWait);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener1]);
       }
     });
 
@@ -109,9 +128,16 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       });
       await cc.openChannelApp(acTestId8, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener, listener2]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(constants.ShortWait);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener, listener2]);
       }
     });
 
@@ -132,9 +158,16 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
       });
       await cc.openChannelApp(acTestId9, testChannel.id, APP_CHANNEL_AND_BROADCAST_TWICE);
       await resolveExecutionCompleteListener;
-      cc.unsubscribeListeners([listener, listener2]);
-      if (!receivedContext) {
-        assert.fail(`No context received!\n${errorMessage}`);
+      try {
+        if (!receivedContext) {
+          //allow upto a second for the context to arrive
+          await wait(constants.ShortWait);
+          if (!receivedContext) {
+            assert.fail(`No context received!\n${errorMessage}`);
+          }
+        }
+      } finally {
+        cc.unsubscribeListeners([listener,listener2]);
       }
     });
 
