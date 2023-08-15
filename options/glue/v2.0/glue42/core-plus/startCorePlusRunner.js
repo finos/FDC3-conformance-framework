@@ -1,6 +1,6 @@
 const init = async () => {
     const config = {
-        licenseKey: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHBpcmF0aW9uIjoxNjkzNTE1NjAwLCJ0eXBlIjoidHJpYWwifQ.VOHEfGyNlgTfLexfDWfqUMLgH5pCjLqYjW3mON2J8Ec",
+        licenseKey: "<<add license key here>",
         applications: {
             local: [
                 {
