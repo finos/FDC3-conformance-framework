@@ -5,6 +5,7 @@ import { APIDocumentation2_1 } from "../apiDocuments-2.1";
 import { OpenControl2_1 } from "../support/open-support-2.1";
 import { DesktopAgent } from "fdc3_2_0";
 import { assert, expect } from "chai";
+import { ControlContextType } from "../../v2.0/support/intent-support-2.0";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_1 + "\r\nCause:";
 const control = new OpenControl2_1();
@@ -24,7 +25,7 @@ export default () =>
     //run v2.0-only open tests
     const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
     it(AOpensBMalformedContext, async () => {
-      const receiver = control.contextReceiver("context-received");
+      const receiver = control.contextReceiver(ControlContextType.contextReceived);
       await control.openMockApp(openApp.f.name);
       await receiver;
       await control.closeMockApp(AOpensBMalformedContext);

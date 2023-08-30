@@ -4,6 +4,7 @@ import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { ImplementationMetadata, Listener } from "fdc3_2_0";
 import { MetadataValidator, MetadataContext, MetadataFdc3Api } from "../support/metadata-support-2.0";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
+import { ControlContextType } from "../support/intent-support-2.0";
 
 const getInfoDocs = "\r\nDocumentation: " + APIDocumentation2_0.getInfo + "\r\nCause";
 const validator = new MetadataValidator();
@@ -46,7 +47,7 @@ export default () =>
       const timeout = failOnTimeout("did not receive MetadataContext from metadata app"); // fail if no metadataContext received
       const wrapper = wrapPromise();
 
-      listener = await appControlChannel.addContextListener("context-listener-triggered", async (context: MetadataContext) => {
+      listener = await appControlChannel.addContextListener(ControlContextType.ContextListenerTriggered, async (context: MetadataContext) => {
         implMetadata = context.implMetadata;
         wrapper.resolve();
         clearTimeout(timeout);

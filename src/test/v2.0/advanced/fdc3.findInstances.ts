@@ -4,7 +4,7 @@ import { failOnTimeout, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { IntentUtilityContext } from "../../../context-types";
 import { MetadataFdc3Api } from "../support/metadata-support-2.0";
-import { ContextType, Intent, IntentApp, RaiseIntentControl2_0 } from "../support/intent-support-2.0";
+import { ContextType, ControlContextType, Intent, IntentApp, RaiseIntentControl2_0 } from "../support/intent-support-2.0";
 
 const findInstancesDocs = "\r\nDocumentation: " + APIDocumentation2_0.findInstances + "\r\nCause: ";
 
@@ -30,12 +30,12 @@ export default () =>
         let instances = await control.findInstances(IntentApp.IntentAppA);
         validateInstances(instances, appIdentifier, appIdentifier2);
 
-        const timeout = failOnTimeout("'aTestingIntent-listener-triggered' context not received from mock app"); // fail if expected context not received
+        const timeout = failOnTimeout(`'${ControlContextType.aTestingIntentListenerTriggered}' context not received from mock app`); // fail if expected context not received
         const wrapper = wrapPromise();
         const appControlChannel = await api.retrieveAppControlChannel();
 
         //ensure appIdentifier received the raised intent
-        listener = await appControlChannel.addContextListener("aTestingIntent-listener-triggered", (context: IntentUtilityContext) => {
+        listener = await appControlChannel.addContextListener(ControlContextType.aTestingIntentListenerTriggered, (context: IntentUtilityContext) => {
           expect(context['instanceId'], "the raised intent was received by a different instance of the mock app than expected").to.be.equals(appIdentifier.instanceId);
           clearTimeout(timeout);
           wrapper.resolve();
