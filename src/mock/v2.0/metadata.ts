@@ -19,16 +19,4 @@ onFdc3Ready().then(async () => {
 
     sendContextToTests(metadataContext);
   });
-
-  // used in 'FindInstances'
-  await fdc3.addIntentListener(Intent.aTestingIntent, async (context) => {
-    const implMetadata = await fdc3.getInfo();
-    const metadataAppContext: AppControlContext = {
-      type: ControlContextType.IntentListenerTriggered,
-      instanceId: implMetadata.appMetadata.instanceId,
-    };
-
-    sendContextToTests(metadataAppContext);
-    return context;
-  });
 });
