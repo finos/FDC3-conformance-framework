@@ -41,7 +41,7 @@ export let basicCL2 = (fdc3: any, documentation: string, listener: any) => {
 
 export let basicIL1 = (fdc3: any, documentation: string, listener: any) => {
   it("(BasicIL1) Method is callable", async () => {
-    const intentName = "fdc3.conformanceListener";
+    const intentName = "ConformanceListener";
     try {
       listener = await fdc3.addIntentListener(intentName, (info: any) => {
         console.log(`Intent listener for intent ${intentName} triggered with result ${info}`);

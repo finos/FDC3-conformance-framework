@@ -47,7 +47,7 @@
 			"interop": {
 				"intents": {
 					"listensFor": {
-						"fdc3.conformanceListener": {
+						"ConformanceListener": {
 							"contexts": ["fdc3.nothing"]
 						}
 					}
