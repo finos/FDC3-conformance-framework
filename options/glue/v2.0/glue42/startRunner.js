@@ -53,11 +53,6 @@ const init = async () => {
                     },
                     intents: [
                         {
-                            name: "bTestingIntent",
-                            displayName: "B Testing Intent",
-                            contexts: ["testContextY"],
-                        },
-                        {
                             name: "sharedTestingIntent1",
                             displayName: "Shared Testing Intent",
                             contexts: ["testContextX", "testContextY"],
