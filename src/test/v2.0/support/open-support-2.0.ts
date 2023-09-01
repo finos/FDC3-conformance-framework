@@ -7,6 +7,7 @@ import { AppControlContext } from "../../../context-types";
 import { OpenControl } from "../../common/control/open-control";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
+import { ControlContextType } from "./intent-support-2.0";
 
 declare let fdc3: DesktopAgent;
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_0.open + "\r\nCause:";
@@ -58,7 +59,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
   }
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-    await appControlChannel.addContextListener("context-received", (context: AppControlContext) => {
+    await appControlChannel.addContextListener(ControlContextType.contextReceived, (context: AppControlContext) => {
       assert.fail(context.errorMessage);
     });
   };

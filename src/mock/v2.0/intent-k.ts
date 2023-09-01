@@ -3,7 +3,7 @@ import { DesktopAgent } from "fdc3_2_0";
 import { wait } from "../../utils";
 import { IntentUtilityContext } from "../../context-types";
 import constants from "../../constants";
-import { ContextType, Intent } from "../../test/v2.0/support/intent-support-2.0";
+import { ContextType, ControlContextType, Intent } from "../../test/v2.0/support/intent-support-2.0";
 declare let fdc3: DesktopAgent;
 
 //used in '2.0-PrivateChannelsLifecycleEvents'
@@ -39,12 +39,12 @@ onFdc3Ready().then(async () => {
 
     await privChan.onUnsubscribe(async (contextType) => {
       //let test know onUnsubscribe was triggered
-      await sendContextToTests({ type: "onUnsubscribeTriggered" });
+      await sendContextToTests({ type: ControlContextType.onUnsubscribeTriggered });
     });
 
     await privChan.onDisconnect(async () => {
       //let test know onUnsubscribe was triggered
-      await sendContextToTests({ type: "onDisconnectTriggered" });
+      await sendContextToTests({ type: ControlContextType.onDisconnectTriggered });
     });
 
     return privChan;

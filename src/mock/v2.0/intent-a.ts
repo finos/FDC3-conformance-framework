@@ -3,7 +3,7 @@ import { sendContextToTests } from "../v2.0/mock-functions";
 import { wait } from "../../utils";
 import { IntentUtilityContext } from "../../context-types";
 import { IntentResult, DesktopAgent } from "fdc3_2_0";
-import { ContextType, Intent } from "../../test/v2.0/support/intent-support-2.0";
+import { ContextType, ControlContextType, Intent } from "../../test/v2.0/support/intent-support-2.0";
 declare let fdc3: DesktopAgent;
 
 onFdc3Ready().then(async () => {
@@ -17,7 +17,7 @@ onFdc3Ready().then(async () => {
     const { appMetadata } = await fdc3.getInfo();
 
     await sendContextToTests({
-      type: "aTestingIntent-listener-triggered",
+      type: ControlContextType.aTestingIntentListenerTriggered,
       instanceId: appMetadata.instanceId,
     });
 
@@ -29,14 +29,14 @@ onFdc3Ready().then(async () => {
     await delayExecution(context.delayBeforeReturn);
 
     await sendContextToTests({
-      type: "sharedTestingIntent1-listener-triggered",
+      type: ControlContextType.sharedTestingIntent1ListenerTriggered,
     });
 
     return context;
   });
 
   await sendContextToTests({
-    type: "intent-app-a-opened",
+    type: ControlContextType.intentAppAOpened,
   });
 });
 

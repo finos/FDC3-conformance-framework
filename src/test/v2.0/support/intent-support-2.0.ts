@@ -12,7 +12,7 @@ export class RaiseIntentControl2_0 {
   async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContext> {
     let timeout;
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
-    const messageReceived = new Promise<Context>(async (resolve, reject) => {
+    return new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
         resolve(context);
         clearTimeout(timeout);
@@ -23,10 +23,8 @@ export class RaiseIntentControl2_0 {
       const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
       timeout = theTimeout;
       await sleepPromise;
-      reject("No context received. Listener expected to receive context of type " + contextType + " from mock app");
+      reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
     });
-
-    return messageReceived;
   }
 
   async openIntentApp(appId): Promise<AppIdentifier> {
@@ -221,6 +219,20 @@ export enum ContextType {
   testContextL = "testContextL",
   nonExistentContext = "nonExistentContext",
   privateChannelDetails = "privateChannelDetails",
+}
+
+export enum ControlContextType {
+  contextReceived = "context-received",
+  error = "error",
+  aTestingIntentListenerTriggered = "aTestingIntent-listener-triggered",
+  intentAppAOpened = "intent-app-a-opened",
+  sharedTestingIntent1ListenerTriggered = "sharedTestingIntent1-listener-triggered",
+  sharedTestingIntent2ResultSent = "sharedTestingIntent2-result-sent",
+  onUnsubscribeTriggered = "onUnsubscribeTriggered",
+  onDisconnectTriggered = "onDisconnectTriggered",
+  ContextListenerTriggered = "context-listener-triggered",
+  IntentListenerTriggered = "intent-listener-triggered",
+
 }
 
 export enum Intent {

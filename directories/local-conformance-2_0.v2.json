@@ -1,5 +1,6 @@
 {
-	"applications": [{
+	"applications": [
+		{
 			"appId": "Conformance1",
 			"name": "Conformance1",
 			"title": "FDC3 2.0 Conformance Framework",
@@ -42,7 +43,16 @@
 			"publisher": "FINOS",
 			"icons": [{
 				"src": "http://localhost:3001/finos-icon-256.png"
-			}]
+			}],
+			"interop": {
+				"intents": {
+					"listensFor": {
+						"ConformanceListener": {
+							"contexts": ["fdc3.nothing"]
+						}
+					}
+				}
+			}
 		},
 		{
 			"appId": "ChannelsAppId",
@@ -180,10 +190,6 @@
 			"interop": {
 				"intents": {
 					"listensFor": {
-						"bTestingIntent": {
-							"displayName": "B Testing Intent",
-							"contexts": ["testContextY"]
-						},
 						"sharedTestingIntent1": {
 							"displayName": "Shared Testing Intent",
 							"contexts": ["testContextX", "testContextY"],
