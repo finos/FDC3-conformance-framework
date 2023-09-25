@@ -7,6 +7,8 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { basicAC1, basicCL1, basicCL2, basicGI1, basicIL1, basicJC1, basicRI1, basicRI2, basicUC1 } from "../../common/fdc3.basic";
 import { ContextType, Intent } from "../support/intent-support-2.0";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
+import { wait } from "../../../utils";
+import constants from "../../../constants";
 
 declare let fdc3: DesktopAgent;
 let listener: Listener;
@@ -30,12 +32,14 @@ export let fdc3BasicUC1_2_0 = () => describe("fdc3.basicUC1_2.0", () => basicUC1
 export let fdc3BasicJC1_2_0  = () => describe("fdc3.basicJC1_2.0", () => basicJC1(cc, fdc3, documentation_JC));
 export let fdc3BasicRI1_2_0  = () => describe("fdc3.basicRI1_2.0", () => {
     after(async function after() {
+        await wait(constants.ShortWait)   
         await closeMockAppWindow(this.currentTest.title);
     });
     basicRI1(fdc3, documentation_RI, Intent.aTestingIntent, ContextType.testContextX)
 });
 export let fdc3BasicRI2_2_0  = () => describe("fdc3.basicRI2_2.0", () => { 
     after(async function after() {
+        await wait(constants.ShortWait)   
         await closeMockAppWindow(this.currentTest.title);
     });
     basicRI2(fdc3, documentation_RI, ContextType.testContextZ);
