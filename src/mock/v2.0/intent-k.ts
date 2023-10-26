@@ -15,7 +15,6 @@ onFdc3Ready().then(async () => {
     const privChan = await fdc3.createPrivateChannel();
 
     await privChan.addContextListener(ContextType.testContextX, async () => {
-      await wait(100); //wait for listener in test to initialise
       await sendContextToTests({ type: ContextType.testContextX }); //let test know addContextListener was triggered
     });
 
