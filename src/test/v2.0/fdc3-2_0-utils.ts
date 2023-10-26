@@ -1,5 +1,5 @@
 import { Channel, Context, DesktopAgent, Listener } from "fdc3_2_0";
-import { AppControlContext } from "../../context-types";
+import { AppControlContext, AppControlContextListener } from "../../context-types";
 import constants from "../../constants";
 import { wait } from "../../utils";
 
@@ -7,7 +7,7 @@ declare let fdc3: DesktopAgent;
 
 export async function closeMockAppWindow(testId: string) {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  const contextPromise = waitForContext("windowClosed", testId, appControlChannel);
+  const { listenerPromise: contextPromise } = await waitForContext("windowClosed", testId, appControlChannel);
   await broadcastCloseWindow(testId);
   await contextPromise;
   await wait(constants.WindowCloseWaitTime); // wait for window to close
@@ -21,9 +21,10 @@ const broadcastCloseWindow = async (currentTest) => {
   } as AppControlContext);
 };
 
-export const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<Context> => {
+export const waitForContext = async (contextType: string, testId: string, channel?: Channel): Promise<AppControlContextListener> => {
   let executionListener: Listener;
-  return new Promise<Context>(async (resolve) => {
+
+  return {listenerPromise: new Promise<Context>(async (resolve) => {
     console.log(Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`);
 
     const handler = (context: AppControlContext) => {
@@ -49,6 +50,7 @@ export const waitForContext = (contextType: string, testId: string, channel?: Ch
       console.log("adding listener in waitforcontext");
       executionListener = await channel.addContextListener(contextType, handler);
       //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
+        //TODO remove this once we know that the listeners are always in place before they are used
       const ccHandler = async (context: AppControlContext) => {
         if (context) {
           if (testId) {
@@ -73,6 +75,8 @@ export const waitForContext = (contextType: string, testId: string, channel?: Ch
         }
       };
       channel.getCurrentContext().then(ccHandler);
-    }
-  });
+      }
+    })
+  };
+  
 };
