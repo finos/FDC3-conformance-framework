@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../../v2.0/apiDocuments-2.0";
-import { failOnTimeout, wrapPromise } from "../../../utils";
+import { failOnTimeout, wait, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { IntentUtilityContext } from "../../../context-types";
 import { MetadataFdc3Api } from "../support/metadata-support-2.0";
@@ -14,6 +14,7 @@ export default () =>
   describe("fdc3.findInstances", () => {
     after(async function after() {
       await closeMockAppWindow(this.currentTest.title);
+      await wait(5000);
     });
 
     const findInstances = "(2.0-FindInstances) valid appID when opening multiple instances of the same app";
