@@ -3,16 +3,17 @@ import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, Priva
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
-import { AppControlContext, IntentUtilityContext } from "../../../context-types";
+import { AppControlContext, AppControlContextListener, IntentUtilityContext } from "../../../context-types";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class RaiseIntentControl2_0 {
-  async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContext> {
+  async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContextListener> {
     let timeout;
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
-    const messageReceived = new Promise<Context>(async (resolve, reject) => {
+    //wrap promise so we can await this function without it having to be resolved
+    return { listenerPromise: new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
         resolve(context);
         clearTimeout(timeout);
@@ -23,10 +24,8 @@ export class RaiseIntentControl2_0 {
       const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
       timeout = theTimeout;
       await sleepPromise;
-      reject("No context received. Listener expected to receive context of type " + contextType + " from mock app");
-    });
-
-    return messageReceived;
+      reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
+    })};
   }
 
   async openIntentApp(appId): Promise<AppIdentifier> {
