@@ -38,7 +38,7 @@ export const waitForContext = async (contextType: string, testId: string, channe
   }, 500)
 
   return await channel.addContextListener(contextType, ctx => {
-    if (ctx?.testId == testId) {
+    if (ctx['testId'] == testId) {
       count --;
       if (count == 0) {
         promiseResolve(ctx);
