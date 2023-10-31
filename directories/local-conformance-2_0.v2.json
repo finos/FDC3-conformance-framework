@@ -140,7 +140,7 @@
 							"contexts": ["testContextX", "testContextZ"]
 						},
 						"sharedTestingIntent1": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 1",
 							"contexts": ["testContextX"]
 						}
 					}
@@ -191,7 +191,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent1": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 1",
 							"contexts": ["testContextX", "testContextY"],
 							"resultType": "testContextY"
 						}
@@ -295,7 +295,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextX"],
 							"resultType": "testContextZ"
 						}
@@ -347,7 +347,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"],
 							"resultType": "channel"
 						}
@@ -399,7 +399,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"],
 							"resultType": "channel<testContextZ>"
 						}
@@ -451,7 +451,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"]
 						}
 					}
@@ -502,7 +502,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"],
 							"resultType": "testContextZ"
 						}
@@ -554,7 +554,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"],
 							"resultType": "testContextZ"
 						}
