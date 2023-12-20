@@ -22,21 +22,21 @@ const documentation_UC = "\r\nDocumentation: " + APIDocumentation1_2.getSystemCh
 const documentation_JC = "\r\nDocumentation: " + APIDocumentation1_2.getCurrentChannel + "\r\nCause";
 const documentation_RI = "\r\nDocumentation: " + APIDocumentation1_2.raiseIntentForContext + "\r\nCause";
 
-export let fdc3BasicCL1_1_2 = () => describe("fdc3.basicCL1", () => basicCL1(fdc3, documentation_CL, listener));
-export let fdc3BasicCL2_1_2 = () => describe("fdc3.basicCL2", () => basicCL2(fdc3, documentation_CL, listener));
-export let fdc3BasicIL1_1_2 = () => describe("fdc3.basicIL1", () => basicIL1(fdc3, documentation_IL, listener));
-export let fdc3BasicGI1_1_2 = () => describe("fdc3.basicGI1", () => basicGI1(control, documentation_GI));
-export let fdc3BasicAC1_1_2 = () => describe("fdc3.basicAC1", () => basicAC1(fdc3, documentation_AC));
-export let fdc3BasicUC1_1_2 = () => describe("fdc3.basicUC1", () => basicUC1(control,documentation_UC));
-export let fdc3BasicJC1_1_2  = () => describe("fdc3.basicJC1", () => basicJC1(cc, fdc3, documentation_JC));
-export let fdc3BasicRI1_1_2  = () => describe("fdc3.basicRI1", () => { 
+export let fdc3BasicCL1_1_2 = () => describe("fdc3.basicCL1_1.2", () => basicCL1(fdc3, documentation_CL, listener));
+export let fdc3BasicCL2_1_2 = () => describe("fdc3.basicCL2_1.2", () => basicCL2(fdc3, documentation_CL, listener));
+export let fdc3BasicIL1_1_2 = () => describe("fdc3.basicIL1_1.2", () => basicIL1(fdc3, documentation_IL, listener));
+export let fdc3BasicGI1_1_2 = () => describe("fdc3.basicGI1_1.2", () => basicGI1(control, documentation_GI));
+export let fdc3BasicAC1_1_2 = () => describe("fdc3.basicAC1_1.2", () => basicAC1(fdc3, documentation_AC));
+export let fdc3BasicUC1_1_2 = () => describe("fdc3.basicUC1_1.2", () => basicUC1(control,documentation_UC));
+export let fdc3BasicJC1_1_2  = () => describe("fdc3.basicJC1_1.2", () => basicJC1(cc, fdc3, documentation_JC));
+export let fdc3BasicRI1_1_2  = () => describe("fdc3.basicRI1_1.2", () => { 
     after(async function after() {
         await wait(constants.ShortWait)   
         await closeMockAppWindow(this.currentTest.title);
     });
     basicRI1(fdc3, documentation_RI, Intent.aTestingIntent, ContextType.testContextX)
 });
-export let fdc3BasicRI2_1_2  = () => describe("fdc3.basicRI2", () => { 
+export let fdc3BasicRI2_1_2  = () => describe("fdc3.basicRI2_1.2", () => { 
     after(async function after() {
         await wait(constants.ShortWait)   
         await closeMockAppWindow(this.currentTest.title);

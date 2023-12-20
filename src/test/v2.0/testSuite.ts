@@ -36,8 +36,8 @@ const advancedSuite_2_0: testSet = {
   "fdc3.findIntent 2.0": [fdc3FindIntent_2_0],
   "fdc3.findIntentsByContext 2.0": [fdc3FindIntentsByContext_2_0],
   "fdc3.raiseIntent 2.0": [fdc3RaiseIntent_2_0],
-  "fdc3.raiseIntent 2.0 (result)": [fdc3RaiseIntent_2_0_Result],
-  "fdc3.raiseIntent 2.0 (throws error)": [fdc3RaiseIntent_2_0_NoAppsFound],
+  "fdc3.raiseIntent (Result) 2.0": [fdc3RaiseIntent_2_0_Result],
+  "fdc3.raiseIntent (throws error) 2.0": [fdc3RaiseIntent_2_0_NoAppsFound],
 };
 
 const ambiguousTests_2_0: testSet = {
@@ -98,10 +98,8 @@ export const executeTestsInBrowser = (pack: string) => {
  * in HTML page
  */
 export const executeManualTestsInBrowser = (pack: string) => {
-  console.log('Pack',pack);
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allManualTests[pack];
-  console.log('************ found suite******', suite)
   suite.forEach((s) => s());
   mocha.run();
 };

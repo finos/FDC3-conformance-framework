@@ -17,7 +17,7 @@ const config: OpenCommonConfig = {
 };
 
 export default () =>
-  describe("fdc3.open", () => {
+  describe("fdc3.open_2.0", () => {
     //run common open tests
     getCommonOpenTests(control, openDocs, config);
 

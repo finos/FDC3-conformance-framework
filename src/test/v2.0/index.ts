@@ -39,7 +39,6 @@ function executeManualTests() {
   toggleBackButton();
   const manualTests = document.getElementById("manualTests") as HTMLSelectElement;
   var selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
-  console.log('******** Selected manual test is',selectedManualTest);
   const action = () => executeManualTestsInBrowser(selectedManualTest);
   if (window.fdc3) {
     action();
@@ -49,7 +48,7 @@ function executeManualTests() {
 }
 
 function returnToTestSelection() {
-  location.reload();
+  location.href = '/v2.0/app/index.html';
 }
 
 function toggleVersionSelector() {
@@ -73,6 +72,31 @@ function toggleBackButton() {
   }
 }
 
+function executeSingleTest(testName: string, manualTest: boolean) {
+  toggleVersionSelector();
+  toggleBackButton();
+  const action = () => manualTest? executeManualTestsInBrowser(testName): executeTestsInBrowser(testName);
+  if (window.fdc3) {
+    action();
+  } else {
+    window.addEventListener("fdc3Ready", action);
+  }
+}
+
+function parseQueryString(queryString) {
+  let queryParts = decodeURI(queryString.split('=')[1]).replace(/\\/g, "").split('_');
+  let testName = queryParts[0] + ' 2.0';
+  let manualTest = (queryParts[1] !== undefined && queryParts[1] !== '' && queryParts[1] === 'Manual') ? true: false;
+  return {testName, manualTest};
+}
+
+const queryString = window.location.search;
+if(queryString !== undefined && queryString !== '') {
+  let testData = parseQueryString(queryString);
+  let testName = testData.testName;
+  let manualTest = testData.manualTest;
+  executeSingleTest(testName, manualTest);
+}
 document.getElementById("runButton").addEventListener("click", executeTests);
 document.getElementById("back-button").addEventListener("click", returnToTestSelection);
 document.getElementById("manualTestsRunButton").addEventListener("click", executeManualTests);

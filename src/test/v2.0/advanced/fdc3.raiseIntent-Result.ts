@@ -8,7 +8,7 @@ const control = new RaiseIntentControl2_0();
 
 export default () =>
 
-describe("fdc3.raiseIntent (Result)", () => {
+describe("fdc3.raiseIntent (Result)_2.0", () => {
     let errorListener: Listener = undefined;
   
     afterEach(async function afterEach() {

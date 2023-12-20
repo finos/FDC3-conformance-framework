@@ -10,7 +10,7 @@ const findIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.findIntent + 
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 export default () =>
-  describe("fdc3.findIntent", () => {
+  describe("fdc3.findIntent_2.0", () => {
     it("(2.0-FindIntentAppD) Should find intent 'aTestingIntent' belonging only to app intent-a", async () => {
       const appIntent = await fdc3.findIntent(Intent.aTestingIntent);
       validateAppIntent(appIntent, 1, { name: Intent.aTestingIntent, displayName: "A Testing Intent" }, IntentApp.IntentAppA);

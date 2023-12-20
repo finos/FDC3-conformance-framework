@@ -34,7 +34,7 @@ function executeTests() {
 }
 
 function returnToTestSelection() {
-  location.reload();
+  location.href = '/v1.2/app/index.html';
 }
 
 function toggleVersionSelector() {
@@ -53,6 +53,29 @@ function toggleBackButton() {
   } else {
     backButton.style.display = "none";
   }
+}
+
+function executeSingleTest(testName: string) {
+  toggleVersionSelector();
+  toggleBackButton();
+  const action = () => executeTestsInBrowser(testName);
+  if (window.fdc3) {
+    action();
+  } else {
+    window.addEventListener("fdc3Ready", action);
+  }
+}
+
+function parseQueryString(queryString: string) {
+  let queryParts = decodeURI(queryString.split('=')[1]).replace(/\\/g, "").split('_');
+  let testName = queryParts[0] + ' 1.2';
+  return testName;
+}
+
+const queryString = window.location.search;
+if(queryString !== undefined && queryString !== '') {
+  let testName = parseQueryString(queryString);
+  executeSingleTest(testName);
 }
 
 document.getElementById("runButton").addEventListener("click", executeTests);

@@ -27,10 +27,10 @@ const basicSuite_1_2: testSet = {
 const advancedSuite_1_2: testSet = {
   "fdc3.open 1.2": [fdc3Open_1_2],
   "fdc3.getInfo 1.2": [fdc3GetInfo_1_2],
-  "channels 1.2": [channels_1_2],
+  "Channels 1.2": [channels_1_2],
   "fdc3.findIntent 1.2": [fdc3FindIntent_1_2],
   "fdc3.raiseIntent 1.2": [fdc3RaiseIntent_1_2],
-  "fdc3.raiseIntent 1.2 (NoAppsFound)": [fdc3RaiseIntent_1_2_NoAppsFound],
+  "fdc3.raiseIntent (throws error) 1.2": [fdc3RaiseIntent_1_2_NoAppsFound],
   "fdc3.findIntentsByContext 1.2": [fdc3FindIntentsByContext_1_2],
 };
 

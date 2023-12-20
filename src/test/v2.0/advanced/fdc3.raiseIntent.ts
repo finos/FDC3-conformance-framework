@@ -9,7 +9,7 @@ const control = new RaiseIntentControl2_0();
  * Details on the mock apps used in these tests can be found in /mock/README.md
  */
 export default () =>
-  describe("fdc3.raiseIntent", () => {
+  describe("fdc3.raiseIntent_2.0", () => {
     let errorListener: Listener = undefined;
 
     afterEach(async function afterEach() {

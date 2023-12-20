@@ -3,13 +3,13 @@ import { wait } from "../../utils";
 import constants from "../../constants";
 import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelControl, JOIN_AND_BROADCAST_TWICE } from "./control/channel-control";
 
-export function createAppChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
-  return describe("App channels", () => {
-    beforeEach(cc.leaveChannel);
+export function createAppChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string) {
+  // return describe("App channels", () => {
+  //   beforeEach(cc.leaveChannel);
 
-    afterEach(async function afterEach() {
-      await cc.closeMockApp(this.currentTest.title);
-    });
+  //   afterEach(async function afterEach() {
+  //     await cc.closeMockApp(this.currentTest.title);
+  //   });
 
     const acTestId = "(" + prefix + "ACBasicUsage1) Should receive context when app a adds a listener and app B broadcasts to the same app channel";
     it(acTestId, async () => {
@@ -225,5 +225,4 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
         expect(context.type).to.be.equals("fdc3.contact", errorMessage);
       }
     });
-  });
-}
+  }

@@ -11,7 +11,7 @@ const validator = new MetadataValidator();
 const api = new MetadataFdc3Api();
 
 export default () =>
-  describe("fdc3.getInfo", () => {
+  describe("fdc3.getInfo_2.0", () => {
     let listener: Listener | undefined;
 
     after(async function after() {
