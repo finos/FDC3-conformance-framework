@@ -1,3 +1,4 @@
+import { fdc3Ready } from "@kite9/client";
 import { getPackMembers, getPackNames, executeTestsInBrowser } from "./testSuite";
 
 require("mocha/mocha.css");
@@ -26,11 +27,9 @@ function executeTests() {
   const fdc3Versions = document.getElementById("version") as HTMLSelectElement;
   var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
   const action = () => executeTestsInBrowser(selectedVersion);
-  if (window.fdc3) {
+  fdc3Ready().then(() => {
     action();
-  } else {
-    window.addEventListener("fdc3Ready", action);
-  }
+  })
 }
 
 function returnToTestSelection() {

@@ -10,8 +10,8 @@ import fdc3Open_2_0 from "./advanced/fdc3.open";
 import fdc3RaiseIntent_2_0 from "./advanced/fdc3.raiseIntent";
 import fdc3RaiseIntent_2_0_Result from "./advanced/fdc3.raiseIntent-Result";
 import fdc3RaiseIntent_2_0_NoAppsFound from "./advanced/fdc3.raiseIntent-NoAppsFound";
-import {fdc3BasicCL1_2_0, fdc3BasicCL2_2_0, fdc3BasicIL1_2_0, fdc3BasicGI1_2_0 , fdc3BasicAC1_2_0 , fdc3BasicUC1_2_0, fdc3BasicJC1_2_0, fdc3BasicRI1_2_0, fdc3BasicRI2_2_0 } from './basic/fdc3.basic';
-import {fdc3ResolveAmbiguousIntentTarget_2_0, fdc3ResolveAmbiguousContextTarget_2_0, fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0, fdc3ResolveAmbiguousContextTargetMultiInstance_2_0} from './manual/fdc3.manual';
+import { fdc3BasicCL1_2_0, fdc3BasicCL2_2_0, fdc3BasicIL1_2_0, fdc3BasicGI1_2_0, fdc3BasicAC1_2_0, fdc3BasicUC1_2_0, fdc3BasicJC1_2_0, fdc3BasicRI1_2_0, fdc3BasicRI2_2_0 } from './basic/fdc3.basic';
+import { fdc3ResolveAmbiguousIntentTarget_2_0, fdc3ResolveAmbiguousContextTarget_2_0, fdc3ResolveAmbiguousIntentTargetMultiInstance_2_0, fdc3ResolveAmbiguousContextTargetMultiInstance_2_0 } from './manual/fdc3.manual';
 
 type testSet = { [key: string]: (() => void)[] };
 
@@ -22,7 +22,7 @@ const basicSuite_2_0: testSet = {
   "fdc3.basicGI1 2.0": [fdc3BasicGI1_2_0],
   "fdc3.basicAC1 2.0": [fdc3BasicAC1_2_0],
   "fdc3.basicUC1 2.0": [fdc3BasicUC1_2_0],
-  "fdc3.basicJC1 2.0": [fdc3BasicJC1_2_0], 
+  "fdc3.basicJC1 2.0": [fdc3BasicJC1_2_0],
   "fdc3.basicRI1 2.0": [fdc3BasicRI1_2_0],
   "fdc3.basicRI2 2.0": [fdc3BasicRI2_2_0],
 };
@@ -98,7 +98,7 @@ export const executeTestsInBrowser = (pack: string) => {
  * in HTML page
  */
 export const executeManualTestsInBrowser = (pack: string) => {
-  console.log('Pack',pack);
+  console.log('Pack', pack);
   (mocha as any).timeout(constants.TestTimeout);
   const suite = allManualTests[pack];
   console.log('************ found suite******', suite)

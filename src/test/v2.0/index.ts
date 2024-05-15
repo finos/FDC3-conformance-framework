@@ -1,4 +1,5 @@
 export * from "./testSuite";
+import { fdc3Ready } from "@kite9/client";
 import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from "./testSuite";
 
 require("mocha/mocha.css");
@@ -27,11 +28,9 @@ function executeTests() {
   const fdc3Versions = document.getElementById("version") as HTMLSelectElement;
   var selectedVersion = fdc3Versions.options[fdc3Versions.selectedIndex].innerHTML;
   const action = () => executeTestsInBrowser(selectedVersion);
-  if (window.fdc3) {
+  fdc3Ready().then(api => {
     action();
-  } else {
-    window.addEventListener("fdc3Ready", action);
-  }
+  })
 }
 
 function executeManualTests() {
@@ -39,13 +38,12 @@ function executeManualTests() {
   toggleBackButton();
   const manualTests = document.getElementById("manualTests") as HTMLSelectElement;
   var selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
-  console.log('******** Selected manual test is',selectedManualTest);
+  console.log('******** Selected manual test is', selectedManualTest);
   const action = () => executeManualTestsInBrowser(selectedManualTest);
-  if (window.fdc3) {
+  fdc3Ready().then(api => {
     action();
-  } else {
-    window.addEventListener("fdc3Ready", action);
-  }
+  })
+
 }
 
 function returnToTestSelection() {
@@ -54,7 +52,7 @@ function returnToTestSelection() {
 
 function toggleVersionSelector() {
   const versionSelector = document.getElementById("version-selector");
-  const manualSelector = document.getElementById("manualTests-selector");  
+  const manualSelector = document.getElementById("manualTests-selector");
   if (versionSelector.style.display === "none") {
     versionSelector.style.display = "block";
     manualSelector.style.display = "block";

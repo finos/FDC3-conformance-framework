@@ -1,9 +1,11 @@
+const { fdc3Ready } = require("@kite9/client");
+
 const onFdc3Ready = () =>
   new Promise((resolve) => {
     if (window.fdc3) {
       resolve();
     } else {
-      window.addEventListener("fdc3Ready", () => resolve());
+      fdc3Ready().then(() => resolve());
     }
   });
 
