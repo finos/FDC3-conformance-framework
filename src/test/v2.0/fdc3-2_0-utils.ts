@@ -25,7 +25,7 @@ const broadcastCloseWindow = async (currentTest) => {
 export const waitForContext = async (contextType: string, testId: string, channel: Channel, count = 1): Promise<AppControlContextListener> => {
   let promiseResolve;
   let promiseReject;
-  
+
   const listenerPromise = new Promise<Context>((resolve, reject) => {
     promiseResolve = resolve;
     promiseReject = reject;
@@ -39,10 +39,15 @@ export const waitForContext = async (contextType: string, testId: string, channe
 
   return await channel.addContextListener(contextType, ctx => {
     if (ctx['testId'] == testId) {
-      count --;
+      console.log(`Received ${contextType}`)
+      count--;
       if (count == 0) {
         promiseResolve(ctx);
+      } else {
+        console.log(`Waiting for ${count} more ${contextType}`)
       }
+    } else {
+      console.log(`Wrong test id expected:  ${testId} got: ${ctx['testId']}`)
     }
   }).then(cl => {
     return {

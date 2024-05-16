@@ -4,30 +4,32 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
 import { AppControlContext, AppControlContextListener, IntentUtilityContext } from "../../../context-types";
+import { waitForContext } from "../fdc3-2_0-utils";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class RaiseIntentControl2_0 {
-  async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContextListener> {
-    let timeout;
+  async receiveContext(contextType: string, waitTime?: number, count: number = 1): Promise<AppControlContext> {
+    let timeout: number;
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
-    //wrap promise so we can await this function without it having to be resolved
-    return {
-      listenerPromise: new Promise<Context>(async (resolve, reject) => {
-        const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
+    return new Promise<Context>(async (resolve, reject) => {
+      const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
+        count--;
+        console.log(`Received ${contextType} waiting for ${count} more`)
+        if (count == 0) {
           resolve(context);
           clearTimeout(timeout);
           listener.unsubscribe();
-        });
+        }
+      });
 
-        //if no context received reject promise
-        const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
-        timeout = theTimeout;
-        await sleepPromise;
-        reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
-      })
-    };
+      //if no context received reject promise
+      const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
+      timeout = theTimeout;
+      await sleepPromise;
+      reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
+    });
   }
 
   async openIntentApp(appId): Promise<AppIdentifier> {

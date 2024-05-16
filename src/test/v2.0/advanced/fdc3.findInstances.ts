@@ -22,8 +22,13 @@ export default () =>
       const api = new MetadataFdc3Api();
       let listener;
       try {
+
+        const appsBothOpen = control.receiveContext(ControlContextType.intentAppAOpened, 2000, 2)
+
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA); // open IntentAppA
         const appIdentifier2 = await control.openIntentApp(IntentApp.IntentAppA); // open second instance of IntentAppA
+
+        await appsBothOpen
 
         //confirm that the instanceId for both app instantiations is different
         expect(appIdentifier.instanceId, `The AppIdentifier's instanceId property for both instances of the opened app should not be the same.${findInstancesDocs}`).to.not.equal(appIdentifier2.instanceId);
@@ -45,7 +50,7 @@ export default () =>
         const resolution = await api.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, appIdentifier); // raise an intent that targets appIdentifier
         validateResolutionSource(resolution, appIdentifier);
         await wrapper.promise; // wait for context from IntentAppA
-        
+
       } catch (ex) {
         assert.fail(findInstancesDocs + (ex.message ?? ex));
       }
@@ -66,7 +71,7 @@ function validateInstances(instances: AppIdentifier[], appIdentifier: AppIdentif
   const compareAppIdentifiers = (a: AppIdentifier, b: AppIdentifier) => a.appId === b.appId && a.instanceId === b.instanceId;
 
   if (!(instances.some((instance) => compareAppIdentifiers(instance, appIdentifier)) &&
-       instances.some((instance) => compareAppIdentifiers(instance, appIdentifier2)))) {
+    instances.some((instance) => compareAppIdentifiers(instance, appIdentifier2)))) {
     assert.fail(`At least one AppIdentifier object is missing from the AppIdentifier array returned after calling fdc3.findInstances(app: AppIdentifier)${findInstancesDocs}`);
   }
 }
