@@ -1,6 +1,7 @@
 import { assert } from "chai";
 import constants from "../../constants";
 import { openApp, OpenCommonConfig, OpenControl } from "./control/open-control";
+import { ControlContextType } from "../v2.0/support/intent-support-2.0";
 
 export function getCommonOpenTests(control: OpenControl<any>, documentation: string, config: OpenCommonConfig) {
 
@@ -31,7 +32,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     let context: any, targetApp: any;
     context = { type: "fdc3.instrument", name: "context" };
     targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
-    const receiver = control.contextReceiver("context-received");
+    const receiver = control.contextReceiver(ControlContextType.contextReceived);
     await control.openMockApp(targetApp, context);
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeMockApp(AOpensBWithContext3);
@@ -42,7 +43,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     let context: any, targetApp: any;
     context = { type: "fdc3.instrument", name: "context" };
     targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
-    const receiver = control.contextReceiver("context-received");
+    const receiver = control.contextReceiver(ControlContextType.contextReceived);
     await control.openMockApp(targetApp, context);
     await control.validateReceivedContext(await receiver, "fdc3.instrument");
     await control.closeMockApp(AOpensBWithSpecificContext);
@@ -53,7 +54,7 @@ export function getCommonOpenTests(control: OpenControl<any>, documentation: str
     let context: any, targetApp: any;
     context = { type: "fdc3.instrument", name: "context" };
     targetApp = control.createTargetApp(openApp.b.name,openApp.b.id);
-    const receiver = control.contextReceiver("context-received");
+    const receiver = control.contextReceiver(ControlContextType.contextReceived);
     await control.openMockApp(targetApp, context);
     await receiver;
     await control.validateReceivedContext(await receiver, "fdc3.instrument");

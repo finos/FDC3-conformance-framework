@@ -1,5 +1,6 @@
 {
-	"applications": [{
+	"applications": [
+		{
 			"appId": "Conformance1",
 			"name": "Conformance1",
 			"title": "FDC3 2.0 Conformance Framework",
@@ -42,7 +43,16 @@
 			"publisher": "FINOS",
 			"icons": [{
 				"src": "http://localhost:3001/finos-icon-256.png"
-			}]
+			}],
+			"interop": {
+				"intents": {
+					"listensFor": {
+						"ConformanceListener": {
+							"contexts": ["fdc3.nothing"]
+						}
+					}
+				}
+			}
 		},
 		{
 			"appId": "ChannelsAppId",
@@ -130,7 +140,7 @@
 							"contexts": ["testContextX", "testContextZ"]
 						},
 						"sharedTestingIntent1": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 1",
 							"contexts": ["testContextX"]
 						}
 					}
@@ -180,12 +190,8 @@
 			"interop": {
 				"intents": {
 					"listensFor": {
-						"bTestingIntent": {
-							"displayName": "B Testing Intent",
-							"contexts": ["testContextY"]
-						},
 						"sharedTestingIntent1": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 1",
 							"contexts": ["testContextX", "testContextY"],
 							"resultType": "testContextY"
 						}
@@ -289,7 +295,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextX"],
 							"resultType": "testContextZ"
 						}
@@ -341,7 +347,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"],
 							"resultType": "channel"
 						}
@@ -393,7 +399,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"],
 							"resultType": "channel<testContextZ>"
 						}
@@ -445,7 +451,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"]
 						}
 					}
@@ -496,7 +502,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"],
 							"resultType": "testContextZ"
 						}
@@ -548,7 +554,7 @@
 				"intents": {
 					"listensFor": {
 						"sharedTestingIntent2": {
-							"displayName": "Shared Testing Intent",
+							"displayName": "Shared Testing Intent 2",
 							"contexts": ["testContextY"],
 							"resultType": "testContextZ"
 						}

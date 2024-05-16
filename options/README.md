@@ -2,4 +2,8 @@
 
 For maintainers: Please add any vendor-specific code only in this directory.  
 
-For users:  Please note that this directory contains vendor-specific extensions to aid in the testing of the conformance of different Desktop Agents.  It doesn't form part of the Conformance Framework proper.
+For users:  
+
+ - Please note that this directory contains vendor-specific extensions to aid in the testing of the conformance of different Desktop Agents.  It doesn't form part of the Conformance Framework proper.
+ - If you wish to test glue42 core-plus, you'll need to supply a license key.
+

@@ -13,19 +13,21 @@ export class RaiseIntentControl2_0 {
     let timeout;
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     //wrap promise so we can await this function without it having to be resolved
-    return { listenerPromise: new Promise<Context>(async (resolve, reject) => {
-      const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      });
+    return {
+      listenerPromise: new Promise<Context>(async (resolve, reject) => {
+        const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
+          resolve(context);
+          clearTimeout(timeout);
+          listener.unsubscribe();
+        });
 
-      //if no context received reject promise
-      const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
-      timeout = theTimeout;
-      await sleepPromise;
-      reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
-    })};
+        //if no context received reject promise
+        const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
+        timeout = theTimeout;
+        await sleepPromise;
+        reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
+      })
+    };
   }
 
   async openIntentApp(appId): Promise<AppIdentifier> {
@@ -83,7 +85,7 @@ export class RaiseIntentControl2_0 {
     const intentResult = intentResolution.getResult();
     if (typeof intentResult.then !== "function") {
       assert.fail(`intentResolution.getResult() did not return a Promise: ${JSON.stringify(intentResult, null, 2)}`);
-    }  
+    }
     clearTimeout(timeout);
     return intentResult;
   }
@@ -220,6 +222,20 @@ export enum ContextType {
   testContextL = "testContextL",
   nonExistentContext = "nonExistentContext",
   privateChannelDetails = "privateChannelDetails",
+}
+
+export enum ControlContextType {
+  contextReceived = "context-received",
+  error = "error",
+  aTestingIntentListenerTriggered = "aTestingIntent-listener-triggered",
+  intentAppAOpened = "intent-app-a-opened",
+  sharedTestingIntent1ListenerTriggered = "sharedTestingIntent1-listener-triggered",
+  sharedTestingIntent2ResultSent = "sharedTestingIntent2-result-sent",
+  onUnsubscribeTriggered = "onUnsubscribeTriggered",
+  onDisconnectTriggered = "onDisconnectTriggered",
+  ContextListenerTriggered = "context-listener-triggered",
+  IntentListenerTriggered = "intent-listener-triggered",
+
 }
 
 export enum Intent {
