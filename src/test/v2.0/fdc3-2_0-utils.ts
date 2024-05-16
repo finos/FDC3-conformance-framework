@@ -37,7 +37,7 @@ export const waitForContext = async (contextType: string, testId: string, channe
     }
   }, 500)
 
-  return await channel.addContextListener(contextType, ctx => {
+  return channel.addContextListener(contextType, ctx => {
     if (ctx['testId'] == testId) {
       console.log(`Received ${contextType}`)
       count--;

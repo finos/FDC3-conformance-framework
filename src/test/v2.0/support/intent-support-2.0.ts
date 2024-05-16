@@ -28,7 +28,9 @@ export class RaiseIntentControl2_0 {
       const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
       timeout = theTimeout;
       await sleepPromise;
-      reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
+      if (count > 0) {
+        reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
+      }
     });
   }
 
