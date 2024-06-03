@@ -163,19 +163,22 @@ export class RaiseIntentControl2_0 {
     });
   }
 
-  receiveContextStreamFromMockApp(privChannel: PrivateChannel, streamedNumberStart: number, streamedNumberEnd: number): Promise<void> {
+  receiveContextStreamFromMockApp(privChannel: PrivateChannel, streamedNumberStart: number, streamedNumberEnd: number): Promise<Listener> {
     return new Promise((resolve, reject) => {
+      let theListener: Listener | null = null
+
       //receive multiple contexts in succession from intent-k
       privChannel.addContextListener(ContextType.testContextZ, (context: IntentUtilityContext) => {
         expect(context.number, "Unexpected context stream number received.").to.be.equal(streamedNumberStart);
         expect(context.type).to.be.equal(ContextType.testContextZ);
 
         if (streamedNumberStart === streamedNumberEnd) {
-          resolve();
+          resolve(theListener);
         }
 
         streamedNumberStart += 1;
       }).then(listener => {
+        theListener = listener
         setTimeout(() => {
           listener.unsubscribe()
           if (streamedNumberStart < streamedNumberEnd) {

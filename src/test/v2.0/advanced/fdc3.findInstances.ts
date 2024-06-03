@@ -23,12 +23,8 @@ export default () =>
       let listener;
       try {
 
-        const appsBothOpen = control.receiveContext(ControlContextType.intentAppAOpened, 2000, 2)
-
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA); // open IntentAppA
         const appIdentifier2 = await control.openIntentApp(IntentApp.IntentAppA); // open second instance of IntentAppA
-
-        await appsBothOpen
 
         //confirm that the instanceId for both app instantiations is different
         expect(appIdentifier.instanceId, `The AppIdentifier's instanceId property for both instances of the opened app should not be the same.${findInstancesDocs}`).to.not.equal(appIdentifier2.instanceId);
