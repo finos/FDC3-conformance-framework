@@ -163,29 +163,27 @@ export class RaiseIntentControl2_0 {
     });
   }
 
-  async receiveContextStreamFromMockApp(privChannel: PrivateChannel, streamedNumberStart: number, streamedNumberEnd: number): Promise<Listener> {
-    let timeout;
-    const wrapper = wrapPromise();
+  receiveContextStreamFromMockApp(privChannel: PrivateChannel, streamedNumberStart: number, streamedNumberEnd: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      //receive multiple contexts in succession from intent-k
+      privChannel.addContextListener(ContextType.testContextZ, (context: IntentUtilityContext) => {
+        expect(context.number, "Unexpected context stream number received.").to.be.equal(streamedNumberStart);
+        expect(context.type).to.be.equal(ContextType.testContextZ);
 
-    //receive multiple contexts in succession from intent-k
-    const listener = privChannel.addContextListener(ContextType.testContextZ, (context: IntentUtilityContext) => {
-      expect(context.number, "Unexpected context stream number received.").to.be.equal(streamedNumberStart);
-      expect(context.type).to.be.equal(ContextType.testContextZ);
+        if (streamedNumberStart === streamedNumberEnd) {
+          resolve();
+        }
 
-      if (streamedNumberStart === streamedNumberEnd) {
-        wrapper.resolve();
-        clearTimeout(timeout);
-      }
-
-      streamedNumberStart += 1;
-    });
-
-    timeout = window.setTimeout(() => {
-      wrapper.reject("Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered");
-    }, constants.WaitTime);
-
-    await wrapper.promise;
-    return listener;
+        streamedNumberStart += 1;
+      }).then(listener => {
+        setTimeout(() => {
+          listener.unsubscribe()
+          if (streamedNumberStart < streamedNumberEnd) {
+            reject("Timeout: did not receive all 5 streamed contexts back from the mock app. onAddContextListener may not have been triggered");
+          }
+        }, constants.WaitTime);
+      })
+    })
   }
 
   unsubscribeListener(listener: Listener): void {
