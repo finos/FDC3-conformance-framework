@@ -2,6 +2,7 @@ import { Listener } from "fdc3_2_0";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextType, Intent, ControlContextType } from "../support/intent-support-2.0";
 import { wait } from "../../../utils";
+import constants from "../../../constants";
 
 const control = new RaiseIntentControl2_0();
 
@@ -70,7 +71,7 @@ export default () =>
     const RaiseIntentChannelResult = "(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object";
     it(RaiseIntentChannelResult, async () => {
       errorListener = await control.listenForError();
-      const receiver = control.receiveContext(ContextType.testContextZ, 5000);
+      const receiver = control.receiveContext(ControlContextType.sharedTestingIntent2ResultSent, constants.WaitTime);
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
         appId: IntentApp.IntentAppE,
       });
@@ -87,7 +88,7 @@ export default () =>
     const RaiseIntentPrivateChannelResult = "(2.0-RaiseIntentPrivateChannelResult) IntentResult resolves to a private Channel object";
     it(RaiseIntentPrivateChannelResult, async () => {
       errorListener = await control.listenForError();
-      const receiver = await control.receiveContext(ContextType.testContextZ, 5000);
+      let receiver = control.receiveContext(ControlContextType.sharedTestingIntent2ResultSent, constants.WaitTime);
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
         appId: IntentApp.IntentAppF,
       });
