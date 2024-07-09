@@ -14,6 +14,10 @@ export interface AppControlContext extends CommonContext {
   errorMessage?: string;
 }
 
+export interface AppControlContextListener {
+  listenerPromise: Promise<AppControlContext>
+}
+
 export interface IntentUtilityContext extends CommonContext {
   delayBeforeReturn?: number;
   onUnsubscribedTriggered?: boolean;

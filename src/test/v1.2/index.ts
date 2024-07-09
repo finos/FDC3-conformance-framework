@@ -1,3 +1,4 @@
+import { fdc3Ready } from "@kite9/client";
 import { getPackMembers, getPackNames, executeTestsInBrowser } from "./testSuite";
 
 require("mocha/mocha.css");
@@ -29,7 +30,7 @@ function executeTests() {
   if (window.fdc3) {
     action();
   } else {
-    window.addEventListener("fdc3Ready", action);
+    fdc3Ready().then(() => action());
   }
 }
 

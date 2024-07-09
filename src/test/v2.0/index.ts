@@ -1,4 +1,5 @@
 export * from "./testSuite";
+import { fdc3Ready } from "@kite9/client";
 import { getPackMembers, getPackNames, executeTestsInBrowser, executeManualTestsInBrowser } from "./testSuite";
 
 require("mocha/mocha.css");
@@ -30,7 +31,7 @@ function executeTests() {
   if (window.fdc3) {
     action();
   } else {
-    window.addEventListener("fdc3Ready", action);
+    fdc3Ready().then(() => action());
   }
 }
 
@@ -39,12 +40,12 @@ function executeManualTests() {
   toggleBackButton();
   const manualTests = document.getElementById("manualTests") as HTMLSelectElement;
   var selectedManualTest = manualTests.options[manualTests.selectedIndex].innerHTML;
-  console.log('******** Selected manual test is',selectedManualTest);
+  console.log('******** Selected manual test is', selectedManualTest);
   const action = () => executeManualTestsInBrowser(selectedManualTest);
   if (window.fdc3) {
     action();
   } else {
-    window.addEventListener("fdc3Ready", action);
+    fdc3Ready().then(() => action());
   }
 }
 
@@ -54,7 +55,7 @@ function returnToTestSelection() {
 
 function toggleVersionSelector() {
   const versionSelector = document.getElementById("version-selector");
-  const manualSelector = document.getElementById("manualTests-selector");  
+  const manualSelector = document.getElementById("manualTests-selector");
   if (versionSelector.style.display === "none") {
     versionSelector.style.display = "block";
     manualSelector.style.display = "block";

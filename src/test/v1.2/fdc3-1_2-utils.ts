@@ -21,7 +21,7 @@ const broadcastCloseWindow = async (currentTest) => {
   } as AppControlContext);
 };
 
-export const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<AppControlContext> => {
+export const waitForContext = (contextType: string, testId: string, channel: Channel): Promise<AppControlContext> => {
   let executionListener: Listener;
   return new Promise<Context>(async (resolve) => {
     console.log(Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`);
