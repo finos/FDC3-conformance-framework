@@ -3,6 +3,7 @@
 
 # dependencies
 /node_modules
+/ng/node_modules
 
 # build output
 /dist
