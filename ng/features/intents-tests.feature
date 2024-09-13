@@ -19,6 +19,7 @@ Feature: FDC3 Raise Intents
       | J   | PrivateChannels are private                           | privateChannelIsPrivate(privateChannelDetails) => privateChannelIsPrivateResult               | Tries to retrieve privateChannel sent in the privateChannelDetails context, fails |
       | K   | PrivateChannel lifecycle events                       | kTestingIntent(testContextX) => channel<testContextZ>                                         | addIntentListener() for given intents                                             |
 
+  @FDC3-2.0
   Scenario: 2.0-RaiseIntentSingleResolve
     When I call "api1" with "raiseIntent" with parameters "aTestingIntent" and "{testContextX}"
     And I refer to {result} as "intentResolution"

@@ -21,32 +21,32 @@ Tests are currently implemented for version [1.2](https://fdc3.finos.org/docs/1.
 
 ✔️ **Multiple Platforms**
 
-It can be annoying for users to find that features in their apps that they rely on don't work when changing between Desktop Agents.  Hopefully these conformance tests will add security around that.
+It can be annoying for users to find that features in their apps that they rely on don't work when changing between Desktop Agents. Hopefully these conformance tests will add security around that.
 
 ✔️ **Marketing**
 
-FINOS has created _badges_ to indicate conformance with the FDC3 standard.   By passing the conformance tests and joining the conformance program, firms are able to use those badges in their own marketing materials.
+FINOS has created _badges_ to indicate conformance with the FDC3 standard. By passing the conformance tests and joining the conformance program, firms are able to use those badges in their own marketing materials.
 
 ✔️ **Backwards Compatibility**
 
-There are multiple versions of the FDC3 standard.  A Desktop Agent could host apps written in _any one of these versions_.  For that reason, it's important that Desktop Agents are tested to make sure that they keep on supporting apps written against older versions of FDC3.
+There are multiple versions of the FDC3 standard. A Desktop Agent could host apps written in _any one of these versions_. For that reason, it's important that Desktop Agents are tested to make sure that they keep on supporting apps written against older versions of FDC3.
 
 ## How Does It Work?
 
 There are two main parts to conformance:
-  
-  - Running the tests _locally_, then
-  - Joining the Conformance Program
+
+- Running the tests _locally_, then
+- Joining the Conformance Program
 
 ### Running The Conformance Tests
 
-You can either run the hosted conformance tests listed in the FINOS App Directory, or run them on your local machine (useful if you are making changes).  Instructions for doing either of those things are here:
+You can either run the hosted conformance tests listed in the FINOS App Directory, or run them on your local machine (useful if you are making changes). Instructions for doing either of those things are here:
 
 #### Using The FINOS App Directory
 
-If you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos.org/docs/app-directory/spec), you can point it at [The FINOS App Directory](https://directory.fdc3.finos.org) which contains not only the current conformance suite but also many other sample FDC3 applications.  The endpoint for your agent is:
+If you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos.org/docs/app-directory/spec), you can point it at [The FINOS App Directory](https://directory.fdc3.finos.org) which contains not only the current conformance suite but also many other sample FDC3 applications. The endpoint for your agent is:
 
- - https://directory.fdc3.finos.org/v2/apps
+- https://directory.fdc3.finos.org/v2/apps
 
 #### Local Installation
 
@@ -54,10 +54,10 @@ If you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos
 
 This repository currently contains:
 
- - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
- - `static` - HTML files used to create the static server
- - `directory` - Some JSON files in the FDC3 V2 Directory format that you can use to set up your desktop agent with either 1.2 or 2.0 test suites.
- - `terms-conditions` - [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.  Instructions for joining the program are [here](Instructions.md)
+- `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
+- `static` - HTML files used to create the static server
+- `directory` - Some JSON files in the FDC3 V2 Directory format that you can use to set up your desktop agent with either 1.2 or 2.0 test suites.
+- `terms-conditions` - [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program. Instructions for joining the program are [here](Instructions.md)
 
 2. **Install Dependencies**
 
@@ -77,7 +77,7 @@ npm run start
 
 4.  **Set Up Your Desktop Agent**
 
-You will need to set up your desktop agent so that it has an _App Directory containing all the conformance apps_.   
+You will need to set up your desktop agent so that it has an _App Directory containing all the conformance apps_.  
 This step is vendor-dependent, but examples of `AppD` records can be found in the `directory` folder.
 
 ### Running The Tests
@@ -86,7 +86,7 @@ Once you have configured your desktop agent correctly, open the conformance app 
 
 <img src="static/selecting.png" alt="Selecting Tests" width="400px" />
 
-The tests run and produce an output in the window.  Failure are shown with a stack trace in red:
+The tests run and produce an output in the window. Failure are shown with a stack trace in red:
 
 <img src="static/failing.png" alt="Running Tests" width="400px" />
 
@@ -106,10 +106,9 @@ Once you have followed these steps, you will be allowed to display the FDC3 Comp
 
 ### Who Is Conformant?
 
-We publish the details of conformant desktop agents on the [FDC3 Community Page](https://fdc3.finos.org/community).  Please check there to find out who FINOS has certified! 
+We publish the details of conformant desktop agents on the [FDC3 Community Page](https://fdc3.finos.org/community). Please check there to find out who FINOS has certified!
 
 [Read the latest blog post here about the certification announcements at OSFF New York](https://www.finos.org/blog/first-fdc3-1.2-certified-desktop-agents)
-
 
 ## Contributing
 
@@ -117,9 +116,8 @@ Please see [CONTRIBUTING](CONTRIBUTING.md) page.
 
 ## License
 
-Copyright 2022 FINOS 
+Copyright 2022 FINOS
 
 Distributed under the [Apache License, Version 2.0](http://www.apache.org/licenses/LICENSE-2.0).
 
 SPDX-License-Identifier: [Apache-2.0](https://spdx.org/licenses/Apache-2.0)
-

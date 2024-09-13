@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, onFdc3Ready } from "./mock-functions";
-import { DesktopAgent } from "fdc3_2_0/dist/api/DesktopAgent";
+import { DesktopAgent } from "fdc3_2_0";
 import { Context } from "fdc3_2_0";
 import { sendContextToTests } from "../v2.0/mock-functions";
 import { AppControlContext } from "../../context-types";

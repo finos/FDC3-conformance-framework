@@ -1,7 +1,7 @@
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import constants from "../../constants";
 import { AppControlContext } from "../../context-types";
-import { fdc3Ready } from "@kite9/client";
+import { fdc3Ready } from "fdc3_1_2";
 
 declare let fdc3: DesktopAgent;
 
