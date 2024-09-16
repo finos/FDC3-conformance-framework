@@ -1,4 +1,3 @@
-import { fdc3Ready } from "@kite9/client";
 import { getPackMembers, getPackNames, executeTestsInBrowser } from "./testSuite";
 
 require("mocha/mocha.css");
