@@ -5,7 +5,7 @@
     "compile": "webpack build",
     "replace-glue-core": "npm run copy && npx replace-in-file --configFile=options/glue-core-app-1.2.js && npx replace-in-file --configFile=options/glue-core-support-1.2.js && npx replace-in-file --configFile=options/glue-core-app-2.0.js && npx replace-in-file --configFile=options/glue-core-support-2.0.js",
     "replace-glue-core-plus": "npm run copy && npx replace-in-file --configFile=options/glue-core-plus-app-2.0.js && npx replace-in-file --configFile=options/glue-core-support-2.0.js",
-    "copy-glue-libs" : "shx cp -R options/glue/* ./dist",
+    "copy-glue-libs": "shx cp -R options/glue/* ./dist",
     "replace-connectifi": "npm run copy && npx replace-in-file --configFile=options/connectifi-adapter.js",
     "serve": "npx http-server ./dist -p 3001 -c-1",
     "start": "npm run copy && npm run compile && npm run serve",
@@ -15,6 +15,7 @@
     "build-static": "npm run compile && npm run copy"
   },
   "dependencies": {
+    "@kite9/client": "0.0.30",
     "buffer": "^6.0.3",
     "chai": "^4.3.6",
     "fdc3_1_2": "npm:@finos/fdc3@^1.2.0",

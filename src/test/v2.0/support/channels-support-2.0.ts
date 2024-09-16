@@ -52,7 +52,8 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
   };
 
   initCompleteListener = async (testId: string) => {
-    return await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
+    const { listenerPromise } = await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
+    return listenerPromise;
   };
 
   openChannelApp = async (testId: string, channelId: string | undefined, commands: string[], historyItems: number = undefined, notify: boolean = true, contextId?: string) => {

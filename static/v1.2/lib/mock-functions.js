@@ -3,7 +3,7 @@ const onFdc3Ready = () =>
     if (window.fdc3) {
       resolve();
     } else {
-      window.addEventListener("fdc3Ready", () => resolve());
+      fdc3Ready().then(() => resolve());
     }
   });
 

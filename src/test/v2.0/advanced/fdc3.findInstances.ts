@@ -1,6 +1,6 @@
 import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../../v2.0/apiDocuments-2.0";
-import { failOnTimeout, wrapPromise } from "../../../utils";
+import { failOnTimeout, wait, wrapPromise } from "../../../utils";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
 import { IntentUtilityContext } from "../../../context-types";
 import { MetadataFdc3Api } from "../support/metadata-support-2.0";
@@ -14,7 +14,7 @@ const control = new RaiseIntentControl2_0();
 export default () =>
   describe("fdc3.findInstances", () => {
     after(async function after() {
-      await closeMockAppWindow(this.currentTest.title);
+      await closeMockAppWindow(this.currentTest.title, 2);
     });
 
     const findInstances = "(2.0-FindInstances) valid appID when opening multiple instances of the same app";
@@ -22,6 +22,7 @@ export default () =>
       const api = new MetadataFdc3Api();
       let listener;
       try {
+
         const appIdentifier = await control.openIntentApp(IntentApp.IntentAppA); // open IntentAppA
         const appIdentifier2 = await control.openIntentApp(IntentApp.IntentAppA); // open second instance of IntentAppA
 
@@ -45,7 +46,7 @@ export default () =>
         const resolution = await api.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, appIdentifier); // raise an intent that targets appIdentifier
         validateResolutionSource(resolution, appIdentifier);
         await wrapper.promise; // wait for context from IntentAppA
-        
+
       } catch (ex) {
         assert.fail(findInstancesDocs + (ex.message ?? ex));
       }
@@ -66,7 +67,7 @@ function validateInstances(instances: AppIdentifier[], appIdentifier: AppIdentif
   const compareAppIdentifiers = (a: AppIdentifier, b: AppIdentifier) => a.appId === b.appId && a.instanceId === b.instanceId;
 
   if (!(instances.some((instance) => compareAppIdentifiers(instance, appIdentifier)) &&
-       instances.some((instance) => compareAppIdentifiers(instance, appIdentifier2)))) {
+    instances.some((instance) => compareAppIdentifiers(instance, appIdentifier2)))) {
     assert.fail(`At least one AppIdentifier object is missing from the AppIdentifier array returned after calling fdc3.findInstances(app: AppIdentifier)${findInstancesDocs}`);
   }
 }

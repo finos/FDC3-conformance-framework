@@ -1,13 +1,13 @@
 import { Channel, Context, DesktopAgent, Listener } from "fdc3_2_0";
-import { AppControlContext } from "../../context-types";
+import { AppControlContext, AppControlContextListener } from "../../context-types";
 import constants from "../../constants";
 import { wait } from "../../utils";
 
 declare let fdc3: DesktopAgent;
 
-export async function closeMockAppWindow(testId: string) {
+export async function closeMockAppWindow(testId: string, count: number = 1) {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
-  const contextPromise = waitForContext("windowClosed", testId, appControlChannel);
+  const { listenerPromise: contextPromise } = await waitForContext("windowClosed", testId, appControlChannel, count);
   await broadcastCloseWindow(testId);
   await contextPromise;
   await wait(constants.WindowCloseWaitTime); // wait for window to close
@@ -21,58 +21,37 @@ const broadcastCloseWindow = async (currentTest) => {
   } as AppControlContext);
 };
 
-export const waitForContext = (contextType: string, testId: string, channel?: Channel): Promise<Context> => {
-  let executionListener: Listener;
-  return new Promise<Context>(async (resolve) => {
-    console.log(Date.now() + ` Waiting for type: "${contextType}", on channel: "${channel.id}" in test: "${testId}"`);
 
-    const handler = (context: AppControlContext) => {
-      if (testId) {
-        console.log(` ${testId} VS ${context.testId}`);
-        if (testId == context.testId) {
-          console.log(Date.now() + ` Received ${contextType} for test: ${testId}`);
-          resolve(context);
-          if (executionListener) executionListener.unsubscribe();
-        } else {
-          console.warn(Date.now() + ` Ignoring "${contextType}" context due to mismatched testId (expected: "${testId}", got "${context.testId}")`);
-        }
-      } else {
-        console.log(Date.now() + ` Received (without testId) "${contextType}" for test: "${testId}"`);
-        resolve(context);
-        if (executionListener) executionListener.unsubscribe();
-      }
-    };
+export const waitForContext = async (contextType: string, testId: string, channel: Channel, count = 1): Promise<AppControlContextListener> => {
+  let promiseResolve;
+  let promiseReject;
 
-    if (channel === undefined) {
-      executionListener = await fdc3.addContextListener(contextType, handler);
-    } else {
-      console.log("adding listener in waitforcontext");
-      executionListener = await channel.addContextListener(contextType, handler);
-      //App channels do not auto-broadcast current context when you start listening, so retrieve current context to avoid races
-      const ccHandler = async (context: AppControlContext) => {
-        if (context) {
-          if (testId) {
-            if (testId == context?.testId && context?.type == contextType) {
-              console.log(Date.now() + ` Received "${contextType}" (from current context) for test: "${testId}"`);
-              if (executionListener) executionListener.unsubscribe();
-              resolve(context);
-            } //do not warn as it will be ignoring mismatches which will be common
-            else {
-              console.log(
-                Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist,
-              had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"})
-              and type "${context?.type}" vs ${contextType} (${context?.type == contextType ? "did match" : "did NOT match"})`
-              );
-            }
-          } else {
-            console.log(Date.now() + ` Received "${contextType}" (from current context) for an unspecified test`);
-            if (executionListener) executionListener.unsubscribe();
-            resolve(context);
-          }
-        }
-      };
-      channel.getCurrentContext().then(ccHandler);
-    }
+  const listenerPromise = new Promise<Context>((resolve, reject) => {
+    promiseResolve = resolve;
+    promiseReject = reject;
   });
+
+  setTimeout(() => {
+    if (count > 0) {
+      promiseReject(new Error("App didn't return close context within .5 secs"));
+    }
+  }, 500)
+
+  return channel.addContextListener(contextType, ctx => {
+    if (ctx['testId'] == testId) {
+      console.log(`Received ${contextType}`)
+      count--;
+      if (count == 0) {
+        promiseResolve(ctx);
+      } else {
+        console.log(`Waiting for ${count} more ${contextType}`)
+      }
+    } else {
+      console.log(`Wrong test id expected:  ${testId} got: ${ctx['testId']}`)
+    }
+  }).then(cl => {
+    return {
+      listenerPromise
+    }
+  })
 };

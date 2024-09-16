@@ -3,27 +3,34 @@ import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, Priva
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";
-import { AppControlContext, IntentUtilityContext } from "../../../context-types";
+import { AppControlContext, AppControlContextListener, IntentUtilityContext } from "../../../context-types";
+import { waitForContext } from "../fdc3-2_0-utils";
 
 declare let fdc3: DesktopAgent;
 const raiseIntentDocs = "\r\nDocumentation: " + APIDocumentation2_0.raiseIntent + "\r\nCause";
 
 export class RaiseIntentControl2_0 {
-  async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContext> {
-    let timeout;
+  async receiveContext(contextType: string, waitTime?: number, count: number = 1): Promise<AppControlContext> {
+    let timeout: number;
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
     return new Promise<Context>(async (resolve, reject) => {
       const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
+        count--;
+        console.log(`Received ${contextType} waiting for ${count} more`)
+        if (count == 0) {
+          resolve(context);
+          clearTimeout(timeout);
+          listener.unsubscribe();
+        }
       });
 
       //if no context received reject promise
       const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
       timeout = theTimeout;
       await sleepPromise;
-      reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
+      if (count > 0) {
+        reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
+      }
     });
   }
 
@@ -82,7 +89,7 @@ export class RaiseIntentControl2_0 {
     const intentResult = intentResolution.getResult();
     if (typeof intentResult.then !== "function") {
       assert.fail(`intentResolution.getResult() did not return a Promise: ${JSON.stringify(intentResult, null, 2)}`);
-    }  
+    }
     clearTimeout(timeout);
     return intentResult;
   }
@@ -157,7 +164,7 @@ export class RaiseIntentControl2_0 {
   }
 
   async receiveContextStreamFromMockApp(privChannel: PrivateChannel, streamedNumberStart: number, streamedNumberEnd: number): Promise<Listener> {
-    let timeout;
+    let timeout: number;
     const wrapper = wrapPromise();
 
     //receive multiple contexts in succession from intent-k
