@@ -30,7 +30,7 @@ function executeTests() {
   if (window.fdc3) {
     action();
   } else {
-    fdc3Ready().then(() => action());
+    window.addEventListener("fdc3Ready", action);
   }
 }
 
