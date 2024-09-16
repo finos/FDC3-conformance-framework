@@ -14,7 +14,7 @@ const control = new RaiseIntentControl2_0();
 export default () =>
   describe("fdc3.findInstances", () => {
     after(async function after() {
-      await closeMockAppWindow(this.currentTest.title, 2);
+      await closeMockAppWindow(this.currentTest.title);
     });
 
     const findInstances = "(2.0-FindInstances) valid appID when opening multiple instances of the same app";
