@@ -41,12 +41,12 @@ export default () =>
 
     it("(2.0-FindIntentAppDMultiple1) Should find intent 'sharedTestingIntent2' belonging to multiple apps (intent-a & intent-b)", async () => {
       const appIntent = await fdc3.findIntent(Intent.sharedTestingIntent2);
-      validateAppIntent(appIntent, 6, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent" }, IntentApp.IntentAppD);
+      validateAppIntent(appIntent, 6, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent 2" }, IntentApp.IntentAppD);
     });
 
     it("(IntentAppDMultiple2) Should find intent 'sharedTestingIntent2' belonging to multiple apps (intent-a & intent-b) filtered by specific context 'testContextY'", async () => {
       const appIntent = await fdc3.findIntent(Intent.sharedTestingIntent2, { type: ContextType.testContextY });
-      validateAppIntent(appIntent, 5, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent" }, IntentApp.IntentAppE);
+      validateAppIntent(appIntent, 5, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent 2" }, IntentApp.IntentAppE);
     });
 
     it("(2.0-FindIntentAppDByResultSingle) Should find intent 'cTestingIntent' belonging only to app intent-c with context 'testContextX' and result type 'testContextZ'", async () => {
@@ -61,17 +61,17 @@ export default () =>
 
     it("(2.0-FindIntentAppDByResultMultiple) Should find intent 'sharedTestingIntent1' belonging only to app intent-b with context 'testContextX' and result type 'testContextY'", async () => {
       const appIntent = await fdc3.findIntent(Intent.sharedTestingIntent1, { type: ContextType.testContextX }, ContextType.testContextY);
-      validateAppIntent(appIntent, 1, { name: Intent.sharedTestingIntent1, displayName: "Shared Testing Intent" }, IntentApp.IntentAppB);
+      validateAppIntent(appIntent, 1, { name: Intent.sharedTestingIntent1, displayName: "Shared Testing Intent 1" }, IntentApp.IntentAppB);
     });
 
     it("(2.0-FindIntentAppDByResultChannel1) Should find intent 'sharedTestingIntent2' belonging only to apps intent-e and itent-f with context 'testContextY' and result type 'channel", async () => {
       const appIntent = await fdc3.findIntent(Intent.sharedTestingIntent2, { type: ContextType.testContextY }, "channel");
-      validateAppIntent(appIntent, 2, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent" }, IntentApp.IntentAppE);
+      validateAppIntent(appIntent, 2, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent 2" }, IntentApp.IntentAppE);
     });
 
     it("(2.0-FindIntentAppDByResultChannel2) Should find intent 'sharedTestingIntent2' belonging only to app intent-c with context 'testContextY' and result type 'channel<testContextZ>'", async () => {
       const appIntent = await fdc3.findIntent(Intent.sharedTestingIntent2, { type: ContextType.testContextY }, "channel<testContextZ>");
-      validateAppIntent(appIntent, 1, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent" }, IntentApp.IntentAppF);
+      validateAppIntent(appIntent, 1, { name: Intent.sharedTestingIntent2, displayName: "Shared Testing Intent 2" }, IntentApp.IntentAppF);
     });
   });
 
