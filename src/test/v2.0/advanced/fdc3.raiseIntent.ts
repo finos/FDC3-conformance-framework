@@ -103,7 +103,7 @@ export default () =>
     const PrivateChannelsLifecycleEvents = "(2.0-PrivateChannelsLifecycleEvents) PrivateChannel lifecycle events are triggered when expected";
     it(PrivateChannelsLifecycleEvents, async () => {
       errorListener = await control.listenForError();
-      let onUnsubscribeReceiver = control.receiveContext(ControlContextType.onUnsubscribeTriggered);
+      const onUnsubscribeReceiver = control.receiveContext(ControlContextType.onUnsubscribeTriggered);
       const intentResolution = await control.raiseIntent(Intent.kTestingIntent, ContextType.testContextX, {
         appId: IntentApp.IntentAppK,
       });
@@ -112,12 +112,13 @@ export default () =>
       control.validateIntentResult(result, IntentResultType.PrivateChannel);
       let listener = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 1, 5);
       control.unsubscribeListener(listener);
+
       await onUnsubscribeReceiver; //should receive context from privChannel.onUnsubscribe in mock app
-      let textContextXReceiver = control.receiveContext(ContextType.testContextX);
+      const textContextXReceiver = control.receiveContext(ContextType.testContextX);
       control.privateChannelBroadcast(<PrivateChannel>result, ContextType.testContextX);
       await textContextXReceiver;
-      let onUnsubscribeReceiver2 = control.receiveContext(ControlContextType.onUnsubscribeTriggered);
-      let onDisconnectReceiver = control.receiveContext(ControlContextType.onDisconnectTriggered);
+      const onUnsubscribeReceiver2 = control.receiveContext(ControlContextType.onUnsubscribeTriggered);
+      const onDisconnectReceiver = control.receiveContext(ControlContextType.onDisconnectTriggered);
       let listener2 = await control.receiveContextStreamFromMockApp(<PrivateChannel>result, 6, 10);
       control.disconnectPrivateChannel(<PrivateChannel>result);
 

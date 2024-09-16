@@ -99,6 +99,7 @@ export const executeTestsInBrowser = (pack: string) => {
  */
 export const executeManualTestsInBrowser = (pack: string) => {
   console.log('Pack', pack);
+  (mocha as any).timeout(constants.ManualTimeout);
   const suite = allManualTests[pack];
   console.log('************ found suite******', suite)
   suite.forEach((s) => s());
