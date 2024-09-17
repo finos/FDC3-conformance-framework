@@ -12,19 +12,23 @@ export class RaiseIntentControl2_0 {
   async receiveContext(contextType: string, waitTime?: number): Promise<AppControlContext> {
     let timeout;
     const appControlChannel = await getOrCreateChannel(constants.ControlChannel);
-    return new Promise<Context>(async (resolve, reject) => {
-      const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
-        resolve(context);
-        clearTimeout(timeout);
-        listener.unsubscribe();
-      });
-
+    var doResolve = null;
+    const out = new Promise<Context>(async (resolve, reject) => {
+      doResolve = resolve;
       //if no context received reject promise
       const { promise: sleepPromise, timeout: theTimeout } = sleep(waitTime ?? constants.WaitTime);
       timeout = theTimeout;
       await sleepPromise;
       reject(new Error("No context received. Listener expected to receive context of type " + contextType + " from mock app"));
     });
+
+    const listener = await appControlChannel.addContextListener(contextType, (context: AppControlContext) => {
+      doResolve(context);
+      clearTimeout(timeout);
+      listener.unsubscribe();
+    });
+
+    return out
   }
 
   async openIntentApp(appId): Promise<AppIdentifier> {
@@ -82,7 +86,7 @@ export class RaiseIntentControl2_0 {
     const intentResult = intentResolution.getResult();
     if (typeof intentResult.then !== "function") {
       assert.fail(`intentResolution.getResult() did not return a Promise: ${JSON.stringify(intentResult, null, 2)}`);
-    }  
+    }
     clearTimeout(timeout);
     return intentResult;
   }
