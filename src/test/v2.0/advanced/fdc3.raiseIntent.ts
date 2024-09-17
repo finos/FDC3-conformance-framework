@@ -2,6 +2,7 @@ import { ChannelError, PrivateChannel, Listener } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextType, Intent, ControlContextType } from "../support/intent-support-2.0";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
+import { wait } from "../../../utils";
 
 const control = new RaiseIntentControl2_0();
 
@@ -115,6 +116,7 @@ export default () =>
 
       await onUnsubscribeReceiver; //should receive context from privChannel.onUnsubscribe in mock app
       const textContextXReceiver = control.receiveContext(ContextType.testContextX);
+      await wait(300) // ADDED DUE TO RACE CONDITION in intent-support-2.0.ts/receiveContext on line 12.
       control.privateChannelBroadcast(<PrivateChannel>result, ContextType.testContextX);
       await textContextXReceiver;
       const onUnsubscribeReceiver2 = control.receiveContext(ControlContextType.onUnsubscribeTriggered);
