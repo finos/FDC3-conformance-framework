@@ -5,6 +5,7 @@ const constants = {
   ShortWait: 1000,
   Fdc3Timeout: 500, // The amount of time to wait for the FDC3Ready event during initialisation
   TestTimeout: 20000, // Tests that take longer than this (in milliseconds) will fail
+  ManualTimeout: 100000, // Manual tests that take longer than this (in milliseconds) will fail
   WaitTime: 5000, // The amount of time to wait for mock apps to finish processing
   WindowCloseWaitTime: 1000, // The amount of time to allow for clean-up of closed windows
   NoListenerTimeout: 120000, // the amount of time to allow for a DA to timeout waiting on a context or intent listener
