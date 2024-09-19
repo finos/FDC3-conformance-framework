@@ -2,6 +2,7 @@ import { assert, expect } from "chai";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { MetadataFdc3Api, MetadataValidator } from "../support/metadata-support-2.0";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";
+import { wait } from "../../../utils";
 
 const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata + "\r\nCause: ";
 const validator = new MetadataValidator();
@@ -33,6 +34,9 @@ export default () => {
 
   describe("fdc3.getAppMetadata 2", () => {
     after(async () => {
+      // this added since there is a race condition where the close window
+      // broadcast can occur before the apps have added their context listeners. 
+      await wait(300)
       await closeMockAppWindow(appInstanceMetadata);
     });
 
