@@ -7,11 +7,8 @@ const getMetadataDocs = "\r\nDocumentation: " + APIDocumentation2_0.appMetadata 
 const validator = new MetadataValidator();
 const api = new MetadataFdc3Api();
 
-export default () =>
-  describe("fdc3.getAppMetadata", () => {
-    after(async () => {
-      await closeMockAppWindow(appInstanceMetadata);
-    });
+export default () => {
+  describe("fdc3.getAppMetadata 1", () => {
 
     it("Method is callable", async () => {
       try {
@@ -20,6 +17,7 @@ export default () =>
         assert.fail(getMetadataDocs + (ex.message ?? ex));
       }
     });
+
 
     it("(2.0-GetAppMetadata) Valid metadata object", async () => {
       try {
@@ -30,6 +28,15 @@ export default () =>
         assert.fail(getMetadataDocs + (ex.message ?? ex));
       }
     });
+
+  })
+
+  describe("fdc3.getAppMetadata 2", () => {
+    after(async () => {
+      await closeMockAppWindow(appInstanceMetadata);
+    });
+
+
 
     const appInstanceMetadata = "(2.0-AppInstanceMetadata) App instance metadata is valid";
     it(appInstanceMetadata, async () => {
@@ -58,6 +65,9 @@ export default () =>
     });
   });
 
-function validateMatchingInstanceIds(instanceId1: string, instanceId2: string) {
-  expect(instanceId1, "The AppMetaData instanceId properties do not match").to.be.equal(instanceId2);
+  function validateMatchingInstanceIds(instanceId1: string, instanceId2: string) {
+    expect(instanceId1, "The AppMetaData instanceId properties do not match").to.be.equal(instanceId2);
+  }
+
+
 }
