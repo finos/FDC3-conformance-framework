@@ -26,7 +26,8 @@ export default () =>
     const AOpensB4 = "(AOpensB4) Can open app B from app A with appId as config.target, and recieves the same appId and also contains InstanceId";
     it(AOpensB4, async () => {
       const result = control.contextReceiver("fdc3-conformance-opened");
-      const targetApp = {appId:openApp.b.id};
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
+      const targetApp = { appId: openApp.b.id };
       const instanceIdentifier = await control.openMockApp(targetApp);
       expect(instanceIdentifier.appId).to.eq(openApp.b.id);
       expect(instanceIdentifier).to.have.property("instanceId");

@@ -4,6 +4,7 @@ import { openApp, OpenCommonConfig } from "../../common/control/open-control";
 import { assert } from "chai";
 import { APIDocumentation1_2 } from "../apiDocuments-1.2";
 import { Context, TargetApp } from "fdc3_1_2";
+import { wait } from "../../../utils";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation1_2.open + "\r\nCause: ";
 const control = new OpenControl1_2();
@@ -26,6 +27,7 @@ export default () =>
     it(AOpensB1, async () => {
       let targetApp = openApp.b.name;
       const result = control.contextReceiver("fdc3-conformance-opened");
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       await control.openMockApp(targetApp);
       await result;
       await control.closeMockApp(AOpensB1);
@@ -34,8 +36,9 @@ export default () =>
     const AOpensB2 = "(AOpensB2) Can open app B from app A with no context and AppMetadata (name) as target";
     it(AOpensB2, async () => {
       let targetApp: TargetApp;
-      targetApp = { name: openApp.b.name};
+      targetApp = { name: openApp.b.name };
       const result = control.contextReceiver("fdc3-conformance-opened");
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       await control.openMockApp(targetApp);
       await result;
       await control.closeMockApp(AOpensB2);
@@ -54,7 +57,7 @@ export default () =>
     it(AFailsToOpenB2Test, async () => {
       try {
         let targetApp: TargetApp;
-        targetApp = { name: "ThisAppDoesNotExist"};
+        targetApp = { name: "ThisAppDoesNotExist" };
         await control.openMockApp(targetApp);
         assert.fail("No error was not thrown", openDocs);
       } catch (ex) {
@@ -68,7 +71,8 @@ export default () =>
       context = { type: "fdc3.instrument", name: "context" };
       targetApp = openApp.b.name;
       const receiver = control.contextReceiver("context-received");
-      await control.openMockApp(targetApp, context );
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
+      await control.openMockApp(targetApp, context);
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
       await control.closeMockApp(AOpensBWithContext1);
     });
@@ -77,9 +81,10 @@ export default () =>
     it(AOpensBWithContext2, async () => {
       let context: Context, targetApp: TargetApp;
       context = { type: "fdc3.instrument", name: "context" };
-      targetApp = { name: openApp.b.name};
+      targetApp = { name: openApp.b.name };
       const receiver = control.contextReceiver("context-received");
-      await control.openMockApp(targetApp, context );
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
+      await control.openMockApp(targetApp, context);
       await control.validateReceivedContext(await receiver, "fdc3.instrument");
       await control.closeMockApp(AOpensBWithContext2);
     });
