@@ -8,6 +8,7 @@ declare let fdc3: DesktopAgent;
 export async function closeMockAppWindow(testId: string) {
   const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
   const contextPromise = waitForContext("windowClosed", testId, appControlChannel);
+  await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
   await broadcastCloseWindow(testId);
   await contextPromise;
   await wait(constants.WindowCloseWaitTime); // wait for window to close
@@ -58,7 +59,7 @@ export const waitForContext = (contextType: string, testId: string, channel: Cha
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist, 
+                ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist, 
     had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"}) 
     and type "${context?.type}" (${context?.type == contextType ? "did match" : "did NOT match"})`
               );

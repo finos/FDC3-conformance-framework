@@ -4,6 +4,7 @@ import constants from "../../../constants";
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
 import { AppControlContext } from "../../../context-types";
 import { closeMockAppWindow, waitForContext } from "../fdc3-2_0-utils";
+import { wait } from "../../../utils";
 
 declare let fdc3: DesktopAgent;
 
@@ -12,7 +13,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
 
   getNonGlobalUserChannels = async () => {
     const channels = await fdc3.getUserChannels();
-    if(channels.find((channel) => channel.id.indexOf('global') >=0 )) {
+    if (channels.find((channel) => channel.id.indexOf('global') >= 0)) {
       assert.fail("Global channel recieved ");
     }
     return channels.filter(channel => channel.id.indexOf('global') === -1);
@@ -53,6 +54,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
 
   initCompleteListener = async (testId: string) => {
     const { listenerPromise } = await waitForContext("executionComplete", testId, await fdc3.getOrCreateChannel(constants.ControlChannel));
+    await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
     return listenerPromise;
   };
 
