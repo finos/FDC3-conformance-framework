@@ -5,6 +5,7 @@ import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import { OpenControl2_0 } from "../support/open-support-2.0";
 import { DesktopAgent } from "fdc3_2_0";
 import { assert, expect } from "chai";
+import { wait } from "../../../utils";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_0 + "\r\nCause:";
 const control = new OpenControl2_0();
