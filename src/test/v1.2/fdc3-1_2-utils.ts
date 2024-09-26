@@ -58,7 +58,7 @@ export const waitForContext = (contextType: string, testId: string, channel?: Ch
             else {
               console.log(
                 Date.now() +
-                  ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist, 
+                ` CHecking for current context of type "${contextType}" for test: "${testId}" Current context did ${context ? "" : "NOT "} exist, 
     had testId: "${context?.testId}" (${testId == context?.testId ? "did match" : "did NOT match"}) 
     and type "${context?.type}" (${context?.type == contextType ? "did match" : "did NOT match"})`
               );

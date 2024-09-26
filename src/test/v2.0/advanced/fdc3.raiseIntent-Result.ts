@@ -8,9 +8,9 @@ const control = new RaiseIntentControl2_0();
 
 export default () =>
 
-describe("fdc3.raiseIntent (Result)", () => {
+  describe("fdc3.raiseIntent (Result)", () => {
     let errorListener: Listener = undefined;
-  
+
     afterEach(async function afterEach() {
       await closeMockAppWindow(this.currentTest.title);
 
@@ -33,6 +33,7 @@ describe("fdc3.raiseIntent (Result)", () => {
     it(RaiseIntentVoidResult5secs, async () => {
       errorListener = await control.listenForError();
       let receiver = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered, 8000);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, undefined, 5000);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);
@@ -57,6 +58,7 @@ describe("fdc3.raiseIntent (Result)", () => {
     it(RaiseIntentContextResult5secs, async () => {
       errorListener = await control.listenForError();
       let receiver = control.receiveContext(ControlContextType.sharedTestingIntent1ListenerTriggered, 8000);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextY, undefined, 5000);
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
@@ -72,6 +74,7 @@ describe("fdc3.raiseIntent (Result)", () => {
     it(RaiseIntentChannelResult, async () => {
       errorListener = await control.listenForError();
       let receiver = control.receiveContext(ControlContextType.sharedTestingIntent2ResultSent, constants.WaitTime);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
         appId: IntentApp.IntentAppE,
       });
@@ -89,6 +92,7 @@ describe("fdc3.raiseIntent (Result)", () => {
     it(RaiseIntentPrivateChannelResult, async () => {
       errorListener = await control.listenForError();
       let receiver = control.receiveContext(ControlContextType.sharedTestingIntent2ResultSent, constants.WaitTime);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
         appId: IntentApp.IntentAppF,
       });
@@ -106,6 +110,7 @@ describe("fdc3.raiseIntent (Result)", () => {
     it(RaiseIntentVoidResult61secs, async () => {
       errorListener = await control.listenForError();
       let receiver = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered, 64000);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, undefined, 61000);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);
@@ -121,6 +126,7 @@ describe("fdc3.raiseIntent (Result)", () => {
     it(RaiseIntentContextResult61secs, async () => {
       errorListener = await control.listenForError();
       let receiver = control.receiveContext(ControlContextType.sharedTestingIntent1ListenerTriggered, 64000);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextY, undefined, 61000);
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);
