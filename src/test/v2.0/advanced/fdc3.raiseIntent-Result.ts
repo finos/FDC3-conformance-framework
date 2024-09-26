@@ -32,7 +32,8 @@ export default () =>
     const RaiseIntentVoidResult5secs = "(2.0-RaiseIntentVoidResult5secs) App A receives a void IntentResult after a 5 second delay";
     it(RaiseIntentVoidResult5secs, async () => {
       errorListener = await control.listenForError();
-      const receiver = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered, 8000);
+      let receiver = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered, 8000);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, undefined, 5000);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);
@@ -56,7 +57,8 @@ export default () =>
     const RaiseIntentContextResult5secs = "(2.0-RaiseIntentContextResult5secs) IntentResult resolves to testContextY instance after a 5 second delay";
     it(RaiseIntentContextResult5secs, async () => {
       errorListener = await control.listenForError();
-      const receiver = control.receiveContext(ControlContextType.sharedTestingIntent1ListenerTriggered, 8000);
+      let receiver = control.receiveContext(ControlContextType.sharedTestingIntent1ListenerTriggered, 8000);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextY, undefined, 5000);
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       const intentResultPromise = control.getIntentResult(intentResolution);
@@ -71,7 +73,8 @@ export default () =>
     const RaiseIntentChannelResult = "(2.0-RaiseIntentChannelResult) IntentResult resolves to a Channel object";
     it(RaiseIntentChannelResult, async () => {
       errorListener = await control.listenForError();
-      const receiver = control.receiveContext(ControlContextType.sharedTestingIntent2ResultSent, constants.WaitTime);
+      let receiver = control.receiveContext(ControlContextType.sharedTestingIntent2ResultSent, constants.WaitTime);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
         appId: IntentApp.IntentAppE,
       });
@@ -89,6 +92,7 @@ export default () =>
     it(RaiseIntentPrivateChannelResult, async () => {
       errorListener = await control.listenForError();
       let receiver = control.receiveContext(ControlContextType.sharedTestingIntent2ResultSent, constants.WaitTime);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent2, ContextType.testContextY, {
         appId: IntentApp.IntentAppF,
       });
@@ -105,7 +109,8 @@ export default () =>
     const RaiseIntentVoidResult61secs = "(2.0-RaiseIntentVoidResult61secs) App A receives a void IntentResult after a 61 second delay";
     it(RaiseIntentVoidResult61secs, async () => {
       errorListener = await control.listenForError();
-      const receiver = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered, 64000);
+      let receiver = control.receiveContext(ControlContextType.aTestingIntentListenerTriggered, 64000);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.aTestingIntent, ContextType.testContextX, undefined, 61000);
       control.validateIntentResolution(IntentApp.IntentAppA, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);
@@ -120,7 +125,8 @@ export default () =>
     const RaiseIntentContextResult61secs = "(2.0-RaiseIntentContextResult61secs) IntentResult resolves to testContextY instance after a 61 second delay";
     it(RaiseIntentContextResult61secs, async () => {
       errorListener = await control.listenForError();
-      const receiver = control.receiveContext(ControlContextType.sharedTestingIntent1ListenerTriggered, 64000);
+      let receiver = control.receiveContext(ControlContextType.sharedTestingIntent1ListenerTriggered, 64000);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       const intentResolution = await control.raiseIntent(Intent.sharedTestingIntent1, ContextType.testContextY, undefined, 61000);
       control.validateIntentResolution(IntentApp.IntentAppB, intentResolution);
       let intentResultPromise = control.getIntentResult(intentResolution);

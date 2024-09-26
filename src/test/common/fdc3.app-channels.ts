@@ -5,7 +5,7 @@ import { APP_CHANNEL_AND_BROADCAST, APP_CHANNEL_AND_BROADCAST_TWICE, ChannelCont
 
 export function createAppChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
   return describe("App channels", () => {
-    beforeEach(cc.leaveChannel);
+    beforeEach(async () => cc.leaveChannel());
 
     afterEach(async function afterEach() {
       await cc.closeMockApp(this.currentTest.title);
@@ -167,7 +167,7 @@ export function createAppChannelTests(cc: ChannelControl<any, any, any>, documen
           }
         }
       } finally {
-        cc.unsubscribeListeners([listener,listener2]);
+        cc.unsubscribeListeners([listener, listener2]);
       }
     });
 
