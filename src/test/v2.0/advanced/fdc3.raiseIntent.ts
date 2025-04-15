@@ -1,4 +1,4 @@
-import { ChannelError, PrivateChannel, Listener } from "fdc3_2_0";
+import { ChannelError, PrivateChannel, Listener } from "fdc3_2_2";
 import { assert, expect } from "chai";
 import { RaiseIntentControl2_0, IntentResultType, IntentApp, ContextType, Intent, ControlContextType } from "../support/intent-support-2.0";
 import { closeMockAppWindow } from "../fdc3-2_0-utils";

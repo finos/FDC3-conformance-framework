@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
-import { DesktopAgent } from "fdc3_2_0";
+import { DesktopAgent } from "fdc3_2_2";
 import { wait } from "../../utils";
 import { ContextType, ControlContextType, Intent } from "../../test/v2.0/support/intent-support-2.0";
 import constants from "../../constants";
@@ -18,7 +18,7 @@ onFdc3Ready().then(async () => {
     setTimeout(async () => {
       await sendContextToTests({ type: ControlContextType.sharedTestingIntent2ResultSent, id: { key: "uniqueId" }, instanceId: appMetadata.instanceId });
     }, constants.ShortWait)
-    
+
     return privateChannel;
   });
 });

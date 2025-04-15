@@ -1,7 +1,7 @@
 import { DesktopAgent } from "fdc3_1_2/dist/api/DesktopAgent";
 import constants from "../../constants";
 import { AppControlContext } from "../../context-types";
-import { fdc3Ready } from "@kite9/fdc3-get-agent";
+import { getAgent } from "fdc3_2_2";
 
 declare let fdc3: DesktopAgent;
 
@@ -10,7 +10,7 @@ export const onFdc3Ready = () =>
     if (window.fdc3) {
       resolve(undefined);
     } else {
-      fdc3Ready().then(() => resolve(undefined));
+      getAgent().then(() => resolve(undefined));
     }
   });
 

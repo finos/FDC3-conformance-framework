@@ -1,4 +1,4 @@
-import { Channel, DesktopAgent } from "fdc3_2_0";
+import { Channel, DesktopAgent } from "fdc3_2_2";
 import constants from "../../../constants";
 import { AppControlContext } from "../../../context-types";
 import { channelType } from "../../constants";

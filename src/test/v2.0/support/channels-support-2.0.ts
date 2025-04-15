@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { Channel, Context, Listener, DesktopAgent } from "fdc3_2_0";
+import { Channel, Context, Listener, DesktopAgent } from "fdc3_2_2";
 import constants from "../../../constants";
 import { ChannelControl, ChannelsAppConfig, ChannelsAppContext } from "../../common/control/channel-control";
 import { AppControlContext } from "../../../context-types";
@@ -12,7 +12,7 @@ export class ChannelControl2_0 implements ChannelControl<Channel, Context, Liste
 
   getNonGlobalUserChannels = async () => {
     const channels = await fdc3.getUserChannels();
-    if(channels.find((channel) => channel.id.indexOf('global') >=0 )) {
+    if (channels.find((channel) => channel.id.indexOf('global') >= 0)) {
       assert.fail("Global channel recieved ");
     }
     return channels.filter(channel => channel.id.indexOf('global') === -1);

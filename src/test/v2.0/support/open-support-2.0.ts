@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { Context, DesktopAgent, OpenError } from "fdc3_2_0";
+import { Context, DesktopAgent, OpenError } from "fdc3_2_2";
 import constants from "../../../constants";
 import { ContextSender } from "../../../mock/v2.0/general";
 import { sleep } from "../../../utils";
@@ -38,13 +38,13 @@ export class OpenControl2_0 implements OpenControl<Context> {
   };
 
   openMockApp = async (targetApp: any, context?: any) => {
-    let instanceIdentifier : any;
-    if(context) {
+    let instanceIdentifier: any;
+    if (context) {
       instanceIdentifier = await fdc3.open(targetApp, context);
     }
     else {
       instanceIdentifier = await fdc3.open(targetApp)
-      
+
     }
     return instanceIdentifier;
   };
@@ -55,7 +55,7 @@ export class OpenControl2_0 implements OpenControl<Context> {
   }
 
   createTargetApp(name?: string, appId?: string) {
-      return {appId};
+    return { appId };
   }
   addListenerAndFailIfReceived = async () => {
     const appControlChannel = await fdc3.getOrCreateChannel(constants.ControlChannel);
@@ -75,18 +75,18 @@ export class OpenControl2_0 implements OpenControl<Context> {
   expectAppTimeoutErrorOnOpen = async (targetApp: any) => {
     const { timeout, promise } = sleep(constants.NoListenerTimeout);
     let promiseRejected;
-  
+
     //wait for the open promise to be rejected
     try {
       await fdc3.open(targetApp, { type: "fdc3.contextDoesNotExist" });
       await promise;
     } catch (ex) {
-      console.log('************************ex is ***************************',ex)
+      console.log('************************ex is ***************************', ex)
       expect(ex).to.have.property("message", OpenError.AppTimeout, openDocs);
       promiseRejected = true;
       clearTimeout(timeout);
     }
-  
+
     if (!promiseRejected) {
       assert.fail(testTimeoutMessage + openDocs);
     }

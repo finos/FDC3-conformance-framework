@@ -1,5 +1,5 @@
 import { closeWindowOnCompletion, onFdc3Ready, sendContextToTests, validateContext } from "./mock-functions";
-import { DesktopAgent } from "fdc3_2_0";
+import { DesktopAgent } from "fdc3_2_2";
 import { wait } from "../../utils";
 import { IntentUtilityContext } from "../../context-types";
 import constants from "../../constants";

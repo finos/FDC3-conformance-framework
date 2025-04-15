@@ -1,5 +1,5 @@
 import { assert, expect } from "chai";
-import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, PrivateChannel, Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_0";
+import { AppIdentifier, Channel, IntentResolution, IntentResult, Listener, PrivateChannel, Context, DesktopAgent, getOrCreateChannel } from "fdc3_2_2";
 import { APIDocumentation2_0 } from "../apiDocuments-2.0";
 import constants from "../../../constants";
 import { sleep, wrapPromise } from "../../../utils";

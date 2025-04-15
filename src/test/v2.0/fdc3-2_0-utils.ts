@@ -1,4 +1,4 @@
-import { Channel, Context, DesktopAgent, Listener } from "fdc3_2_0";
+import { Channel, Context, DesktopAgent, Listener } from "fdc3_2_2";
 import { AppControlContext, AppControlContextListener } from "../../context-types";
 import constants from "../../constants";
 import { wait } from "../../utils";
