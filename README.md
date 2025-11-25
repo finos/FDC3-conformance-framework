@@ -1,3 +1,6 @@
+> [!WARNING]
+> **Please Note:** Conformance testing has moved to the main [FDC3 repo](https://gitub.com/finos/FDC3) in the `toolbox/fdc3-conformance` folder.
+
 <img align="right"  title="FDC3 Conformance Framework" width="200px" src="https://landscape.finos.org/logos/fdc3-conformance-framework.svg">
 
 [![FINOS - Incubating](https://cdn.jsdelivr.net/gh/finos/contrib-toolbox@master/images/badge-incubating.svg)](https://finosfoundation.atlassian.net/wiki/display/FINOS/Incubating)
