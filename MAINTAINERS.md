@@ -6,13 +6,7 @@ This file lists the maintainers of this repository.
 
 | GitHub Username | Name | Organization | Email |
 |----------------|------|--------------|-------|
-| @ColinEberhardt | Colin Eberhardt | Scott Logic | colin.eberhardt@gmail.com |
-| @Joe-Dunleavy | Joe Dunleavy | Scott Logic | *please add email* |
-| @gaganahluwalia | Gagan Singh | *please add organization* | ahluwaliagagan@gmail.com |
-| @kriswest | Kris West | NatWest Group | *please add email* |
-| @ksgeorgieva | Kalina Georgieva | *please add organization* | *please add email* |
-| @nicopreto | Nico Pretorius | Scott Logic | *please add email* |
-| @scooter99boston | Scott Nicholas | The Linux Foundation | snicholas@linuxfoundation.org |
+| @robmoffat | Rob Moffat | FINOS | *please add email* |
 
 For information about maintainer responsibilities and resources, see the [FINOS Maintainers Cheatsheet](https://community.finos.org/docs/finos-maintainers-cheatsheet).
 
