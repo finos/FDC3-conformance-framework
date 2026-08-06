@@ -7,7 +7,7 @@ import constants from "../../constants";
 export function createUserChannelTests(cc: ChannelControl<any, any, any>, documentation: string, prefix: string): Mocha.Suite {
   const channelName = prefix === "" ? "System channels" : "User channels";
   return describe(channelName, () => {
-    beforeEach(cc.leaveChannel);
+    beforeEach(async () => cc.leaveChannel());
 
     afterEach(async function afterEach() {
       if (this.currentTest.title !== UCFilteredUsageJoin) await cc.closeMockApp(this.currentTest.title);

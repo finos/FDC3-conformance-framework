@@ -6,6 +6,7 @@ import { OpenControl2_1 } from "../support/open-support-2.1";
 import { DesktopAgent } from "fdc3_2_0";
 import { assert, expect } from "chai";
 import { ControlContextType } from "../../v2.0/support/intent-support-2.0";
+import { wait } from "../../../utils";
 
 const openDocs = "\r\nDocumentation: " + APIDocumentation2_1 + "\r\nCause:";
 const control = new OpenControl2_1();
@@ -26,10 +27,11 @@ export default () =>
     const AOpensBMalformedContext = `(AOpensBMalformedContext) App B listeners receive nothing when passing a malformed context`;
     it(AOpensBMalformedContext, async () => {
       const receiver = control.contextReceiver(ControlContextType.contextReceived);
+      await wait(300)  // Added due to nested promise await race condition first observed by Jupnit.
       await control.openMockApp(openApp.f.name);
       await receiver;
       await control.closeMockApp(AOpensBMalformedContext);
     });
-    
+
   });
 
