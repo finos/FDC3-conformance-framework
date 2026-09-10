@@ -5,9 +5,7 @@
 > The content of this repository was merged into the main FDC repo (https://github.com/finos/fdc3) to make it easier to maintain against the FDC3 standard.
 > You are welcome to download, clone, or fork this code, but please be aware that it is no longer actively maintained and may contain bugs or security vulnerabilities.
 >
-> **Interested in reviving this project?** If you would like to restore development activities, please contact the team at info@os-climate.org.
-
-<img align="right"  title="FDC3 Conformance Framework" width="200px" src="https://landscape.finos.org/logos/fdc3-conformance-framework.svg">
+> **Interested in reviving this project?** If you would like to restore development activities, please contact the team at info@finos.org.
 
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6456/badge)](https://bestpractices.coreinfrastructure.org/projects/6456)
 
