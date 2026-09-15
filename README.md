@@ -52,7 +52,7 @@ You can either run the hosted conformance tests listed in the FINOS App Director
 
 If you have a Desktop Agent supporting the [AppD v2 standard](https://fdc3.finos.org/docs/app-directory/spec), you can point it at [The FINOS App Directory](https://directory.fdc3.finos.org) which contains not only the current conformance suite but also many other sample FDC3 applications.  The endpoint for your agent is:
 
- - https://directory.fdc3.finos.org/v2/apps
+ - [https://directory.fdc3.finos.org/conformanec_2_0/v2/apps](https://directory.fdc3.finos.org/conformance_2_0/v2/apps/)
 
 #### Local Installation
 
@@ -63,7 +63,7 @@ This repository currently contains:
  - `tests` - the FDC3 conformance tests, implemented using Mocha / TypeScript, making use of the FDC3 type definitions, [@finos/fdc3](https://www.npmjs.com/package/@finos/fdc3).
  - `static` - HTML files used to create the static server
  - `directory` - Some JSON files in the FDC3 V2 Directory format that you can use to set up your desktop agent with either 1.2 or 2.0 test suites.
- - `terms-conditions` - [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.  Instructions for joining the program are [here](Instructions.md)
+ - `terms-conditions` - [Terms and Conditions](terms-conditions/FDC3-Certified-Terms.md) of the Conformance Program.  Instructions for joining the program are [here](instructions.md)
 
 2. **Install Dependencies**
 
